@@ -30,6 +30,7 @@
 package wpn.hdri.tango.data.type;
 
 import com.google.common.collect.Sets;
+import fr.esrf.Tango.DevEncoded;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
 import fr.esrf.TangoDs.TangoConst;
@@ -257,10 +258,30 @@ public class ScalarTangoDataTypes {
     }
     );
 
+    /**
+     * This only supports JPEG_GRAY8 format, i.e. use BufferedImage.TYPE_BYTE_GRAY and read images as jpeg to extract data
+     */
+    public static final TangoDataType<byte[]> DEV_ENCODED = new TangoDataType<byte[]>(TangoConst.Tango_DEV_ENCODED, "DevEncoded", byte[].class, null, null) {
+        public static final String ENCODED_FORMAT = "JPEG_GRAY8";
+
+        @Override
+        public byte[] extract(TangoDataWrapper data) throws ValueExtractionException {
+            try {
+                return data.extractDevEncoded().encoded_data;
+            } catch (DevFailed devFailed) {
+                throw new ValueExtractionException(TangoUtils.convertDevFailedToException(devFailed));
+            }
+        }
+
+        @Override
+        public void insert(TangoDataWrapper data, byte[] value) throws ValueInsertionException {
+            data.insert(new DevEncoded(ENCODED_FORMAT, value));
+        }
+    };
 
     static Collection<? extends TangoDataType<?>> values() {
         //TODO remove warning
-        return Sets.newHashSet(DEV_STATE, VOID, BOOLEAN, STRING, SHORT, U_SHORT, U_CHAR, INT, U_INT, LONG, U_LONG, FLOAT, DOUBLE);
+        return Sets.newHashSet(DEV_ENCODED, DEV_STATE, VOID, BOOLEAN, STRING, SHORT, U_SHORT, U_CHAR, INT, U_INT, LONG, U_LONG, FLOAT, DOUBLE);
     }
 
     public final static class ScalarTangoDataType<T> extends TangoDataType<T> {
