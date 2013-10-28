@@ -92,26 +92,26 @@ public class TangoDataTypeTest {
 
     @Test
     public void testGetEncoded() throws Exception {
-        TangoDataFormat<byte[][]> format = TangoDataFormat.createForAttrDataFormat(AttrDataFormat.SCALAR);
-        TangoDataType<byte[][]> type = format.getDataType(TangoConst.Tango_DEV_ENCODED);
+        TangoDataFormat<byte[]> format = TangoDataFormat.createForAttrDataFormat(AttrDataFormat.SCALAR);
+        TangoDataType<byte[]> type = format.getDataType(TangoConst.Tango_DEV_ENCODED);
 
-        assertSame(ImageTangoDataTypes.ENCODED_IMAGE, type);
+        assertSame(ScalarTangoDataTypes.DEV_ENCODED, type);
     }
 
     @Test
     public void testGetEncoded_Image() throws Exception {
-        TangoDataFormat<byte[][]> format = TangoDataFormat.createForAttrDataFormat(AttrDataFormat.IMAGE);
-        TangoDataType<byte[][]> type = format.getDataType(TangoConst.Tango_DEV_ENCODED);
+        TangoDataFormat<byte[]> format = TangoDataFormat.createForAttrDataFormat(AttrDataFormat.IMAGE);
+        TangoDataType<byte[]> type = format.getDataType(TangoConst.Tango_DEV_ENCODED);
 
-        assertSame(ImageTangoDataTypes.ENCODED_IMAGE, type);
+        assertNull(type);
     }
 
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = NullPointerException.class)//there is no spectrum data type for DevEncoded
     public void testGetEncoded_Spectrum() throws Exception {
-        TangoDataFormat<byte[][]> format = TangoDataFormat.createForAttrDataFormat(AttrDataFormat.SPECTRUM);
-        TangoDataType<byte[][]> type = format.getDataType(TangoConst.Tango_DEV_ENCODED);
+        TangoDataFormat<byte[]> format = TangoDataFormat.createForAttrDataFormat(AttrDataFormat.SPECTRUM);
+        TangoDataType<byte[]> type = format.getDataType(TangoConst.Tango_DEV_ENCODED);
 
-        assertSame(ImageTangoDataTypes.ENCODED_IMAGE, type);
+        assertNull(type);
     }
 }

@@ -53,8 +53,6 @@ public class ImageTangoDataTypes {
     private ImageTangoDataTypes() {
     }
 
-    public static final TangoDataType<byte[][]> ENCODED_IMAGE = new EncodedImageTangoDataType(TangoConst.Tango_DEV_ENCODED, "DevEncodedImage", byte[][].class);
-
     public static final TangoDataType<float[][]> FLOAT_IMAGE = new ImageTangoDataType<float[][], float[]>(
             TangoConst.Tango_DEV_FLOAT, "DevFloatImage", float[][].class, new ValueExtracter<float[]>() {
         @Override
@@ -170,7 +168,7 @@ public class ImageTangoDataTypes {
     );
 
     static Collection<? extends TangoDataType<?>> values() {
-        return Sets.newHashSet(FLOAT_IMAGE, DOUBLE_IMAGE, SHORT_IMAGE, USHORT_IMAGE, INT_IMAGE, LONG64_IMAGE, ENCODED_IMAGE);
+        return Sets.newHashSet(FLOAT_IMAGE, DOUBLE_IMAGE, SHORT_IMAGE, USHORT_IMAGE, INT_IMAGE, LONG64_IMAGE);
     }
 
     public static final class InsertExtractHelper {
@@ -245,39 +243,6 @@ public class ImageTangoDataTypes {
 
             V value = helper.insert(src, dimX, dimY);
             this.inserter.insert(data, value, dimX, dimY);
-        }
-    }
-
-    public static final class EncodedImageTangoDataType extends TangoDataType<byte[][]> {
-        protected EncodedImageTangoDataType(int tango_dev_data_type, String strAlias, Class<byte[][]> clazz) {
-            super(tango_dev_data_type, strAlias, clazz, null, null);//
-        }
-
-        public byte[][] extract(TangoDataWrapper data) throws ValueExtractionException {
-//            try {
-//                DevEncoded encoded = data.extractDevEncoded();
-//
-//                IImageFormat format = TangoUtils.createImageFormat(encoded.encoded_format);
-//                format.setData(encoded.encoded_data);
-//                Field fldData = IImageFormat.class.getDeclaredField("data");
-//                fldData.setAccessible(true);
-//                Object result = fldData.get(format);
-//                return getDataType().cast(result);
-//            } catch (DevFailed devFailed) {
-//                throw new ValueExtractionException(devFailed);
-//            } catch (IOException e) {
-//                throw new ValueExtractionException(e);
-//            } catch (IllegalAccessException e) {
-//                throw new ValueExtractionException(e);
-//            } catch (NoSuchFieldException e) {
-//                throw new ValueExtractionException(e);
-//            }
-            throw new UnsupportedOperationException("Encoded attributes are not supported.");
-        }
-
-        @Override
-        public void insert(TangoDataWrapper data, byte[][] src) {
-            throw new UnsupportedOperationException("Tango Java API does not support image encoding.");
         }
     }
 }
