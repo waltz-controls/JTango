@@ -29,9 +29,7 @@
 
 package wpn.hdri.tango.data;
 
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
+import fr.esrf.Tango.*;
 import fr.esrf.TangoApi.DeviceAttribute;
 import fr.esrf.TangoApi.DeviceData;
 import fr.esrf.TangoDs.Attribute;
@@ -104,11 +102,19 @@ public abstract class TangoDataWrapper {
 
     public abstract int[] extractUShortArray() throws DevFailed;
 
+    public abstract DevVarLongStringArray extractDevVarLongStringArray() throws DevFailed;
+
+    public abstract DevVarDoubleStringArray extractDevVarDoubleStringArray() throws DevFailed;
+
     public abstract void insert(boolean argin);
 
     public abstract void insert(byte[] argin);
 
     public abstract void insert(DevState argin);
+
+    public abstract void insert(DevVarLongStringArray argin) throws DevFailed;
+
+    public abstract void insert(DevVarDoubleStringArray argin) throws DevFailed;
 
     public abstract void insert(double argin);
 

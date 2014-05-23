@@ -37,7 +37,17 @@
     <artifactId>TangoAPI</artifactId>
     <version>1.0.9-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <description>Library that facades standard Tango Java API</description>
+    <description>Library that facades standard TangORB</description>
+
+    <developers>
+        <developer>
+            <id>khokhria</id>
+            <name>Igor Khokhriakov</name>
+            <email>igor.khokhriakov@hzg.de</email>
+            <organization>Helmholtz-Zentrum Geesthacht</organization>
+            <organizationUrl>hzg.de</organizationUrl>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
@@ -70,7 +80,7 @@
         <dependency>
             <groupId>org.tango</groupId>
             <artifactId>TangORB</artifactId>
-            <version>8.4.0</version>
+            <version>8.4.2</version>
         </dependency>
     </dependencies>
     <properties>

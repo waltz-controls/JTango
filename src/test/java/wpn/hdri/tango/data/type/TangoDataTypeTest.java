@@ -84,7 +84,7 @@ public class TangoDataTypeTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToString() throws Exception {
         TangoDataType<?> type = TangoDataTypes.forClass(String.class);
 
         assertEquals("DevString", type.toString());
@@ -98,12 +98,10 @@ public class TangoDataTypeTest {
         assertSame(ScalarTangoDataTypes.DEV_ENCODED, type);
     }
 
-    @Test
+    @Test(expected = UnknownTangoDataType.class)
     public void testGetEncoded_Image() throws Exception {
         TangoDataFormat<byte[]> format = TangoDataFormat.createForAttrDataFormat(AttrDataFormat.IMAGE);
         TangoDataType<byte[]> type = format.getDataType(TangoConst.Tango_DEV_ENCODED);
-
-        assertNull(type);
     }
 
 

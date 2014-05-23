@@ -29,9 +29,7 @@
 
 package wpn.hdri.tango.data;
 
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
+import fr.esrf.Tango.*;
 import fr.esrf.TangoApi.DeviceData;
 
 /**
@@ -43,6 +41,16 @@ public final class TangoDeviceDataWrapper extends TangoDataWrapper {
 
     protected TangoDeviceDataWrapper(DeviceData data) {
         this.data = data;
+    }
+
+    @Override
+    public void insert(DevVarLongStringArray argin) throws DevFailed {
+        data.insert(argin);
+    }
+
+    @Override
+    public void insert(DevVarDoubleStringArray argin) throws DevFailed {
+        data.insert(argin);
     }
 
     @Override
@@ -322,6 +330,16 @@ public final class TangoDeviceDataWrapper extends TangoDataWrapper {
     @Override
     public int[] extractUShortArray() {
         return data.extractUShortArray();
+    }
+
+    @Override
+    public DevVarLongStringArray extractDevVarLongStringArray() throws DevFailed {
+        return data.extractLongStringArray();
+    }
+
+    @Override
+    public DevVarDoubleStringArray extractDevVarDoubleStringArray() throws DevFailed {
+        return data.extractDoubleStringArray();
     }
 
     @Override

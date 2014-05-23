@@ -29,9 +29,7 @@
 
 package wpn.hdri.tango.data;
 
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
+import fr.esrf.Tango.*;
 import fr.esrf.TangoApi.DeviceAttribute;
 
 import java.lang.reflect.Array;
@@ -172,6 +170,16 @@ public final class TangoDeviceAttributeWrapper extends TangoDataWrapper {
         return data.extractUShortArray();
     }
 
+    @Override
+    public DevVarLongStringArray extractDevVarLongStringArray() throws DevFailed {
+        throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
+    }
+
+    @Override
+    public DevVarDoubleStringArray extractDevVarDoubleStringArray() throws DevFailed {
+        throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
+    }
+
     public void insert(boolean argin) {
         data.insert(argin);
     }
@@ -201,6 +209,16 @@ public final class TangoDeviceAttributeWrapper extends TangoDataWrapper {
 
     public void insert(DevState argin) {
         data.insert(argin);
+    }
+
+    @Override
+    public void insert(DevVarLongStringArray argin) throws DevFailed {
+        throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
+    }
+
+    @Override
+    public void insert(DevVarDoubleStringArray argin) throws DevFailed {
+        throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
     }
 
     @Override

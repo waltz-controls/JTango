@@ -111,19 +111,29 @@ public final class TangoDataTypes {
     private TangoDataTypes() {
     }
 
-    public static <T> TangoDataType<T> forTangoDevDataType(int tangoDevDataType) {
-        return (TangoDataType<T>) TYPES[tangoDevDataType];
+    public static <T> TangoDataType<T> forTangoDevDataType(int tangoDevDataType) throws UnknownTangoDataType {
+        TangoDataType<T> type = (TangoDataType<T>) TYPES[tangoDevDataType];
+        if (type == null)
+            throw new UnknownTangoDataType("Can not find TangoDataType for type id = " + tangoDevDataType);
+        return type;
     }
 
-    public static <T> TangoDataType<T> forClass(Class<T> clazz) {
-        return (TangoDataType<T>) CLASSES.get(clazz);
+    public static <T> TangoDataType<T> forClass(Class<T> clazz) throws UnknownTangoDataType {
+        TangoDataType<T> type = (TangoDataType<T>) CLASSES.get(clazz);
+        if (type == null)
+            throw new UnknownTangoDataType("Can not find TangoDataType for type class = " + clazz.getSimpleName());
+        return type;
     }
 
-    public static <T> TangoDataType<T> forString(String devType) {
-        return (TangoDataType<T>) STRINGS.get(devType);
+    public static <T> TangoDataType<T> forString(String devType) throws UnknownTangoDataType {
+        TangoDataType<T> type = (TangoDataType<T>) STRINGS.get(devType);
+        if (type == null) throw new UnknownTangoDataType("Can not find TangoDataType for type alias = " + devType);
+        return type;
     }
 
-    public static <T> TangoDataType<T> imageTypeForDevDataType(int devDataType) {
-        return (TangoDataType<T>) imageTypes[devDataType];
+    public static <T> TangoDataType<T> imageTypeForDevDataType(int devDataType) throws UnknownTangoDataType {
+        TangoDataType<T> type = (TangoDataType<T>) imageTypes[devDataType];
+        if (type == null) throw new UnknownTangoDataType("Can not find TangoDataType for type id = " + devDataType);
+        return type;
     }
 }

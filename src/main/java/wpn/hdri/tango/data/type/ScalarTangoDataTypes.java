@@ -31,9 +31,7 @@ package wpn.hdri.tango.data.type;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
+import fr.esrf.Tango.*;
 import fr.esrf.TangoDs.TangoConst;
 import wpn.hdri.tango.data.EnumDevState;
 import wpn.hdri.tango.data.TangoDataWrapper;
@@ -55,6 +53,50 @@ import java.util.Collection;
 public class ScalarTangoDataTypes {
     private ScalarTangoDataTypes() {
     }
+
+    public static final TangoDataType<DevVarLongStringArray> DEV_VAR_LONG_STRING_ARRAY = new ScalarTangoDataType<DevVarLongStringArray>(TangoConst.Tango_DEVVAR_LONGSTRINGARRAY, "DevVarLongStringArray", DevVarLongStringArray.class,
+            new ValueExtracter<DevVarLongStringArray>() {
+                @Override
+                public DevVarLongStringArray extract(TangoDataWrapper data) throws ValueExtractionException {
+                    try {
+                        return data.extractDevVarLongStringArray();
+                    } catch (DevFailed devFailed) {
+                        throw new ValueExtractionException(devFailed);
+                    }
+                }
+            }, new ValueInserter<DevVarLongStringArray>() {
+        @Override
+        public void insert(TangoDataWrapper data, DevVarLongStringArray value, int dimX, int dimY) throws ValueInsertionException {
+            try {
+                data.insert(value);
+            } catch (DevFailed devFailed) {
+                throw new ValueInsertionException(devFailed);
+            }
+        }
+    }
+    );
+
+    public static final TangoDataType<DevVarDoubleStringArray> DEV_VAR_DOUBLE_STRING_ARRAY = new ScalarTangoDataType<DevVarDoubleStringArray>(TangoConst.Tango_DEVVAR_DOUBLESTRINGARRAY, "DevVarDoubleStringArray", DevVarDoubleStringArray.class,
+            new ValueExtracter<DevVarDoubleStringArray>() {
+                @Override
+                public DevVarDoubleStringArray extract(TangoDataWrapper data) throws ValueExtractionException {
+                    try {
+                        return data.extractDevVarDoubleStringArray();
+                    } catch (DevFailed devFailed) {
+                        throw new ValueExtractionException(devFailed);
+                    }
+                }
+            }, new ValueInserter<DevVarDoubleStringArray>() {
+        @Override
+        public void insert(TangoDataWrapper data, DevVarDoubleStringArray value, int dimX, int dimY) throws ValueInsertionException {
+            try {
+                data.insert(value);
+            } catch (DevFailed devFailed) {
+                throw new ValueInsertionException(devFailed);
+            }
+        }
+    }
+    );
 
     public static final TangoDataType<EnumDevState> DEV_STATE = new ScalarTangoDataType<EnumDevState>(TangoConst.Tango_DEV_STATE, "DevState", EnumDevState.class, new ValueExtracter<EnumDevState>() {
         @Override
@@ -304,7 +346,7 @@ public class ScalarTangoDataTypes {
 
     static Collection<? extends TangoDataType<?>> values() {
         //TODO remove warning
-        return Sets.newHashSet(DEV_ENCODED, DEV_STATE, VOID, BOOLEAN, STRING, SHORT, U_SHORT, U_CHAR, INT, U_INT, LONG, U_LONG, FLOAT, DOUBLE);
+        return Sets.newHashSet(DEV_ENCODED, DEV_STATE, VOID, BOOLEAN, STRING, SHORT, U_SHORT, U_CHAR, INT, U_INT, LONG, U_LONG, FLOAT, DOUBLE, DEV_VAR_LONG_STRING_ARRAY, DEV_VAR_DOUBLE_STRING_ARRAY);
     }
 
     public final static class ScalarTangoDataType<T> extends TangoDataType<T> {

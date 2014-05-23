@@ -29,9 +29,7 @@
 
 package wpn.hdri.tango.data;
 
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
+import fr.esrf.Tango.*;
 import fr.esrf.TangoDs.Attribute;
 import wpn.hdri.tango.util.TangoUtils;
 
@@ -69,6 +67,16 @@ public class TangoAttributeWrapper extends TangoDataWrapper {
         } catch (DevFailed devFailed) {
             throw new RuntimeException(TangoUtils.convertDevFailedToException(devFailed));
         }
+    }
+
+    @Override
+    public void insert(DevVarLongStringArray argin) throws DevFailed {
+        throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
+    }
+
+    @Override
+    public void insert(DevVarDoubleStringArray argin) throws DevFailed {
+        throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
     }
 
     @Override
@@ -550,6 +558,16 @@ public class TangoAttributeWrapper extends TangoDataWrapper {
 
     @Override
     public int[] extractUShortArray() throws DevFailed {
+        throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
+    }
+
+    @Override
+    public DevVarLongStringArray extractDevVarLongStringArray() throws DevFailed {
+        throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
+    }
+
+    @Override
+    public DevVarDoubleStringArray extractDevVarDoubleStringArray() throws DevFailed {
         throw new UnsupportedOperationException("This method is not supported in " + this.getClass());
     }
 
