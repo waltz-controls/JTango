@@ -56,7 +56,7 @@ public class ITTangoProxyWrapperTest {
     public static void beforeClass() throws Exception {
         String crtDir = System.getProperty("user.dir");
         //TODO define executable according to current OS
-        StringBuilder bld = new StringBuilder(crtDir).append("/../exec/tango/win64/").append("TangoTest");
+        StringBuilder bld = new StringBuilder(crtDir).append("/exec/tango/win64/").append("TangoTest");
         PRC = new ProcessBuilder(bld.toString(), "test", "-ORBendPoint", "giop:tcp::" + TANGO_PORT, "-nodb", "-dlist", TANGO_DEV_NAME)
                 .start();
 
