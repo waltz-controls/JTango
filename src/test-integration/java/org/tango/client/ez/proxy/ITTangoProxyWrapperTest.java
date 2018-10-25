@@ -36,6 +36,7 @@ package org.tango.client.ez.proxy;
 
 import fr.esrf.Tango.DevState;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tango.client.ez.data.type.TangoImage;
@@ -59,91 +60,35 @@ import static org.junit.Assert.assertSame;
  * @since 07.06.12
  */
 public class ITTangoProxyWrapperTest {
+    //must be the same as in pom.xml
     public static final String TANGO_DEV_NAME = "test/local/0";
     public static final int TANGO_PORT = 16547;
+
+
     public static final String TEST_TANGO = "tango://localhost:" + TANGO_PORT + "/" + TANGO_DEV_NAME + "#dbase=no";
-    public static final String X64 = "x64";
-    public static final String LINUX = "linux";
-    public static final String WINDOWS_7 = "windows 7";
-    public static final String AMD64 = "amd64";
 
-    private static Process PRC;
+    private TangoProxy instance;
 
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        String crtDir = System.getProperty("user.dir");
-        //TODO define executable according to current OS
-        String os = System.getProperty("os.name");
-        String arch = System.getProperty("os.arch");
-        StringBuilder bld = new StringBuilder(crtDir);
-        //TODO other platforms or rely on the environmet
-        if (LINUX.equalsIgnoreCase(os) && AMD64.equals(arch))
-            bld.append("/exec/tango/debian/").append("TangoTest");
-        else if (WINDOWS_7.equalsIgnoreCase(os) && AMD64.equals(arch))
-            bld.append("\\exec\\tango\\win64\\").append("TangoTest");
-        else
-            throw new RuntimeException(String.format("Unsupported platform: name=%s arch=%s", os, arch));
-
-        PRC = new ProcessBuilder(bld.toString(), "test", "-ORBendPoint", "giop:tcp::" + TANGO_PORT, "-nodb", "-dlist", TANGO_DEV_NAME)
-                .start();
-
-        //drain slave's out stream
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                char bite;
-                try {
-                    while ((bite = (char) PRC.getInputStream().read()) > -1) {
-                        System.out.print(bite);
-                    }
-                } catch (IOException ignore) {
-                }
-            }
-        }).start();
-
-        //drains slave's err stream
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                char bite;
-                try {
-                    while ((bite = (char) PRC.getErrorStream().read()) > -1) {
-                        System.err.print(bite);
-                    }
-                } catch (IOException ignore) {
-                }
-            }
-        }).start();
-    }
-
-    @AfterClass
-    public static void afterClass() throws Exception {
-        PRC.destroy();
+    @Before
+    public void before() throws Exception {
+        instance = new DeviceProxyWrapper(TEST_TANGO);
     }
 
     @Test(expected = NoSuchAttributeException.class)
     public void testReadAttribute_Failed() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.readAttribute("string_scalarxxx");//no such attribute
     }
 
     //@Test
     public void testReadAttribute_Exception() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.readAttribute("string_scalar");
 
-
-        PRC.destroy();
 
         instance.readAttribute("string_scalar");
     }
 
     @Test
     public void testWriteReadAttribute_String() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.writeAttribute("string_scalar", "Some test value");
         instance.writeAttribute("string_scalar", "Some test value");
         instance.writeAttribute("string_scalar", "Some test value");
@@ -161,8 +106,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testWriteReadAttribute_Double() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.writeAttribute("double_scalar_w", 0.1984D);
         instance.writeAttribute("double_scalar_w", 0.1984D);
         instance.writeAttribute("double_scalar_w", 0.1984D);
@@ -175,8 +118,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testWriteReadAttribute_DoubleSpectrum() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.writeAttribute("double_spectrum", new double[]{0.1D, 0.2D, 0.3D, 0.4D});
         double[] result = instance.<double[]>readAttribute("double_spectrum");
 
@@ -186,8 +127,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testWriteReadAttribute_ULongScalar() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.writeAttribute("ulong_scalar", 1234L);
         long result = instance.<Long>readAttribute("ulong_scalar");
 
@@ -199,8 +138,6 @@ public class ITTangoProxyWrapperTest {
     //WAttribute::check_written_value():API_IncompatibleAttrDataType(Incompatible attribute type, expected type is : Tango::DevVarCharArray (even for single value))
     @Test
     public void testWriteReadAttribute_UChar() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.writeAttribute("uchar_scalar", 'a');
         instance.writeAttribute("uchar_scalar", 'a');
         instance.writeAttribute("uchar_scalar", 'a');
@@ -214,8 +151,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testWriteReadAttribute_DoubleArr() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.writeAttribute("double_spectrum", new double[]{0.1D, 0.9D, 0.8D, 0.4D});
         instance.writeAttribute("double_spectrum", new double[]{0.1D, 0.9D, 0.8D, 0.4D});
         instance.writeAttribute("double_spectrum", new double[]{0.1D, 0.9D, 0.8D, 0.4D});
@@ -231,8 +166,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testWriteReadAttribute_DoubleArrArr() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         double[][] value = {{0.1D, 0.4D}, {0.9D, 0.8D}, {0.8D, 0.9D}, {0.4D, 0.1D}};
         TangoImage<double[]> image_in = TangoImage.from2DArray(value);
         instance.writeAttribute("double_image", image_in);
@@ -255,7 +188,6 @@ public class ITTangoProxyWrapperTest {
 
 //    @Test
     public void testReadImage_fromWebCam() throws Exception{
-        TangoProxy instance = new DeviceProxyWrapper("tango://localhost:10000/development/webcam/0");
         TangoImage<int[]> image = instance.readAttribute("image");
 
         RenderedImage renderedImage = TangoImageUtils.toRenderedImage_sRGB(image.getData(), image.getWidth(), image.getHeight());
@@ -264,7 +196,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testReadImage_sRGB() throws Exception{
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
         TangoImage<int[]> image = instance.readAttribute("ushort_image_ro");
 
 
@@ -274,7 +205,6 @@ public class ITTangoProxyWrapperTest {
 
     //@Test
     public void testReadImage_GRAY() throws Exception{
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
         TangoImage<float[]> image = instance.readAttribute("float_image_ro");
 
 
@@ -294,8 +224,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testSubscription() throws Exception{
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.toDeviceProxy().poll_attribute("long_scalar", 100);
 
 
@@ -326,8 +254,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testWriteReadAttribute_DoubleArrArr_Failed() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         TangoImage<double[]> image = TangoImage.from2DArray(new double[][]{{0.1D, 0.4D}, {0.9D}});
 
         instance.writeAttribute("double_image", image);
@@ -335,8 +261,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test(expected = TangoProxyException.class)
     public void testWriteReadAttribute_DoubleArrArr_TooBig() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.writeAttribute("double_image", new TangoImage<double[]>(new double[256*256],256,256));//251 max
     }
 
@@ -352,8 +276,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testExecuteCommand_String() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         String result = instance.executeCommand("DevString", "Some test value");
 
         assertEquals("Some test value", result);
@@ -361,8 +283,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testExecuteCommand_Void() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         Void result = instance.executeCommand("DevVoid", null);
 
         assertNull(result);
@@ -370,8 +290,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testExecuteCommand_DblArr() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         double[] result = instance.executeCommand("DevVarDoubleArray", new double[]{0.1D, 0.9D, 0.8D, 0.4D});
 
         assertArrayEquals(new double[]{0.1D, 0.9D, 0.8D, 0.4D}, result, 0.0);
@@ -379,8 +297,6 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testExecuteCommand_FltArr() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         float[] result = instance.executeCommand("DevVarFloatArray", new float[]{0.1F, 0.9F, 0.8F, 0.4F});
 
         assertArrayEquals(new float[]{0.1F, 0.9F, 0.8F, 0.4F}, result, 0.0F);
@@ -388,16 +304,12 @@ public class ITTangoProxyWrapperTest {
 
     @Test
     public void testWriteUShort() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         instance.writeAttribute("ushort_scalar", 4);
 
     }
 
     @Test
     public void testReadState() throws Exception {
-        TangoProxy instance = new DeviceProxyWrapper(TEST_TANGO);
-
         DevState result = instance.readAttribute("State");
         assertSame(DevState.RUNNING, result);
     }
