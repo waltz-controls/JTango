@@ -313,6 +313,25 @@ public class ScalarTangoDataTypes {
                     data.insert(value);
                 }
             });
+
+    public static final TangoDataType<String> CONST_STRING = new ScalarTangoDataType<String>(
+            TangoConst.Tango_CONST_DEV_STRING, DEV_STRING, String.class, String.class, new ValueExtracter<String>() {
+        @Override
+        public String extract(TangoDataWrapper data) throws ValueExtractionException {
+            try {
+                return data.extractString();
+            } catch (DevFailed devFailed) {
+                throw new ValueExtractionException(TangoUtils.convertDevFailedToException(devFailed));
+            }
+        }
+    },
+            new ValueInserter<String>() {
+                @Override
+                public void insert(TangoDataWrapper data, String value, int dimX, int dimY) throws ValueInsertionException {
+                    data.insert(value);
+                }
+            });
+
     public static final String DEV_UCHAR = "DevUChar";
     public static final TangoDataType<Character> U_CHAR = new ScalarTangoDataType<Character>(
             TangoConst.Tango_DEV_UCHAR, DEV_UCHAR, char.class, Character.class, new ValueExtracter<Character>() {
@@ -394,7 +413,7 @@ public class ScalarTangoDataTypes {
 
     static Collection<? extends TangoDataType<?>> values() {
         //TODO remove warning
-        return Sets.newHashSet(ENCODED, STATE, VOID, BOOLEAN, STRING, SHORT, U_SHORT, U_CHAR, INT, U_INT, LONG, U_LONG, FLOAT, DOUBLE, DEV_VAR_LONG_STRING_ARRAY, DEV_VAR_DOUBLE_STRING_ARRAY, ENUM);
+        return Sets.newHashSet(ENCODED, STATE, VOID, BOOLEAN, STRING, CONST_STRING, SHORT, U_SHORT, U_CHAR, INT, U_INT, LONG, U_LONG, FLOAT, DOUBLE, DEV_VAR_LONG_STRING_ARRAY, DEV_VAR_DOUBLE_STRING_ARRAY, ENUM);
     }
 
     public static class ScalarTangoDataType<T> extends TangoDataType<T> {
