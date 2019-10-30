@@ -6,7 +6,7 @@ This library provides simplified client API for [JTango](https://github.com/tang
 
 Why simplified? Compare these two code snippets:
 
-```#java
+```java
 //Pure TangORB
     DeviceProxy proxy = new DeviceProxy("tango://whatever:10000/sys/tg_test/1");
     DeviceAttribute attribute = proxy.read_attribute("double_scalar");
@@ -40,7 +40,7 @@ Why simplified? Compare these two code snippets:
 
 1. Add the following repository to your settings.xml or pom.xml:
 
-```#xml
+```xml
 <repositories>
   <repository>
     <id>hzg-bintray</id>
@@ -57,12 +57,12 @@ Why simplified? Compare these two code snippets:
 
 
 2. Add the following dependency to your pom.xml:
-```#xml
-        <dependency>
-            <groupId>org.tango</groupId>
-            <artifactId>ezTangORB</artifactId>
-            <version>1.1.7</version>
-        </dependency>
+```xml
+    <dependency>
+        <groupId>org.tango</groupId>
+        <artifactId>ezTangORB</artifactId>
+        <version>1.1.7</version>
+    </dependency>
 ```
 
 
@@ -71,7 +71,7 @@ Why simplified? Compare these two code snippets:
 
 In the code create a TangoProxy instance using one of the factory methods of the TangoProxies class:
 
-```#java
+```java
 TangoProxy proxy = TangoProxies.newDeviceProxyWrapper("tango://whatever:10000/sys/tg_test/1");
 
 //OR
@@ -82,7 +82,7 @@ SomeTangoServer proxy = TangoProxies.newTangoProxy("tango://whatever:10000/domai
 
 ## Read/Write attributes
 
-```#java
+```java
 //simply read attribute value
 T data = proxy.readAttribute("some_attr");//may throw ClassCastException if return value does not match T
 
@@ -99,7 +99,7 @@ proxy.writeAttribute("some_attr_w",data);//may throw ClassCastException if retur
 
 ## Execute commands
 
-```#java
+```java
 T input = ...;
 V output = proxy.executeCommand("some_cmd",input);//may throw ClassCastException
 ```
@@ -108,7 +108,7 @@ V output = proxy.executeCommand("some_cmd",input);//may throw ClassCastException
 
 Currently AttrConfig and DataReady events are not supported. Use standard TangORB API if you need them.
 
-```#java
+```java
 //1st you need to subscribe to an event
 TangoEvent event = TangoEvent.CHANGE;//.USER,.ARCHIVE,.PERIODIC
 proxy.subscribeToEvent("some_attr",event);
@@ -129,9 +129,9 @@ proxy.unsubscribeFromEvent("some_attr",event);
 
 Here is a small explanation: 
 
-Implementation of the TangoProxy guarantees the following - a subscription to an event will be performed only once during the first call of the TangoProxy#subscribeToEvent method. This creates a single instance of ITangoWhateverListner, for instance, [[http://www.esrf.eu/computing/cs/tango/tango_doc/kernel_doc/tango_java_api/classes/fr/esrf/TangoApi/events/ITangoChangeListener.html|ITangoChangeListener]] with an empty list of user defined listeners. 
+Implementation of the TangoProxy guarantees the following - a subscription to an event will be performed only once during the first call of the TangoProxy#subscribeToEvent method. This creates a single instance of ITangoWhateverListner, for instance, [ITangoChangeListener](https://javadoc.io/doc/org.tango-controls/JTangoCommons/9.5.17/fr/esrf/TangoApi/events/ITangoChangeListener.html) with an empty list of user defined listeners. 
 
-User adds then listeners to this single tango event listener (TangoProxy#addListener). Effectively a response from Tango event system is forwarded to these listeners. So adding and removing listeners does not invoke network call to the remote Tango. These listeners are stored in a weakly tight list to prevent memory leaks. Therefore user must keep reference to the listeners all the time they are needed.
+User adds then listeners to this single tango event listener (TangoProxy.addListener). Effectively a response from Tango event system is forwarded to these listeners. So adding and removing listeners does not invoke network call to the remote Tango. These listeners are stored in a weakly tight list to prevent memory leaks. Therefore user must keep reference to the listeners all the time they are needed.
 
 All this is done to prevent extensive communication when a large number of threads try to subscribe to an event.
 
