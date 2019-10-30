@@ -141,7 +141,7 @@ Summarizing - subscribe to the event in intialization phase. You may add any num
 
 Since ezTangORB is just a Façade on top of TangORB you may use the standard API as well:
 
-```#java
+```java
 fr.esrf.tango.DeviceProxy deviceProxy = proxy.toDeviceproxy();
 
 fr.esrf.tango.TangoEventsAdapter eventsAdapter = proxy.toTangoEventsAdapter();
@@ -151,7 +151,7 @@ fr.esrf.tango.TangoEventsAdapter eventsAdapter = proxy.toTangoEventsAdapter();
 
 Users may also use interface specific proxy. For instance, lets say we have some device described by this interface:
 
-```#java
+```java
 //vendor provides this interface in a dedicated jar file
 public interface SomeTangoDevice extends TangoProxy {
 
@@ -164,7 +164,7 @@ public interface SomeTangoDevice extends TangoProxy {
 
 Now we can create its proxy:
 
-```#java
+```java
 import org.vendor.SomeTangoDevice;
 //...
 
@@ -173,7 +173,7 @@ SomeTangoDevice device = TangoProxies.newTangoProxy("tango://whatever:10000/sys/
 
 and execute commands or read attributes like this:
 
-```#java
+```java
 int attrValue = device.getIntAttr();
 
 device.someCommand(new int[]{1,2,3});
