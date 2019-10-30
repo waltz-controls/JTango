@@ -1,5 +1,7 @@
 # ezTangoAPI - Simple (ez = easy) Tango Java Client API
 
+[![codebeat badge](https://codebeat.co/badges/15e5c44d-a40c-4d3c-a0d6-3f667c21f63a)](https://codebeat.co/projects/github-com-hzg-wpi-ez-tango-api-master)
+
 [ ![Download](https://api.bintray.com/packages/hzgde/hzg-wpn-projects/ezTangoAPI/images/download.svg) ](https://bintray.com/hzgde/hzg-wpn-projects/ezTangoAPI/_latestVersion)
 
 This library provides simplified client API for [JTango](https://github.com/tango-controls/JTango)
