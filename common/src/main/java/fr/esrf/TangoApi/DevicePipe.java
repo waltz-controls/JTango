@@ -54,10 +54,8 @@ public class DevicePipe implements PipeScanner {
     private TimeVal timeVal;
     // ===================================================================
     private PipeBlob pipeBlob;
-
     /**
      * Create a DevicePipe object
-     *
      * @param pipeName the pipe name
      * @param pipeBlob the data to be transferred
      */
@@ -72,10 +70,8 @@ public class DevicePipe implements PipeScanner {
         size = pipeBlob.size();
     }
     // ===================================================================
-
     /**
      * Create a DevicePipe object
-     *
      * @param pipeData the IDL Object
      */
     // ===================================================================
@@ -106,7 +102,6 @@ public class DevicePipe implements PipeScanner {
 
     /**
      * Set pipe name
-     *
      * @param pipeName pipe name
      */
     // ===================================================================
@@ -126,7 +121,6 @@ public class DevicePipe implements PipeScanner {
 
     /**
      * Set pipe blob
-     *
      * @param pipeBlob pipe blob
      */
     // ===================================================================
@@ -157,7 +151,6 @@ public class DevicePipe implements PipeScanner {
 
     /**
      * Set pipe time
-     *
      * @param t pipe time (number of milli seconds since EPOCH)
      */
     // ===================================================================
@@ -184,7 +177,7 @@ public class DevicePipe implements PipeScanner {
      */
     // ===========================================
     public long getTimeValMillisSec() throws DevFailed {
-        return (long) timeVal.tv_sec * 1000 + timeVal.tv_usec / 1000;
+        return (long)timeVal.tv_sec*1000 + timeVal.tv_usec/1000;
     }
 
     @Override
@@ -200,8 +193,7 @@ public class DevicePipe implements PipeScanner {
 
     @Override
     public PipeScanner advance(int steps) {
-        if (ndx.addAndGet(steps) >= size)
-            throw new IllegalArgumentException("Can not advance by " + steps + ": exceeds size of " + size);
+        if(ndx.addAndGet(steps) >= size) throw new IllegalArgumentException("Can not advance by " + steps + ": exceeds size of " + size);
         return this;
     }
 
@@ -214,127 +206,112 @@ public class DevicePipe implements PipeScanner {
     @Override
     public boolean nextBoolean() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != boolean.class)
-            throw new DevFailed("Wrong type! Expected boolean, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
+        if(array.getClass().getComponentType() != boolean.class) throw new DevFailed("Wrong type! Expected boolean, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
         return Array.getBoolean(array, 0);
     }
 
     @Override
     public byte nextByte() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != byte.class)
-            throw new DevFailed("Wrong type! Expected byte, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
+        if(array.getClass().getComponentType() != byte.class) throw new DevFailed("Wrong type! Expected byte, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
         return Array.getByte(array, 0);
     }
 
     @Override
     public char nextChar() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != char.class)
-            throw new DevFailed("Wrong type! Expected char, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
+        if(array.getClass().getComponentType() != char.class) throw new DevFailed("Wrong type! Expected char, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
         return Array.getChar(array, 0);
     }
 
     @Override
     public short nextShort() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != short.class)
-            throw new DevFailed("Wrong type! Expected short, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
+        if(array.getClass().getComponentType() != short.class) throw new DevFailed("Wrong type! Expected short, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
         return Array.getShort(array, 0);
     }
 
     @Override
     public int nextInt() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != int.class)
-            throw new DevFailed("Wrong type! Expected int, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
+        if(array.getClass().getComponentType() != int.class) throw new DevFailed("Wrong type! Expected int, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
         return Array.getInt(array, 0);
     }
 
     @Override
     public long nextLong() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != long.class)
-            throw new DevFailed("Wrong type! Expected long, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
-        return Array.getLong(array, 0);
+        if(array.getClass().getComponentType() != long.class) throw new DevFailed("Wrong type! Expected long, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
+        return Array.getLong(array,0);
     }
 
     @Override
     public float nextFloat() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != float.class)
-            throw new DevFailed("Wrong type! Expected float, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
-        return Array.getFloat(array, 0);
+        if(array.getClass().getComponentType() != float.class) throw new DevFailed("Wrong type! Expected float, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
+        return Array.getFloat(array,0);
     }
 
     @Override
     public double nextDouble() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != double.class)
-            throw new DevFailed("Wrong type! Expected double, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
-        return Array.getDouble(array, 0);
+        if(array.getClass().getComponentType() != double.class) throw new DevFailed("Wrong type! Expected double, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
+        return Array.getDouble(array,0);
     }
 
     @Override
     public String nextString() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != String.class)
-            throw new DevFailed("Wrong type! Expected String, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
+        if(array.getClass().getComponentType() != String.class) throw new DevFailed("Wrong type! Expected String, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
         return String.class.cast(Array.get(array, 0));
     }
 
     @Override
     public DevState nextState() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != DevState.class)
-            throw new DevFailed("Wrong type! Expected DevState, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
+        if(array.getClass().getComponentType() != DevState.class) throw new DevFailed("Wrong type! Expected DevState, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
         return DevState.class.cast(Array.get(array, 0));
     }
 
     @Override
     public DevEncoded nextEncoded() throws DevFailed {
         Object array = nextArray();
-        if (array.getClass().getComponentType() != DevEncoded.class)
-            throw new DevFailed("Wrong type! Expected DevEncoded, but was " + array.getClass().getComponentType().getSimpleName(), DEV_ERRORS);
+        if(array.getClass().getComponentType() != DevEncoded.class) throw new DevFailed("Wrong type! Expected DevEncoded, but was " +  array.getClass().getComponentType().getSimpleName(),DEV_ERRORS);
         return DevEncoded.class.cast(Array.get(array, 0));
     }
 
     @Override
-    public PipeScanner nextScanner() throws DevFailed {
+    public PipeScanner nextScanner() throws DevFailed{
         PipeBlob blob = getPipeBlob();
         PipeDataElement el = blob.get(ndx.getAndIncrement());
-        if (el.getType() != TangoConst.Tango_DEV_PIPE_BLOB)
-            throw new DevFailed("Wrong type! Expected PipeBlob, but was " + TangoConst.Tango_CmdArgTypeName[el.getType()], DEV_ERRORS);
-        return new DevicePipe(pipeName, el.extractPipeBlob());
+        if(el.getType() != TangoConst.Tango_DEV_PIPE_BLOB) throw new DevFailed("Wrong type! Expected PipeBlob, but was " +  TangoConst.Tango_CmdArgTypeName[el.getType()], DEV_ERRORS);
+        return new DevicePipe(pipeName,el.extractPipeBlob());
     }
+
 
 
     @Override
     public <T> void nextArray(T[] target, int size) throws DevFailed {
         Object array = nextArray();
-        if (Array.getLength(array) != size)
-            throw new DevFailed("size is not equal to array's length: " + size + "!=" + Array.getLength(array), DEV_ERRORS);
-        if (target.getClass().getComponentType() != array.getClass().getComponentType())
-            throw new DevFailed("target array type " + target.getClass().getComponentType() + " does not match underlying array type " + array.getClass().getComponentType(), new DevError[0]);
-        System.arraycopy(array, 0, target, 0, size);
+        if(Array.getLength(array) != size) throw new DevFailed("size is not equal to array's length: " + size + "!=" +Array.getLength(array),DEV_ERRORS);
+        if(target.getClass().getComponentType() != array.getClass().getComponentType()) throw new DevFailed("target array type " + target.getClass().getComponentType() + " does not match underlying array type " + array.getClass().getComponentType(), new DevError[0]);
+        System.arraycopy(array,0,target,0,size);
     }
 
     @Override
     public void nextArray(Object target, int size) throws DevFailed {
         Object array = nextArray();
-        if (Array.getLength(array) != size)
-            throw new DevFailed("size is not equal to array's length: " + size + "!=" + Array.getLength(array), DEV_ERRORS);
-        if (target.getClass().getComponentType() != array.getClass().getComponentType())
-            throw new DevFailed("target array type " + target.getClass().getComponentType() + " does not match underlying array type " + array.getClass().getComponentType(), DEV_ERRORS);
-        System.arraycopy(array, 0, target, 0, size);
+        if(Array.getLength(array) != size) throw new DevFailed("size is not equal to array's length: " + size + "!=" +Array.getLength(array),DEV_ERRORS);
+        if(target.getClass().getComponentType() != array.getClass().getComponentType()) throw new DevFailed("target array type " + target.getClass().getComponentType() + " does not match underlying array type " + array.getClass().getComponentType(),DEV_ERRORS);
+        System.arraycopy(array,0,target,0,size);
     }
 
     public Object nextArray() throws DevFailed {
-        if (!hasNext()) throw new DevFailed("EOF pipe has reached!", DEV_ERRORS);
+        if(!hasNext()) throw new DevFailed("EOF pipe has reached!",DEV_ERRORS);
         PipeDataElement el = getPipeBlob().get(ndx.getAndIncrement());
-        switch (el.getType()) {
+        switch(el.getType()) {
             case TangoConst.Tango_DEV_PIPE_BLOB:
-                throw new DevFailed("Unexpected state! Blobs are not welcome here...", DEV_ERRORS);
+                throw new DevFailed("Unexpected state! Blobs are not welcome here...",DEV_ERRORS);
             case TangoConst.Tango_DEV_BOOLEAN:
                 return el.extractBooleanArray();
             case TangoConst.Tango_DEV_CHAR:
@@ -381,13 +358,18 @@ public class DevicePipe implements PipeScanner {
     // ===================================================================
 
 
+
+
+
+
+
     // ===================================================================
     /**
      * @return the number of data elements in root blob
      *
     // ===================================================================
     public int getDataElementNumber() {
-    return pipeBlob.getDataElementNumber();
+        return pipeBlob.getDataElementNumber();
     }
     // ===================================================================
     /**
@@ -397,7 +379,7 @@ public class DevicePipe implements PipeScanner {
      *
     // ===================================================================
     public String getDataElementName(int index) throws DevFailed {
-    return pipeBlob.getDataElementName(index);
+        return pipeBlob.getDataElementName(index);
     }
     // ===================================================================
     /**
@@ -407,7 +389,7 @@ public class DevicePipe implements PipeScanner {
      *
     // ===================================================================
     public int getDataElementType(int index) throws DevFailed {
-    return pipeBlob.getDataElementType(index);
+        return pipeBlob.getDataElementType(index);
     }
     // ===================================================================
     /**
@@ -417,27 +399,27 @@ public class DevicePipe implements PipeScanner {
      *
     // ===================================================================
     public int getDataElementType(String name) throws DevFailed {
-    return pipeBlob.getDataElementType(name);
+        return pipeBlob.getDataElementType(name);
     }
     // ===================================================================
     // ===================================================================
     public String toString() {
-    try {
-    StringBuilder sb = new StringBuilder();
-    long t = (long)timeVal.tv_sec*1000;
-    sb.append(name).append(":  ").append(new Date(t)).append("\n");
-    for (int i=0 ; i<getDataElementNumber() ; i++) {
-    int type = pipeBlob.getDataElementType(i);
-    sb.append("\t").append(pipeBlob.getDataElementName(i)).append(": ").
-    append(TangoConst.Tango_CmdArgTypeName[type]).append("\n");
-    }
-    return sb.toString();
-    }
-    catch (DevFailed e) {
-    return e.errors[0].desc;
-    }
+        try {
+            StringBuilder sb = new StringBuilder();
+            long t = (long)timeVal.tv_sec*1000;
+            sb.append(name).append(":  ").append(new Date(t)).append("\n");
+            for (int i=0 ; i<getDataElementNumber() ; i++) {
+                int type = pipeBlob.getDataElementType(i);
+                sb.append("\t").append(pipeBlob.getDataElementName(i)).append(": ").
+                        append(TangoConst.Tango_CmdArgTypeName[type]).append("\n");
+            }
+            return sb.toString();
+        }
+        catch (DevFailed e) {
+            return e.errors[0].desc;
+        }
     }
     // ===================================================================
     // ===================================================================
-     */
+    */
 }

@@ -33,6 +33,7 @@ import org.tango.utils.DevFailedUtils;
  * a device to test device init
  *
  * @author ABEILLE
+ *
  */
 @Device
 public final class InitErrorServer {

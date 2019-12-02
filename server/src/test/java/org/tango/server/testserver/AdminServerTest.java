@@ -1,40 +1,41 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.testserver;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.DeviceProxy;
-import fr.soleil.tango.clientapi.TangoAttribute;
-import fr.soleil.tango.clientapi.TangoCommand;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.tango.server.PolledObjectType;
 import org.tango.utils.DevFailedUtils;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoApi.DeviceProxy;
+import fr.soleil.tango.clientapi.TangoAttribute;
+import fr.soleil.tango.clientapi.TangoCommand;
 
 public class AdminServerTest extends NoDBDeviceManager {
 
@@ -112,9 +113,9 @@ public class AdminServerTest extends NoDBDeviceManager {
 
     private void addAttPoll() throws DevFailed {
         final TangoCommand cmd = new TangoCommand(adminName, "AddObjPolling");
-        final int[] param1 = new int[]{3000};
-        final String[] param2 = new String[]{JTangoTest.NO_DB_DEVICE_NAME, PolledObjectType.ATTRIBUTE.toString(),
-                "shortScalar"};
+        final int[] param1 = new int[] { 3000 };
+        final String[] param2 = new String[] { JTangoTest.NO_DB_DEVICE_NAME, PolledObjectType.ATTRIBUTE.toString(),
+                "shortScalar" };
         cmd.insertMixArgin(param1, param2);
         cmd.execute();
     }
@@ -145,9 +146,9 @@ public class AdminServerTest extends NoDBDeviceManager {
     public void testAddPollingCmd() throws DevFailed {
         try {
             final TangoCommand cmd = new TangoCommand(adminName, "AddObjPolling");
-            final int[] param1 = new int[]{500};
-            final String[] param2 = new String[]{JTangoTest.NO_DB_DEVICE_NAME, PolledObjectType.COMMAND.toString(),
-                    "testPollingArray"};
+            final int[] param1 = new int[] { 500 };
+            final String[] param2 = new String[] { JTangoTest.NO_DB_DEVICE_NAME, PolledObjectType.COMMAND.toString(),
+                    "testPollingArray" };
             cmd.insertMixArgin(param1, param2);
             cmd.execute();
             final TangoCommand cmdPolled = new TangoCommand(deviceName + "/testPollingArray");
@@ -205,13 +206,13 @@ public class AdminServerTest extends NoDBDeviceManager {
     public void testLoggingLevel() throws DevFailed {
         try {
             final TangoCommand cmd = new TangoCommand(adminName, "SetLoggingLevel");
-            final int[] param1 = new int[]{1};
-            final String[] param2 = new String[]{JTangoTest.NO_DB_DEVICE_NAME};
+            final int[] param1 = new int[] { 1 };
+            final String[] param2 = new String[] { JTangoTest.NO_DB_DEVICE_NAME };
             cmd.insertMixArgin(param1, param2);
             cmd.execute();
 
             final TangoCommand cmd2 = new TangoCommand(adminName, "GetLoggingLevel");
-            final Object in = new String[]{JTangoTest.NO_DB_DEVICE_NAME};
+            final Object in = new String[] { JTangoTest.NO_DB_DEVICE_NAME };
             cmd2.execute(in);
             final int result = cmd2.getNumLongMixArrayArgout()[0];
             assertThat(result, equalTo(param1[0]));

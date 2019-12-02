@@ -37,8 +37,9 @@ package fr.esrf.TangoDs;
 import fr.esrf.Tango.DevFailed;
 import org.omg.CORBA.Any;
 
-
-public class StatusCmd extends Command {
+ 
+public class StatusCmd extends Command
+{
 
 //+-------------------------------------------------------------------------
 //
@@ -48,10 +49,11 @@ public class StatusCmd extends Command {
 //
 //--------------------------------------------------------------------------
 
-    public StatusCmd(String name, int in, int out, String desc) {
-        super(name, in, out);
-        set_out_type_desc(desc);
-    }
+	public StatusCmd(String name,int in,int out,String desc)
+	{
+		super(name,in,out);
+		set_out_type_desc(desc);
+	}
 
 //+-------------------------------------------------------------------------
 //
@@ -61,21 +63,22 @@ public class StatusCmd extends Command {
 //
 //--------------------------------------------------------------------------
 
-    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
+	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
+	{
 
-        Util.out4.println("Status::execute(): arrived");
-
+		Util.out4.println("Status::execute(): arrived");
+	
 //
 // return status string as CORBA_Any
 //
 
-        Any out_any = Util.instance().get_orb().create_any();
+		Any out_any = Util.instance().get_orb().create_any();
+	
+		String s = device.dev_status();
+		out_any.insert_string(s);
+	
+		Util.out4.println("Leaving Status::execute()");
+		return out_any;
 
-        String s = device.dev_status();
-        out_any.insert_string(s);
-
-        Util.out4.println("Leaving Status::execute()");
-        return out_any;
-
-    }
+	}
 }

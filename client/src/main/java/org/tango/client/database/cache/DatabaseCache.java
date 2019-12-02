@@ -15,7 +15,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
+ *
+ *
  * @author ABEILLE
+ *
  */
 public final class DatabaseCache implements ICachableDatabase {
     private static final String RELEASE_1_X = "release 1\\.[7-9]";
@@ -177,7 +180,7 @@ public final class DatabaseCache implements ICachableDatabase {
 
     @Override
     public void setAttributeProperties(final String deviceName, final String attributeName,
-                                       final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         if (serverCache != null) {
             DeviceCache deviceCache = serverCache.getDeviceCache(deviceName);
             if (deviceCache == null) {
@@ -255,7 +258,7 @@ public final class DatabaseCache implements ICachableDatabase {
 
     @Override
     public void setDevicePipeProperties(final String deviceName, final String pipeName,
-                                        final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         // TODO cache
         dbDevice.setDevicePipeProperties(deviceName, pipeName, properties);
     }
@@ -268,7 +271,7 @@ public final class DatabaseCache implements ICachableDatabase {
 
     @Override
     public void setClassPipeProperties(final String className, final String pipeName,
-                                       final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         // TODO cache
         dbDevice.setClassPipeProperties(className, pipeName, properties);
     }

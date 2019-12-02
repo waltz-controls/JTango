@@ -1,18 +1,24 @@
 package fr.soleil.tango.clientapi;
 
-import fr.esrf.Tango.DevState;
-import fr.soleil.tango.clientapi.util.*;
-import net.entropysoft.transmorph.ConverterException;
-import net.entropysoft.transmorph.DefaultConverters;
-import net.entropysoft.transmorph.Transmorph;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
+import net.entropysoft.transmorph.ConverterException;
+import net.entropysoft.transmorph.DefaultConverters;
+import net.entropysoft.transmorph.Transmorph;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import fr.esrf.Tango.DevState;
+import fr.soleil.tango.clientapi.util.DevEncodedConverter;
+import fr.soleil.tango.clientapi.util.DevStateToObjectConverter;
+import fr.soleil.tango.clientapi.util.ObjectToBooleanConverter;
+import fr.soleil.tango.clientapi.util.ObjectToDevStateConverter;
+import fr.soleil.tango.clientapi.util.ObjectToNumberConverter;
 
 public class TestConversion {
 
@@ -60,7 +66,7 @@ public class TestConversion {
 
     @Test
     public void testArray() throws ConverterException {
-        assertThat(transmorph.convert(new String[][]{{"0", "2.1"}, {"0.8", "25.1"}}, short[][].class),
-                equalTo(new short[][]{{0, 2}, {0, 25}}));
+        assertThat(transmorph.convert(new String[][] { { "0", "2.1" }, { "0.8", "25.1" } }, short[][].class),
+                equalTo(new short[][] { { 0, 2 }, { 0, 25 } }));
     }
 }

@@ -1,17 +1,18 @@
 package fr.soleil.tango.attributecomposer;
 
-import fr.esrf.Tango.AttrQuality;
-import fr.esrf.Tango.DevState;
-import fr.esrf.TangoApi.QualityUtilities;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import fr.esrf.Tango.AttrQuality;
+import fr.esrf.Tango.DevState;
+import fr.esrf.TangoApi.QualityUtilities;
+
 /**
  * Manage tango attribute qualities with priorities to obtain a single quality.
- *
+ * 
  * @author ABEILLE
+ * 
  */
 public final class PriorityQualityManager {
 
@@ -31,83 +32,83 @@ public final class PriorityQualityManager {
 
     public PriorityQualityManager() {
 
-        qualityStateMap.put(AttrQuality.ATTR_CHANGING, DevState.MOVING);
-        qualityStateMap.put(AttrQuality.ATTR_ALARM, DevState.ALARM);
-        qualityStateMap.put(AttrQuality.ATTR_WARNING, DevState.ALARM);
-        qualityStateMap.put(AttrQuality.ATTR_INVALID, DevState.FAULT);
-        qualityStateMap.put(AttrQuality.ATTR_VALID, DevState.ON);
+	qualityStateMap.put(AttrQuality.ATTR_CHANGING, DevState.MOVING);
+	qualityStateMap.put(AttrQuality.ATTR_ALARM, DevState.ALARM);
+	qualityStateMap.put(AttrQuality.ATTR_WARNING, DevState.ALARM);
+	qualityStateMap.put(AttrQuality.ATTR_INVALID, DevState.FAULT);
+	qualityStateMap.put(AttrQuality.ATTR_VALID, DevState.ON);
 
-        qualityPriorityMap.put(AttrQuality.ATTR_VALID, 0);
-        qualityPriorityMap.put(AttrQuality.ATTR_CHANGING, 0);
-        qualityPriorityMap.put(AttrQuality.ATTR_WARNING, 0);
-        qualityPriorityMap.put(AttrQuality.ATTR_ALARM, 0);
-        qualityPriorityMap.put(AttrQuality.ATTR_INVALID, 0);
+	qualityPriorityMap.put(AttrQuality.ATTR_VALID, 0);
+	qualityPriorityMap.put(AttrQuality.ATTR_CHANGING, 0);
+	qualityPriorityMap.put(AttrQuality.ATTR_WARNING, 0);
+	qualityPriorityMap.put(AttrQuality.ATTR_ALARM, 0);
+	qualityPriorityMap.put(AttrQuality.ATTR_INVALID, 0);
     }
 
     public void putQualityPriority(final AttrQuality quality, final int priority) {
-        qualityPriorityMap.put(quality, priority);
+	qualityPriorityMap.put(quality, priority);
     }
 
     public void putAttributeQuality(final String attributeName, final AttrQuality quality) {
-        attributeQualityMap.put(attributeName, quality);
+	attributeQualityMap.put(attributeName, quality);
     }
 
     public AttrQuality getHighestPriorityQuality() {
-        AttrQuality highestPriorityQuality = null;
-        for (final Map.Entry<String, AttrQuality> entry : attributeQualityMap.entrySet()) {
-            final int currentPriority = qualityPriorityMap.get(entry.getValue());
-            if (highestPriorityQuality != null) {
-                final int highestPriority = qualityPriorityMap.get(highestPriorityQuality);
-                if (highestPriority < currentPriority) {
-                    highestPriorityQuality = entry.getValue();
-                }
-            } else {
-                highestPriorityQuality = entry.getValue();
-            }
-        }
+	AttrQuality highestPriorityQuality = null;
+	for (final Map.Entry<String, AttrQuality> entry : attributeQualityMap.entrySet()) {
+	    final int currentPriority = qualityPriorityMap.get(entry.getValue());
+	    if (highestPriorityQuality != null) {
+		final int highestPriority = qualityPriorityMap.get(highestPriorityQuality);
+		if (highestPriority < currentPriority) {
+		    highestPriorityQuality = entry.getValue();
+		}
+	    } else {
+		highestPriorityQuality = entry.getValue();
+	    }
+	}
 
-        return highestPriorityQuality;
+	return highestPriorityQuality;
     }
 
     public String getHighestPriorityQualityAsString() {
-        return QualityUtilities.getNameForQuality(getHighestPriorityQuality());
+	return QualityUtilities.getNameForQuality(getHighestPriorityQuality());
     }
 
     public DevState getHighestPriorityState() {
-        return qualityStateMap.get(getHighestPriorityQuality());
+	return qualityStateMap.get(getHighestPriorityQuality());
     }
 
     public AttrQuality getQualityForAttribute(final String attributeName) {
-        return attributeQualityMap.get(attributeName);
+	return attributeQualityMap.get(attributeName);
     }
 
     public int getPriorityForQuality(final AttrQuality quality) {
-        return qualityPriorityMap.get(quality);
+	return qualityPriorityMap.get(quality);
     }
 
     public int getPriorityForQuality(final String quality) {
-        final AttrQuality attrQuality = QualityUtilities.getQualityForName(quality);
-        return qualityPriorityMap.get(attrQuality);
+	final AttrQuality attrQuality = QualityUtilities.getQualityForName(quality);
+	return qualityPriorityMap.get(attrQuality);
     }
 
     public String[] getQualityArray() {
-        final String[] array = new String[attributeQualityMap.size()];
-        int i = 0;
-        for (final Map.Entry<String, AttrQuality> entry : attributeQualityMap.entrySet()) {
-            final String attrName = entry.getKey();
-            final AttrQuality quality = entry.getValue();
-            array[i++] = attrName + " - " + QualityUtilities.getNameForQuality(quality);
-        }
-        return array;
+	final String[] array = new String[attributeQualityMap.size()];
+	int i = 0;
+	for (final Map.Entry<String, AttrQuality> entry : attributeQualityMap.entrySet()) {
+	    final String attrName = entry.getKey();
+	    final AttrQuality quality = entry.getValue();
+	    array[i++] = attrName + " - " + QualityUtilities.getNameForQuality(quality);
+	}
+	return array;
     }
 
     public short[] getQualityNumberArray() {
-        final short[] array = new short[attributeQualityMap.size()];
-        int i = 0;
-        for (final Map.Entry<String, AttrQuality> entry : attributeQualityMap.entrySet()) {
-            final AttrQuality quality = entry.getValue();
-            array[i++] = (short) getPriorityForQuality(quality);
-        }
-        return array;
+	final short[] array = new short[attributeQualityMap.size()];
+	int i = 0;
+	for (final Map.Entry<String, AttrQuality> entry : attributeQualityMap.entrySet()) {
+	    final AttrQuality quality = entry.getValue();
+	    array[i++] = (short) getPriorityForQuality(quality);
+	}
+	return array;
     }
 }

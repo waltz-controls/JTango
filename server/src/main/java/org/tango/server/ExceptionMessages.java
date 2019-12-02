@@ -1,24 +1,24 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,9 +28,9 @@ import fr.esrf.Tango.DevFailed;
 
 /**
  * Messages for {@link DevFailed}
- *
+ * 
  * @author ABEILLE
- *
+ * 
  */
 public final class ExceptionMessages {
     private ExceptionMessages() {
@@ -74,14 +74,14 @@ public final class ExceptionMessages {
     public static final String FWD_ROOT_DEV_LOCAL_DEV = "FWD_ROOT_DEV_LOCAL_DEV";
     // - Missing root attribute definition
     public static final String FWD_MISSING_ROOT = "FWD_MISSING_ROOT";
-    //    - Wrong syntax in root attribute definition
+//    - Wrong syntax in root attribute definition     
     public static final String FWD_WRONG_SYNTAX = "FWD_WRONG_SYNTAX";
-    //    - Root device not started yet
+//    - Root device not started yet               
     public static final String FWD_ROOT_DEV_NOT_STARTED = "FWD_ROOT_DEV_NOT_STARTED";
-    //    - Root attribute already use in this DS for another forwarded attribute
+//    - Root attribute already use in this DS for another forwarded attribute  
     public static final String FWD_DOUBLE_USED = "FWD_DOUBLE_USED";
-    //    - Local device does not support forwarded attribute (IDL 4 or less)
+//    - Local device does not support forwarded attribute (IDL 4 or less)         
     public static final String FWD_TOO_OLD_LOCAL_DEVICE = "FWD_TOO_OLD_LOCAL_DEVICE";
-    //    - Root device does not support forwarded attribute (IDL 4 or less)
+//    - Root device does not support forwarded attribute (IDL 4 or less)     
     public static final String FWD_TOO_OLD_ROOT_DEVICE = "FWD_TOO_OLD_ROOT_DEVICE";
 }

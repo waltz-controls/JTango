@@ -38,8 +38,9 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarStringArrayHelper;
 import org.omg.CORBA.Any;
 
-
-public class QueryClassCmd extends Command implements TangoConst {
+ 
+public class QueryClassCmd extends Command implements TangoConst
+{
 
 //+-------------------------------------------------------------------------
 //
@@ -49,10 +50,11 @@ public class QueryClassCmd extends Command implements TangoConst {
 //
 //--------------------------------------------------------------------------
 
-    public QueryClassCmd(String name, int in, int out, String desc) {
-        super(name, in, out);
-        set_out_type_desc(desc);
-    }
+	public QueryClassCmd(String name,int in,int out,String desc)
+	{
+		super(name,in,out);
+		set_out_type_desc(desc);
+	}
 
 //+-------------------------------------------------------------------------
 //
@@ -61,33 +63,37 @@ public class QueryClassCmd extends Command implements TangoConst {
 // description : 	return status as string
 //
 //--------------------------------------------------------------------------
-
-    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
-        Util.out4.println("QueryClassCmd::execute(): arrived");
+ 
+	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
+	{
+		Util.out4.println("QueryClassCmd::execute(): arrived");
 
 //	
 // call DServer method which implements this command
 //
 
-        String[] ret = ((DServer) (device)).query_class();
+		String[] ret = ((DServer)(device)).query_class();
 
 //
 // return data to the caller
 //
 
-        Any out_any = null;
-        //noinspection ErrorNotRethrown
-        try {
-            out_any = Util.instance().get_orb().create_any();
-        } catch (OutOfMemoryError ex) {
-            Util.out3.println("Bad allocation while in QueryClassCmd::execute()");
-            Except.throw_exception("API_MemoryAllocation",
-                    "Can't allocate memory in server",
-                    "QueryClassCmd.execute");
-        }
-        DevVarStringArrayHelper.insert(out_any, ret);
-
-        Util.out4.println("Leaving QueryClassCmd::execute()");
-        return out_any;
-    }
+		Any out_any = null;
+		//noinspection ErrorNotRethrown
+		try
+		{
+			out_any = Util.instance().get_orb().create_any();
+		}
+		catch (OutOfMemoryError ex)
+		{
+			Util.out3.println("Bad allocation while in QueryClassCmd::execute()");
+			Except.throw_exception("API_MemoryAllocation",
+						   "Can't allocate memory in server",
+						   "QueryClassCmd.execute");
+		}
+		DevVarStringArrayHelper.insert(out_any,ret);
+	
+		Util.out4.println("Leaving QueryClassCmd::execute()");	
+		return	out_any;
+	}	
 }

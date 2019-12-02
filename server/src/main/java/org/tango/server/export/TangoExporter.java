@@ -1,30 +1,36 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.export;
 
-import fr.esrf.Tango.DevFailed;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
@@ -40,8 +46,7 @@ import org.tango.server.servant.DeviceImpl;
 import org.tango.server.servant.ORBUtils;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.*;
-import java.util.Map.Entry;
+import fr.esrf.Tango.DevFailed;
 
 public final class TangoExporter implements IExporter {
 
@@ -55,7 +60,7 @@ public final class TangoExporter implements IExporter {
     private final List<DeviceClassBuilder> deviceClassList = new ArrayList<DeviceClassBuilder>();
 
     public TangoExporter(final String hostName, final String serverName, final String pid,
-                         final Map<String, Class<?>> tangoClasses) {
+            final Map<String, Class<?>> tangoClasses) {
         this.hostName = hostName;
         this.serverName = serverName;
         this.pid = pid;
@@ -259,7 +264,7 @@ public final class TangoExporter implements IExporter {
             throw DevFailedUtils.newDevFailed(ExceptionMessages.CLASS_NOT_FOUND, tangoClass
                     + " does not exists on this server");
         }
-        String[] deviceNames = new String[]{};
+        String[] deviceNames = new String[] {};
         for (final DeviceClassBuilder classBuilder : deviceClassList) {
             if (tangoClass.equalsIgnoreCase(classBuilder.getClassName())) {
                 final List<String> list = classBuilder.getDeviceNameList();

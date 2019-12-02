@@ -1,24 +1,24 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -51,7 +51,7 @@ public class AlarmQualityTest extends NoDBDeviceManager {
         final ITangoDB db = DatabaseFactory.getDatabase();
         final String propName = "StateCheckAttrAlarm";
         final Map<String, String[]> map = new HashMap<String, String[]>();
-        map.put(propName, new String[]{"true"});
+        map.put(propName, new String[] { "true" });
         db.setDeviceProperties(JTangoTest.NO_DB_DEVICE_NAME, map);
         new DeviceProxy(deviceName).command_inout("Init");
     }
@@ -61,7 +61,7 @@ public class AlarmQualityTest extends NoDBDeviceManager {
         final ITangoDB db = DatabaseFactory.getDatabase();
         final String propName = "StateCheckAttrAlarm";
         final Map<String, String[]> map = new HashMap<String, String[]>();
-        map.put(propName, new String[]{"false"});
+        map.put(propName, new String[] { "false" });
         db.setDeviceProperties(JTangoTest.NO_DB_DEVICE_NAME, map);
         new DeviceProxy(deviceName).command_inout("Init");
     }
@@ -71,7 +71,7 @@ public class AlarmQualityTest extends NoDBDeviceManager {
         final String attrName = "longSpectrum";
         final DeviceProxy dev = new DeviceProxy(deviceName);
         final TangoAttribute ta = new TangoAttribute(deviceName + "/" + attrName);
-        ta.write(new long[]{-10, 1});
+        ta.write(new long[] { -10, 1 });
         ta.read();
         // System.out.println(ta.getQuality().value());
         // System.out.println(DeviceState.toString(dev.state()));
@@ -121,7 +121,7 @@ public class AlarmQualityTest extends NoDBDeviceManager {
         final String attrName = "longSpectrum";
         final DeviceProxy dev = new DeviceProxy(deviceName);
         final TangoAttribute ta = new TangoAttribute(deviceName + "/" + attrName);
-        ta.write(new long[]{4, 3});
+        ta.write(new long[] { 4, 3 });
         ta.read();
         // System.out.println(ta.getQuality().value());
         // System.out.println(DeviceState.toString(dev.state()));
@@ -171,7 +171,7 @@ public class AlarmQualityTest extends NoDBDeviceManager {
     public void testMaxValueSpectrum() throws DevFailed {
         final String attrName = "longSpectrum";
         final TangoAttribute ta = new TangoAttribute(deviceName + "/" + attrName);
-        ta.write(new long[]{-200, 120});
+        ta.write(new long[] { -200, 120 });
     }
 
     @Test(expected = DevFailed.class)

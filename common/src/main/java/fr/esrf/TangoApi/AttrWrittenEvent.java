@@ -33,24 +33,26 @@
 
 
 package fr.esrf.TangoApi;
-
+ 
 import fr.esrf.Tango.DevError;
 
-public class AttrWrittenEvent implements java.io.Serializable {
-    public DeviceProxy device;
-    public String[] attr_names;
-    public DevError[] errors;
-    public boolean err;
+public class  AttrWrittenEvent implements java.io.Serializable
+{
+	public DeviceProxy 	device;
+	public String[]		attr_names;
+	public DevError[]	errors;
+	public boolean		err;
 
-    //===============================================================
-    //===============================================================
-    public AttrWrittenEvent(DeviceProxy dev, String[] att, DevError[] err_in) {
-        device = dev;
-        attr_names = att;
-        errors = err_in;
-        if (errors == null)
-            err = false;
-        else
-            err = (errors.length != 0);
-    }
+	//===============================================================
+	//===============================================================
+	public AttrWrittenEvent(DeviceProxy dev, String[] att, DevError[] err_in)
+	{
+		device   = dev;
+		attr_names = att;
+		errors   = err_in;
+		if (errors==null)
+			err = false;
+		else
+			err = (errors.length!=0) ;
+	}
 }

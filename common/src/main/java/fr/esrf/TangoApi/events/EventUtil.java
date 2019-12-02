@@ -37,7 +37,7 @@ package fr.esrf.TangoApi.events;
 
 /**
  * Class Description: Utility methods for event classes
- *
+ * 
  * @author verdier
  * @version $Revision:  $
  */
@@ -46,10 +46,9 @@ public class EventUtil {
 
     private static boolean graphicIsAvailable = true;
     private static boolean graphicAvailableChecked = false;
-    private static final Object monitor = new Object();
+    private static final Object  monitor = new Object();
 
     //===================================================================
-
     /**
      * Check if graphical environment is available
      * This test is used to know if method SwingUtilities.invokeLater() can be used.
@@ -61,21 +60,24 @@ public class EventUtil {
         synchronized (monitor) {
             if (!graphicAvailableChecked) {
                 String s = System.getProperty("SERVER");
-                if (s != null && s.equals("true")) {
+                if (s!=null && s.equals("true")) {
                     graphicIsAvailable = false;
-                } else {
+                }
+                else {
                     try {
                         graphicIsAvailable = !java.awt.GraphicsEnvironment.isHeadless();
-                    } catch (Error e) {
+                    }
+                    catch(Error e) {
                         graphicIsAvailable = false;
                         //System.err.println(e + "\n" + "---------------> Graphics Environment not available");
-                    } catch (Exception e) {
+                    }
+                    catch(Exception e) {
                         graphicIsAvailable = false;
                         //System.err.println(e + "\n" + "---------------> Graphics Environment not available");
                     }
                 }
                 graphicAvailableChecked = true;
-            }
+           }
         }
         return graphicIsAvailable;
     }

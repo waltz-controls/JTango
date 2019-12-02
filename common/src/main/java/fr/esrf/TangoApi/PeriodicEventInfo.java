@@ -38,33 +38,34 @@ import fr.esrf.Tango.PeriodicEventProp;
 
 
 /**
- * Class Description: This class is the same class as PeriodicEventProp,
- * but created for C++ compatibility.
+ *	Class Description: This class is the same class as PeriodicEventProp, 
+ *	                   but created for C++ compatibility.
  *
- * @author verdier
- * @version $Revision: 25296 $
+ * @author  verdier
+ * @version  $Revision: 25296 $
  */
-public class PeriodicEventInfo implements java.io.Serializable {
-    public String period = "";
-    public String[] extensions;
-
-    //-======================================================================
-    //-======================================================================
-    public PeriodicEventInfo(String period, String[] extensions) {
-        this.period = period;
-        this.extensions = extensions;
-    }
-
-    //-======================================================================
-    //-======================================================================
-    public PeriodicEventInfo(PeriodicEventProp ev_prop) {
-        this.period = ev_prop.period;
-        this.extensions = ev_prop.extensions;
-    }
-
-    //-======================================================================
-    //-======================================================================
-    public PeriodicEventProp getTangoObj() {
-        return new PeriodicEventProp(period, extensions);
-    }
+public class PeriodicEventInfo implements java.io.Serializable
+{
+	public String period = "";
+	public String[] extensions;
+	//-======================================================================
+	//-======================================================================
+	public PeriodicEventInfo(String period, String[] extensions)
+	{
+		this.period     = period;
+		this.extensions = extensions;
+	}
+	//-======================================================================
+	//-======================================================================
+	public PeriodicEventInfo(PeriodicEventProp ev_prop)
+	{
+		this.period     = ev_prop.period;
+		this.extensions = ev_prop.extensions;
+	}
+	//-======================================================================
+	//-======================================================================
+	public PeriodicEventProp getTangoObj()
+	{
+		return new PeriodicEventProp(period, extensions);
+	}
 }

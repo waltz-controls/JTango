@@ -51,16 +51,14 @@ public class DeviceInterface {
     /**
      * Command info list for the device.
      */
-    public CommandInfo[] commandInfoList;
+    public CommandInfo[]        commandInfoList;
     /**
      * false if change is possible, true if change is sure (in case of event).
      */
-    public boolean deviceStarted;
+    public boolean              deviceStarted;
     //=============================================
-
     /**
      * Creates a new instance of DeviceInterface for specified device.
-     *
      * @param deviceName specified device name
      * @throws DevFailed if device connection failed.
      */
@@ -69,10 +67,8 @@ public class DeviceInterface {
         this(new DeviceProxy(deviceName));
     }
     //=============================================
-
     /**
      * Creates a new instance of DeviceInterface for specified device.
-     *
      * @param deviceProxy specified device proxy object.
      * @throws DevFailed if device connection failed.
      */
@@ -83,19 +79,17 @@ public class DeviceInterface {
         deviceStarted = false;
     }
     //=============================================
-
     /**
      * Creates a new instance of DeviceInterface
      */
     //=============================================
     public DeviceInterface(boolean deviceStarted,
-                           CommandInfo[] commandInfoList, AttributeInfoEx[] attributeInfoList) {
+                              CommandInfo[] commandInfoList, AttributeInfoEx[] attributeInfoList) {
         this.deviceStarted = deviceStarted;
         this.commandInfoList = commandInfoList;
         this.attributeInfoList = attributeInfoList;
     }
     //=============================================
-
     /**
      * Creates a new instance of DeviceInterface
      */
@@ -103,14 +97,13 @@ public class DeviceInterface {
     public DeviceInterface(DevIntrChange interfaceChange) {
         this.deviceStarted = interfaceChange.dev_started;
         this.commandInfoList = new CommandInfo[interfaceChange.cmds.length];
-        for (int i = 0; i < interfaceChange.cmds.length; i++)
+        for (int i=0 ; i<interfaceChange.cmds.length ; i++)
             this.commandInfoList[i] = new CommandInfo(interfaceChange.cmds[i]);
         this.attributeInfoList = new AttributeInfoEx[interfaceChange.atts.length];
-        for (int i = 0; i < interfaceChange.atts.length; i++)
+        for (int i=0 ; i<interfaceChange.atts.length ; i++)
             this.attributeInfoList[i] = new AttributeInfoEx(interfaceChange.atts[i]);
     }
     //=============================================
-
     /**
      * @return the attribute number.
      */
@@ -119,7 +112,6 @@ public class DeviceInterface {
         return attributeInfoList.length;
     }
     //=============================================
-
     /**
      * @return the command number.
      */
@@ -128,7 +120,6 @@ public class DeviceInterface {
         return commandInfoList.length;
     }
     //=============================================
-
     /**
      * @return the attribute configuration list for the device.
      */
@@ -137,7 +128,6 @@ public class DeviceInterface {
         return attributeInfoList;
     }
     //=============================================
-
     /**
      * @param index Specified index for attribute info list.
      * @return the attribute configuration for specified index.
@@ -147,11 +137,10 @@ public class DeviceInterface {
         return attributeInfoList[index];
     }
     //=============================================
-
     /**
      * @param attributeName Specified name for attribute.
      * @return the attribute configuration for specified attribute name,
-     * null if attribute name not found.
+     *         null if attribute name not found.
      */
     //=============================================
     public AttributeInfoEx getAttributeInfo(String attributeName) {
@@ -161,7 +150,6 @@ public class DeviceInterface {
         return null;
     }
     //=============================================
-
     /**
      * @return the command info list for the device.
      */
@@ -170,7 +158,6 @@ public class DeviceInterface {
         return commandInfoList;
     }
     //=============================================
-
     /**
      * @param index Specified index for command info list.
      * @return the command configuration for specified index.
@@ -180,11 +167,10 @@ public class DeviceInterface {
         return commandInfoList[index];
     }
     //=============================================
-
     /**
      * @param commandName Specified name for command.
      * @return the command configuration for specified command name,
-     * null if command name not found.
+     *         null if command name not found.
      */
     //=============================================
     public CommandInfo getCommandInfo(String commandName) {
@@ -197,7 +183,6 @@ public class DeviceInterface {
     //=============================================
 
     //=============================================
-
     /**
      * @return false if change is possible, true if change is sure (in case of event).
      */

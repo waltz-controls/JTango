@@ -1,10 +1,10 @@
 package org.tango.utils;
 
-import fr.esrf.Tango.DevFailed;
-
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.esrf.Tango.DevFailed;
 
 public final class ArrayUtils {
     private ArrayUtils() {
@@ -12,7 +12,6 @@ public final class ArrayUtils {
     }
 
     public final static Map<Class<?>, Class<?>> OBJ_TO_PRIMITIVE = new HashMap<Class<?>, Class<?>>();
-
     static {
         OBJ_TO_PRIMITIVE.put(Boolean.class, boolean.class);
         OBJ_TO_PRIMITIVE.put(Byte.class, byte.class);
@@ -25,7 +24,6 @@ public final class ArrayUtils {
     }
 
     public final static Map<Class<?>, Class<?>> PRIMITIVE_TO_OBJ = new HashMap<Class<?>, Class<?>>();
-
     static {
         PRIMITIVE_TO_OBJ.put(boolean.class, Boolean.class);
         PRIMITIVE_TO_OBJ.put(byte.class, Byte.class);
@@ -40,7 +38,8 @@ public final class ArrayUtils {
     /**
      * Convert an array of Objects to primitives if possible. Return input otherwise
      *
-     * @param array the array to convert
+     * @param array
+     *            the array to convert
      * @return The array of primitives
      */
     public final static Object toPrimitiveArray(final Object array) {
@@ -54,7 +53,8 @@ public final class ArrayUtils {
     /**
      * Convert an array of primitives to Objects if possible. Return input otherwise
      *
-     * @param array the array to convert
+     * @param array
+     *            the array to convert
      * @return The array of Objects
      */
     public final static Object toObjectArray(final Object array) {
@@ -68,8 +68,10 @@ public final class ArrayUtils {
     /**
      * Put values in new array
      *
-     * @param clazz type of the new array
-     * @param array origin array
+     * @param clazz
+     *            type of the new array
+     * @param array
+     *            origin array
      * @return
      */
     private final static Object setArray(final Class<?> clazz, final Object array) {
@@ -445,10 +447,12 @@ public final class ArrayUtils {
         if (Array.getLength(nums) > 0) {
             lengthX = Array.getLength(nums[0]);
         }
-        @SuppressWarnings("unchecked") final T[][] copy = (T[][]) Array.newInstance(nums.getClass().getComponentType().getComponentType(), lengthY,
+        @SuppressWarnings("unchecked")
+        final T[][] copy = (T[][]) Array.newInstance(nums.getClass().getComponentType().getComponentType(), lengthY,
                 lengthX);
         for (int i = 0; i < copy.length; i++) {
-            @SuppressWarnings("unchecked") final T[] member = (T[]) Array.newInstance(nums[i].getClass().getComponentType(), nums[i].length);
+            @SuppressWarnings("unchecked")
+            final T[] member = (T[]) Array.newInstance(nums[i].getClass().getComponentType(), nums[i].length);
             System.arraycopy(nums[i], 0, member, 0, nums[i].length);
             copy[i] = member;
         }

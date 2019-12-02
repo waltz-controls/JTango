@@ -37,8 +37,9 @@ package fr.esrf.TangoDs;
 import fr.esrf.Tango.DevFailed;
 import org.omg.CORBA.Any;
 
-
-public class GetTraceOutputCmd extends Command implements TangoConst {
+ 
+public class GetTraceOutputCmd extends Command implements TangoConst
+{
 
 //+-------------------------------------------------------------------------
 //
@@ -47,11 +48,12 @@ public class GetTraceOutputCmd extends Command implements TangoConst {
 // description : 	constructor for Command class GetTraceOutput
 //
 //--------------------------------------------------------------------------
-
-    public GetTraceOutputCmd(String name, int in, int out, String desc) {
-        super(name, in, out);
-        set_out_type_desc(desc);
-    }
+ 
+	public GetTraceOutputCmd(String name,int in,int out,String desc)
+	{
+		super(name,in,out);
+		set_out_type_desc(desc);
+	}
 
 //+-------------------------------------------------------------------------
 //
@@ -60,15 +62,16 @@ public class GetTraceOutputCmd extends Command implements TangoConst {
 // description : 	Retrieve the trace level variable
 //
 //--------------------------------------------------------------------------
+ 
+	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
+	{
+		Util.out4.println("GetTraceOutputCmd.execute(): arrived");
 
-    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
-        Util.out4.println("GetTraceOutputCmd.execute(): arrived");
+    String desc = "GetTraceOutput is no more supported, please use GetLoggingTarget";
+    Except.throw_exception("API_DeprecatedCommand", desc, "GetTraceOutputCmd::execute");
 
-        String desc = "GetTraceOutput is no more supported, please use GetLoggingTarget";
-        Except.throw_exception("API_DeprecatedCommand", desc, "GetTraceOutputCmd::execute");
-
-        //- make compiler happy
-        return Util.return_empty_any("GetTraceOutput");
-    }
-
+    //- make compiler happy
+		return Util.return_empty_any("GetTraceOutput");
+	}
+  
 }

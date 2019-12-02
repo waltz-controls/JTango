@@ -35,7 +35,6 @@
 package fr.esrf.TangoApi.Group;
 
 //- Import TANGO stuffs
-
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.DeviceAttribute;
 
@@ -49,36 +48,28 @@ public class GroupAttrReply extends GroupReply implements java.io.Serializable {
      * The command reply data
      */
     private DeviceAttribute data;
-
-    /**
-     * Creates a new instance of GroupAttrReply
-     */
+    
+    /** Creates a new instance of GroupAttrReply */
     public GroupAttrReply() {
         super();
     }
-
-    /**
-     * Creates a new instance of GroupAttrReply
-     */
+    
+    /** Creates a new instance of GroupAttrReply */
     public GroupAttrReply(String _dev_name, String _obj_name, DeviceAttribute _data) {
         super(_dev_name, _obj_name);
         data = _data;
     }
-
-    /**
-     * Creates a new instance of GroupAttrReply
-     */
+    
+    /** Creates a new instance of GroupAttrReply */
     public GroupAttrReply(String _dev_name, String _obj_name, DevFailed _ex) {
         super(_dev_name, _obj_name, _ex);
         data = null;
     }
-
-    /**
-     * Returns the associated data - returns null if has_failed set to true
-     */
+    
+    /** Returns the associated data - returns null if has_failed set to true */
     public DeviceAttribute get_data() throws DevFailed {
         if (exception_enabled && has_failed) {
-            throw exception;
+          throw exception;
         }
         return data;
     }

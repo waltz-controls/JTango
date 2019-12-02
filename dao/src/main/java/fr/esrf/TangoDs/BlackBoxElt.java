@@ -36,20 +36,22 @@ package fr.esrf.TangoDs;
 
 import java.util.Date;
 
-class BlackBoxElt implements TangoConst {
-    public int req_type;
-    public int attr_type;
-    public int op_type;
-    public String host;
-    public String cmd_name;
-    public Date when;
-    public byte[] host_ip;
-
-    public BlackBoxElt() {
-        req_type = Req_Unknown;
-        attr_type = Attr_Unknown;
-        op_type = Op_Unknown;
-
-        host = "Unknown";
-    }
+class BlackBoxElt implements TangoConst
+{
+	public int			req_type;
+	public int			attr_type;
+	public int			op_type;
+	public String			host;
+	public String			cmd_name;
+	public Date			when;
+	public byte[]			host_ip;
+	
+	public BlackBoxElt()
+	{
+		req_type = Req_Unknown;
+		attr_type = Attr_Unknown;
+		op_type = Op_Unknown;
+		
+		host = "Unknown";
+	}
 }

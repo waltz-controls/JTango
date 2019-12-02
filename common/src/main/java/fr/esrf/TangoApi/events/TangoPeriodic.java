@@ -42,64 +42,65 @@ import java.util.ArrayList;
 import java.util.EventListener;
 
 /**
- * @author pascal_verdier
+ *
+ * @author  pascal_verdier
  */
 public class TangoPeriodic extends EventDispatcher implements java.io.Serializable {
-
-    //==============================================================
-
+    
+	//==============================================================
     /**
-     * Creates a new instance of AttrPeriodicChange
-     *
+	 *	Creates a new instance of AttrPeriodicChange
      * @param device_proxy device proxy object.
      * @param attr_name    attribute name.
      * @param filters      filter array
-     */
-    //==============================================================
+	 */
+	//==============================================================
     public TangoPeriodic(DeviceProxy device_proxy, String attr_name, String[] filters) {
         super(device_proxy);
         this.attr_name = attr_name;
         this.filters = filters;
         event_identifier = -1;
     }
-
-    //==============================================================
-    //==============================================================
+    
+	//==============================================================
+	//==============================================================
     public void addTangoPeriodicListener(ITangoPeriodicListener listener, boolean stateless)
-            throws DevFailed {
-        event_listeners.add(ITangoPeriodicListener.class, listener);
+                throws DevFailed
+    {
+		event_listeners.add(ITangoPeriodicListener.class, listener);
         event_identifier = subscribe_periodic_event(attr_name, filters, stateless);
     }
-
-    //==============================================================
-    //==============================================================
-    public void removeTangoPeriodicListener(ITangoPeriodicListener listener)
-            throws DevFailed {
-        event_listeners.remove(ITangoPeriodicListener.class, listener);
-        if (event_listeners.size() == 0)
-            unsubscribe_event(event_identifier);
+    
+	//==============================================================
+	//==============================================================
+    public void removeTangoPeriodicListener(ITangoPeriodicListener listener) 
+                throws DevFailed
+    {
+        event_listeners.remove(ITangoPeriodicListener.class,listener);
+        if ( event_listeners.size() == 0 )
+           unsubscribe_event(event_identifier);
 
     }
-
-    //==============================================================
-    //==============================================================
-    public void dispatch_event(final EventData eventData) {
-        final TangoPeriodic tangoPeriodic = this;
+	//==============================================================
+	//==============================================================
+	public void dispatch_event(final EventData eventData) {
+		final TangoPeriodic tangoPeriodic = this;
         if (EventUtil.graphicAvailable()) {
-            //   Causes doRun.run() to be executed asynchronously
-            //      on the AWT event dispatching thread.
+                //   Causes doRun.run() to be executed asynchronously
+                //      on the AWT event dispatching thread.
             Runnable do_work_later = new Runnable() {
                 public void run() {
                     fireTangoPeriodicEvent(tangoPeriodic, eventData);
                 }
             };
             SwingUtilities.invokeLater(do_work_later);
-        } else
+        }
+        else
             fireTangoPeriodicEvent(tangoPeriodic, eventData);
     }
 
-    //==============================================================
-    //==============================================================
+	//==============================================================
+	//==============================================================
     private void fireTangoPeriodicEvent(TangoPeriodic tangoPeriodic, EventData eventData) {
         TangoPeriodicEvent tangoPeriodicEvent = new TangoPeriodicEvent(tangoPeriodic, eventData);
         // Notifying those that are interested in this event
@@ -108,8 +109,8 @@ public class TangoPeriodic extends EventDispatcher implements java.io.Serializab
             ((ITangoPeriodicListener) eventListener).periodic(tangoPeriodicEvent);
         }
     }
-    //==============================================================
-    //==============================================================
+	//==============================================================
+	//==============================================================
 
     String attr_name;
     int event_identifier;

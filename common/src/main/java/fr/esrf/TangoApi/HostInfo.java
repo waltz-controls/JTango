@@ -114,7 +114,7 @@ public class HostInfo {
     private boolean checkInetAddress(InetAddress inetAddress) {
 
         //  Check if not local host
-        if (!inetAddress.getCanonicalHostName().startsWith("local")) {
+        if (! inetAddress.getCanonicalHostName().startsWith("local")) {
             //  Check if name is not the address (???)
             if (!inetAddress.getCanonicalHostName().equalsIgnoreCase(inetAddress.getHostAddress())) {
 
@@ -130,7 +130,7 @@ public class HostInfo {
             } else if (trace)
                 System.err.println(
                         "Warning: at least one getCanonicalHostName() returns " + inetAddress.getCanonicalHostName() +
-                                "\n  Check files /etc/resolv.conf and /etc/nsswitch.conf ");
+                        "\n  Check files /etc/resolv.conf and /etc/nsswitch.conf ");
         }
         return false;
     }

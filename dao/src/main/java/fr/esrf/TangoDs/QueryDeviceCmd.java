@@ -38,8 +38,9 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarStringArrayHelper;
 import org.omg.CORBA.Any;
 
-
-public class QueryDeviceCmd extends Command implements TangoConst {
+ 
+public class QueryDeviceCmd extends Command implements TangoConst
+{
 
 //+-------------------------------------------------------------------------
 //
@@ -48,11 +49,12 @@ public class QueryDeviceCmd extends Command implements TangoConst {
 // description : 	constructor for Command class QueryDevice
 //
 //--------------------------------------------------------------------------
-
-    public QueryDeviceCmd(String name, int in, int out, String desc) {
-        super(name, in, out);
-        set_out_type_desc(desc);
-    }
+ 
+	public QueryDeviceCmd(String name,int in,int out,String desc)
+	{
+		super(name,in,out);
+		set_out_type_desc(desc);
+	}
 
 //+-------------------------------------------------------------------------
 //
@@ -62,33 +64,37 @@ public class QueryDeviceCmd extends Command implements TangoConst {
 //			of string
 //
 //--------------------------------------------------------------------------
-
-    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
-        Util.out4.println("QueryDeviceCmd.execute(): arrived");
+ 
+	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
+	{
+		Util.out4.println("QueryDeviceCmd.execute(): arrived");
 
 //	
 // call DServer method which implements this command
 //
 
-        String[] ret = ((DServer) (device)).query_device();
+		String[] ret = ((DServer)(device)).query_device();
 
 //
 // return data to the caller
 //
 
-        Any out_any = null;
-        //noinspection ErrorNotRethrown
-        try {
-            out_any = Util.instance().get_orb().create_any();
-        } catch (OutOfMemoryError ex) {
-            Util.out3.println("Bad allocation while in QueryDeviceCmd::execute()");
-            Except.throw_exception("API_MemoryAllocation",
-                    "Can't allocate memory in server",
-                    "QueryDeviceCmd.execute");
-        }
-        DevVarStringArrayHelper.insert(out_any, ret);
-
-        Util.out4.println("Leaving QueryDeviceCmd.execute()");
-        return out_any;
-    }
+		Any out_any = null;
+		//noinspection ErrorNotRethrown
+		try
+		{
+			out_any = Util.instance().get_orb().create_any();
+		}
+		catch (OutOfMemoryError ex)
+		{
+			Util.out3.println("Bad allocation while in QueryDeviceCmd::execute()");
+			Except.throw_exception("API_MemoryAllocation",
+						   "Can't allocate memory in server",
+						   "QueryDeviceCmd.execute");
+		}
+		DevVarStringArrayHelper.insert(out_any,ret);
+	
+		Util.out4.println("Leaving QueryDeviceCmd.execute()");	
+		return	out_any;
+	}
 }

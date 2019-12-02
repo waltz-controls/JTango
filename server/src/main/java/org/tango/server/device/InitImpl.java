@@ -1,30 +1,41 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.device;
 
-import fr.esrf.Tango.DevFailed;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -37,13 +48,7 @@ import org.tango.server.annotation.Init;
 import org.tango.server.cache.PollingManager;
 import org.tango.utils.DevFailedUtils;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import fr.esrf.Tango.DevFailed;
 
 /**
  * Managed the initialization of a device.
@@ -92,7 +97,7 @@ public final class InitImpl extends DeviceBehaviorObject {
      */
     @SuppressWarnings("unchecked")
     public InitImpl(final String deviceName, final Method initMethod, final boolean isLazy,
-                    final Object businessObject, final PollingManager pollingManager) {
+            final Object businessObject, final PollingManager pollingManager) {
         super();
         contextMap = MDC.getCopyOfContextMap();
         this.initMethod = initMethod;
@@ -189,7 +194,7 @@ public final class InitImpl extends DeviceBehaviorObject {
     }
 
     private void manageInitError(final StateImpl stateImpl, final StatusImpl statusImpl,
-                                 final InvocationTargetException e) {
+            final InvocationTargetException e) {
         try {
             logger.error(Constants.INIT_FAILED, e.getCause());
             stateImpl.stateMachine(DeviceState.FAULT);

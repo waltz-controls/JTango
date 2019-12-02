@@ -1,33 +1,34 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.build;
 
-import fr.esrf.Tango.AttrWriteType;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DispLevel;
-import fr.esrf.Tango.PipeWriteType;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
 import org.tango.DeviceState;
 import org.tango.attribute.AttributeTangoType;
 import org.tango.server.DeviceBehaviorObject;
@@ -40,10 +41,10 @@ import org.tango.server.attribute.AttributePropertiesImpl;
 import org.tango.server.pipe.PipeConfiguration;
 import org.tango.utils.DevFailedUtils;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import fr.esrf.Tango.AttrWriteType;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.DispLevel;
+import fr.esrf.Tango.PipeWriteType;
 
 /**
  * Tools to build a tango device from a class with annotations {@link org.tango.server.annotation}
@@ -112,7 +113,7 @@ final class BuilderUtils {
     }
 
     static AttributeConfiguration getAttributeConfiguration(final Class<?> type, final Method getter,
-                                                            final Method setter, final Attribute annot, final String attributeName) throws DevFailed {
+            final Method setter, final Attribute annot, final String attributeName) throws DevFailed {
         final AttributeConfiguration config = new AttributeConfiguration();
         config.setName(attributeName);
         config.setDispLevel(DispLevel.from_int(annot.displayLevel()));
@@ -139,7 +140,7 @@ final class BuilderUtils {
     }
 
     static PipeConfiguration getPipeConfiguration(final Class<?> type, final Method getter, final Method setter,
-                                                  final Pipe annot, final String pipeName) throws DevFailed {
+            final Pipe annot, final String pipeName) throws DevFailed {
         final PipeConfiguration config = new PipeConfiguration(pipeName);
         if (setter == null) {
             config.setWriteType(PipeWriteType.PIPE_READ);
@@ -186,7 +187,7 @@ final class BuilderUtils {
     }
 
     static AttributePropertiesImpl getAttributeProperties(final AccessibleObject method, final String attributeName,
-                                                          final Class<?> attributeScalarType) throws DevFailed {
+            final Class<?> attributeScalarType) throws DevFailed {
         // add default attr properties
         final AttributePropertiesImpl props = new AttributePropertiesImpl();
         if (method.isAnnotationPresent(AttributeProperties.class)) {

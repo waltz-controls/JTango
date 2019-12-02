@@ -1,13 +1,12 @@
 package fr.esrf.TangoApi.Group;
 
-import fr.esrf.Tango.DevError;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.AttributeInfoEx;
-import fr.esrf.TangoApi.DeviceAttribute;
-import fr.esrf.TangoApi.DeviceProxy;
-import fr.esrf.TangoDs.NamedDevFailed;
-import fr.esrf.TangoDs.NamedDevFailedList;
-import fr.soleil.tango.clientapi.factory.ProxyFactory;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,14 @@ import org.slf4j.ext.XLoggerFactory;
 import org.tango.utils.DevFailedUtils;
 import org.tango.utils.TangoUtil;
 
-import java.util.*;
+import fr.esrf.Tango.DevError;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoApi.AttributeInfoEx;
+import fr.esrf.TangoApi.DeviceAttribute;
+import fr.esrf.TangoApi.DeviceProxy;
+import fr.esrf.TangoDs.NamedDevFailed;
+import fr.esrf.TangoDs.NamedDevFailedList;
+import fr.soleil.tango.clientapi.factory.ProxyFactory;
 
 /**
  * Tentative to manage group of Attributes.
@@ -77,7 +83,8 @@ public final class AttributeGroup {
     /**
      * Add a list of devices in the group or add a list of patterns
      *
-     * @param attributes The attribute list
+     * @param attributes
+     *            The attribute list
      * @throws DevFailed
      */
     private synchronized void add(final String... attributes) throws DevFailed {
@@ -130,7 +137,7 @@ public final class AttributeGroup {
             if (devElement != null) {
                 try {
                     final int rid = devElement.read_attribute_asynch(attributeNames.toArray(new String[attributeNames
-                            .size()]));
+                                                                                                       .size()]));
                     readAnswersIDs.put(deviceName, rid);
                 } catch (final DevFailed e) {
                     logger.error("error", e);

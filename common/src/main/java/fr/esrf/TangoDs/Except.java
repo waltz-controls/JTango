@@ -73,11 +73,11 @@ import org.omg.CORBA.SystemException;
 
 
 /**
- * The Except class
- * <p>
+ *			The Except class
+ *
  * description :	This class is a container for all exceptions related
- * methods to be used in aa Tango device server/client.
- * Most of these methods are static.
+ *			methods to be used in aa Tango device server/client.
+ *			Most of these methods are static.
  */
 
 @SuppressWarnings("UnusedDeclaration")
@@ -85,7 +85,6 @@ public class Except implements TangoConst, java.io.Serializable {
 
 
     //================================================================
-
     /**
      * This method, like print_exception method.
      * It builds a string with exception argument but returns this string.
@@ -272,7 +271,6 @@ public class Except implements TangoConst, java.io.Serializable {
     }
 
     //===============================================================
-
     /**
      * Returns the current code line (used as origin to throw a DevFailed)
      *
@@ -536,12 +534,11 @@ public class Except implements TangoConst, java.io.Serializable {
 
 
 //=======================================================================
-    /*
-     *	Client exceptions management
-     */
+/*
+ *	Client exceptions management
+ */
 //=======================================================================
     //===================================================================
-
     /**
      * Throw a ConnectionFailed exception.
      *
@@ -557,7 +554,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._PANIC));
     }
     //===================================================================
-
     /**
      * Re-throw a ConnectionFailed exception.
      *
@@ -574,7 +570,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._PANIC));
     }
     //===================================================================
-
     /**
      * Throw a ConnectionFailed exception.
      *
@@ -591,7 +586,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, severity);
     }
     //===================================================================
-
     /**
      * re-throw a DevFailed in a ConnectionFailed exception.
      *
@@ -622,7 +616,6 @@ public class Except implements TangoConst, java.io.Serializable {
         throw new ConnectionFailed(err);
     }
     //===================================================================
-
     /**
      * Throw a CommunicationFailed exception.
      *
@@ -638,7 +631,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Re-throw a CommunicationFailed exception.
      *
@@ -655,7 +647,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Throw a CommunicationTimeout exception.
      *
@@ -671,7 +662,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Throw a CommunicationFailed exception.
      *
@@ -688,7 +678,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, severity);
     }
     //===================================================================
-
     /**
      * re-throw a DevFailed in a CommunicationFailed exception.
      *
@@ -720,7 +709,6 @@ public class Except implements TangoConst, java.io.Serializable {
     }
 
     //===================================================================
-
     /**
      * re-throw a DevFailed in a CommunicationTimeout exception.
      *
@@ -751,7 +739,6 @@ public class Except implements TangoConst, java.io.Serializable {
         throw new fr.esrf.TangoApi.CommunicationTimeout(err);
     }
     //===================================================================
-
     /**
      * Throw a WrongNameSyntax exception.
      *
@@ -767,7 +754,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Re-throw a WrongNameSyntax exception.
      *
@@ -784,7 +770,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Throw a WrongNameSyntax exception.
      *
@@ -801,7 +786,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, severity);
     }
     //===================================================================
-
     /**
      * re-throw a DevFailed in a WrongNameSyntax exception.
      *
@@ -833,7 +817,6 @@ public class Except implements TangoConst, java.io.Serializable {
     }
 
     //===================================================================
-
     /**
      * Throw a WrongData exception.
      *
@@ -849,7 +832,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Re-throw a WrongData exception.
      *
@@ -866,7 +848,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Throw a WrongData exception.
      *
@@ -883,7 +864,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, severity);
     }
     //===================================================================
-
     /**
      * re-throw a DevFailed in a WrongData exception.
      *
@@ -915,7 +895,6 @@ public class Except implements TangoConst, java.io.Serializable {
     }
 
     //===================================================================
-
     /**
      * Throw a NonDbDevice exception.
      *
@@ -931,7 +910,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Re-throw a NonDbDevice exception.
      *
@@ -948,7 +926,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Throw a NonDbDevice exception.
      *
@@ -965,7 +942,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, severity);
     }
     //===================================================================
-
     /**
      * re-throw a DevFailed in a NonDbDevice exception.
      *
@@ -997,7 +973,6 @@ public class Except implements TangoConst, java.io.Serializable {
     }
 
     //===================================================================
-
     /**
      * Throw a NonSupportedFeature exception.
      *
@@ -1013,7 +988,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Re-throw a NonSupportedFeature exception.
      *
@@ -1030,8 +1004,7 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
-    /**
+   /**
      * Throw a NonSupportedFeature exception.
      *
      * @param reason   The exception DevError object reason field
@@ -1047,7 +1020,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, severity);
     }
     //===================================================================
-
     /**
      * re-throw a DevFailed in a NonSupportedFeature exception.
      *
@@ -1079,7 +1051,6 @@ public class Except implements TangoConst, java.io.Serializable {
     }
 
     //===================================================================
-
     /**
      * Throw a AsynReplyNotArrived exception.
      *
@@ -1095,7 +1066,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Re-throw a AsynReplyNotArrived exception.
      *
@@ -1112,7 +1082,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Throw a AsynReplyNotArrived exception.
      *
@@ -1129,7 +1098,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, severity);
     }
     //===================================================================
-
     /**
      * re-throw a DevFailed in a AsynReplyNotArrived exception.
      *
@@ -1161,7 +1129,6 @@ public class Except implements TangoConst, java.io.Serializable {
     }
 
     //===================================================================
-
     /**
      * Throw a EventSystemFailed exception.
      *
@@ -1177,7 +1144,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Re-throw a EventSystemFailed exception.
      *
@@ -1194,7 +1160,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, ErrSeverity.from_int(ErrSeverity._ERR));
     }
     //===================================================================
-
     /**
      * Throw a EventSystemFailed exception.
      *
@@ -1211,7 +1176,6 @@ public class Except implements TangoConst, java.io.Serializable {
                 reason, desc, origin, severity);
     }
     //===================================================================
-
     /**
      * re-throw a DevFailed in a EventSystemFailed exception.
      *

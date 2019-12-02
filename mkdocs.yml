@@ -5,15 +5,15 @@ theme: readthedocs
 #theme_dir: 'docs/_theme/tango-cs'
 
 pages:
-  - Home: index.md
-  - User Guide:
-      - Introduction: manual/manual.md
-      - Basics: manual/basics.md
-      - Advanced features and techniques: manual/advanced.md
-      - Startup: manual/start.md
-      - Annexes: manual/annexes.md
-  - Developer Guide:
-      - Introduction: design.md
-      - Server architecture: design/architecture.md
-      - Logging: design/logging.md
-      - Miscelanious: design/misc.md
+- Home: index.md
+- User Guide:
+    - Introduction: manual/manual.md
+    - Basics: manual/basics.md
+    - Advanced features and techniques: manual/advanced.md
+    - Startup: manual/start.md
+    - Annexes: manual/annexes.md
+- Developer Guide:
+    - Introduction: design.md
+    - Server architecture: design/architecture.md
+    - Logging: design/logging.md
+    - Miscelanious: design/misc.md

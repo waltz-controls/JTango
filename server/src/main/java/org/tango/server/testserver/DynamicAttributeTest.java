@@ -1,32 +1,32 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.testserver;
 
-import fr.esrf.Tango.AttrWriteType;
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.tango.DeviceState;
 import org.tango.server.StateMachineBehavior;
 import org.tango.server.attribute.AttributeConfiguration;
@@ -34,14 +34,15 @@ import org.tango.server.attribute.AttributeValue;
 import org.tango.server.attribute.IAttributeBehavior;
 import org.tango.server.attribute.ISetValueUpdater;
 
-import java.util.HashMap;
-import java.util.Map;
+import fr.esrf.Tango.AttrWriteType;
+import fr.esrf.Tango.DevEncoded;
+import fr.esrf.Tango.DevFailed;
 
 /**
  * To test dynamic attributes
- *
+ * 
  * @author ABEILLE
- *
+ * 
  */
 public final class DynamicAttributeTest implements IAttributeBehavior, ISetValueUpdater {
 
@@ -49,7 +50,6 @@ public final class DynamicAttributeTest implements IAttributeBehavior, ISetValue
     private final AttributeConfiguration configAttr = new AttributeConfiguration();
 
     private static final Map<Class<?>, Object> RESULTS_MAP = new HashMap<Class<?>, Object>();
-
     static {
         RESULTS_MAP.put(boolean.class, false);
         RESULTS_MAP.put(short.class, (short) 0);
@@ -61,26 +61,26 @@ public final class DynamicAttributeTest implements IAttributeBehavior, ISetValue
         RESULTS_MAP.put(String.class, "");
         RESULTS_MAP.put(DeviceState.class, DeviceState.ON);
         RESULTS_MAP.put(DevEncoded.class, new DevEncoded());
-        RESULTS_MAP.put(short[].class, new short[]{});
-        RESULTS_MAP.put(int[].class, new int[]{});
-        RESULTS_MAP.put(byte[].class, new byte[]{});
-        RESULTS_MAP.put(float[].class, new float[]{});
-        RESULTS_MAP.put(double[].class, new double[]{});
-        RESULTS_MAP.put(long[].class, new long[]{});
-        RESULTS_MAP.put(String[].class, new String[]{});
-        RESULTS_MAP.put(boolean[].class, new boolean[]{});
-        RESULTS_MAP.put(DeviceState[].class, new DeviceState[]{});
-        RESULTS_MAP.put(DevEncoded[].class, new DevEncoded[]{});
-        RESULTS_MAP.put(short[][].class, new short[][]{{}});
-        RESULTS_MAP.put(int[][].class, new int[][]{{}});
-        RESULTS_MAP.put(byte[][].class, new byte[][]{{}});
-        RESULTS_MAP.put(float[][].class, new float[][]{{}});
-        RESULTS_MAP.put(double[][].class, new double[][]{{}});
-        RESULTS_MAP.put(long[][].class, new long[][]{{}});
-        RESULTS_MAP.put(String[][].class, new String[][]{{}});
-        RESULTS_MAP.put(boolean[][].class, new boolean[][]{{}});
-        RESULTS_MAP.put(DeviceState[][].class, new DeviceState[][]{{}});
-        RESULTS_MAP.put(DevEncoded[][].class, new DevEncoded[][]{{}});
+        RESULTS_MAP.put(short[].class, new short[] {});
+        RESULTS_MAP.put(int[].class, new int[] {});
+        RESULTS_MAP.put(byte[].class, new byte[] {});
+        RESULTS_MAP.put(float[].class, new float[] {});
+        RESULTS_MAP.put(double[].class, new double[] {});
+        RESULTS_MAP.put(long[].class, new long[] {});
+        RESULTS_MAP.put(String[].class, new String[] {});
+        RESULTS_MAP.put(boolean[].class, new boolean[] {});
+        RESULTS_MAP.put(DeviceState[].class, new DeviceState[] {});
+        RESULTS_MAP.put(DevEncoded[].class, new DevEncoded[] {});
+        RESULTS_MAP.put(short[][].class, new short[][] { {} });
+        RESULTS_MAP.put(int[][].class, new int[][] { {} });
+        RESULTS_MAP.put(byte[][].class, new byte[][] { {} });
+        RESULTS_MAP.put(float[][].class, new float[][] { {} });
+        RESULTS_MAP.put(double[][].class, new double[][] { {} });
+        RESULTS_MAP.put(long[][].class, new long[][] { {} });
+        RESULTS_MAP.put(String[][].class, new String[][] { {} });
+        RESULTS_MAP.put(boolean[][].class, new boolean[][] { {} });
+        RESULTS_MAP.put(DeviceState[][].class, new DeviceState[][] { {} });
+        RESULTS_MAP.put(DevEncoded[][].class, new DevEncoded[][] { {} });
     }
 
     public DynamicAttributeTest(final Class<?> clazz) throws DevFailed {

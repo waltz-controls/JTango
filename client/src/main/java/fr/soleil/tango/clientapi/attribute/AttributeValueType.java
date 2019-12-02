@@ -1,10 +1,10 @@
 package fr.soleil.tango.clientapi.attribute;
 
-import fr.esrf.TangoDs.TangoConst;
-
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.esrf.TangoDs.TangoConst;
 
 public enum AttributeValueType {
 
@@ -81,7 +81,6 @@ public enum AttributeValueType {
             EXTRACTORS_MAP.put(s.getDataType(), s.getExtractor());
         }
     }
-
     static {
         for (final AttributeValueType s : EnumSet.allOf(AttributeValueType.class)) {
             INSERTERS_MAP.put(s.getDataType(), s.getInserter());

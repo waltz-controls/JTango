@@ -33,81 +33,85 @@
 
 
 package fr.esrf.TangoApi;
-
+ 
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.ErrSeverity;
 
 
-/**
- * <b>Class Description:</b><Br>
- * Exception thrown in case feature not supported.<Br>
- * Can be instancied by <i>Except.throw_non_supported_exception</i> method.
+/** 
+ *	<b>Class Description:</b><Br>
+ *	Exception thrown in case feature not supported.<Br>
+ *	Can be instancied by <i>Except.throw_non_supported_exception</i> method.
  *
- * @author verdier
+ *	@see fr.esrf.TangoDs.Except
+ *
+ * @author  verdier
  * @version $Revision: 25296 $
- * @see fr.esrf.TangoDs.Except
  */
 
 @SuppressWarnings({"CheckedExceptionClass"})
-public class NonSupportedFeature extends DevFailed implements ApiDefs {
-    //===================================================================
+public class NonSupportedFeature extends DevFailed implements ApiDefs
+{
+	//===================================================================
+	/**
+	 *	Exception constructor.<Br>
+	 *	Can be instancied by <i>Except.throw_non_supported_exception</i> method.
+	 *
+	 *	@see fr.esrf.TangoDs.Except
+	 */
+	//===================================================================
+	public NonSupportedFeature(fr.esrf.Tango.DevError[] errors)
+	{
+		super(errors);
+	}
 
-    /**
-     * Exception constructor.<Br>
-     * Can be instancied by <i>Except.throw_non_supported_exception</i> method.
-     *
-     * @see fr.esrf.TangoDs.Except
-     */
-    //===================================================================
-    public NonSupportedFeature(fr.esrf.Tango.DevError[] errors) {
-        super(errors);
-    }
+	//===================================================================
+	/**
+	 *	Return exception name.
+	 */
+	//===================================================================
+	public String toString()
+	{
+		return"fr.esrf.TangoApi.NonSupportedFeature";
+	}
 
-    //===================================================================
+	//===================================================================
+	/**
+	 *	Return full exception.
+	 */
+	//===================================================================
+	public String getStack()
+	{
+		StringBuffer	sb =
+			new StringBuffer("fr.esrf.TangoApi.NonSupportedFeature:\n");
+		for (int i=0 ; i<errors.length ; i++)
+		{
+			sb.append("Severity -> ");
+			switch (errors[i].severity.value())
+			{
+			case ErrSeverity._WARN :
+				sb.append("WARNING \n");
+				break;
 
-    /**
-     * Return exception name.
-     */
-    //===================================================================
-    public String toString() {
-        return "fr.esrf.TangoApi.NonSupportedFeature";
-    }
+			case ErrSeverity._ERR :
+				sb.append("ERROR \n");
+				break;
 
-    //===================================================================
+			case ErrSeverity._PANIC :
+				sb.append("PANIC \n");
+				break;
 
-    /**
-     * Return full exception.
-     */
-    //===================================================================
-    public String getStack() {
-        StringBuffer sb =
-                new StringBuffer("fr.esrf.TangoApi.NonSupportedFeature:\n");
-        for (int i = 0; i < errors.length; i++) {
-            sb.append("Severity -> ");
-            switch (errors[i].severity.value()) {
-                case ErrSeverity._WARN:
-                    sb.append("WARNING \n");
-                    break;
+			default :
+				sb.append("Unknown severity code");
+				break;
+			}
+			sb.append("Desc     -> ").append(errors[i].desc).append("\n");
+			sb.append("Reason   -> ").append(errors[i].reason).append("\n");
+			sb.append("Origin   -> ").append(errors[i].origin).append("\n");
 
-                case ErrSeverity._ERR:
-                    sb.append("ERROR \n");
-                    break;
-
-                case ErrSeverity._PANIC:
-                    sb.append("PANIC \n");
-                    break;
-
-                default:
-                    sb.append("Unknown severity code");
-                    break;
-            }
-            sb.append("Desc     -> ").append(errors[i].desc).append("\n");
-            sb.append("Reason   -> ").append(errors[i].reason).append("\n");
-            sb.append("Origin   -> ").append(errors[i].origin).append("\n");
-
-            if (i < errors.length - 1)
-                sb.append("-------------------------------------------------------------\n");
-        }
-        return sb.toString();
-    }
+			if (i<errors.length-1)
+				sb.append("-------------------------------------------------------------\n");
+		}
+		return sb.toString();
+	}
 }

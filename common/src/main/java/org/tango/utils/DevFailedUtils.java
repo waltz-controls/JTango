@@ -1,13 +1,14 @@
 package org.tango.utils;
 
-import fr.esrf.Tango.DevError;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.ErrSeverity;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import fr.esrf.Tango.DevError;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.ErrSeverity;
 import java.util.Optional;
 
 public final class DevFailedUtils {

@@ -1,5 +1,10 @@
 package fr.soleil.tango.clientapi.command;
 
+import java.util.Arrays;
+
+import org.tango.utils.DevFailedUtils;
+import org.tango.utils.TangoUtil;
+
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarDoubleStringArray;
 import fr.esrf.Tango.DevVarLongStringArray;
@@ -12,10 +17,6 @@ import fr.soleil.tango.clientapi.factory.ProxyFactory;
 import fr.soleil.tango.clientapi.util.TypeConversionUtil;
 import fr.soleil.tango.errorstrategy.RetriableTask;
 import fr.soleil.tango.errorstrategy.Task;
-import org.tango.utils.DevFailedUtils;
-import org.tango.utils.TangoUtil;
-
-import java.util.Arrays;
 
 public final class RealCommand implements ITangoCommand {
 

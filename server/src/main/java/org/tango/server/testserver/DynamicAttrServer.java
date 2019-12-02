@@ -4,7 +4,12 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.ApiUtil;
 import fr.esrf.TangoApi.Database;
 import org.tango.server.ServerManager;
-import org.tango.server.annotation.*;
+import org.tango.server.annotation.Command;
+import org.tango.server.annotation.Delete;
+import org.tango.server.annotation.Device;
+import org.tango.server.annotation.DeviceManagement;
+import org.tango.server.annotation.DynamicManagement;
+import org.tango.server.annotation.Init;
 import org.tango.server.device.DeviceManager;
 import org.tango.server.dynamic.DynamicManager;
 

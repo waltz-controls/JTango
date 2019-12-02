@@ -11,8 +11,9 @@ import java.util.Map.Entry;
 
 /**
  * Factory to connect to the tango database device
- *
+ * 
  * @author ABEILLE
+ * 
  */
 public final class DatabaseFactory {
     /**
@@ -28,9 +29,11 @@ public final class DatabaseFactory {
 
     /**
      * Get the database object created for specified host and port.
-     *
-     * @param host host where database is running.
-     * @param port port for database connection.
+     * 
+     * @param host
+     *            host where database is running.
+     * @param port
+     *            port for database connection.
      */
     public static synchronized ITangoDB getDatabase(final String host, final String port) throws DevFailed {
         final ITangoDB dbase;
@@ -51,7 +54,7 @@ public final class DatabaseFactory {
 
     /**
      * Get the database object using tango_host system property.
-     *
+     * 
      * @return
      * @throws DevFailed
      */
@@ -93,7 +96,7 @@ public final class DatabaseFactory {
 
     /**
      * Build a mock tango db with a file containing the properties
-     *
+     * 
      * @param dbFile
      * @param devices
      * @param classes
@@ -106,7 +109,7 @@ public final class DatabaseFactory {
 
     /**
      * Build a mock tango db
-     *
+     * 
      * @param devices
      * @param classes
      */

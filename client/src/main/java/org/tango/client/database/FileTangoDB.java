@@ -17,6 +17,7 @@ import java.util.Map;
  * Manage tango db properties within a file
  *
  * @author ABEILLE
+ *
  */
 public final class FileTangoDB implements ITangoDB {
 
@@ -140,7 +141,7 @@ public final class FileTangoDB implements ITangoDB {
 
     @Override
     public void setAttributeProperties(final String deviceName, final String attributeName,
-                                       final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         final Map<String, String[]> map = attributeProperties.get(deviceName + "/" + attributeName);
         if (map == null) {
             attributeProperties.put(deviceName + "/" + attributeName, properties);
@@ -186,11 +187,11 @@ public final class FileTangoDB implements ITangoDB {
                         if (props.containsKey(propertyName)) {
                             ArrayUtils.add(props.get(propertyName), propertyValue);
                         } else {
-                            props.put(propertyName, new String[]{propertyValue});
+                            props.put(propertyName, new String[] { propertyValue });
                         }
                     } else {
                         final Map<String, String[]> props = new HashMap<String, String[]>();
-                        props.put(propertyName, new String[]{propertyValue});
+                        props.put(propertyName, new String[] { propertyValue });
                         deviceProperties.put(deviceName, props);
                     }
                     previousLine = line;
@@ -210,11 +211,11 @@ public final class FileTangoDB implements ITangoDB {
                         if (props.containsKey(propertyName)) {
                             ArrayUtils.add(props.get(propertyName), propertyValue);
                         } else {
-                            props.put(propertyName, new String[]{propertyValue});
+                            props.put(propertyName, new String[] { propertyValue });
                         }
                     } else {
                         final Map<String, String[]> props = new HashMap<String, String[]>();
-                        props.put(propertyName, new String[]{propertyValue});
+                        props.put(propertyName, new String[] { propertyValue });
                         classProperties.put(className, props);
                     }
                     previousLine = line;
@@ -319,7 +320,7 @@ public final class FileTangoDB implements ITangoDB {
      */
     @Override
     public String[] getPossibleTangoHosts() {
-        return new String[]{"nodb"};
+        return new String[] { "nodb" };
     }
 
     @Override
@@ -336,7 +337,7 @@ public final class FileTangoDB implements ITangoDB {
 
     @Override
     public void setDevicePipeProperties(final String deviceName, final String pipeName,
-                                        final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         // TODO Auto-generated method stub
 
     }
@@ -349,7 +350,7 @@ public final class FileTangoDB implements ITangoDB {
 
     @Override
     public void setClassPipeProperties(final String className, final String pipeName,
-                                       final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         // TODO Auto-generated method stub
 
     }

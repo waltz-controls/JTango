@@ -48,7 +48,6 @@ import java.util.EventListener;
 public class TangoArchive extends EventDispatcher implements java.io.Serializable {
 
     //=======================================================================
-
     /**
      * Creates a new instance of TangoArchive
      *
@@ -94,7 +93,8 @@ public class TangoArchive extends EventDispatcher implements java.io.Serializabl
                 }
             };
             SwingUtilities.invokeLater(do_work_later);
-        } else
+        }
+        else
             fireTangoArchiveEvent(tangoArchive, eventData);
     }
 

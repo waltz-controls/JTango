@@ -55,14 +55,13 @@ import java.util.Vector;
  * @deprecated use {@link org.tango.server.admin.AdminDevice}
  */
 @Deprecated
-@SuppressWarnings({"NestedTryStatement", "ErrorNotRethrown"})
+@SuppressWarnings( { "NestedTryStatement", "ErrorNotRethrown" })
 public class DServer extends DeviceImpl {
     protected String process_name;
     protected String instance_name;
     protected StringBuffer full_name;
 
-    protected Vector class_list = new Vector();
-    ;
+    protected Vector class_list = new Vector();;
 
     // +----------------------------------------------------------------------------
     //
@@ -861,7 +860,8 @@ public class DServer extends DeviceImpl {
     /**
      * command to read device polling status
      *
-     * @param dev_name The device name.
+     * @param dev_name
+     *            The device name.
      * @return The device polling status as a string (multiple lines)
      */
     // ===================================================================
@@ -1013,7 +1013,8 @@ public class DServer extends DeviceImpl {
     /**
      * command to add one object to be polled
      *
-     * @param argin The polling parameters(device name, object type,..)
+     * @param argin
+     *            The polling parameters(device name, object type,..)
      */
     // ===================================================================
     public void add_obj_polling(final DevVarLongStringArray argin) throws DevFailed {
@@ -1025,8 +1026,10 @@ public class DServer extends DeviceImpl {
     /**
      * command to add one object to be polled
      *
-     * @param argin       The polling parameters(device name, object type,..)
-     * @param with_db_upd Update db if true (false if no dbase).
+     * @param argin
+     *            The polling parameters(device name, object type,..)
+     * @param with_db_upd
+     *            Update db if true (false if no dbase).
      */
     // ===================================================================
     public void add_obj_polling(final DevVarLongStringArray argin, final boolean with_db_upd)
@@ -1221,7 +1224,8 @@ public class DServer extends DeviceImpl {
     /**
      * command to upadte an already polled object update period
      *
-     * @param argin The polling parameters(device name, object type,..)
+     * @param argin
+     *            The polling parameters(device name, object type,..)
      */
     // ===================================================================
     void upd_obj_polling(final DevVarLongStringArray argin) throws DevFailed {
@@ -1359,7 +1363,8 @@ public class DServer extends DeviceImpl {
      * command to remove an already polled object from the device polled object
      * list
      *
-     * @param argin The polling parameters(device name, object type,..)
+     * @param argin
+     *            The polling parameters(device name, object type,..)
      */
     // ===================================================================
     public void rem_obj_polling(final String[] argin) throws DevFailed {
@@ -1372,8 +1377,10 @@ public class DServer extends DeviceImpl {
      * command to remove an already polled object from the device polled object
      * list
      *
-     * @param argin       The polling parameters(device name, object type,..)
-     * @param with_db_upd Update db if true (false if no dbase).
+     * @param argin
+     *            The polling parameters(device name, object type,..)
+     * @param with_db_upd
+     *            Update db if true (false if no dbase).
      */
     // ===================================================================
     public synchronized void rem_obj_polling(final String[] argin, final boolean with_db_upd)

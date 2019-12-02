@@ -37,32 +37,35 @@ package fr.esrf.TangoApi;
 import java.util.Hashtable;
 
 
+
 /**
- * Class Description:
- *
- * @author verdier
- * @version $Revision: 25296 $
+ *	Class Description:
+ *	@author  verdier
+ *	@version  $Revision: 25296 $
  */
 
-public class DbRedundancy implements java.io.Serializable {
-    static private DbRedundancy instance = null;
-    static private Hashtable map;
-
-    private DbRedundancy() {
-        map = new Hashtable();
-    }
-
-    static public DbRedundancy get_instance() {
-        if (instance == null)
-            instance = new DbRedundancy();
-        return instance;
-    }
-
-    public void put(String th1, String th2) {
-        map.put(th1, th2);
-    }
-
-    public String get(String key) {
-        return (String) map.get(key);
-    }
+public class DbRedundancy implements java.io.Serializable
+{
+	static private DbRedundancy	instance = null;
+	static private Hashtable		map;
+	
+	private DbRedundancy()
+	{
+		map = new Hashtable();
+	}
+	
+	static public DbRedundancy get_instance()
+	{
+		if (instance==null)
+			instance = new DbRedundancy();
+		return instance;
+	}
+	public void put(String th1, String th2)
+	{
+		map.put(th1, th2);
+	}
+	public String	get(String key)
+	{
+		return (String)map.get(key);
+	}
 }

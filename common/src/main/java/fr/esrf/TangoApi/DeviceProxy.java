@@ -107,7 +107,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
 
     private DbEventImportInfo evt_import_info = null;
     // ===================================================================
-
     /**
      * Default DeviceProxy constructor. It will do nothing
      */
@@ -120,7 +119,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===================================================================
-
     /**
      * DeviceProxy constructor. It will import the device.
      *
@@ -136,7 +134,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===================================================================
-
     /**
      * DeviceProxy constructor. It will import the device.
      *
@@ -152,7 +149,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===================================================================
-
     /**
      * DeviceProxy constructor. It will import the device.
      *
@@ -168,7 +164,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===================================================================
-
     /**
      * TangoDevice constructor. It will import the device.
      *
@@ -184,7 +179,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===================================================================
-
     /**
      * TangoDevice constructor. It will import the device.
      *
@@ -211,7 +205,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===================================================================
-
     /**
      * Get connection on administration device.
      */
@@ -221,7 +214,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===================================================================
-
     /**
      * Get connection on administration device.
      */
@@ -231,7 +223,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===========================================================
-
     /**
      * return the device name.
      */
@@ -240,7 +231,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.name(this);
     }
     // ===========================================================
-
     /**
      * return the device name with url.
      */
@@ -250,7 +240,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===========================================================
-
     /**
      * return the device status read from CORBA attribute.
      */
@@ -260,7 +249,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===========================================================
-
     /**
      * return the device status.
      *
@@ -274,7 +262,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===========================================================
-
     /**
      * return the device state read from CORBA attribute.
      */
@@ -298,7 +285,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ===========================================================
-
     /**
      * return the IDL device command_query for the specified command.
      *
@@ -324,7 +310,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Returns the class inheritance for the device
      * <ul>
@@ -351,7 +336,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get alias for the device
      *
@@ -363,7 +347,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Query the database for the info of this device.
      *
@@ -375,7 +358,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Query the database for the export info of this device.
      *
@@ -387,7 +369,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Update the export info for this device in the database.
      *
@@ -399,7 +380,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Unexport the device in database.
      */
@@ -409,7 +389,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Add/update this device to the database
      *
@@ -421,7 +400,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete this device from the database
      */
@@ -431,7 +409,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Query the database for a list of device properties for the pecified
      * object.
@@ -445,7 +422,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Query the database for a list of device properties for this device.
      *
@@ -458,7 +434,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Query the database for a device property for this device.
      *
@@ -471,7 +446,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Query the database for a list of device properties for this device. The
      * property names are specified by the DbDatum array objects.
@@ -485,7 +459,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Insert or update a property for this device The property name and its
      * value are specified by the DbDatum
@@ -498,7 +471,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Insert or update a list of properties for this device The property names
      * and their values are specified by the DbDatum array.
@@ -511,7 +483,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete a list of properties for this device.
      *
@@ -523,7 +494,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete a property for this device.
      *
@@ -535,7 +505,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete a list of properties for this device.
      *
@@ -551,7 +520,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     // ============================================
 
     // ==========================================================================
-
     /**
      * Query the device for attribute config and returns names only.
      *
@@ -563,7 +531,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Insert or update a list of attribute properties for this device. The
      * property names and their values are specified by the DbAttribute array.
@@ -576,7 +543,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Insert or update an attribute properties for this device. The property
      * names and their values are specified by the DbAttribute array.
@@ -589,7 +555,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete a list of properties for this object.
      *
@@ -602,7 +567,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete a property for this object.
      *
@@ -615,11 +579,10 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete a list of properties for this object.
      *
-     * @param attr DbAttribute object for specified attribute.
+     * @param    attr DbAttribute object for specified attribute.
      */
     // ==========================================================================
     public void delete_attribute_property(DbAttribute attr) throws DevFailed {
@@ -627,7 +590,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete a list of properties for this object.
      *
@@ -639,7 +601,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Query the database for a list of device attribute properties for this
      * device.
@@ -653,7 +614,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Query the database for a device attribute property for this device.
      *
@@ -666,7 +626,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Delete an attribute for this object.
      *
@@ -681,7 +640,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     // Attribute Methods
     // ===========================================================
     // ==========================================================================
-
     /**
      * Get the attributes configuration for the specified device.
      *
@@ -694,7 +652,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get the extended attributes configuration for the specified device.
      *
@@ -707,7 +664,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get the attributes configuration for the specified device.
      *
@@ -721,7 +677,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get the attribute info for the specified device.
      *
@@ -734,7 +689,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get the attribute info for the specified device.
      *
@@ -747,7 +701,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get the attribute configuration for the specified device.
      *
@@ -761,7 +714,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get all attributes info for the specified device.
      *
@@ -773,7 +725,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get all attributes info for the specified device.
      *
@@ -785,7 +736,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Get all attributes configuration for the specified device.
      *
@@ -798,7 +748,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Update the attributes info for the specified device.
      *
@@ -810,7 +759,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Update the attributes extended info for the specified device.
      *
@@ -823,7 +771,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Update the attributes configuration for the specified device.
      *
@@ -836,7 +783,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Read the attribute value for the specified device.
      *
@@ -849,7 +795,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * return directly AttributeValue object without creation of DeviceAttribute
      * object
@@ -861,7 +806,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Read the attribute values for the specified device.
      *
@@ -875,7 +819,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Write the attribute value for the specified device.
      *
@@ -887,7 +830,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Write the attribute values for the specified device.
      *
@@ -899,7 +841,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Write and then read the attribute values, for the specified device.
      *
@@ -911,7 +852,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
                 new DeviceAttribute[]{deviceAttribute})[0];
     }
     // ==========================================================================
-
     /**
      * Write and then read the attribute values, for the specified device.
      *
@@ -925,7 +865,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Write and then read the attribute values, for the specified device.
      *
@@ -948,7 +887,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
      */
 
     // ==========================================================================
-
     /**
      * Add a command to be polled for the device. If already polled, update its
      * polling period.
@@ -962,7 +900,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Add a attribute to be polled for the device. If already polled, update
      * its polling period.
@@ -988,7 +925,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Remove attribute of polled object list
      *
@@ -1000,7 +936,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Returns the polling status for the device.
      */
@@ -1010,7 +945,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Return the history for command polled.
      *
@@ -1023,7 +957,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Return the history for attribute polled.
      *
@@ -1036,7 +969,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Return the full history for command polled.
      *
@@ -1048,7 +980,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Return the full history for attribute polled.
      *
@@ -1059,7 +990,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.attribute_history(this, attname);
     }
     // ==========================================================================
-
     /**
      * Returns the polling period (in ms) for specified attribute.
      *
@@ -1070,7 +1000,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.get_attribute_polling_period(this, attname);
     }
     //==========================================================================
-
     /**
      * Returns the polling period (in ms) for specified command.
      *
@@ -1101,7 +1030,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous command_inout.
      *
@@ -1113,7 +1041,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous command_inout.
      *
@@ -1126,7 +1053,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous command_inout.
      *
@@ -1140,7 +1066,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous command_inout using callback for reply.
      *
@@ -1154,7 +1079,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous command_inout using callback for reply.
      *
@@ -1167,7 +1091,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Read Asynchronous command_inout reply.
      *
@@ -1180,7 +1103,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Read Asynchronous command_inout reply.
      *
@@ -1193,7 +1115,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Read Asynchronous command_inout reply.
      *
@@ -1205,7 +1126,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Read Asynchronous command_inout reply.
      *
@@ -1217,7 +1137,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous read_attribute.
      *
@@ -1229,7 +1148,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous read_attribute.
      *
@@ -1242,7 +1160,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Retrieve the command/attribute arguments to build exception description.
      */
@@ -1252,7 +1169,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Check Asynchronous call reply.
      *
@@ -1264,7 +1180,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Read Asynchronous read_attribute reply.
      *
@@ -1277,7 +1192,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Read Asynchronous read_attribute reply.
      *
@@ -1289,7 +1203,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous read_attribute using callback for reply.
      *
@@ -1302,7 +1215,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous read_attribute using callback for reply.
      *
@@ -1315,7 +1227,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous write_attribute.
      *
@@ -1327,7 +1238,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous write_attribute.
      *
@@ -1340,7 +1250,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous write_attribute.
      *
@@ -1352,7 +1261,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous write_attribute.
      *
@@ -1365,7 +1273,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * check for Asynchronous write_attribute reply.
      *
@@ -1377,7 +1284,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * check for Asynchronous write_attribute reply.
      *
@@ -1390,7 +1296,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous write_attribute using callback for reply.
      *
@@ -1403,7 +1308,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Asynchronous write_attribute using callback for reply.
      *
@@ -1416,7 +1320,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * return the still pending asynchronous call for a reply model.
      *
@@ -1428,7 +1331,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Fire callback methods for all asynchronous requests(cmd and attr) with
      * already arrived replies.
@@ -1439,7 +1341,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Fire callback methods for all asynchronous requests(cmd and attr) with
      * already arrived replies.
@@ -1455,7 +1356,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
      */
     // ==========================================================================
     // ==========================================================================
-
     /**
      * Adds a new logging target to the device.
      *
@@ -1467,7 +1367,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Adds a new logging target to the device.
      *
@@ -1479,7 +1378,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Removes a new logging target to the device.
      */
@@ -1489,7 +1387,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * get logging target from the device.
      */
@@ -1499,13 +1396,12 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * get logging level from the device.
      *
      * @return device's logging level: (ApiDefs.LOGGING_OFF,
-     * ApiDefs.LOGGING_FATAL, ApiDefs.LOGGING_ERROR,
-     * ApiDefs.LOGGING_INFO, ApiDefs.LOGGING_DEBUG)
+     *         ApiDefs.LOGGING_FATAL, ApiDefs.LOGGING_ERROR,
+     *         ApiDefs.LOGGING_INFO, ApiDefs.LOGGING_DEBUG)
      */
     // ==========================================================================
     public int get_logging_level() throws DevFailed {
@@ -1513,7 +1409,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Set logging level from the device.
      *
@@ -1532,7 +1427,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     // ==========================================================================
 
     // ==========================================================================
-
     /**
      * Lock the device
      */
@@ -1541,11 +1435,10 @@ public class DeviceProxy extends Connection implements ApiDefs {
         this.lock(TangoConst.DEFAULT_LOCK_VALIDITY);
     }
     // ==========================================================================
-
     /**
      * Lock the device
      *
-     * @param validity Lock validity (in seconds)
+     * @param    validity    Lock validity (in seconds)
      */
     // ==========================================================================
     public void lock(int validity) throws DevFailed {
@@ -1553,7 +1446,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         proxy_lock_cnt++;
     }
     // ==========================================================================
-
     /**
      * Unlock the device
      *
@@ -1566,7 +1458,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return n;
     }
     // ==========================================================================
-
     /**
      * Returns true if the device is locked
      */
@@ -1575,7 +1466,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.isLocked(this);
     }
     // ==========================================================================
-
     /**
      * Returns true if the device is locked by this process
      */
@@ -1585,7 +1475,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Returns the device lock status
      */
@@ -1594,7 +1483,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.getLockerStatus(this);
     }
     // ==========================================================================
-
     /**
      * Returns the device lock info
      */
@@ -1610,16 +1498,15 @@ public class DeviceProxy extends Connection implements ApiDefs {
      */
     // ==========================================================================
     // ==========================================================================
-
     /**
      * Returns TACO device information.
      *
      * @return TACO device information as String array.
-     * <li> Device name.
-     * <li> Class name
-     * <li> Device type
-     * <li> Device server name
-     * <li> Host name
+     *         <li> Device name.
+     *         <li> Class name
+     *         <li> Device type
+     *         <li> Device server name
+     *         <li> Host name
      */
     // ==========================================================================
     public String[] dev_inform() throws DevFailed {
@@ -1627,7 +1514,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * Execute the dev_rpc_protocol TACO command to change RPC protocol mode.
      *
@@ -1640,30 +1526,29 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     // ==========================================================================
-
     /**
      * @return mode RPC protocol mode used (TangoApi.TacoDevice.<b>D_TCP</b>
-     * or TangoApi.TacoDevice.<b>D_UDP</b>).
+     *         or TangoApi.TacoDevice.<b>D_UDP</b>).
      */
     // ==========================================================================
     public int get_rpc_protocol() throws DevFailed {
         return deviceProxyDAO.get_rpc_protocol(this);
     }
     // ===================================================================
-
     /**
      * Query database to get a list of device using the specified device as
-     * as root for forwarded attributes
-     *
+     * 		as root for forwarded attributes
      * @return a list of device using the specified device as as root for forwarded attributes
      * @throws DevFailed
      */
     // ===================================================================
     public List<ForwardedAttributeDatum> getForwardedAttributeInfoForDevice() throws DevFailed {
-        if (db_dev == null)
+        if (db_dev==null)
             db_dev = new DbDevice(name());
         return db_dev.getForwardedAttributeInfoForDevice();
     }
+
+
 
 
     // ===================================================================
@@ -1673,27 +1558,23 @@ public class DeviceProxy extends Connection implements ApiDefs {
     // ===================================================================
 
     // ===================================================================
-
     /**
      * Query device for pipe name list
-     *
-     * @return pipe name list
+     * @return  pipe name list
      * @throws DevFailed if device connection failed
      */
     // ===================================================================
     public List<String> getPipeNames() throws DevFailed {
         List<PipeInfo> infoList = deviceProxyDAO.getPipeConfig(this);
-        ArrayList<String> pipeNames = new ArrayList<String>();
+        ArrayList<String>   pipeNames = new ArrayList<String>();
         for (PipeInfo info : infoList)
             pipeNames.add(info.getName());
         return pipeNames;
     }
     // ===================================================================
-
     /**
      * Query device for pipe configuration list
-     *
-     * @return pipe configuration list
+     * @return  pipe configuration list
      * @throws DevFailed if device connection failed
      */
     // ===================================================================
@@ -1701,31 +1582,27 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.getPipeConfig(this);
     }
     // ===================================================================
-
     /**
      * Query device for pipe configuration list
-     *
      * @param pipeName pipe name.
-     * @return pipe configuration list
+     * @return  pipe configuration list
      * @throws DevFailed if device connection failed
      */
     // ===================================================================
     public PipeInfo getPipeConfig(String pipeName) throws DevFailed {
         ArrayList<String> list = new ArrayList<String>(1);
         list.add(pipeName);
-        List<PipeInfo> infoList = getPipeConfig(list);
+        List<PipeInfo>  infoList = getPipeConfig(list);
         if (infoList.isEmpty())
             return null;
         else
             return infoList.get(0);
     }
     // ===================================================================
-
     /**
      * Query device for pipe configuration list
-     *
      * @param pipeNames pipe names.
-     * @return pipe configuration list
+     * @return  pipe configuration list
      * @throws DevFailed if device connection failed
      */
     // ===================================================================
@@ -1735,12 +1612,10 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return getPipeConfig(list);
     }
     // ===================================================================
-
     /**
      * Query device for pipe configuration list
-     *
      * @param pipeNames pipe names.
-     * @return pipe configuration list
+     * @return  pipe configuration list
      * @throws DevFailed if device connection failed
      */
     // ===================================================================
@@ -1748,10 +1623,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.getPipeConfig(this, pipeNames);
     }
     // ===================================================================
-
     /**
      * Set device pipe configuration
-     *
      * @param pipeInfo info containing pipe name, description, label,....
      * @throws DevFailed if device connection failed
      */
@@ -1762,10 +1635,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
         setPipeConfig(infoList);
     }
     // ===================================================================
-
     /**
      * Set device pipe configuration
-     *
      * @param pipeInfoList info list containing pipe name, description, label,....
      * @throws DevFailed if device connection failed
      */
@@ -1776,10 +1647,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
         setPipeConfig(infoList);
     }
     // ===================================================================
-
     /**
      * Set device pipe configuration
-     *
      * @param pipeInfoList info list containing pipe name, description, label,....
      * @throws DevFailed if device connection failed
      */
@@ -1788,10 +1657,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
         deviceProxyDAO.setPipeConfig(this, pipeInfoList);
     }
     // ===================================================================
-
     /**
      * Read specified pipe and returns read data
-     *
      * @param pipeName pipe name
      * @return data read from specified pipe.
      * @throws DevFailed in case of device connection failed or pipe not found.
@@ -1801,10 +1668,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.readPipe(this, pipeName);
     }
     // ===================================================================
-
     /**
      * Write data in specified pipe
-     *
      * @param pipeName pipe name
      * @param pipeBlob data to be written
      * @throws DevFailed in case of device connection failed or pipe not found.
@@ -1814,10 +1679,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
         deviceProxyDAO.writePipe(this, new DevicePipe(pipeName, pipeBlob));
     }
     // ===================================================================
-
     /**
      * Write data in specified pipe
-     *
      * @param devicePipe data to be written (contains the pipe name)
      * @throws DevFailed in case of device connection failed or pipe not found.
      */
@@ -1826,10 +1689,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
         deviceProxyDAO.writePipe(this, devicePipe);
     }
     // ===================================================================
-
     /**
      * Write and Read data in specified pipe
-     *
      * @param pipeName pipe name
      * @param pipeBlob data to be written
      * @return data read from specified pipe.
@@ -1840,10 +1701,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return writeReadPipe(new DevicePipe(pipeName, pipeBlob));
     }
     // ===================================================================
-
     /**
      * Write and Read data in specified pipe
-     *
      * @param devicePipe data to be written (contains the pipe name)
      * @return data read from specified pipe.
      * @throws DevFailed in case of device connection failed or pipe not found.
@@ -1854,6 +1713,8 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
     // ===================================================================
     // ===================================================================
+
+
 
 
     // ==========================================================================
@@ -1867,14 +1728,13 @@ public class DeviceProxy extends Connection implements ApiDefs {
     private boolean useEvents() {
         if (!useEventsChecked) {
             String s = System.getenv("UseEvents");
-            if (s != null && s.equals("false"))
+            if (s!=null && s.equals("false"))
                 useEvents = false;
             useEventsChecked = true;
         }
         return useEvents;
     }
     // ==========================================================================
-
     /**
      * Subscribe to an event.
      *
@@ -1887,14 +1747,13 @@ public class DeviceProxy extends Connection implements ApiDefs {
             throws DevFailed {
         if (!useEvents())
             Except.throw_exception("NO_EVENT", "Event system not available", "DeviceProxy.subscribe_event()");
-        if (event == TangoConst.INTERFACE_CHANGE)
+        if (event==TangoConst.INTERFACE_CHANGE)
             Except.throw_exception("BAD_EVENT",
                     TangoConst.eventNames[event] + " cannot be applied to an attribute");
         return deviceProxyDAO.subscribe_event(this, attr_name, event, callback, filters, false);
     }
 
     // ==========================================================================
-
     /**
      * Subscribe to an event on a device(different to Interface Change Event).
      *
@@ -1908,13 +1767,12 @@ public class DeviceProxy extends Connection implements ApiDefs {
             throws DevFailed {
         if (!useEvents())
             Except.throw_exception("NO_EVENT", "Event system not available");
-        if (event == TangoConst.INTERFACE_CHANGE)
+        if (event==TangoConst.INTERFACE_CHANGE)
             Except.throw_exception("BAD_EVENT",
                     TangoConst.eventNames[event] + " cannot be applied to an attribute");
         return deviceProxyDAO.subscribe_event(this, attr_name, event, callback, filters, stateless);
     }
     // ==========================================================================
-
     /**
      * Subscribe to event  on a device(different to Interface Change Event) to be stored in an event queue.
      *
@@ -1928,14 +1786,13 @@ public class DeviceProxy extends Connection implements ApiDefs {
             throws DevFailed {
         if (!useEvents())
             Except.throw_exception("NO_EVENT", "Event system not available");
-        if (event == TangoConst.INTERFACE_CHANGE)
+        if (event==TangoConst.INTERFACE_CHANGE)
             Except.throw_exception("BAD_EVENT",
                     TangoConst.eventNames[event] + " cannot be applied to a device");
         return deviceProxyDAO.subscribe_event(this, attr_name, event, max_size, filters, stateless);
     }
     // ==========================================================================
     // ==========================================================================
-
     /**
      * Subscribe to an event (Interface Change Event).
      *
@@ -1947,14 +1804,13 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public int subscribe_event(int event, CallBack callback, boolean stateless) throws DevFailed {
         if (!useEvents())
             Except.throw_exception("NO_EVENT", "Event system not available");
-        if (event != TangoConst.INTERFACE_CHANGE)
+        if (event!=TangoConst.INTERFACE_CHANGE)
             Except.throw_exception("BAD_EVENT",
                     TangoConst.eventNames[event] + " cannot be applied to a device");
 
         return deviceProxyDAO.subscribe_event(this, event, callback, stateless);
     }
     // ==========================================================================
-
     /**
      * Subscribe to an event.
      *
@@ -1990,18 +1846,16 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return event_queue.size();
     }
     // ==========================================================================
-
     /**
      * returns the number of EventData in queue for specifed type.
      *
-     * @param event_type Specified event type.
+     * @param    event_type    Specified event type.
      */
     // ==========================================================================
     public int get_event_queue_size(int event_type) {
         return event_queue.size(event_type);
     }
     // ==========================================================================
-
     /**
      * returns next EventData in queue.
      */
@@ -2010,18 +1864,16 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return event_queue.getNextEvent();
     }
     // ==========================================================================
-
     /**
      * returns next event in queue for specified type.
      *
-     * @param event_type Specified event type.
+     * @param    event_type    Specified event type.
      */
     // ==========================================================================
     public EventData get_next_event(int event_type) throws DevFailed {
         return event_queue.getNextEvent(event_type);
     }
     // ==========================================================================
-
     /**
      * returns number of milliseconds since EPOCH for the last EventData in queue.
      */
@@ -2030,7 +1882,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return event_queue.getLastEventDate();
     }
     // ==========================================================================
-
     /**
      * returns all EventData in queue.
      */
@@ -2039,18 +1890,16 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return event_queue.getEvents();
     }
     // ==========================================================================
-
     /**
      * returns all event in queue for specified type.
      *
-     * @param event_type Specified event type.
+     * @param    event_type    Specified event type.
      */
     // ==========================================================================
     public EventData[] get_events(int event_type) {
         return event_queue.getEvents(event_type);
     }
     // ==========================================================================
-
     /**
      * Unsubscribe to an event.
      *
@@ -2126,7 +1975,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     //===============================================================
-
     /**
      * Check if an item is duplicated in specified array.
      * Then if duplication found, it throws an exception.
@@ -2140,23 +1988,23 @@ public class DeviceProxy extends Connection implements ApiDefs {
     private static void checkDuplication(String[] list, String orig) throws DevFailed {
         Vector<String> dupli = new Vector<String>();
         //	For each string
-        for (int i = 0; i < list.length; i++) {
+        for (int i = 0 ; i<list.length ; i++) {
             String str = list[i];
             //	Check if it is a duplication
-            for (int j = i + 1; j < list.length; j++) {
+            for (int j = i + 1 ; j<list.length ; j++) {
                 if (list[j].equalsIgnoreCase(str))
                     //	Check if not already found
-                    if (dupli.indexOf(str) < 0)
+                    if (dupli.indexOf(str)<0)
                         dupli.add(str);
             }
         }
 
-        if (dupli.size() > 0) {
+        if (dupli.size()>0) {
             String message =
                     "Several times the same attribute in required attribute list: ";
-            for (int i = 0; i < dupli.size(); i++) {
+            for (int i = 0 ; i<dupli.size() ; i++) {
                 message += dupli.get(i);
-                if (i < dupli.size() - 1) {
+                if (i<dupli.size() - 1) {
                     message += ", ";
                 }
             }
@@ -2166,21 +2014,20 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     //==========================================================================
-
     /**
      * called at the death of  the object.
      * (Not referenced and Garbage collector called)
      */
     //==========================================================================
     protected void finalize() {
-        if (proxy_lock_cnt > 0) {
+        if (proxy_lock_cnt>0) {
             try {
                 unlock();
-            } catch (DevFailed e) { /* */ }
+            } catch (DevFailed e) { /* */  }
         }
         try {
             super.finalize();
-        } catch (Throwable e) { /* */ }
+        } catch (Throwable e) { /* */  }
     }
 
 
@@ -2188,22 +2035,22 @@ public class DeviceProxy extends Connection implements ApiDefs {
     //===================================================================
     private int getTangoVersionFromZmqEventSubscriptionChange() throws DevFailed {
         try {
-            DeviceData argIn = new DeviceData();
-            argIn.insert(new String[]{"info"});
-            DeviceData argOut = get_adm_dev().command_inout("ZmqEventSubscriptionChange", argIn);
+            DeviceData  argIn = new DeviceData();
+            argIn.insert(new String[] { "info" });
+            DeviceData  argOut = get_adm_dev().command_inout("ZmqEventSubscriptionChange", argIn);
             DevVarLongStringArray lsa = argOut.extractLongStringArray();
-            if (lsa.lvalue.length == 0)
+            if (lsa.lvalue.length==0)
                 return -1;
             else
                 return lsa.lvalue[0];
-        } catch (DevFailed e) {
+        }
+        catch (DevFailed e) {
             if (e.errors[0].reason.equals("API_CommandNotFound"))
                 return -1;
             else
                 throw e;
         }
     }
-
     //===================================================================
     //===================================================================
     public int getTangoVersion() throws DevFailed {
@@ -2214,7 +2061,7 @@ public class DeviceProxy extends Connection implements ApiDefs {
         //  Check with ZmqEventSubscriptionChange command
         //  since 9.1.0 this command returns Tango release in info mode
         int version = getTangoVersionFromZmqEventSubscriptionChange();
-        if (version > 900)    //  Found
+        if (version>900)    //  Found
             return version;
 
         //  Get the command list
@@ -2248,9 +2095,9 @@ public class DeviceProxy extends Connection implements ApiDefs {
                         return 800;
                 }
                 return 700;
-            case 5:
-                return 900;
-        }
+             case 5:
+			 	return 900;
+       }
 
         //  Not found
         return 0;
@@ -2280,7 +2127,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
     //==========================================================================
-
     /**
      * Just a main method to check API methods.
      */
@@ -2292,7 +2138,7 @@ public class DeviceProxy extends Connection implements ApiDefs {
             commandName = args[0];
             deviceName = args[1];
         } catch (final Exception e) {
-            if (commandName == null) {
+            if (commandName==null) {
                 System.out.println("Usage :");
                 System.out.println("fr.esrf.TangoApi.DeviceProxy  commandName deviceName");
                 System.out.println("	- info : Display device info.");
@@ -2316,78 +2162,87 @@ public class DeviceProxy extends Connection implements ApiDefs {
 
             // Create DeviceProxy Objects
             deviceProxies = new DeviceProxy[devnames.length];
-            for (int i = 0; i < devnames.length; i++) {
+            for (int i = 0 ; i<devnames.length ; i++) {
                 deviceProxies[i] = new DeviceProxy(devnames[i]);
             }
 
 //            switch (commandName) {
 //                case "info":
-            if (commandName.equals("info")) {
-                for (DeviceProxy deviceProxy : deviceProxies) {
-                    System.out.println(deviceProxy + "\n");
-                }
+                if (commandName.equals("info")) {
+                    for (DeviceProxy deviceProxy : deviceProxies) {
+                        System.out.println(deviceProxy + "\n");
+                    }
 //                    break;
 //                case "ping":
-            } else if (commandName.equals("ping")) {
-                // noinspection InfiniteLoopStatement
-                while (true) {
+                }
+                else
+                if (commandName.equals("ping")) {
+                    // noinspection InfiniteLoopStatement
+                    while (true) {
+                        for (int i = 0; i < deviceProxies.length; i++) {
+                            try {
+                                final long t = deviceProxies[i].ping();
+                                System.out.println(devnames[i] + " is alive  (" + t / 1000 + " ms)");
+                            } catch (final DevFailed e) {
+                                System.out.println(devnames[i] + "  " + e.errors[0].desc);
+                            }
+                        }
+                        if (deviceProxies.length > 1) {
+                            System.out.println();
+                        }
+                        try {
+                            Thread.sleep(1000);
+                        } catch (final InterruptedException e) { /* */ }
+                    }
+//                    break;
+//                case "status":
+                }
+                else
+                if (commandName.equals("status")) {
                     for (int i = 0; i < deviceProxies.length; i++) {
                         try {
-                            final long t = deviceProxies[i].ping();
-                            System.out.println(devnames[i] + " is alive  (" + t / 1000 + " ms)");
+                            System.out.println(devnames[i] + " - " + deviceProxies[i].status());
                         } catch (final DevFailed e) {
                             System.out.println(devnames[i] + "  " + e.errors[0].desc);
                         }
                     }
-                    if (deviceProxies.length > 1) {
-                        System.out.println();
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (final InterruptedException e) { /* */ }
-                }
-//                    break;
-//                case "status":
-            } else if (commandName.equals("status")) {
-                for (int i = 0; i < deviceProxies.length; i++) {
-                    try {
-                        System.out.println(devnames[i] + " - " + deviceProxies[i].status());
-                    } catch (final DevFailed e) {
-                        System.out.println(devnames[i] + "  " + e.errors[0].desc);
-                    }
-                }
 //                    break;
 //                case "state":
-            } else if (commandName.equals("state")) {
-                for (int i = 0; i < deviceProxies.length; i++) {
-                    try {
-                        System.out
-                                .println(devnames[i] + " is " + ApiUtil.stateName(deviceProxies[i].state()));
-                        /*
-                         * DeviceAttribute da = dev[i].read_attribute("State");
-                         * DevState st = da.extractDevStateArray()[0];
-                         * System.out.println(devnames[i] + " is " +
-                         * ApiUtil.stateName(st));
-                         */
-                    } catch (final DevFailed e) {
-                        System.out.println(devnames[i] + "  " + e.errors[0].desc);
-                    }
                 }
+                else
+                if (commandName.equals("state")) {
+                    for (int i = 0; i < deviceProxies.length; i++) {
+                        try {
+                            System.out
+                                    .println(devnames[i] + " is " + ApiUtil.stateName(deviceProxies[i].state()));
+                        /*
+                        * DeviceAttribute da = dev[i].read_attribute("State");
+                        * DevState st = da.extractDevStateArray()[0];
+                        * System.out.println(devnames[i] + " is " +
+                        * ApiUtil.stateName(st));
+                        */
+                        } catch (final DevFailed e) {
+                            System.out.println(devnames[i] + "  " + e.errors[0].desc);
+                        }
+                    }
 //                    break;
 //                case "":
-            } else if (commandName.equals("unexport")) {
-                for (int i = 0; i < deviceProxies.length; i++) {
-                    try {
-                        deviceProxies[i].unexport_device();
-                        System.out.println(devnames[i] + " unexported !");
-                    } catch (final DevFailed e) {
-                        System.out.println(devnames[i] + "  " + e.errors[0].desc);
-                    }
                 }
+                else
+                if (commandName.equals("unexport")) {
+                    for (int i = 0; i < deviceProxies.length; i++) {
+                        try {
+                            deviceProxies[i].unexport_device();
+                            System.out.println(devnames[i] + " unexported !");
+                        } catch (final DevFailed e) {
+                            System.out.println(devnames[i] + "  " + e.errors[0].desc);
+                        }
+                    }
 //                    break;
 //                default:
-            } else
-                System.out.println(commandName + " ?   Unknow command !");
+                }
+                else
+                    System.out.println(commandName + " ?   Unknow command !");
 //                    break;
 //            }
         } catch (final DevFailed e) {

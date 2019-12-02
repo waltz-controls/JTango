@@ -1,31 +1,32 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.performance;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.DeviceProxy;
+import java.util.Arrays;
+import java.util.List;
+
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Rule;
@@ -34,8 +35,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.tango.server.testserver.NoDBDeviceManager;
 
-import java.util.Arrays;
-import java.util.List;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoApi.DeviceProxy;
 
 @RunWith(Parameterized.class)
 public class JTangoAttributPerf extends NoDBDeviceManager {
@@ -51,46 +52,46 @@ public class JTangoAttributPerf extends NoDBDeviceManager {
 
     @Parameterized.Parameters(name = "{index}: {0}")
     public static List<Object[]> getParametres() {
-        return Arrays.asList(new Object[][]{
+        return Arrays.asList(new Object[][] {
 
                 // SHORT
-                {"shortScalar"}, // 1
-                {"shortSpectrum"},// 2
-                {"shortImage"},// 3
+                { "shortScalar" }, // 1
+                { "shortSpectrum" },// 2
+                { "shortImage" },// 3
                 // SHORT dynamic
-                {"shortDynamic"},// 4
-                {"short[]Dynamic"}, {"short[][]Dynamic"},
+                { "shortDynamic" },// 4
+                { "short[]Dynamic" }, { "short[][]Dynamic" },
                 // INTEGER
-                {"intScalar"}, {"intSpectrum"}, {"intImage"},
+                { "intScalar" }, { "intSpectrum" }, { "intImage" },
                 // INTEGER dynamic
-                {"intDynamic"}, {"int[]Dynamic"}, {"int[][]Dynamic"},
+                { "intDynamic" }, { "int[]Dynamic" }, { "int[][]Dynamic" },
                 // LONG
-                {"longScalar"}, {"longSpectrum"}, {"longImage"},
+                { "longScalar" }, { "longSpectrum" }, { "longImage" },
 
                 // LONG dynamic
-                {"longDynamic"}, {"long[]Dynamic"}, {"long[][]Dynamic"},
+                { "longDynamic" }, { "long[]Dynamic" }, { "long[][]Dynamic" },
                 // FLOAT
-                {"floatScalar"}, {"floatSpectrum"}, {"floatImage"},
+                { "floatScalar" }, { "floatSpectrum" }, { "floatImage" },
                 // FLOAT dynamic
-                {"floatDynamic"}, {"float[]Dynamic"}, {"float[][]Dynamic"},
+                { "floatDynamic" }, { "float[]Dynamic" }, { "float[][]Dynamic" },
                 // DOUBLE
-                {"doubleScalar"}, {"doubleSpectrum"}, {"doubleImage"},
+                { "doubleScalar" }, { "doubleSpectrum" }, { "doubleImage" },
                 // DOUBLE dynamic
-                {"doubleDynamic"}, {"double[]Dynamic"}, {"double[][]Dynamic"},
+                { "doubleDynamic" }, { "double[]Dynamic" }, { "double[][]Dynamic" },
                 // BYTE
-                {"byteScalar"}, {"byteSpectrum"}, {"byteImage"},
+                { "byteScalar" }, { "byteSpectrum" }, { "byteImage" },
                 // BYTE dynamic
-                {"byteDynamic"}, {"byte[]Dynamic"}, {"byte[][]Dynamic"},
+                { "byteDynamic" }, { "byte[]Dynamic" }, { "byte[][]Dynamic" },
                 // BOOLEAN
-                {"booleanScalar"}, {"booleanSpectrum"}, {"booleanImage"},
+                { "booleanScalar" }, { "booleanSpectrum" }, { "booleanImage" },
                 // BOOLEAN dynamic
-                {"booleanDynamic"}, {"boolean[]Dynamic"}, {"boolean[][]Dynamic"},
+                { "booleanDynamic" }, { "boolean[]Dynamic" }, { "boolean[][]Dynamic" },
                 // STRING
-                {"stringScalar"}, {"stringSpectrum"}, {"stringImage"},
+                { "stringScalar" }, { "stringSpectrum" }, { "stringImage" },
                 // STRING dynamic
-                {"StringDynamic"}, {"String[]Dynamic"}, {"String[][]Dynamic"},
+                { "StringDynamic" }, { "String[]Dynamic" }, { "String[][]Dynamic" },
                 // DEVENCODED
-                {"devEncodedScalar"},
+                { "devEncodedScalar" },
                 // TODO: arrays of DevEncoded not supported by tangorb client
                 // api
                 // { new DevEncoded[] { new DevEncoded("test", new byte[] { 1,
@@ -101,7 +102,7 @@ public class JTangoAttributPerf extends NoDBDeviceManager {
                 // "devEncodedImage" },
                 // Fin Array.asList
                 // STATE
-                {"stateScalar"}, {"stateSpectrum"}});
+                { "stateScalar" }, { "stateSpectrum" } });
     }
 
     private final DeviceProxy proxy;

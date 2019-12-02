@@ -1,38 +1,39 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.testserver;
 
-import fr.esrf.Tango.AttrDataFormat;
-import fr.esrf.Tango.AttrWriteType;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoDs.TangoConst;
 import org.tango.server.StateMachineBehavior;
 import org.tango.server.attribute.AttributeConfiguration;
 import org.tango.server.attribute.AttributePropertiesImpl;
 import org.tango.server.attribute.AttributeValue;
 import org.tango.server.attribute.IAttributeBehavior;
+
+import fr.esrf.Tango.AttrDataFormat;
+import fr.esrf.Tango.AttrWriteType;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoDs.TangoConst;
 
 public class DynamicEnumAttribute implements IAttributeBehavior {
 
@@ -42,7 +43,7 @@ public class DynamicEnumAttribute implements IAttributeBehavior {
     public DynamicEnumAttribute() throws DevFailed {
         final AttributePropertiesImpl props = new AttributePropertiesImpl();
         props.setLabel("DevEnumDynamic");
-        props.setEnumLabels(new String[]{"label1", "label2"});
+        props.setEnumLabels(new String[] { "label1", "label2" });
         configAttr.setTangoType(TangoConst.Tango_DEV_ENUM, AttrDataFormat.SCALAR);
         configAttr.setName("DevEnumDynamic");
         configAttr.setWritable(AttrWriteType.READ_WRITE);

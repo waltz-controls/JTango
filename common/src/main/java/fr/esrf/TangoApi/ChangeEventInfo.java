@@ -38,38 +38,39 @@ import fr.esrf.Tango.ChangeEventProp;
 
 
 /**
- * Class Description: This class is the same class as ChangeEventProp,
- * but created for C++ compatibility.
+ *	Class Description: This class is the same class as ChangeEventProp, 
+ *	                   but created for C++ compatibility.
  *
- * @author verdier
- * @version $Revision: 25296 $
+ * @author  verdier
+ * @version  $Revision: 25296 $
  */
-public class ChangeEventInfo implements java.io.Serializable {
-    public String rel_change = "";
-    public String abs_change = "";
-    public String[] extensions;
-
-    //-======================================================================
-    //-======================================================================
-    public ChangeEventInfo(String rel_change, String abs_change, String[] extensions) {
-        this.rel_change = rel_change;
-        this.abs_change = abs_change;
-        this.extensions = extensions;
-    }
-
-    //-======================================================================
-    //-======================================================================
-    public ChangeEventInfo(ChangeEventProp ev_prop) {
-        this.rel_change = ev_prop.rel_change;
-        this.abs_change = ev_prop.abs_change;
-        this.extensions = ev_prop.extensions;
-    }
-
-    //-======================================================================
-    //-======================================================================
-    public ChangeEventProp getTangoObj() {
-        return new ChangeEventProp(rel_change, abs_change, extensions);
-    }
-    //-======================================================================
-    //-======================================================================
+public class ChangeEventInfo implements java.io.Serializable
+{
+	public String	rel_change = "";
+	public String	abs_change = "";
+	public String[]	extensions;
+	//-======================================================================
+	//-======================================================================
+	public ChangeEventInfo(String rel_change, String abs_change, String[] extensions)
+	{
+		this.rel_change = rel_change;
+		this.abs_change = abs_change;
+		this.extensions = extensions;
+	}
+	//-======================================================================
+	//-======================================================================
+	public ChangeEventInfo(ChangeEventProp ev_prop)
+	{
+		this.rel_change = ev_prop.rel_change;
+		this.abs_change = ev_prop.abs_change;
+		this.extensions = ev_prop.extensions;
+	}
+	//-======================================================================
+	//-======================================================================
+	public ChangeEventProp getTangoObj()
+	{
+		return new ChangeEventProp(rel_change, abs_change, extensions);
+	}
+	//-======================================================================
+	//-======================================================================
 }

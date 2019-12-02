@@ -67,15 +67,14 @@ public class TangoQualityChangeEvent extends EventObject implements java.io.Seri
             throw new DevFailed(errors);
         return attr_value;
     }
-
     //-=============================================
     //-=============================================
     @SuppressWarnings({"UnusedDeclaration"})
     public boolean isZmqEvent() {
-        return (eventSource == EventData.ZMQ_EVENT);
+        return (eventSource==EventData.ZMQ_EVENT);
     }
 
     private DeviceAttribute attr_value;
-    private DevError[] errors;
-    private int eventSource;
+    private DevError[]  errors;
+    private int         eventSource;
 }

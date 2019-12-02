@@ -39,8 +39,9 @@ import fr.esrf.Tango.DevState;
 import fr.esrf.Tango.DevStateHelper;
 import org.omg.CORBA.Any;
 
-
-public class StateCmd extends Command {
+ 
+public class StateCmd extends Command
+{
 
 //+-------------------------------------------------------------------------
 //
@@ -49,11 +50,12 @@ public class StateCmd extends Command {
 // description : 	constructor for Command class State
 //
 //--------------------------------------------------------------------------
-
-    public StateCmd(String name, int in, int out, String desc) {
-        super(name, in, out);
-        set_out_type_desc(desc);
-    }
+ 
+	public StateCmd(String name,int in,int out,String desc)
+	{
+		super(name,in,out);
+		set_out_type_desc(desc);
+	}
 
 //+-------------------------------------------------------------------------
 //
@@ -63,23 +65,24 @@ public class StateCmd extends Command {
 //
 //--------------------------------------------------------------------------
 
+ 
+	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
+	{
 
-    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
-
-        Util.out4.println("State::execute(): arrived");
-
+		Util.out4.println("State::execute(): arrived");
+	
 //
 // return state in a CORBA_Any
 //
 
-        Any out_any = Util.instance().get_orb().create_any();
+		Any out_any = Util.instance().get_orb().create_any();
+	
+		DevState sta = device.dev_state();
+		DevStateHelper.insert(out_any,sta);
+	
+		Util.out4.println("Leaving State::execute()");
+		return out_any;
 
-        DevState sta = device.dev_state();
-        DevStateHelper.insert(out_any, sta);
-
-        Util.out4.println("Leaving State::execute()");
-        return out_any;
-
-    }
+	}	
 
 }

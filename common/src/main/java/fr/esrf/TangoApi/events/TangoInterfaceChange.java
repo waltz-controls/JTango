@@ -50,7 +50,6 @@ public class TangoInterfaceChange extends EventDispatcher implements java.io.Ser
     int eventIdentifier;
 
     //=======================================================================
-
     /**
      * Creates a new instance of TangoInterfaceChange
      *
@@ -92,7 +91,8 @@ public class TangoInterfaceChange extends EventDispatcher implements java.io.Ser
                 }
             };
             SwingUtilities.invokeLater(do_work_later);
-        } else {
+        }
+        else {
             fireTangoInterfaceChangeEvent(interfaceChange, eventData);
         }
     }
@@ -101,7 +101,7 @@ public class TangoInterfaceChange extends EventDispatcher implements java.io.Ser
     //=======================================================================
     private void fireTangoInterfaceChangeEvent(TangoInterfaceChange tangoChange, EventData eventData) {
         TangoInterfaceChangeEvent event = new TangoInterfaceChangeEvent(tangoChange, eventData);
-        ArrayList<EventListener> listeners = event_listeners.getListeners(ITangoInterfaceChangeListener.class);
+        ArrayList<EventListener>    listeners = event_listeners.getListeners(ITangoInterfaceChangeListener.class);
         for (EventListener eventListener : listeners) {
             ((ITangoInterfaceChangeListener) eventListener).interface_change(event);
         }

@@ -45,22 +45,19 @@ public class TangoEventListenerList implements Serializable {
 
     private ArrayList<TangoListener> tangoListeners = new ArrayList<TangoListener>();
     //============================================================
-
     /**
      * A little class defining a Tango listener (Class and Listener method)
      */
     //============================================================
     class TangoListener {
-        Class<?> type;
-        EventListener listener;
-
+        Class<?>       type;
+        EventListener  listener;
         private <T extends EventListener> TangoListener(Class<T> type, T listener) {
             this.type = type;
             this.listener = listener;
         }
     }
     //============================================================
-
     /**
      * Registers a listener of a specific type.
      *
@@ -73,7 +70,6 @@ public class TangoEventListenerList implements Serializable {
     }
 
     //============================================================
-
     /**
      * Removes a listener of a specific type.
      *
@@ -84,32 +80,29 @@ public class TangoEventListenerList implements Serializable {
     <T extends EventListener> void remove(Class<T> type, T listener) {
 
         for (TangoListener tangoListener : tangoListeners) {
-            if (tangoListener.type == type && tangoListener.listener == listener) {
+            if (tangoListener.type==type && tangoListener.listener==listener) {
                 tangoListeners.remove(tangoListener);
                 break;
             }
         }
     }
     //============================================================
-
     /**
      * Returns tangoListeners for specified type
-     *
      * @param type specified listener type
      * @return tangoListeners for specified type
      */
     //============================================================
     <T extends EventListener> ArrayList<EventListener> getListeners(Class<T> type) {
-        ArrayList<EventListener> listeners = new ArrayList<EventListener>();
+        ArrayList<EventListener>    listeners = new ArrayList<EventListener>();
         for (TangoListener tangoListener : tangoListeners) {
-            if (tangoListener.type == type) {
+            if (tangoListener.type==type) {
                 listeners.add(tangoListener.listener);
             }
         }
         return listeners;
     }
     //============================================================
-
     /**
      * @return the number of tangoListeners.
      */

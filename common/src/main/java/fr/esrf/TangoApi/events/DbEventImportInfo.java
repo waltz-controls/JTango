@@ -65,10 +65,8 @@ public class DbEventImportInfo implements java.io.Serializable {
     public DbEventImportInfo() {
     }
     //===============================================
-
     /**
      * Complete constructor.
-     *
      * @param info object containing information from database
      */
     //===============================================
@@ -79,7 +77,6 @@ public class DbEventImportInfo implements java.io.Serializable {
     }
 
     //===============================================
-
     /**
      * Complete constructor.
      */

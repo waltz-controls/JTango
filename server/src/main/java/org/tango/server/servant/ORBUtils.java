@@ -1,35 +1,39 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.servant;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.Device;
-import fr.esrf.Tango.Device_5;
+import java.util.Locale;
+import java.util.StringTokenizer;
+
 import org.omg.CORBA.ORB;
 import org.omg.PortableServer.POA;
-import org.omg.PortableServer.POAPackage.*;
+import org.omg.PortableServer.POAPackage.ObjectAlreadyActive;
+import org.omg.PortableServer.POAPackage.ObjectNotActive;
+import org.omg.PortableServer.POAPackage.ServantAlreadyActive;
+import org.omg.PortableServer.POAPackage.WrongAdapter;
+import org.omg.PortableServer.POAPackage.WrongPolicy;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.tango.client.database.DatabaseFactory;
@@ -38,8 +42,9 @@ import org.tango.orb.IORDump;
 import org.tango.orb.ORBManager;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.Locale;
-import java.util.StringTokenizer;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.Device;
+import fr.esrf.Tango.Device_5;
 
 public final class ORBUtils {
 
@@ -61,7 +66,7 @@ public final class ORBUtils {
     /**
      * description : This method exports a device to the outside world. This is done by sending its CORBA network
      * parameter (mainly the IOR) to the Tango database
-     *
+     * 
      * @param dev
      * @throws DevFailed
      */
@@ -144,7 +149,7 @@ public final class ORBUtils {
     /**
      * WARNING: The following code is JacORB specific. Add device name in HashTable used for JacORB objectKeyMap if
      * _UseDb==false.
-     *
+     * 
      * @param name
      *            The device's name.
      * @throws DevFailed

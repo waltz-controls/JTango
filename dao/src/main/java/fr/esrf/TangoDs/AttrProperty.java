@@ -34,35 +34,36 @@
 
 package fr.esrf.TangoDs;
 
-class AttrProperty implements TangoConst {
+class AttrProperty implements TangoConst
+{
 
-    private String attr_name;
-    private String[] attr_value;
+	private String		attr_name;
+	private String[]	attr_value;
 
-    //+-------------------------------------------------------------------------
+//+-------------------------------------------------------------------------
 //
 // method : 		AttrProperty 
 // 
 // description : 	constructors for AttrProperty class
 //
 //--------------------------------------------------------------------------
-    AttrProperty(String name, String value) {
-        this(name, new String[]{value});
-    }
+	AttrProperty(String name,String value)
+	{
+		this(name, new String[] { value });
+	}
+	AttrProperty(String name,String[] value)
+	{
+		// Property name in lower case letters
+		attr_name = name.toLowerCase();
+		attr_value = value;
 
-    AttrProperty(String name, String[] value) {
-        // Property name in lower case letters
-        attr_name = name.toLowerCase();
-        attr_value = value;
-
-        // For data_type or data_format properties,
-        //	also change property value to lowercase letters
-        if ((attr_name.equals("data_type") == true) ||
-                (attr_name.equals("data_format") == true))
-            attr_value[0] = attr_value[0].toLowerCase();
-    }
-
-    //+-------------------------------------------------------------------------
+		// For data_type or data_format properties,
+		//	also change property value to lowercase letters
+		if ((attr_name.equals("data_type") == true) ||
+			(attr_name.equals("data_format") == true))
+				attr_value[0] = attr_value[0].toLowerCase();
+	}
+//+-------------------------------------------------------------------------
 //
 // method : 		AttrProperty.toString
 // 
@@ -70,27 +71,30 @@ class AttrProperty implements TangoConst {
 //			print attribute name and value in one go
 //
 //--------------------------------------------------------------------------
-    public String toString() {
-        StringBuffer s = new StringBuffer("Property name = ");
-        s.append(attr_name);
-        s.append(", Property value = ");
-        for (String value : attr_value)
-            s.append("\n\t").append(value);
+	public String toString()
+	{
+		StringBuffer s = new StringBuffer("Property name = ");
+		s.append(attr_name);
+		s.append(", Property value = ");
+		for (String value : attr_value)
+			s.append("\n\t").append(value);
 
-        return s.toString();
-    }
+		return s.toString();
+	}
 
-    //+-------------------------------------------------------------------------
+//+-------------------------------------------------------------------------
 //
 // Methods to retrieve/set some data members from outside the class and all
 // its inherited classes
 //
 //--------------------------------------------------------------------------
-    String[] get_value() {
-        return attr_value;
-    }
+	String[] get_value()
+	{
+		return attr_value;
+	}
 
-    String get_name() {
-        return attr_name;
-    }
+	String get_name()
+	{
+		return attr_name;
+	}
 }

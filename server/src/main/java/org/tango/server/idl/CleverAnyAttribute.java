@@ -1,36 +1,28 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.idl;
-
-import fr.esrf.Tango.*;
-import fr.esrf.TangoDs.TangoConst;
-import org.omg.CORBA.Any;
-import org.tango.attribute.AttributeTangoType;
-import org.tango.orb.ORBManager;
-import org.tango.server.ExceptionMessages;
-import org.tango.utils.DevFailedUtils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -38,11 +30,36 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.omg.CORBA.Any;
+import org.tango.attribute.AttributeTangoType;
+import org.tango.orb.ORBManager;
+import org.tango.server.ExceptionMessages;
+import org.tango.utils.DevFailedUtils;
+
+import fr.esrf.Tango.AttrDataFormat;
+import fr.esrf.Tango.DevEncoded;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.DevState;
+import fr.esrf.Tango.DevVarBooleanArrayHelper;
+import fr.esrf.Tango.DevVarCharArrayHelper;
+import fr.esrf.Tango.DevVarDoubleArrayHelper;
+import fr.esrf.Tango.DevVarEncodedArrayHelper;
+import fr.esrf.Tango.DevVarFloatArrayHelper;
+import fr.esrf.Tango.DevVarLong64ArrayHelper;
+import fr.esrf.Tango.DevVarLongArrayHelper;
+import fr.esrf.Tango.DevVarShortArrayHelper;
+import fr.esrf.Tango.DevVarStateArrayHelper;
+import fr.esrf.Tango.DevVarStringArrayHelper;
+import fr.esrf.Tango.DevVarULong64ArrayHelper;
+import fr.esrf.Tango.DevVarULongArrayHelper;
+import fr.esrf.Tango.DevVarUShortArrayHelper;
+import fr.esrf.TangoDs.TangoConst;
+
 /**
  * Convertion tool between java types and tango types for attributes
- *
+ * 
  * @author ABEILLE
- *
+ * 
  */
 public final class CleverAnyAttribute {
 
@@ -88,7 +105,7 @@ public final class CleverAnyAttribute {
 
     /**
      * Get value of an Any
-     *
+     * 
      * @param any
      * @param tangoType
      * @return The value
@@ -122,7 +139,7 @@ public final class CleverAnyAttribute {
 
     /**
      * Set a value in an any
-     *
+     * 
      * @param tangoType
      * @param value
      * @return the Any

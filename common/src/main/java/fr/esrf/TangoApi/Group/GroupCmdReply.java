@@ -35,7 +35,6 @@
 package fr.esrf.TangoApi.Group;
 
 //- Import TANGO stuffs
-
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.DeviceData;
 
@@ -48,36 +47,28 @@ public class GroupCmdReply extends GroupReply implements java.io.Serializable {
      * The command reply data
      */
     private DeviceData data;
-
-    /**
-     * Creates a new instance of GroupCmdReply
-     */
+    
+    /** Creates a new instance of GroupCmdReply */
     public GroupCmdReply() {
         super();
     }
-
-    /**
-     * Creates a new instance of GroupCmdReply
-     */
+    
+    /** Creates a new instance of GroupCmdReply */
     public GroupCmdReply(String _dev_name, String _obj_name, DeviceData _data) {
         super(_dev_name, _obj_name);
         data = _data;
     }
-
-    /**
-     * Creates a new instance of GroupCmdReply
-     */
+    
+    /** Creates a new instance of GroupCmdReply */
     public GroupCmdReply(String _dev_name, String _obj_name, DevFailed _ex) {
         super(_dev_name, _obj_name, _ex);
         data = null;
     }
-
-    /**
-     * Returns the associated data - returns null if has_failed set to true
-     */
+    
+    /** Returns the associated data - returns null if has_failed set to true */
     public DeviceData get_data() throws DevFailed {
         if (exception_enabled && has_failed) {
-            throw exception;
+          throw exception;
         }
         return data;
     }

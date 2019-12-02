@@ -1,18 +1,23 @@
 package fr.soleil.tango.attributecomposer;
 
-import fr.esrf.Tango.*;
-import fr.esrf.TangoApi.AttributeInfoEx;
-import fr.esrf.TangoApi.DeviceAttribute;
-import fr.soleil.tango.clientapi.InsertExtractUtils;
-import fr.soleil.tango.clientapi.TangoGroupAttribute;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.utils.DevFailedUtils;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.utils.DevFailedUtils;
+
+import fr.esrf.Tango.AttrDataFormat;
+import fr.esrf.Tango.AttrQuality;
+import fr.esrf.Tango.AttrWriteType;
+import fr.esrf.Tango.DevError;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoApi.AttributeInfoEx;
+import fr.esrf.TangoApi.DeviceAttribute;
+import fr.soleil.tango.clientapi.InsertExtractUtils;
+import fr.soleil.tango.clientapi.TangoGroupAttribute;
 
 public class AttributeGroupReader implements Runnable {
 
@@ -26,7 +31,7 @@ public class AttributeGroupReader implements Runnable {
     private final TangoGroupAttribute attributeGroup;
 
     public AttributeGroupReader(final IAttributeGroupTaskListener listener, final TangoGroupAttribute attributeGroup,
-                                final boolean readWriteValue, final boolean readQuality, final boolean readAttributeInfo) {
+            final boolean readWriteValue, final boolean readQuality, final boolean readAttributeInfo) {
         attributeGroupListener = listener;
         this.readWriteValue = readWriteValue;
         this.readQuality = readQuality;

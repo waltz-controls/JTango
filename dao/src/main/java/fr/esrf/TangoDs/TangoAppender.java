@@ -34,10 +34,11 @@
 
 package fr.esrf.TangoDs;
 
-
-public interface TangoAppender {
-    /**
-     * Returns true if the appender is (still) valid, false otherwise.
-     */
-    public boolean isValid();
+ 
+public interface TangoAppender 
+{
+/**
+ * Returns true if the appender is (still) valid, false otherwise.
+ */
+	public boolean isValid();
 }

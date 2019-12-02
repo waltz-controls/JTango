@@ -52,7 +52,6 @@ import org.omg.CORBA.TypeCode;
 class ConversionUtil {
 
     //==========================================================================
-
     /**
      * Convert a DevCmdHistory_4 object (since Device_4Impl) to
      * a DeviceDataHistory array.
@@ -63,10 +62,10 @@ class ConversionUtil {
      */
     //==========================================================================
     static DeviceDataHistory[] commandHistoryToDeviceDataHistoryArray(String commandName,
-                                                                      DevCmdHistory_4 cmdHistory4) throws DevFailed {
+                                                              DevCmdHistory_4 cmdHistory4) throws DevFailed {
         // Check received data validity
-        if (cmdHistory4.dims.length != cmdHistory4.dims_array.length ||
-                cmdHistory4.errors.length != cmdHistory4.errors_array.length) {
+        if (cmdHistory4.dims.length!=cmdHistory4.dims_array.length ||
+                cmdHistory4.errors.length!=cmdHistory4.errors_array.length) {
             Except.throw_exception("API_WrongHistoryDataBuffer",
                     "Data buffer received from server is not valid !");
         }
@@ -77,24 +76,24 @@ class ConversionUtil {
         // Copy date and name in each History list element
         DeviceDataHistory[] ddh = new DeviceDataHistory[nb_records];
 
-        for (int i = 0; i < nb_records; i++)
+        for (int i = 0 ; i<nb_records ; i++)
             ddh[i] = new DeviceDataHistory(commandName, TangoConst.COMMAND, cmdHistory4.dates[i]);
 
         // Copy read dimension
-        for (int i = 0; i < cmdHistory4.dims.length; i++) {
+        for (int i = 0 ; i<cmdHistory4.dims.length ; i++) {
             int nb_elt = cmdHistory4.dims_array[i].nb_elt;
             int start = cmdHistory4.dims_array[i].start;
-            for (int k = 0; k < nb_elt; k++) {
+            for (int k = 0 ; k<nb_elt ; k++) {
                 ddh[start - k].setDimX(cmdHistory4.dims[i].dim_x);
                 ddh[start - k].setDimY(cmdHistory4.dims[i].dim_y);
             }
         }
 
         // Copy errors
-        for (int i = 0; i < cmdHistory4.errors.length; i++) {
+        for (int i = 0 ; i<cmdHistory4.errors.length ; i++) {
             int nb_elt = cmdHistory4.errors_array[i].nb_elt;
             int start = cmdHistory4.errors_array[i].start;
-            for (int k = 0; k < nb_elt; k++)
+            for (int k = 0 ; k<nb_elt ; k++)
                 ddh[start - k].setErrStack(cmdHistory4.errors[i]);
         }
 
@@ -104,7 +103,6 @@ class ConversionUtil {
         return ddh;
     }
     //==========================================================================
-
     /**
      * Convert a DevAttrHistory_4 object (since Device_4Impl) to
      * a DeviceDataHistory array.
@@ -116,10 +114,10 @@ class ConversionUtil {
     static DeviceDataHistory[] attributeHistoryToDeviceDataHistoryArray(DevAttrHistory_4 attrHistory4)
             throws DevFailed {
         // Check received data validity
-        if (attrHistory4.quals.length != attrHistory4.quals_array.length ||
-                attrHistory4.r_dims.length != attrHistory4.r_dims_array.length ||
-                attrHistory4.w_dims.length != attrHistory4.w_dims_array.length ||
-                attrHistory4.errors.length != attrHistory4.errors_array.length) {
+        if (attrHistory4.quals.length!=attrHistory4.quals_array.length ||
+                attrHistory4.r_dims.length!=attrHistory4.r_dims_array.length ||
+                attrHistory4.w_dims.length!=attrHistory4.w_dims_array.length ||
+                attrHistory4.errors.length!=attrHistory4.errors_array.length) {
             Except.throw_exception("API_WrongHistoryDataBuffer",
                     "Data buffer received from server is not valid !",
                     "DeviceProxy::from_hist4_2_AttHistory");
@@ -132,43 +130,43 @@ class ConversionUtil {
         String name = attrHistory4.name;
         DeviceDataHistory[] ddh = new DeviceDataHistory[nb_records];
 
-        for (int i = 0; i < nb_records; i++)
+        for (int i = 0 ; i<nb_records ; i++)
             ddh[i] = new DeviceDataHistory(name, TangoConst.ATTRIBUTE, attrHistory4.dates[i]);
 
         // Copy the attribute quality factor
-        for (int i = 0; i < attrHistory4.quals.length; i++) {
+        for (int i = 0 ; i<attrHistory4.quals.length ; i++) {
             int nb_elt = attrHistory4.quals_array[i].nb_elt;
             int start = attrHistory4.quals_array[i].start;
-            for (int k = 0; k < nb_elt; k++)
+            for (int k = 0 ; k<nb_elt ; k++)
                 ddh[start - k].setAttrQuality(attrHistory4.quals[i]);
         }
 
         // Copy read dimension
-        for (int i = 0; i < attrHistory4.r_dims.length; i++) {
+        for (int i = 0 ; i<attrHistory4.r_dims.length ; i++) {
             int nb_elt = attrHistory4.r_dims_array[i].nb_elt;
             int start = attrHistory4.r_dims_array[i].start;
-            for (int k = 0; k < nb_elt; k++) {
+            for (int k = 0 ; k<nb_elt ; k++) {
                 ddh[start - k].setDimX(attrHistory4.r_dims[i].dim_x);
                 ddh[start - k].setDimY(attrHistory4.r_dims[i].dim_y);
             }
         }
 
         // Copy write dimension
-        for (int i = 0; i < attrHistory4.w_dims.length; i++) {
+        for (int i = 0 ; i<attrHistory4.w_dims.length ; i++) {
             int nb_elt = attrHistory4.w_dims_array[i].nb_elt;
             int start = attrHistory4.w_dims_array[i].start;
 
-            for (int k = 0; k < nb_elt; k++) {
+            for (int k = 0 ; k<nb_elt ; k++) {
                 ddh[start - k].setWrittenDimX(attrHistory4.w_dims[i].dim_x);
                 ddh[start - k].setWrittenDimY(attrHistory4.w_dims[i].dim_y);
             }
         }
 
         // Copy errors
-        for (int i = 0; i < attrHistory4.errors.length; i++) {
+        for (int i = 0 ; i<attrHistory4.errors.length ; i++) {
             int nb_elt = attrHistory4.errors_array[i].nb_elt;
             int start = attrHistory4.errors_array[i].start;
-            for (int k = 0; k < nb_elt; k++)
+            for (int k = 0 ; k<nb_elt ; k++)
                 ddh[start - k].setErrStack(attrHistory4.errors[i]);
         }
 
@@ -178,7 +176,6 @@ class ConversionUtil {
     }
 
     //==========================================================================
-
     /**
      * Convert a DevAttrHistory_5 object (since Device_5Impl) to
      * a DeviceDataHistory array.
@@ -190,10 +187,10 @@ class ConversionUtil {
     static DeviceDataHistory[] attributeHistoryToDeviceDataHistoryArray(DevAttrHistory_5 attrHistory5)
             throws DevFailed {
         // Check received data validity
-        if (attrHistory5.quals.length != attrHistory5.quals_array.length ||
-                attrHistory5.r_dims.length != attrHistory5.r_dims_array.length ||
-                attrHistory5.w_dims.length != attrHistory5.w_dims_array.length ||
-                attrHistory5.errors.length != attrHistory5.errors_array.length) {
+        if (attrHistory5.quals.length!=attrHistory5.quals_array.length ||
+                attrHistory5.r_dims.length!=attrHistory5.r_dims_array.length ||
+                attrHistory5.w_dims.length!=attrHistory5.w_dims_array.length ||
+                attrHistory5.errors.length!=attrHistory5.errors_array.length) {
             Except.throw_exception("API_WrongHistoryDataBuffer",
                     "Data buffer received from server is not valid !",
                     "DeviceProxy::from_hist4_2_AttHistory");
@@ -206,46 +203,46 @@ class ConversionUtil {
         String name = attrHistory5.name;
         DeviceDataHistory[] dataHistories = new DeviceDataHistory[nb_records];
 
-        for (int i = 0; i < nb_records; i++) {
+        for (int i = 0 ; i<nb_records ; i++) {
             dataHistories[i] = new DeviceDataHistory(name,
                     TangoConst.ATTRIBUTE, attrHistory5.dates[i]);
             dataHistories[i].dataFormat = attrHistory5.data_format;
             dataHistories[i].dataType = attrHistory5.data_type;
         }
         // Copy the attribute quality factor
-        for (int i = 0; i < attrHistory5.quals.length; i++) {
+        for (int i = 0 ; i<attrHistory5.quals.length ; i++) {
             int nb_elt = attrHistory5.quals_array[i].nb_elt;
             int start = attrHistory5.quals_array[i].start;
-            for (int k = 0; k < nb_elt; k++)
+            for (int k = 0 ; k<nb_elt ; k++)
                 dataHistories[start - k].setAttrQuality(attrHistory5.quals[i]);
         }
 
         // Copy read dimension
-        for (int i = 0; i < attrHistory5.r_dims.length; i++) {
+        for (int i = 0 ; i<attrHistory5.r_dims.length ; i++) {
             int nb_elt = attrHistory5.r_dims_array[i].nb_elt;
             int start = attrHistory5.r_dims_array[i].start;
-            for (int k = 0; k < nb_elt; k++) {
+            for (int k = 0 ; k<nb_elt ; k++) {
                 dataHistories[start - k].setDimX(attrHistory5.r_dims[i].dim_x);
                 dataHistories[start - k].setDimY(attrHistory5.r_dims[i].dim_y);
             }
         }
 
         // Copy write dimension
-        for (int i = 0; i < attrHistory5.w_dims.length; i++) {
+        for (int i = 0 ; i<attrHistory5.w_dims.length ; i++) {
             int nb_elt = attrHistory5.w_dims_array[i].nb_elt;
             int start = attrHistory5.w_dims_array[i].start;
 
-            for (int k = 0; k < nb_elt; k++) {
+            for (int k = 0 ; k<nb_elt ; k++) {
                 dataHistories[start - k].setWrittenDimX(attrHistory5.w_dims[i].dim_x);
                 dataHistories[start - k].setWrittenDimY(attrHistory5.w_dims[i].dim_y);
             }
         }
 
         // Copy errors
-        for (int i = 0; i < attrHistory5.errors.length; i++) {
+        for (int i = 0 ; i<attrHistory5.errors.length ; i++) {
             int nb_elt = attrHistory5.errors_array[i].nb_elt;
             int start = attrHistory5.errors_array[i].start;
-            for (int k = 0; k < nb_elt; k++)
+            for (int k = 0 ; k<nb_elt ; k++)
                 dataHistories[start - k].setErrStack(attrHistory5.errors[i]);
         }
 
@@ -264,7 +261,7 @@ class ConversionUtil {
                 boolean[] values =
                         DevVarBooleanArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -273,10 +270,10 @@ class ConversionUtil {
                         DevVarCharArrayHelper.extract(value);
                 short[] values = new short[argout.length];
                 short mask = 0xFF;
-                for (int i = 0; i < argout.length; i++)
+                for (int i = 0 ; i<argout.length ; i++)
                     values[i] = (short) (mask & argout[i]);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -285,7 +282,7 @@ class ConversionUtil {
                 short[] values =
                         DevVarShortArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -294,7 +291,7 @@ class ConversionUtil {
                 short[] values =
                         DevVarUShortArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -303,7 +300,7 @@ class ConversionUtil {
                 int[] values =
                         DevVarLongArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -312,7 +309,7 @@ class ConversionUtil {
                 int[] values =
                         DevVarULongArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -321,7 +318,7 @@ class ConversionUtil {
                 long[] values =
                         DevVarLong64ArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -330,7 +327,7 @@ class ConversionUtil {
                 long[] values =
                         DevVarULong64ArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -339,7 +336,7 @@ class ConversionUtil {
                 float[] values =
                         DevVarFloatArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -348,7 +345,7 @@ class ConversionUtil {
                 double[] values =
                         DevVarDoubleArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -357,7 +354,7 @@ class ConversionUtil {
                 String[] values =
                         DevVarStringArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -368,7 +365,7 @@ class ConversionUtil {
                 int s_base = values.svalue.length;
                 int l_base = values.lvalue.length;
                 int[] bases = {s_base, l_base};
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     bases = dataHistories[i].insert(values, bases);
             }
             break;
@@ -379,7 +376,7 @@ class ConversionUtil {
                 int s_base = values.svalue.length;
                 int d_base = values.dvalue.length;
                 int[] bases = {s_base, d_base};
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     bases = dataHistories[i].insert(values, bases);
             }
             break;
@@ -390,7 +387,7 @@ class ConversionUtil {
                 else
                     values = new DevState[]{DevStateHelper.extract(value)};
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -398,7 +395,7 @@ class ConversionUtil {
                 DevEncoded[] values =
                         DevVarEncodedArrayHelper.extract(value);
                 int base = values.length;
-                for (int i = 0; i < nb_records; i++)
+                for (int i = 0 ; i<nb_records ; i++)
                     base = dataHistories[i].insert(values, base);
             }
             break;
@@ -410,7 +407,6 @@ class ConversionUtil {
         }
     }
     //===========================================
-
     /**
      * return true if any is an array
      */
@@ -430,7 +426,6 @@ class ConversionUtil {
         return retval;
     }
     //==========================================================================
-
     /**
      * Returns attribute Tango type.
      */
@@ -441,11 +436,11 @@ class ConversionUtil {
             TypeCode tc = any.type();
 
             //	Check if sequence is empty
-            if (tc.kind().value() == TCKind._tk_null)
+            if (tc.kind().value()==TCKind._tk_null)
                 return TangoConst.Tango_DEV_VOID;
 
             //	Special case for state
-            if (tc.kind().value() == TCKind._tk_enum)
+            if (tc.kind().value()==TCKind._tk_enum)
                 return TangoConst.Tango_DEV_STATE;
             TypeCode tc_alias = tc.content_type();
             TypeCode tc_seq = tc_alias.content_type();

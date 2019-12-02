@@ -68,7 +68,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
     private boolean orbRunning = false;
 
     //===============================================================
-
     /**
      * Creates a new instance of EventConsumer
      *
@@ -82,7 +81,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         }
         return instance;
     }
-
     //===============================================================
     public static NotifdEventConsumer getInstance() throws DevFailed {
         if (instance == null) {
@@ -90,7 +88,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         }
         return instance;
     }
-
     //===============================================================
     //===============================================================
     private NotifdEventConsumer() throws DevFailed {
@@ -126,7 +123,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         runner.start();
     }
     //===============================================================
-
     /**
      * activate POA and go into endless loop waiting for events to be pushed
      */
@@ -157,7 +153,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         }
 
     }
-
     //===============================================================
     //===============================================================
     public int subscribe_event(DeviceProxy device,
@@ -169,7 +164,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         //  Cannot be used with notifd (IDL 5 only)
         return 0;
     }
-
     //===============================================================
     //===============================================================
     private java.lang.Object extractAttributeObject(org.omg.CosNotification.StructuredEvent notification)
@@ -214,14 +208,13 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
             String key = (String) keys.nextElement();
             //  Notifd do not use tango host
             int start = key.indexOf('/', "tango:// ".length());
-            String shortName = key.substring(start + 1);
+            String shortName = key.substring(start+1);
             if (eventName.equalsIgnoreCase(shortName)) {
                 return event_callback_map.get(key);
             }
         }
         return null;
     }
-
     //===============================================================
     //===============================================================
     public void push_structured_event(org.omg.CosNotification.StructuredEvent notification) {
@@ -237,7 +230,7 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
             //	Else check if event is registered and get its CB struct
             String eventName = domainName + "." + eventType;
             EventCallBackStruct callBackStruct = getEventCallBackStruct(eventName);
-            if (callBackStruct != null) {
+            if (callBackStruct!=null) {
                 CallBack callback = callBackStruct.callback;
                 DeviceAttribute attr_value = null;
                 AttributeInfoEx attr_config = null;
@@ -268,13 +261,13 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
                     ev_queue.insert_event(event_data);
                 } else if (callback != null)
                     callback.push_event(event_data);
-            } else
+            }
+            else
                 System.err.println(eventName + " event not found");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     //===============================================================
     //===============================================================
     private void cleanup_event_filters() {
@@ -322,7 +315,7 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
     private DbEventImportInfo getEventImportInfo(String channelName,
                                                  Database dbase,
                                                  DeviceProxy adminDevice)
-            throws DevFailed {
+                                                 throws DevFailed {
         DbEventImportInfo received = null;
         try {
 
@@ -362,12 +355,11 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         }
         return received;
     }
-
     //===============================================================
     //===============================================================
     @Override
-    protected void checkDeviceConnection(DeviceProxy device,
-                                         String attribute, DeviceData deviceData, String event_name) throws DevFailed {
+    protected  void checkDeviceConnection(DeviceProxy device,
+                        String attribute, DeviceData deviceData, String event_name) throws DevFailed {
 
         String deviceName = device.name();
         if (!device_channel_map.containsKey(deviceName)) {
@@ -379,11 +371,10 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
             }
         }
     }
-
     //===============================================================
     //===============================================================
     private void connectToNotificationDaemon(DbEventImportInfo received)
-            throws DevFailed {
+                throws DevFailed {
 
         boolean channel_exported = received.channel_exported;
         if (channel_exported) {
@@ -394,7 +385,7 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
                 final org.omg.CORBA.Policy p =
                         new org.jacorb.orb.policies.RelativeRoundtripTimeoutPolicy(10000 * 3000);
                 eventChannel._set_policy_override(
-                        new Policy[]{p}, org.omg.CORBA.SetOverrideType.ADD_OVERRIDE);
+                        new Policy[] { p }, org.omg.CORBA.SetOverrideType.ADD_OVERRIDE);
 
             } catch (RuntimeException e) {
                 Except.throw_event_system_failed("API_NotificationServiceFailed",
@@ -445,11 +436,10 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
                     "EventConsumer.connect_event_channel");
         }
     }
-
     //===============================================================
     //===============================================================
     private StructuredProxyPushSupplier getStructuredProxyPushSupplier(String channelName)
-            throws DevFailed {
+                    throws DevFailed {
         StructuredProxyPushSupplier structuredProxyPushSupplier =
                 StructuredProxyPushSupplierHelper.narrow(proxySupplier);
         if (structuredProxyPushSupplier == null) {
@@ -477,7 +467,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         }
         return structuredProxyPushSupplier;
     }
-
     //===============================================================
     //===============================================================
     private void connect(DeviceProxy device_proxy, String attributeName, String eventName, DeviceData deviceData) throws DevFailed {
@@ -499,7 +488,7 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
                 dbase = device_proxy.get_db_obj();
             ConnectionStructure connectionStructure =
                     new ConnectionStructure(device_proxy.get_tango_host(), channelName,
-                            deviceName, attributeName, eventName, dbase, deviceData, false);
+                        deviceName, attributeName, eventName, dbase, deviceData, false);
             connect_event_channel(connectionStructure);
         } else if (device_proxy.use_db()) {
             dbase = device_proxy.get_db_obj();
@@ -512,11 +501,10 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         device_channel_map.put(deviceName, channelName);
     }
     //===============================================================
-
     /**
      * We need to serialize as this method need access the POA
      *
-     * @param cs the connection information structure
+     * @param cs  the connection information structure
      * @throws DevFailed if connection failed on notification service
      */
     //===============================================================
@@ -536,7 +524,7 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         connectToNotificationDaemon(received);
         StructuredProxyPushSupplier
                 structuredProxyPushSupplier = getStructuredProxyPushSupplier(cs.channelName);
-
+        
         if (cs.reconnect) {
             EventChannelStruct eventChannelStruct = channel_map.get(cs.channelName);
             eventChannelStruct.eventChannel = eventChannel;
@@ -575,7 +563,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
             setEventChannelTimeoutMillis(newEventChannelStruct.eventChannel, 3000);
         }
     }
-
     //===============================================================
     //===============================================================
     int add_filter_for_channel(EventChannelStruct event_channel_struct, String constraint_expr) throws DevFailed {
@@ -649,7 +636,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         } catch (DevFailed e) { /* */ }
         return retVal;
     }
-
     //===============================================================
     //===============================================================
     protected void checkIfAlreadyConnected(DeviceProxy device, String attribute, String event_name, CallBack callback, int max_size, boolean stateless)
@@ -679,25 +665,23 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
                         "EventConsumer.subscribe_event()");
         }
     }
-
     //===============================================================
     //===============================================================
     protected String getEventSubscriptionCommandName() {
         return "EventSubscriptionChange";
     }
-
     //===============================================================
     //===============================================================
     protected void setAdditionalInfoToEventCallBackStruct(EventCallBackStruct callback_struct,
-                                                          String device_name, String attribute, String event_name,
-                                                          String[] filters, EventChannelStruct channel_struct) throws DevFailed {
-
+                            String device_name, String attribute, String event_name,
+                            String[]filters, EventChannelStruct channel_struct) throws DevFailed{
+        
         String constraint_expr = buildConstraintExpr(device_name, attribute, event_name, filters);
         int filter_id = add_filter_for_channel(channel_struct, constraint_expr);
 
         callback_struct.filter_constraint = constraint_expr;
         callback_struct.filter_id = filter_id;
-        callback_struct.consumer = this;
+        callback_struct.consumer  = this;
     }
 
     //===============================================================
@@ -741,21 +725,20 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
                 callback.push_event(event_data);
         } catch (DevFailed e) { /* */ }
     }
-
     //===============================================================
     //===============================================================
     @Override
     protected void checkIfHeartbeatSkipped(String name, EventChannelStruct eventChannelStruct) {
-        // Check if heartbeat have been skipped, can happen if
-        // 1- the notifd is dead (if not ZMQ)
-        // 2- the server is dead
-        // 3- The network was down;
-        // 4- The server has been restarted on another host.
+            // Check if heartbeat have been skipped, can happen if
+            // 1- the notifd is dead (if not ZMQ)
+            // 2- the server is dead
+            // 3- The network was down;
+            // 4- The server has been restarted on another host.
 //        long now = System.currentTimeMillis();
 //        boolean heartbeat_skipped =
 //                ((now - eventChannelStruct.last_heartbeat) > KeepAliveThread.getHeartBeatPeriod());
         if (KeepAliveThread.heartbeatHasBeenSkipped(eventChannelStruct) ||
-                eventChannelStruct.heartbeat_skipped || eventChannelStruct.notifd_failed) {
+            eventChannelStruct.heartbeat_skipped || eventChannelStruct.notifd_failed) {
 
             eventChannelStruct.heartbeat_skipped = true;
 
@@ -832,7 +815,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
 
 
     //===============================================================
-
     /**
      * Try to connect if it failed at subscribe
      */
@@ -866,7 +848,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         return retVal;
     }
     //===============================================================
-
     /**
      * Reconnect to event
      *
@@ -890,7 +871,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         }
 
     }
-
     //===============================================================
     //===============================================================
     private void setEventChannelTimeoutMillis(EventChannel eventChannel, int millis) {
@@ -900,7 +880,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         eventChannel._set_policy_override(new Policy[]{p},
                 org.omg.CORBA.SetOverrideType.ADD_OVERRIDE);
     }
-
     //===============================================================
     //===============================================================
     private void cleanup_heartbeat_filters() {
@@ -921,7 +900,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
             }
         }
     }
-
     //===============================================================
     //===============================================================
     protected void removeFilters(EventCallBackStruct cb_struct) throws DevFailed {
@@ -944,7 +922,6 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
                     "EventConsumer.unsubscribe_event()");
         }
     }
-
     //===============================================================
     //===============================================================
     protected void unsubscribeTheEvent(EventCallBackStruct callbackStruct) {
@@ -954,8 +931,9 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
     //===============================================================
 
 
-    //===============================================================
 
+
+    //===============================================================
     /**
      * Reconnect to channel
      *
@@ -963,7 +941,7 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
      * @return true if reconnection done
      */
     //===============================================================
-    boolean reconnect_to_channel(String name) {
+     boolean reconnect_to_channel(String name) {
         boolean ret = true;
         Enumeration callback_structs = event_callback_map.elements();
         while (callback_structs.hasMoreElements()) {
@@ -985,6 +963,7 @@ public class NotifdEventConsumer extends EventConsumer implements TangoConst, Ru
         }
         return ret;
     }
+
 
 
 }

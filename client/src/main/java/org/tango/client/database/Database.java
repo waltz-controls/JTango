@@ -12,8 +12,9 @@ import java.util.Map;
 
 /**
  * Client of the tango database device.
- *
+ * 
  * @author ABEILLE
+ * 
  */
 public final class Database implements ITangoDB {
     private final Logger logger = LoggerFactory.getLogger(Database.class);
@@ -22,9 +23,11 @@ public final class Database implements ITangoDB {
 
     /**
      * Ctr
-     *
-     * @param host host name of the tango db
-     * @param port port number of the tango db
+     * 
+     * @param host
+     *            host name of the tango db
+     * @param port
+     *            port number of the tango db
      * @throws DevFailed
      */
     Database(final String host, final String port) throws DevFailed {
@@ -51,8 +54,9 @@ public final class Database implements ITangoDB {
 
     /**
      * Export a tango device into the tango db (execute DbExportDevice on DB device)
-     *
-     * @param info export info {@link DeviceExportInfo}
+     * 
+     * @param info
+     *            export info {@link DeviceExportInfo}
      * @throws DevFailed
      */
     @Override
@@ -62,8 +66,9 @@ public final class Database implements ITangoDB {
 
     /**
      * Get the list of instance for an executable.(execute DbGetInstanceNameList on DB device)
-     *
-     * @param dsExecName The executable name
+     * 
+     * @param dsExecName
+     *            The executable name
      * @return the list of instance
      * @throws DevFailed
      */
@@ -74,8 +79,9 @@ public final class Database implements ITangoDB {
 
     /**
      * Import a tango device from the tango db (execute DbImportDevice on DB device)
-     *
-     * @param toBeImported the device to import
+     * 
+     * @param toBeImported
+     *            the device to import
      * @return {@link DeviceImportInfo}
      * @throws DevFailed
      */
@@ -86,8 +92,9 @@ public final class Database implements ITangoDB {
 
     /**
      * Export a server into the tango db (execute DbUnExportServer on DB device)
-     *
-     * @param serverName The server name
+     * 
+     * @param serverName
+     *            The server name
      * @throws DevFailed
      */
     @Override
@@ -97,9 +104,11 @@ public final class Database implements ITangoDB {
 
     /**
      * Get the list of device for a server and a class (execute DbGetDeviceList on DB device)
-     *
-     * @param serverName The server name
-     * @param className  The class name
+     * 
+     * @param serverName
+     *            The server name
+     * @param className
+     *            The class name
      * @return
      * @throws DevFailed
      */
@@ -110,9 +119,11 @@ public final class Database implements ITangoDB {
 
     /**
      * Get some properties value for a device. (execute DbGetDevicePropertyList on DB device)
-     *
-     * @param name          The device name
-     * @param propertyNames The list of properties to retrieve. Empty if all
+     * 
+     * @param name
+     *            The device name
+     * @param propertyNames
+     *            The list of properties to retrieve. Empty if all
      * @return
      * @throws DevFailed
      */
@@ -123,9 +134,11 @@ public final class Database implements ITangoDB {
 
     /**
      * Set values of device properties. (execute DbPutDeviceProperty on DB device)
-     *
-     * @param deviceName The device name
-     * @param properties The properties names and their values
+     * 
+     * @param deviceName
+     *            The device name
+     * @param properties
+     *            The properties names and their values
      * @throws DevFailed
      */
     @Override
@@ -135,9 +148,11 @@ public final class Database implements ITangoDB {
 
     /**
      * Get a class properties. (execute DbGetClassPropertyList on DB device)
-     *
-     * @param name          The class name
-     * @param propertyNames The properties names
+     * 
+     * @param name
+     *            The class name
+     * @param propertyNames
+     *            The properties names
      * @return
      * @throws DevFailed
      */
@@ -148,9 +163,11 @@ public final class Database implements ITangoDB {
 
     /**
      * Set a tango class properties. (execute DbPutClassProperty on DB device)
-     *
-     * @param name       The class name
-     * @param properties The properties names and values.
+     * 
+     * @param name
+     *            The class name
+     * @param properties
+     *            The properties names and values.
      * @throws DevFailed
      */
     @Override
@@ -160,9 +177,11 @@ public final class Database implements ITangoDB {
 
     /**
      * Get an attribute properties. (execute DbGetDeviceAttributeProperty2 on DB device)
-     *
-     * @param deviceName    The device name
-     * @param attributeName The attribute name
+     * 
+     * @param deviceName
+     *            The device name
+     * @param attributeName
+     *            The attribute name
      * @return
      * @throws DevFailed
      */
@@ -175,15 +194,18 @@ public final class Database implements ITangoDB {
 
     /**
      * Set some attribute properties. (execute DbPutDeviceAttributeProperty2 on DB device)
-     *
-     * @param deviceName    The device name
-     * @param attributeName The attribute name
-     * @param properties    The properties names and values.
+     * 
+     * @param deviceName
+     *            The device name
+     * @param attributeName
+     *            The attribute name
+     * @param properties
+     *            The properties names and values.
      * @throws DevFailed
      */
     @Override
     public void setAttributeProperties(final String deviceName, final String attributeName,
-                                       final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         cache.setAttributeProperties(deviceName, attributeName, properties);
     }
 
@@ -230,7 +252,7 @@ public final class Database implements ITangoDB {
 
     @Override
     public void setDevicePipeProperties(final String deviceName, final String pipeName,
-                                        final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         cache.setDevicePipeProperties(deviceName, pipeName, properties);
     }
 
@@ -241,7 +263,7 @@ public final class Database implements ITangoDB {
 
     @Override
     public void setClassPipeProperties(final String className, final String pipeName,
-                                       final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         cache.setClassPipeProperties(className, pipeName, properties);
     }
 

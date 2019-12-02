@@ -163,11 +163,11 @@ public class DbDevImportInfo implements java.io.Serializable {
         } else {
             this.taco_info =
                     "Device:        " + taco_info[0] + "\n" +
-                            "type_id:       " + "taco:" + taco_info[2] + "\n" +
-                            "host:          " + taco_info[4] + "\n" +
-                            "Class:         " + taco_info[1] + "\n" +
-                            "Server:        " + taco_info[3] + "\n" +
-                            "NETHOST:       " + taco_info[5];
+                    "type_id:       " + "taco:" + taco_info[2] + "\n" +
+                    "host:          " + taco_info[4] + "\n" +
+                    "Class:         " + taco_info[1] + "\n" +
+                    "Server:        " + taco_info[3] + "\n" +
+                    "NETHOST:       " + taco_info[5];
         }
     }
 

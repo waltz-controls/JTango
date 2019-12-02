@@ -1,5 +1,13 @@
 package fr.soleil.tango.clientapi.attribute;
 
+import java.lang.reflect.Array;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.utils.DevFailedUtils;
+import org.tango.utils.TangoUtil;
+
 import fr.esrf.Tango.AttrDataFormat;
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.AttrWriteType;
@@ -13,13 +21,6 @@ import fr.soleil.tango.clientapi.Properties;
 import fr.soleil.tango.clientapi.factory.ProxyFactory;
 import fr.soleil.tango.errorstrategy.RetriableTask;
 import fr.soleil.tango.errorstrategy.Task;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.utils.DevFailedUtils;
-import org.tango.utils.TangoUtil;
-
-import java.lang.reflect.Array;
 
 public final class RealAttribute implements ITangoAttribute {
 

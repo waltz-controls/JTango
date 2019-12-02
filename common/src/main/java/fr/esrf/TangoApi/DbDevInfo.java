@@ -35,77 +35,80 @@
 package fr.esrf.TangoApi;
 
 
-/**
- * Class Description:
- * Device information object.
+
+
+/** 
+ *	Class Description:
+ *	Device information object.
  *
- * @author verdier
- * @version $Revision: 25296 $
+ * @author  verdier
+ * @version  $Revision: 25296 $
  */
 
 
-public class DbDevInfo implements java.io.Serializable {
-    /**
-     * The device name.
-     */
-    public String name;
-    /**
-     * The class name.
-     */
-    public String _class;
-    /**
-     * The server name.
-     */
-    public String server;
-    /**
-     * The device type.
-     */
-    public int type = 0;
+public class DbDevInfo implements java.io.Serializable
+{
+	/**
+	 *	The device name.
+	 */
+	public String	name;
+	/**
+	 *	The class name.
+	 */
+	public String	_class;
+	/**
+	 *	The server name.
+	 */
+	public String	server;
+	/**
+	 *	The device type.
+	 */
+	public int		type = 0;
 
-    //===============================================
-
-    /**
-     * Default constructor.
-     */
-    //===============================================
-    public DbDevInfo() {
-    }
-    //===============================================
-
-    /**
-     * Complete information constructor.
-     */
-    //===============================================
-    public DbDevInfo(String name, String _class, String server) {
-        this.name = name;
-        this._class = _class;
-        this.server = server;
-    }
-    //===============================================
-
-    /**
-     * Complete information constructor.
-     */
-    //===============================================
-    public DbDevInfo(String name, String _class, String server, int type) {
-        this.name = name;
-        this._class = _class;
-        this.server = server;
-        this.type = type;
-    }
-    //===============================================
-
-    /**
-     * Serialize object filed as string array.
-     */
-    //===============================================
-    public String[] toStringArray() {
-        String[] argout;
-        argout = new String[3];
-        argout[0] = server;
-        argout[1] = name;
-        argout[2] = _class;
-        //argout[3] = "Undefined";
-        return argout;
-    }
+	//===============================================
+	/**
+	 *	Default constructor.
+	 */
+	//===============================================
+	public DbDevInfo()
+	{
+	}
+	//===============================================
+	/**
+	 *	Complete information constructor.
+	 */
+	//===============================================
+	public DbDevInfo(String name, String _class, String server)
+	{
+		this.name   = name;
+		this._class = _class;
+		this.server = server;
+	}
+	//===============================================
+	/**
+	 *	Complete information constructor.
+	 */
+	//===============================================
+	public DbDevInfo(String name, String _class, String server, int type)
+	{
+		this.name   = name;
+		this._class = _class;
+		this.server = server;
+		this.type   = type;
+	}
+	//===============================================
+	/**
+	 *	Serialize object filed as string array.
+	 */
+	//===============================================
+	public String[] toStringArray()
+	{
+		String[]	argout;
+		argout = new String[3];
+		argout[0] = server;
+		argout[1] = name;
+		argout[2] = _class;
+		//argout[3] = "Undefined";
+		return argout;
+	}
 }

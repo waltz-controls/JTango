@@ -61,7 +61,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public void init(TacoTangoDevice tacoDevice, String devname, String nethost) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -71,7 +71,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public DeviceData command_inout(TacoTangoDevice tacoDevice, String command, DeviceData argin) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -99,7 +99,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public void set_rpc_protocol(TacoTangoDevice tacoDevice, int mode) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -108,7 +108,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public int get_rpc_protocol(TacoTangoDevice tacoDevice) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -118,7 +118,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public int get_rpc_timeout(TacoTangoDevice tacoDevice) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -128,7 +128,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public void set_rpc_timeout(TacoTangoDevice tacoDevice, int millis) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -137,7 +137,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //==========================================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //==========================================================================
     public String[] dev_inform(TacoTangoDevice tacoDevice) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -156,7 +156,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //==========================================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //==========================================================================
     public void set_source(TacoTangoDevice tacoDevice, DevSource src) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -165,7 +165,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //==========================================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //==========================================================================
     public DevSource get_source(TacoTangoDevice tacoDevice) {
         return null;
@@ -176,13 +176,13 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
 
 
     //==========================================================================
-    /*
-     *	Signal / Attribute management
-     */
+	/*
+	 *	Signal / Attribute management
+	 */
     //==========================================================================
 
     //==========================================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //==========================================================================
     public String[] get_attribute_list(TacoTangoDevice tacoDevice) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -192,7 +192,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public AttributeConfig[] get_attribute_config(TacoTangoDevice tacoDevice, String[] attrnames) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -202,7 +202,7 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public DeviceAttribute[] read_attribute(TacoTangoDevice tacoDevice, String[] attrnames) throws DevFailed {
         Except.throw_exception("Api_TacoFailed",
@@ -213,20 +213,20 @@ public class TacoTangoDeviceDAODefaultImpl implements ITacoTangoDeviceDAO {
 
 
     //======================================================
-    /*
-     *	Taco  <--> Tango  data convertion methods
-     */
+	/*
+	 *	Taco  <--> Tango  data convertion methods
+	 */
     //======================================================
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public int tangoType(int taco_type) {
         return -1;
     }
 
     //======================================================
-    /* (non-Javadoc) */
+	/* (non-Javadoc) */
     //======================================================
     public String[] infoToTango(TacoTangoDevice tacoDevice, String taco_info) {
 

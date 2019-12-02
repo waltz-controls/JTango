@@ -1,16 +1,17 @@
 package fr.soleil.tango.attributecomposer;
 
-import fr.soleil.tango.clientapi.TangoGroupAttribute;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import fr.soleil.tango.clientapi.TangoGroupAttribute;
+
 /**
  * Schedule a period read on a group of attributes.
- *
+ * 
  * @author ABEILLE
+ * 
  */
 public class AttributeGroupScheduler {
 
@@ -21,8 +22,8 @@ public class AttributeGroupScheduler {
 
     /**
      * Start the periodic update
-     *
-     * @param valueReader   the group reader
+     * 
+     * @param valueReader the group reader
      * @param readingPeriod the period in milliseconds
      */
     public void start(final AttributeGroupReader valueReader, final long readingPeriod) {
@@ -47,7 +48,7 @@ public class AttributeGroupScheduler {
 
     /**
      * Update the group of attributes
-     *
+     * 
      * @param attributeGroup
      */
     public void updateAttributeGroup(final TangoGroupAttribute attributeGroup) {

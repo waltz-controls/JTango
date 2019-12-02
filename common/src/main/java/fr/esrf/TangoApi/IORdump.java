@@ -45,144 +45,137 @@ import java.io.IOException;
  */
 
 public class IORdump {
-    private IIORDumpDAO iordumpDAO = null;
+	private IIORDumpDAO iordumpDAO = null;
 
-    public boolean is_taco = false;
+	public boolean is_taco = false;
 
-    // ===============================================================
-    // ===============================================================
-    public IORdump(String devname, String iorString) throws DevFailed {
-        iordumpDAO = TangoFactory.getSingleton().getIORDumpDAO();
-        iordumpDAO.init(this, devname, iorString);
+	// ===============================================================
+	// ===============================================================
+	public IORdump(String devname, String iorString) throws DevFailed {
+		iordumpDAO = TangoFactory.getSingleton().getIORDumpDAO();
+		iordumpDAO.init(this, devname, iorString);
 
-    }
+	}
 
-    // ===============================================================
-    // ===============================================================
-    public IORdump(String devname) throws DevFailed {
-        iordumpDAO = TangoFactory.getSingleton().getIORDumpDAO();
-        iordumpDAO.init(this, devname);
+	// ===============================================================
+	// ===============================================================
+	public IORdump(String devname) throws DevFailed {
+		iordumpDAO = TangoFactory.getSingleton().getIORDumpDAO();
+		iordumpDAO.init(this, devname);
 
-    }
+	}
 
-    // ===============================================================
-    // ===============================================================
-    public IORdump(DeviceProxy dev) throws DevFailed {
-        iordumpDAO = TangoFactory.getSingleton().getIORDumpDAO();
-        iordumpDAO.init(this, dev);
+	// ===============================================================
+	// ===============================================================
+	public IORdump(DeviceProxy dev) throws DevFailed {
+		iordumpDAO = TangoFactory.getSingleton().getIORDumpDAO();
+		iordumpDAO.init(this, dev);
 
-    }
+	}
 
-    // ===============================================================
+	// ===============================================================
+	/**
+	 * Return a string with ID type, IIOP version, host name, and port number.
+	 */
+	// ===============================================================
+	public String toString() {
+		return iordumpDAO.toString(this);
+	}
 
-    /**
-     * Return a string with ID type, IIOP version, host name, and port number.
-     */
-    // ===============================================================
-    public String toString() {
-        return iordumpDAO.toString(this);
-    }
+	// ===============================================================
+	/*
+	 * Make the IOR analyse
+	 */
+	// ===============================================================
+	// ===============================================================
+	/**
+	 * Return the ID type
+	 */
+	// ===============================================================
+	public String get_type_id() {
+		return iordumpDAO.get_type_id();
 
-    // ===============================================================
-    /*
-     * Make the IOR analyse
-     */
-    // ===============================================================
-    // ===============================================================
+	}
 
-    /**
-     * Return the ID type
-     */
-    // ===============================================================
-    public String get_type_id() {
-        return iordumpDAO.get_type_id();
+	// ===============================================================
+	/**
+	 * Return the host where the process is running.
+	 */
+	// ===============================================================
+	public String get_host() {
+		return iordumpDAO.get_host();
 
-    }
+	}
 
-    // ===============================================================
+	// ===============================================================
+	/**
+	 * Return the host name where the process is running.
+	 */
+	// ===============================================================
+	public String get_hostname() {
+		return iordumpDAO.get_hostname();
 
-    /**
-     * Return the host where the process is running.
-     */
-    // ===============================================================
-    public String get_host() {
-        return iordumpDAO.get_host();
+	}
 
-    }
+	// ===============================================================
+	/**
+	 * Return the connection port.
+	 */
+	// ===============================================================
+	public int get_port() {
+		return iordumpDAO.get_port();
 
-    // ===============================================================
+	}
 
-    /**
-     * Return the host name where the process is running.
-     */
-    // ===============================================================
-    public String get_hostname() {
-        return iordumpDAO.get_hostname();
+	// ===============================================================
+	/**
+	 * Return the connection TACO prg_number.
+	 */
+	// ===============================================================
+	public int get_prg_number() {
+		return iordumpDAO.get_prg_number();
 
-    }
+	}
 
-    // ===============================================================
+	// ===============================================================
+	/**
+	 * Return the IIOP version number.
+	 */
+	// ===============================================================
+	public String get_iiop_version() {
+		return iordumpDAO.get_iiop_version();
 
-    /**
-     * Return the connection port.
-     */
-    // ===============================================================
-    public int get_port() {
-        return iordumpDAO.get_port();
+	}
 
-    }
+	// ===============================================================
+	// ===============================================================
+	public static void printSyntax() {
+		// for static call we use an utility class
+		IORDumpUtil.printSyntax();
+	}
 
-    // ===============================================================
+	// ===============================================================
+	// ===============================================================
+	public static String getIor(String filename) throws FileNotFoundException, SecurityException, IOException {
+		// for static call we use an utility class
+		return IORDumpUtil.getIor(filename);
+	}
 
-    /**
-     * Return the connection TACO prg_number.
-     */
-    // ===============================================================
-    public int get_prg_number() {
-        return iordumpDAO.get_prg_number();
-
-    }
-
-    // ===============================================================
-
-    /**
-     * Return the IIOP version number.
-     */
-    // ===============================================================
-    public String get_iiop_version() {
-        return iordumpDAO.get_iiop_version();
-
-    }
-
-    // ===============================================================
-    // ===============================================================
-    public static void printSyntax() {
-        // for static call we use an utility class
-        IORDumpUtil.printSyntax();
-    }
-
-    // ===============================================================
-    // ===============================================================
-    public static String getIor(String filename) throws FileNotFoundException, SecurityException, IOException {
-        // for static call we use an utility class
-        return IORDumpUtil.getIor(filename);
-    }
-
-    // ===============================================================
-    // ===============================================================
-    public static void main(String[] args) {
-        // for static call we use an utility class
-        IORDumpUtil.main(args);
-    }
+	// ===============================================================
+	// ===============================================================
+	public static void main(String[] args) {
+		// for static call we use an utility class
+		IORDumpUtil.main(args);
+	}
 
 
-    public IIORDumpDAO getIordumpDAO() {
-        return iordumpDAO;
-    }
+	public IIORDumpDAO getIordumpDAO() {
+		return iordumpDAO;
+	}
 
-    public void setIordumpDAO(IIORDumpDAO iordumpDAO) {
-        this.iordumpDAO = iordumpDAO;
-    }
+	public void setIordumpDAO(IIORDumpDAO iordumpDAO) {
+		this.iordumpDAO = iordumpDAO;
+	}
 
 }
 

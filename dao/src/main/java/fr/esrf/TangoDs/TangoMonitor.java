@@ -35,9 +35,9 @@
 package fr.esrf.TangoDs;
 
 /**
- * This class is used to synchronise device access between
- * polling thread and CORBA request. It is used only for
- * the command_inout and read_attribute calls
+ *	This class is used to synchronise device access between
+ *	polling thread and CORBA request. It is used only for
+ *	the command_inout and read_attribute calls	
  *
  * @author $Author: pascal_verdier $
  * @version $Revision: 25297 $
@@ -58,94 +58,94 @@ public class TangoMonitor implements TangoConst {
     // ===============================================================
     // ===============================================================
     public TangoMonitor() {
-        // cond(this);
-        used = false;
-        // locking_thread(NULL)
-        locked_ctr = 0;
-        _timeout = Tango_DEFAULT_TIMEOUT;
+	// cond(this);
+	used = false;
+	// locking_thread(NULL)
+	locked_ctr = 0;
+	_timeout = Tango_DEFAULT_TIMEOUT;
     }
 
     // ===============================================================
     // ===============================================================
     void timeout(final long new_to) {
-        _timeout = new_to;
+	_timeout = new_to;
     }
 
     // ===============================================================
     // ===============================================================
     long timeout() {
-        return _timeout;
+	return _timeout;
     }
 
     // ===============================================================
     // ===============================================================
     synchronized void get_monitor() throws DevFailed {
-        boolean interupted;
-        Util.out4.println("In get_monitor(), used = " + used);
+	boolean interupted;
+	Util.out4.println("In get_monitor(), used = " + used);
 
-        final boolean owner_thread = false;
-        /*
-         * if ((locking_thread != NULL) && (omni_thread::self() ==
-         * locking_thread)) { owner_thread = true;
-         * Util.out4.println("owner_thread !!"); }
-         */
+	final boolean owner_thread = false;
+	/*
+	 * if ((locking_thread != NULL) && (omni_thread::self() ==
+	 * locking_thread)) { owner_thread = true;
+	 * Util.out4.println("owner_thread !!"); }
+	 */
 
-        while (used == true && owner_thread == false) {
-            Util.out4.println("waiting !!");
-            interupted = wait_it(_timeout);
+	while (used == true && owner_thread == false) {
+	    Util.out4.println("waiting !!");
+	    interupted = wait_it(_timeout);
 
-            if (used == true && interupted == false) {
-                Util.out4.println("TIME OUT for thread ");
-                Except.throw_exception("API_CommandTimedOut", "Not able to acquire device monitor",
-                        "TangoMonitor.get_monitor");
-            }
-        }
-        locked_ctr++;
-        if (!owner_thread) {
-            // locking_thread = omni_thread::self();
-            used = true;
-        }
+	    if (used == true && interupted == false) {
+		Util.out4.println("TIME OUT for thread ");
+		Except.throw_exception("API_CommandTimedOut", "Not able to acquire device monitor",
+			"TangoMonitor.get_monitor");
+	    }
+	}
+	locked_ctr++;
+	if (!owner_thread) {
+	    // locking_thread = omni_thread::self();
+	    used = true;
+	}
     }
 
     // ===============================================================
     // ===============================================================
     synchronized void rel_monitor() {
-        Util.out4.println("In rel_monitor(), used = " + used + ", ctr = " + locked_ctr);
-        if (used == true) {
-            locked_ctr--;
-            if (locked_ctr == 0) {
-                Util.out4.println("Signalling !");
-                used = false;
-                // locking_thread = NULL;
-                notify();
-            }
-        }
+	Util.out4.println("In rel_monitor(), used = " + used + ", ctr = " + locked_ctr);
+	if (used == true) {
+	    locked_ctr--;
+	    if (locked_ctr == 0) {
+		Util.out4.println("Signalling !");
+		used = false;
+		// locking_thread = NULL;
+		notify();
+	    }
+	}
     }
 
     // ===============================================================
     // ===============================================================
     synchronized void signal() {
-        interrupted = true;
-        notify();
+	interrupted = true;
+	notify();
     }
 
     // ===============================================================
     // ===============================================================
     synchronized void wait_it() {
-        try {
-            wait();
-        } catch (final InterruptedException e) {
-        }
+	try {
+	    wait();
+	} catch (final InterruptedException e) {
+	}
     }
 
     synchronized boolean wait_it(final long ms) {
-        interrupted = false;
-        try {
-            wait(ms);
-        } catch (final InterruptedException e) {
-        }
+	interrupted = false;
+	try {
+	    wait(ms);
+	} catch (final InterruptedException e) {
+	}
 
-        return interrupted;
+	return interrupted;
     }
     // ===============================================================
     // ===============================================================

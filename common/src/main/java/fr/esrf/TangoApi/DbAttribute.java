@@ -50,7 +50,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
     public String name;
 
     //===========================================================
-
     /**
      * Default constructor for the DbAttribute Object.
      *
@@ -64,7 +63,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
 
 
     //===========================================================
-
     /**
      * get the DbDatum object by index.
      *
@@ -76,7 +74,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
     }
 
     //===========================================================
-
     /**
      * get the DbDatum object by DbDatum.name.
      *
@@ -94,7 +91,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
     }
 
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -105,7 +101,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         addElement(new DbDatum(name, ""));
     }
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -117,7 +112,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         addElement(new DbDatum(name, value));
     }
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -129,7 +123,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         addElement(new DbDatum(name, value));
     }
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -141,7 +134,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         addElement(new DbDatum(name, value));
     }
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -155,7 +147,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
 
 
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -167,7 +158,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         addElement(new DbDatum(name, values));
     }
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -179,7 +169,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         addElement(new DbDatum(name, values));
     }
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -191,7 +180,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         addElement(new DbDatum(name, values));
     }
     //===========================================================
-
     /**
      * Add a new DbDatum in Vector
      *
@@ -203,7 +191,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         addElement(new DbDatum(name, values));
     }
     //===========================================================
-
     /**
      * Return the property name
      *
@@ -216,7 +203,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
     }
 
     //===========================================================
-
     /**
      * Return the property value
      *
@@ -228,7 +214,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         return datum(idx).extractStringArray();
     }
     //===========================================================
-
     /**
      * Return the property value as a String object
      *
@@ -247,7 +232,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         return str;
     }
     //===========================================================
-
     /**
      * Return the property value
      *
@@ -259,7 +243,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         return datum(name).extractStringArray();
     }
     //===========================================================
-
     /**
      * Return the property value in aString object
      *
@@ -284,7 +267,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
         return str;
     }
     //===========================================================
-
     /**
      * Return true if property not found;
      *
@@ -300,7 +282,6 @@ public class DbAttribute extends Vector<DbDatum> implements java.io.Serializable
             return datum.is_empty();
     }
     //===========================================================
-
     /**
      * Return a list of properties found;
      *

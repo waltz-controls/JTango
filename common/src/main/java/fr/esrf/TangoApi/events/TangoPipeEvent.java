@@ -62,19 +62,18 @@ public class TangoPipeEvent extends EventObject implements java.io.Serializable 
     //-=============================================
     @SuppressWarnings({"UnusedDeclaration"})
     public DevicePipe getValue() throws DevFailed {
-        if (devicePipe == null)
+        if (devicePipe== null)
             throw new DevFailed(errors);
         return devicePipe;
     }
-
     //-=============================================
     //-=============================================
     @SuppressWarnings({"UnusedDeclaration"})
     public boolean isZmqEvent() {
-        return (eventSource == EventData.ZMQ_EVENT);
+        return (eventSource==EventData.ZMQ_EVENT);
     }
 
-    private DevicePipe devicePipe;
-    private DevError[] errors;
-    private int eventSource;
+    private DevicePipe  devicePipe;
+    private DevError[]  errors;
+    private int         eventSource;
 }

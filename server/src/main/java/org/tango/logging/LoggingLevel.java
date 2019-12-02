@@ -1,34 +1,34 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.logging;
 
-import ch.qos.logback.classic.Level;
-
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import ch.qos.logback.classic.Level;
 
 /**
  * Manage convertion between logback logging levels and tango levels
@@ -41,7 +41,6 @@ public enum LoggingLevel {
             Level.TRACE);
 
     private static final Map<Level, LoggingLevel> LEVEL_MAP = new HashMap<Level, LoggingLevel>();
-
     static {
         for (final LoggingLevel s : EnumSet.allOf(LoggingLevel.class)) {
             LEVEL_MAP.put(s.level, s);
@@ -65,7 +64,6 @@ public enum LoggingLevel {
     private static final String TRACE_STR = "TRACE";
 
     private static final Map<LoggingLevel, Integer> LEVEL_INT_MAP = new HashMap<LoggingLevel, Integer>();
-
     static {
         LEVEL_INT_MAP.put(OFF, OFF_VALUE);
         LEVEL_INT_MAP.put(FATAL, FATAL_VALUE);
@@ -77,7 +75,6 @@ public enum LoggingLevel {
     }
 
     private static final Map<Integer, LoggingLevel> INT_LEVEL_MAP = new HashMap<Integer, LoggingLevel>();
-
     static {
         INT_LEVEL_MAP.put(OFF_VALUE, OFF);
         INT_LEVEL_MAP.put(FATAL_VALUE, FATAL);
@@ -89,7 +86,6 @@ public enum LoggingLevel {
     }
 
     private static final Map<String, LoggingLevel> LEVEL_STRING_MAP = new HashMap<String, LoggingLevel>();
-
     static {
         LEVEL_STRING_MAP.put(OFF_STR, OFF);
         LEVEL_STRING_MAP.put(FATAL_STR, FATAL);

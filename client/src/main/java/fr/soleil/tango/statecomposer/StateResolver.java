@@ -1,19 +1,30 @@
 package fr.soleil.tango.statecomposer;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
-import fr.esrf.TangoApi.DeviceData;
-import fr.esrf.TangoApi.Group.Group;
-import fr.esrf.TangoApi.Group.GroupCmdReply;
-import fr.esrf.TangoApi.Group.GroupCmdReplyList;
-import fr.esrf.TangoApi.StateUtilities;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.tango.utils.CaseInsensitiveMap;
 import org.tango.utils.DevFailedUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.DevState;
+import fr.esrf.TangoApi.DeviceData;
+import fr.esrf.TangoApi.StateUtilities;
+import fr.esrf.TangoApi.Group.Group;
+import fr.esrf.TangoApi.Group.GroupCmdReply;
+import fr.esrf.TangoApi.Group.GroupCmdReplyList;
 
 /**
  * Compose several states with a priority between states synchronoulsy or not
@@ -65,7 +76,8 @@ public final class StateResolver {
     /**
      * Configure the state priorities
      *
-     * @param priorities array of String. eg, STATE,priorityValue
+     * @param priorities
+     *            array of String. eg, STATE,priorityValue
      */
     public void configurePriorities(final String[] priorities) {
         // Set the non defined state in the property at 0 priority

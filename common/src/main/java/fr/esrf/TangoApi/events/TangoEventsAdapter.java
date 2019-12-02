@@ -71,7 +71,6 @@ public class TangoEventsAdapter implements java.io.Serializable {
 
     static final Object moni = new Object();
     //=======================================================================
-
     /**
      * Creates a new instance of TangoEventsAdapter
      *
@@ -84,12 +83,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
         deviceProxy = new DeviceProxy(deviceName);
     }
     //=======================================================================
-
     /**
      * Creates a new instance of TangoEventsAdapter
      *
      * @param deviceProxy the device used proxy instance.
-     * @throws DevFailed (never thrown)
+     * @throws DevFailed  (never thrown)
      */
     //=======================================================================
     public TangoEventsAdapter(DeviceProxy deviceProxy) throws DevFailed {
@@ -98,13 +96,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for periodic event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
-     * @param filters  filter array
+     * @param filters filter array
      * @throws DevFailed in case of connection failed
      */
     //=======================================================================
@@ -114,12 +110,10 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for Periodic event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
+     * @param  listener the specified listener
+     * @param attrName the attribute name
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -129,13 +123,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
         addTangoPeriodicListener(listener, attrName, new String[0], stateless);
     }
     //=======================================================================
-
     /**
      * Add listener for Periodic event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
-     * @param filters   filter array
+     * @param  listener the specified listener
+     * @param attrName the attribute name
+     * @param filters filter array
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -144,7 +136,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         TangoPeriodic tangoPeriodic;
 
-        String key = deviceName + "/" + attrName;
+        String key = deviceName+"/"+attrName;
         if ((tangoPeriodic = tango_periodic_source.get(key)) == null) {
             tangoPeriodic = new TangoPeriodic(deviceProxy, attrName, filters);
             tango_periodic_source.put(key, tangoPeriodic);
@@ -156,11 +148,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * remove listener for periodic event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed if specified listener not found
      */
@@ -169,20 +159,18 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         synchronized (moni) {
             TangoPeriodic tangoPeriodic;
-            String key = deviceName + "/" + attrName;
+            String key = deviceName+"/"+attrName;
             if ((tangoPeriodic = tango_periodic_source.get(key)) != null)
                 tangoPeriodic.removeTangoPeriodicListener(listener);
         }
     }
 
     //=======================================================================
-
     /**
      * Add listener for pipe event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
-     * @param filters  filter array
+     * @param filters filter array
      * @throws DevFailed in case of connection failed
      */
     //=======================================================================
@@ -192,12 +180,10 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for pipe event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
+     * @param  listener the specified listener
+     * @param attrName the attribute name
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -207,13 +193,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
         addTangoPipeListener(listener, attrName, new String[0], stateless);
     }
     //=======================================================================
-
     /**
      * Add listener for Pipe event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
-     * @param filters   filter array
+     * @param  listener the specified listener
+     * @param attrName the attribute name
+     * @param filters filter array
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -221,7 +205,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
     public void addTangoPipeListener(ITangoPipeListener listener,
                                      String attrName, String[] filters, boolean stateless) throws DevFailed {
         TangoPipe tangoPipe;
-        String key = deviceName + "/" + attrName;
+        String key = deviceName+"/"+attrName;
         if ((tangoPipe = tango_pipe_source.get(key)) == null) {
             tangoPipe = new TangoPipe(deviceProxy, attrName, filters);
             tango_pipe_source.put(key, tangoPipe);
@@ -233,11 +217,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * remove listener for pipe event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed if specified listener not found
      */
@@ -246,7 +228,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         synchronized (moni) {
             TangoPipe tangoPipe;
-            String key = deviceName + "/" + attrName;
+            String key = deviceName+"/"+attrName;
             if ((tangoPipe = tango_pipe_source.get(key)) != null)
                 tangoPipe.removeTangoPipeListener(listener);
         }
@@ -254,13 +236,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
 
 
     //=======================================================================
-
     /**
      * Add listener for change event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
-     * @param filters  filter array
+     * @param filters filter array
      * @throws DevFailed in case of connection failed
      */
     //=======================================================================
@@ -270,12 +250,10 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for Change event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
+     * @param  listener the specified listener
+     * @param attrName the attribute name
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -285,13 +263,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
         addTangoChangeListener(listener, attrName, new String[0], stateless);
     }
     //=======================================================================
-
     /**
      * Add listener for Change event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
-     * @param filters   filter array
+     * @param  listener the specified listener
+     * @param attrName the attribute name
+     * @param filters filter array
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -299,7 +275,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
     public void addTangoChangeListener(ITangoChangeListener listener, String attrName, String[] filters, boolean stateless)
             throws DevFailed {
         TangoChange tangoChange;
-        String key = deviceName + "/" + attrName;
+        String key = deviceName+"/"+attrName;
         if ((tangoChange = tango_change_source.get(key)) == null) {
             tangoChange = new TangoChange(deviceProxy, attrName, filters);
             tango_change_source.put(key, tangoChange);
@@ -310,11 +286,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
         }
     }
     //=======================================================================
-
     /**
      * Remove listener for change event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed if specified listener not found
      */
@@ -323,20 +297,18 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         synchronized (moni) {
             TangoChange tangoChange;
-            String key = deviceName + "/" + attrName;
+            String key = deviceName+"/"+attrName;
             if ((tangoChange = tango_change_source.get(key)) != null)
                 tangoChange.removeTangoChangeListener(listener);
         }
     }
 
     //=======================================================================
-
     /**
      * Add listener for archive event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
-     * @param filters  filter array
+     * @param filters filter array
      * @throws DevFailed in case of connection failed
      */
     //=======================================================================
@@ -346,12 +318,10 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for Archive event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
+     * @param  listener the specified listener
+     * @param attrName the attribute name
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -362,13 +332,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for Archive event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
-     * @param filters   filter array
+     * @param  listener the specified listener
+     * @param attrName the attribute name
+     * @param filters filter array
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -376,7 +344,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
     public void addTangoArchiveListener(ITangoArchiveListener listener, String attrName, String[] filters, boolean stateless)
             throws DevFailed {
         TangoArchive tangoArchive;
-        String key = deviceName + "/" + attrName;
+        String key = deviceName+"/"+attrName;
         if ((tangoArchive = tango_archive_source.get(key)) == null) {
             tangoArchive = new TangoArchive(deviceProxy, attrName, filters);
             tango_archive_source.put(key, tangoArchive);
@@ -388,11 +356,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Remove listener for archive event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed if specified listener not found
      */
@@ -401,20 +367,18 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         synchronized (moni) {
             TangoArchive tangoArchive;
-            String key = deviceName + "/" + attrName;
+            String key = deviceName+"/"+attrName;
             if ((tangoArchive = tango_archive_source.get(key)) != null)
                 tangoArchive.removeTangoArchiveListener(listener);
         }
     }
 
     //=======================================================================
-
     /**
      * Add listener for quality change event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
-     * @param filters  filter array
+     * @param filters filter array
      * @throws DevFailed in case of connection failed
      * @deprecated Event type does not exist anymore.
      */
@@ -425,13 +389,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for QualityChange event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
-     * @param filters   filter array
+     * @param  listener the specified listener
+     * @param attrName the attribute name
+     * @param filters filter array
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      * @deprecated Event type does not exist anymore.
@@ -440,7 +402,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
     public void addTangoQualityChangeListener(ITangoQualityChangeListener listener, String attrName, String[] filters, boolean stateless)
             throws DevFailed {
         TangoQualityChange tangoQualityChange;
-        String key = deviceName + "/" + attrName;
+        String key = deviceName+"/"+attrName;
         if ((tangoQualityChange = tango_quality_change_source.get(key)) == null) {
             tangoQualityChange = new TangoQualityChange(deviceProxy, attrName, filters);
             tango_quality_change_source.put(key, tangoQualityChange);
@@ -452,11 +414,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Remove listener for quality change event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed if specified listener not found
      */
@@ -465,20 +425,18 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         synchronized (moni) {
             TangoQualityChange tangoQualityChange;
-            String key = deviceName + "/" + attrName;
+            String key = deviceName+"/"+attrName;
             if ((tangoQualityChange = tango_quality_change_source.get(key)) != null)
                 tangoQualityChange.removeTangoQualityChangeListener(listener);
         }
     }
 
     //=======================================================================
-
     /**
      * Add listener for user event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
-     * @param filters  filter array
+     * @param filters filter array
      * @throws DevFailed in case of connection failed
      */
     //=======================================================================
@@ -488,12 +446,10 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for User event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
+     * @param  listener the specified listener
+     * @param attrName the attribute name
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -503,13 +459,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
         addTangoUserListener(listener, attrName, new String[0], stateless);
     }
     //=======================================================================
-
     /**
      * Add listener for User event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
-     * @param filters   filter array
+     * @param  listener the specified listener
+     * @param attrName the attribute name
+     * @param filters filter array
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -517,7 +471,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
     public void addTangoUserListener(ITangoUserListener listener, String attrName, String[] filters, boolean stateless)
             throws DevFailed {
         TangoUser tangoUser;
-        String key = deviceName + "/" + attrName;
+        String key = deviceName+"/"+attrName;
         if ((tangoUser = tango_user_source.get(key)) == null) {
             tangoUser = new TangoUser(deviceProxy, attrName, filters);
             tango_user_source.put(key, tangoUser);
@@ -529,11 +483,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Remove listener for user event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed if specified listener not found
      */
@@ -542,7 +494,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         synchronized (moni) {
             TangoUser tangoUser;
-            String key = deviceName + "/" + attrName;
+            String key = deviceName+"/"+attrName;
             if ((tangoUser = tango_user_source.get(key)) != null)
                 tangoUser.removeTangoUserListener(listener);
         }
@@ -550,13 +502,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
 
 
     //=======================================================================
-
     /**
      * Add listener for AttConfig event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
-     * @param filters  filter array
+     * @param filters filter array
      * @throws DevFailed in case of connection failed
      */
     //=======================================================================
@@ -566,12 +516,10 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for Config event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
+     * @param  listener the specified listener
+     * @param attrName the attribute name
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -581,13 +529,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
         addTangoAttConfigListener(listener, attrName, new String[0], stateless);
     }
     //=======================================================================
-
     /**
      * Add listener for Config event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
-     * @param filters   filter array
+     * @param  listener the specified listener
+     * @param attrName the attribute name
+     * @param filters filter array
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -595,7 +541,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
     public void addTangoAttConfigListener(ITangoAttConfigListener listener, String attrName, String[] filters, boolean stateless)
             throws DevFailed {
         TangoAttConfig tangoAttConfig;
-        String key = deviceName + "/" + attrName;
+        String key = deviceName+"/"+attrName;
         if ((tangoAttConfig = tango_att_config_source.get(key)) == null) {
             tangoAttConfig = new TangoAttConfig(deviceProxy, attrName, filters);
             tango_att_config_source.put(key, tangoAttConfig);
@@ -606,11 +552,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
         }
     }
     //=======================================================================
-
     /**
      * Remove listener for att_config event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed if specified listener not found
      */
@@ -619,20 +563,18 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         synchronized (moni) {
             TangoAttConfig tangoAttConfig;
-            String key = deviceName + "/" + attrName;
+            String key = deviceName+"/"+attrName;
             if ((tangoAttConfig = tango_att_config_source.get(key)) != null)
                 tangoAttConfig.removeTangoAttConfigListener(listener);
         }
     }
 
     //=======================================================================
-
     /**
      * Add listener for DataReady event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
-     * @param filters  filter array
+     * @param filters filter array
      * @throws DevFailed in case of connection failed
      */
     //=======================================================================
@@ -642,12 +584,10 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Add listener for DataReady event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
+     * @param  listener the specified listener
+     * @param attrName the attribute name
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -657,13 +597,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
         addTangoDataReadyListener(listener, attrName, new String[0], stateless);
     }
     //=======================================================================
-
     /**
      * Add listener for DataReady event
-     *
-     * @param listener  the specified listener
-     * @param attrName  the attribute name
-     * @param filters   filter array
+     * @param  listener the specified listener
+     * @param attrName the attribute name
+     * @param filters filter array
      * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
@@ -671,7 +609,7 @@ public class TangoEventsAdapter implements java.io.Serializable {
     public void addTangoDataReadyListener(ITangoDataReadyListener listener, String attrName, String[] filters, boolean stateless)
             throws DevFailed {
         TangoDataReady tangoDataReady;
-        String key = deviceName + "/" + attrName;
+        String key = deviceName+"/"+attrName;
         if ((tangoDataReady = tango_data_ready_source.get(key)) == null) {
             tangoDataReady = new TangoDataReady(deviceProxy, attrName, filters);
             tango_data_ready_source.put(key, tangoDataReady);
@@ -683,11 +621,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
     }
 
     //=======================================================================
-
     /**
      * Remove listener for DataReady event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed if specified listener not found
      */
@@ -696,17 +632,15 @@ public class TangoEventsAdapter implements java.io.Serializable {
             throws DevFailed {
         synchronized (moni) {
             TangoDataReady tangoDataReady;
-            String key = deviceName + "/" + attrName;
+            String key = deviceName+"/"+attrName;
             if ((tangoDataReady = tango_data_ready_source.get(key)) != null)
                 tangoDataReady.removeTangoDataReadyListener(listener);
         }
     }
     //=======================================================================
-
     /**
      * Add listener for change event
-     *
-     * @param listener the specified listener
+     * @param  listener the specified listener
      * @param attrName the attribute name
      * @throws DevFailed in case of connection failed
      */
@@ -716,13 +650,11 @@ public class TangoEventsAdapter implements java.io.Serializable {
         addTangoInterfaceChangeListener(listener, attrName, false);
     }
     //=======================================================================
-
     /**
      * Add listener for Change event
-     *
-     * @param listener   the specified listener
+     * @param  listener the specified listener
      * @param deviceName the device name
-     * @param stateless  if true: will re-try if failed
+     * @param stateless if true: will re-try if failed
      * @throws DevFailed in case of connection failed and stateless is false
      */
     //=======================================================================
@@ -738,11 +670,9 @@ public class TangoEventsAdapter implements java.io.Serializable {
         }
     }
     //=======================================================================
-
     /**
      * Remove listener for change event
-     *
-     * @param listener   the specified listener
+     * @param  listener the specified listener
      * @param deviceName the device name
      * @throws DevFailed if specified listener not found
      */
@@ -755,7 +685,6 @@ public class TangoEventsAdapter implements java.io.Serializable {
                 interfaceChange_change.removeTangoInterfaceChangeListener(listener);
         }
     }
-
     //=======================================================================
     //=======================================================================
     public String device_name() {

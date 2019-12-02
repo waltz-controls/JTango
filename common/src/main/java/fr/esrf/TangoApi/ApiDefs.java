@@ -33,54 +33,56 @@
 
 
 package fr.esrf.TangoApi;
+ 
 
 
-/**
- * Constant definition interface for Java API package.
+/** 
+ *	Constant definition interface for Java API package.
  *
- * @author verdier
+ * @author  verdier
  * @version $Revision: 25296 $
  */
 
 
+
 public interface ApiDefs {
-    final static int FROM_DBASE = 0;
-    final static int FROM_IOR = 1;
+	final static int		FROM_DBASE = 0;
+	final static int		FROM_IOR   = 1;
 
-    public static final int TANGO = 0;
-    public static final int TACO = 1;
-    public static final String[] protocol_name = {"tango", "taco"};
+	public static final int	TANGO = 0;
+	public static final int	TACO  = 1;
+	public static final String[]	protocol_name = { "tango", "taco" };
 
-    /**
-     * Constant value to set RPC protocol to TCP mode.
-     */
-    public static final int D_TCP = 888;
-    /**
-     * Constant value to set RPC protocol to UDP mode.
-     */
-    public static final int D_UDP = 999;
+	/**
+	 *	Constant value to set RPC protocol to TCP mode.
+	 */
+	public static final int		D_TCP = 888;
+	/**
+	 *	Constant value to set RPC protocol to UDP mode.
+	 */
+	public static final int		D_UDP = 999;
+	
+	public static final boolean	FROM_CMD  = false;
+	public static final boolean	FROM_ATTR = true;
 
-    public static final boolean FROM_CMD = false;
-    public static final boolean FROM_ATTR = true;
+	public static final int		ALL_ASYNCH = 0;
+	public static final int		POLLING    = 1;
+	public static final int		CALLBACK   = 2;
 
-    public static final int ALL_ASYNCH = 0;
-    public static final int POLLING = 1;
-    public static final int CALLBACK = 2;
+	public static final int		PUSH_CALLBACK = 0;
+	public static final int		PULL_CALLBACK = 1;
 
-    public static final int PUSH_CALLBACK = 0;
-    public static final int PULL_CALLBACK = 1;
-
-    static final short CMD = 0;
-    static final short ATT_R = 1;
-    static final short ATT_W = 2;
-    static final short MISC = 3;
-    static final int NO_TIMEOUT = -1;
-
-    public final int LOGGING_OFF = 0;
-    public final int LOGGING_FATAL = 1;
-    public final int LOGGING_ERROR = 2;
-    public final int LOGGING_WARN = 3;
-    public final int LOGGING_INFO = 4;
-    public final int LOGGING_DEBUG = 5;
+	static final short	CMD   = 0;
+	static final short	ATT_R = 1;
+	static final short	ATT_W = 2;
+	static final short	MISC  = 3;
+	static final int 	NO_TIMEOUT = -1;
+  
+	public final int	LOGGING_OFF     = 0;
+	public final int	LOGGING_FATAL   = 1;
+	public final int	LOGGING_ERROR   = 2;
+	public final int	LOGGING_WARN    = 3;
+	public final int	LOGGING_INFO    = 4;
+	public final int	LOGGING_DEBUG   = 5;
 }
 

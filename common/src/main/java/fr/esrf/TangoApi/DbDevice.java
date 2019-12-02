@@ -76,8 +76,7 @@ public class DbDevice implements java.io.Serializable {
     public DbDevice(String deviceName) throws DevFailed {
         //	Check if database is  used.
         TangoUrl url = new TangoUrl(deviceName);
-        if (!url.use_db)
-            Except.throw_non_db_exception("Api_NonDatabaseDevice", "Device " + deviceName + " do not use database", "DbDevice.DbDevice()");
+        if (!url.use_db) Except.throw_non_db_exception("Api_NonDatabaseDevice",         "Device " + deviceName + " do not use database",         "DbDevice.DbDevice()");
 
         //	Access the database
         database = ApiUtil.get_db_obj();
@@ -97,7 +96,7 @@ public class DbDevice implements java.io.Serializable {
     public DbDevice(String deviceName, String host, String port) throws DevFailed {
         //	Access the database
         //------------------------
-        if (host == null || port == null) database = ApiUtil.get_db_obj();
+        if (host==null || port==null) database = ApiUtil.get_db_obj();
         else database = ApiUtil.get_db_obj(host, port);
         this.deviceName = deviceName;
     }
@@ -453,22 +452,22 @@ public class DbDevice implements java.io.Serializable {
     //==========================================================================
     private int get_polling_period(String name, int src) throws DevFailed {
         //	Get the polling property
-        String propname = (src == TangoConst.ATTRIBUTE) ? "polled_attr" : "polled_cmd";
+        String propname = (src==TangoConst.ATTRIBUTE) ? "polled_attr" : "polled_cmd";
         DbDatum datum = get_property(propname);
         if (datum.is_empty())
             Except.throw_exception("NOT_POLLED",
-                    ((src == TangoConst.ATTRIBUTE) ? "Attribute " : "Command ") +
+                    ((src==TangoConst.ATTRIBUTE) ? "Attribute " : "Command ") +
                             name + " not polled",
                     "DbDevice.get_polling_period()");
 
 
         String[] str = datum.extractStringArray();
         String _name = name.toLowerCase();
-        for (int i = 0; i < str.length; i += 2) {
+        for (int i = 0 ; i<str.length ; i += 2) {
             //	Check for name
             if (str[i].toLowerCase().equals(_name)) {
                 //	not last index.
-                if (i < str.length - 1) {
+                if (i<str.length - 1) {
                     try {
                         return Integer.parseInt(str[i + 1]);
                     } catch (NumberFormatException e) {
@@ -483,7 +482,7 @@ public class DbDevice implements java.io.Serializable {
             }
         }
         Except.throw_exception("NOT_POLLED",
-                ((src == TangoConst.ATTRIBUTE) ? "Attribute " : "Command ") +
+                ((src==TangoConst.ATTRIBUTE) ? "Attribute " : "Command ") +
                         name + " not polled",
                 "DbDevice.get_polling_period()");
 
@@ -516,7 +515,6 @@ public class DbDevice implements java.io.Serializable {
     // ===================================================================
 
     // ===================================================================
-
     /**
      * Query the database for a list of device pipe properties
      * for the specified pipe.
@@ -530,7 +528,6 @@ public class DbDevice implements java.io.Serializable {
         return database.getDevicePipeProperties(deviceName, pipeName);
     }
     // ===================================================================
-
     /**
      * Query the database for a device pipe property
      * for the specified pipe.
@@ -544,12 +541,10 @@ public class DbDevice implements java.io.Serializable {
     public DbDatum getPipeProperty(String pipeName, String propertyName) throws DevFailed {
         DbPipe dbPipe = database.getDevicePipeProperties(deviceName, pipeName);
         DbDatum datum = dbPipe.getDatum(propertyName);
-        if (datum == null)
-            Except.throw_exception("TangoApi_PropertyNotFound", "Property " + propertyName + " not found for pipe " + pipeName);
+        if (datum==null) Except.throw_exception("TangoApi_PropertyNotFound",         "Property " + propertyName + " not found for pipe " + pipeName);
         return datum;
     }
     // ==========================================================================
-
     /**
      * Insert or update a list of pipe properties for the specified device.
      * The property names and their values are specified by the DbAPipe.
@@ -562,7 +557,6 @@ public class DbDevice implements java.io.Serializable {
         database.putDevicePipeProperty(deviceName, dbPipe);
     }
     // ==========================================================================
-
     /**
      * Insert or update a list of pipe properties for the specified device.
      * The property names and their values are specified by the DbAPipe.
@@ -575,7 +569,6 @@ public class DbDevice implements java.io.Serializable {
         for (DbPipe dbPipe : dbPipes) database.putDevicePipeProperty(deviceName, dbPipe);
     }
     // ===================================================================
-
     /**
      * Query database for a list of pipes for specified device.
      *
@@ -587,7 +580,6 @@ public class DbDevice implements java.io.Serializable {
         return getPipeList("*");
     }
     // ===================================================================
-
     /**
      * Query database for a list of pipes for specified device and specified wildcard.
      *
@@ -600,7 +592,6 @@ public class DbDevice implements java.io.Serializable {
         return database.getDevicePipeList(deviceName, wildcard);
     }
     // ==========================================================================
-
     /**
      * Delete a pipe property for the specified device.
      *
@@ -615,7 +606,6 @@ public class DbDevice implements java.io.Serializable {
         deletePipeProperties(pipeName, list);
     }
     // ==========================================================================
-
     /**
      * Delete a pipe property for the specified device.
      *
@@ -630,7 +620,6 @@ public class DbDevice implements java.io.Serializable {
         deletePipeProperties(pipeName, list);
     }
     // ==========================================================================
-
     /**
      * Delete a pipe property for the specified device.
      *
@@ -643,7 +632,6 @@ public class DbDevice implements java.io.Serializable {
         database.deleteDevicePipeProperties(deviceName, pipeName, propertyNames);
     }
     // ===================================================================
-
     /**
      * Delete specified pipe for specified device.
      *
@@ -655,7 +643,6 @@ public class DbDevice implements java.io.Serializable {
         database.deleteDevicePipe(deviceName, pipeName);
     }
     // ===================================================================
-
     /**
      * Delete all properties for specified pipe
      *
@@ -669,7 +656,6 @@ public class DbDevice implements java.io.Serializable {
         deleteAllPipeProperty(list);
     }
     // ===================================================================
-
     /**
      * Delete all properties for specified pipes
      *
@@ -683,7 +669,6 @@ public class DbDevice implements java.io.Serializable {
         deleteAllPipeProperty(list);
     }
     // ===================================================================
-
     /**
      * Delete all properties for specified pipes
      *
@@ -695,7 +680,6 @@ public class DbDevice implements java.io.Serializable {
         database.deleteAllDevicePipeProperty(deviceName, pipeNames);
     }
     // ===================================================================
-
     /**
      * Returns the property history for specified pipe.
      *
@@ -709,7 +693,6 @@ public class DbDevice implements java.io.Serializable {
         return database.getDevicePipePropertyHistory(deviceName, pipeName, propertyName);
     }
     // ===================================================================
-
     /**
      * Query database to get a list of device using the specified device as
      * as root for forwarded attributes

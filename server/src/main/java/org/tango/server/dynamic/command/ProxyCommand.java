@@ -1,24 +1,24 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,17 +28,18 @@
  */
 package org.tango.server.dynamic.command;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoDs.TangoConst;
-import fr.soleil.tango.clientapi.TangoCommand;
 import org.tango.server.StateMachineBehavior;
 import org.tango.server.command.CommandConfiguration;
 import org.tango.server.command.ICommandBehavior;
 
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoDs.TangoConst;
+import fr.soleil.tango.clientapi.TangoCommand;
+
 /**
  * A Tango dynamic command, that creates a proxy to an existing command The input and output types are the same as those
  * of the proxy command
- *
+ * 
  * @author hardion
  */
 public final class ProxyCommand implements ICommandBehavior {
@@ -51,7 +52,7 @@ public final class ProxyCommand implements ICommandBehavior {
 
     /**
      * Ctr
-     *
+     * 
      * @param commandName
      *            The name of the created command
      * @param commandProxyName
@@ -96,7 +97,7 @@ public final class ProxyCommand implements ICommandBehavior {
 
     /**
      * Execute the command on the proxy
-     *
+     * 
      * @param arg
      *            The command input parameter
      * @return The result returned by the command

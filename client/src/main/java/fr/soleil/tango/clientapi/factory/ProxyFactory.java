@@ -35,6 +35,7 @@ public final class ProxyFactory {
     }
 
     /**
+     *
      * @return instance
      */
     public static ProxyFactory getInstance() {
@@ -42,7 +43,9 @@ public final class ProxyFactory {
     }
 
     /**
-     * @param deviceName the device name
+     *
+     * @param deviceName
+     *            the device name
      * @return DeviceProxy
      * @throws DevFailed
      */
@@ -65,6 +68,7 @@ public final class ProxyFactory {
     }
 
     /**
+     *
      * @param attrName
      * @return
      * @throws DevFailed
@@ -85,6 +89,7 @@ public final class ProxyFactory {
     }
 
     /**
+     *
      * @param groupName
      * @param deviceNames
      * @return
@@ -123,6 +128,7 @@ public final class ProxyFactory {
     }
 
     /**
+     *
      * @param timeout
      * @throws DevFailed
      */

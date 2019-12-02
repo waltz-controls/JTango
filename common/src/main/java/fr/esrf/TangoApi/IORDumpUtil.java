@@ -42,48 +42,51 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class IORDumpUtil {
-    // ===============================================================
-    // ===============================================================
-    public static void printSyntax() {
-        System.out.println("IORdump <ior string>      or");
-        System.out.println("IORdump -f <ior file name>");
-    }
+	// ===============================================================
+	// ===============================================================
+	public static void printSyntax() {
+		System.out.println("IORdump <ior string>      or");
+		System.out.println("IORdump -f <ior file name>");
+	}
 
-    // ===============================================================
-    // ===============================================================
-    public static String getIor(String filename) throws FileNotFoundException, SecurityException, IOException {
-        FileInputStream fid = new FileInputStream(filename);
-        int nb = fid.available();
-        byte[] inStr = new byte[nb];
-        int nbread = fid.read(inStr);
-        fid.close();
-        String str = "";
-        if (nbread > 0)
-            str = new String(inStr);
-        System.out.println(str);
-        return str.trim();
-    }
+	// ===============================================================
+	// ===============================================================
+	public static String getIor(String filename) throws FileNotFoundException, SecurityException, IOException {
+		FileInputStream fid = new FileInputStream(filename);
+		int nb = fid.available();
+		byte[] inStr = new byte[nb];
+		int	nbread = fid.read(inStr);
+		fid.close();
+		String	str = "";
+		if (nbread>0)
+			str = new String(inStr);
+		System.out.println(str);
+		return str.trim();
+	}
 
-    // ===============================================================
-    // ===============================================================
-    public static void main(String[] args) {
-        try {
-            switch (args.length) {
-                case 1:
-                    System.out.println(new fr.esrf.TangoApi.IORdump(args[0]).toString());
-                    break;
-                case 2:
-                    if (args[0].equals("-f")) {
-                        System.out.println(new fr.esrf.TangoApi.IORdump(null, getIor(args[1])).toString());
-                        break;
-                    }
-                default:
-                    printSyntax();
-            }
-        } catch (DevFailed e) {
-            Except.print_exception(e);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+	// ===============================================================
+	// ===============================================================
+	public static void main(String[] args) {
+		try
+		{
+			switch (args.length)
+			{
+			case 1:
+				System.out.println(new fr.esrf.TangoApi.IORdump(args[0]).toString());
+				break;
+			case 2:
+				if (args[0].equals("-f"))
+				{
+					System.out.println(new fr.esrf.TangoApi.IORdump(null, getIor(args[1])).toString());
+					break;
+				}
+			default:
+				printSyntax();
+			}
+		} catch (DevFailed e) {
+			Except.print_exception(e);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }

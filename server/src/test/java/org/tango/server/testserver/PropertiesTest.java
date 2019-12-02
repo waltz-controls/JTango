@@ -57,7 +57,7 @@ public class PropertiesTest {
             final Database db = ApiUtil.get_db_obj();
             final DbDatum[] dbDatum = new DbDatum[1];
 
-            final Double d = Math.random();
+            final Double d = new Double(Math.random());
             final String propValue = d.toString();
 
             final String propName = "myProp";

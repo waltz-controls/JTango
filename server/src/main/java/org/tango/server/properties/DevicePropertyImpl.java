@@ -55,7 +55,7 @@ public final class DevicePropertyImpl {
         this.isMandatory = isMandatory;
         if (defaultValue.length == 0 || (defaultValue.length == 1 && defaultValue[0].isEmpty())) {
             this.defaultValue = new String[0];
-        } else {
+        }else{
             this.defaultValue = defaultValue;
         }
     }

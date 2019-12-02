@@ -28,8 +28,9 @@ public final class TangoCommand {
     /**
      * Build a mock command.
      *
-     * @param command The mock commandbehavior. Default behavior may be changed by using a mock library like
-     *                http://mockito.org
+     * @param command
+     *            The mock commandbehavior. Default behavior may be changed by using a mock library like
+     *            http://mockito.org
      * @throws DevFailed
      */
     public TangoCommand(final ITangoCommand command) throws DevFailed {
@@ -40,8 +41,10 @@ public final class TangoCommand {
      * Build a mock command with parameter and return value
      *
      * @param commandName
-     * @param parameterMockValue the parameter default value
-     * @param returnMockValue    the returned default value
+     * @param parameterMockValue
+     *            the parameter default value
+     * @param returnMockValue
+     *            the returned default value
      * @throws DevFailed
      */
     public TangoCommand(final String commandName, final Object parameterMockValue, final Object returnMockValue)
@@ -53,8 +56,10 @@ public final class TangoCommand {
      * Build a mock command with parameter or return value
      *
      * @param commandName
-     * @param isParameterVoid true: parameter is void. false: return is void
-     * @param mockValue       the default mock value
+     * @param isParameterVoid
+     *            true: parameter is void. false: return is void
+     * @param mockValue
+     *            the default mock value
      * @throws DevFailed
      */
     public TangoCommand(final boolean isParameterVoid, final String commandName, final Object mockValue)
@@ -66,7 +71,8 @@ public final class TangoCommand {
      * Build a connection to a tango command
      *
      * @param commandName
-     * @param isMock      true if is mocked. Mock command will be void-void.
+     * @param isMock
+     *            true if is mocked. Mock command will be void-void.
      * @throws DevFailed
      */
     public TangoCommand(final String commandName, final boolean isMock) throws DevFailed {
@@ -89,8 +95,10 @@ public final class TangoCommand {
     }
 
     /**
-     * @param deviceName  The device tango (e.g. domain/family/member)
-     * @param commandName The command name
+     * @param deviceName
+     *            The device tango (e.g. domain/family/member)
+     * @param commandName
+     *            The command name
      * @throws DevFailed
      * @deprecated use {@link this#TangoCommand(DeviceProxy, String)} instead
      */
@@ -100,7 +108,8 @@ public final class TangoCommand {
     }
 
     /**
-     * @param commandName The device and command name in 4 fields (e.g. domain/family/member/commandName)
+     * @param commandName
+     *            The device and command name in 4 fields (e.g. domain/family/member/commandName)
      * @throws DevFailed
      */
     public TangoCommand(final String commandName) throws DevFailed {
@@ -258,7 +267,8 @@ public final class TangoCommand {
      * Get Num part of DEVVASXSTRINGARRAY and convert to string
      *
      * @return
-     * @throws DevFailed 3 juin 2005
+     * @throws DevFailed
+     *             3 juin 2005
      */
     public String[] getNumMixArrayArgout() throws DevFailed {
         return command.getNumMixArrayArgout();

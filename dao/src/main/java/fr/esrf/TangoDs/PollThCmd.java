@@ -35,37 +35,39 @@
 package fr.esrf.TangoDs;
 
 
-public class PollThCmd {
-    /**
-     * The new command flag
-     */
-    boolean cmd_pending;
-    /**
-     * The command code
-     */
-    int cmd_code;
-    /**
-     * The device pointer (servant)
-     */
-    DeviceImpl dev;
-    /**
-     * Index in the device poll_list
-     */
-    int index;
-    /**
-     * Object name
-     */
-    String name;
-    /**
-     * Object type (cmd/attr)
-     */
-    int type;
-    /**
-     * New update period (For upd period com.)
-     */
-    int new_upd;
-    /**
-     * is a trigger ?
-     */
-    boolean trigger = false;
+
+public class PollThCmd
+{
+	/**
+	 *	The new command flag
+	 */
+	boolean		cmd_pending;
+	/**
+	 *	The command code
+	 */
+	int			cmd_code;
+	/**
+	 *	The device pointer (servant)
+	 */
+	DeviceImpl	dev;
+	/**
+	 *	Index in the device poll_list
+	 */
+	int			index;
+	/**
+	 *	Object name
+	 */
+	String		name;
+	/**
+	 *	Object type (cmd/attr)
+	 */
+	int			type;
+	/**
+	 *	New update period (For upd period com.)
+	 */
+	int			new_upd;
+	/**
+	 *	is a trigger ?
+	 */
+	boolean		trigger = false;
 }

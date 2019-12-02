@@ -52,7 +52,7 @@ public final class ServerCache {
             // set a big timeout because DbGetDataForServerCache can be very big
             this.database.set_timeout_millis(13000);
             final DeviceData in = new DeviceData();
-            in.insert(new String[]{serverName, hostName});
+            in.insert(new String[] { serverName, hostName });
 
             logger.debug("filling cache of server {} with host name {}", serverName, hostName);
             final String[] out = database.command_inout("DbGetDataForServerCache", in).extractStringArray();

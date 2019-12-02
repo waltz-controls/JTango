@@ -24,7 +24,11 @@
  */
 package org.tango.server.idl;
 
-import fr.esrf.Tango.*;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.DevPipeBlob;
+import fr.esrf.Tango.DevPipeData;
+import fr.esrf.Tango.PipeConfig;
+import fr.esrf.Tango.TimeVal;
 import fr.esrf.TangoApi.PipeBlob;
 import org.tango.server.pipe.PipeConfiguration;
 import org.tango.server.pipe.PipeImpl;

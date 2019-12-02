@@ -4,7 +4,9 @@
  */
 package org.tango.script.evalution;
 
-import fr.esrf.Tango.DevFailed;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.mozilla.javascript.Context;
@@ -15,12 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import fr.esrf.Tango.DevFailed;
 
 /**
  * @author HARDION
- * @version Evaluate a boolean expression (result can be only true or false)
+ * @version
+ *
+ *          Evaluate a boolean expression (result can be only true or false)
+ *
  */
 public final class BooleanExpressionValidator {
 

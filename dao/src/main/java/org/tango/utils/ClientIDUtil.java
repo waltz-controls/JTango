@@ -1,20 +1,22 @@
 package org.tango.utils;
 
-import fr.esrf.Tango.ClntIdent;
-import fr.esrf.Tango.JavaClntIdent;
-import fr.esrf.Tango.LockerLanguage;
-import org.jacorb.orb.iiop.IIOPConnection;
-import org.jacorb.orb.iiop.IIOPLoopbackConnection;
-import org.omg.ETF.Connection;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
+import org.jacorb.orb.iiop.IIOPConnection;
+import org.jacorb.orb.iiop.IIOPLoopbackConnection;
+import org.omg.ETF.Connection;
+
+import fr.esrf.Tango.ClntIdent;
+import fr.esrf.Tango.JavaClntIdent;
+import fr.esrf.Tango.LockerLanguage;
+
 /**
  * Utility for client informations
- *
+ * 
  * @author ABEILLE
+ * 
  */
 public final class ClientIDUtil {
 
@@ -24,7 +26,7 @@ public final class ClientIDUtil {
 
     /**
      * Deep copy of {@link ClntIdent}
-     *
+     * 
      * @param clt
      * @return
      */
@@ -45,9 +47,11 @@ public final class ClientIDUtil {
 
     /**
      * Compare if two {@link ClntIdent} are coming from the same client
-     *
-     * @param ident1 The first ident
-     * @param ident2 The second ident
+     * 
+     * @param ident1
+     *            The first ident
+     * @param ident2
+     *            The second ident
      * @return
      */
     public static boolean clientIdentEqual(final ClntIdent ident1, final ClntIdent ident2) {
@@ -82,7 +86,7 @@ public final class ClientIDUtil {
 
     /**
      * Get host name from a {@link Connection}
-     *
+     * 
      * @param connection
      * @return
      */

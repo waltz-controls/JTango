@@ -67,15 +67,14 @@ public class TangoAttConfigEvent extends EventObject implements java.io.Serializ
             throw new DevFailed(errors);
         return attr_config;
     }
-
     //-=============================================
     //-=============================================
     @SuppressWarnings({"UnusedDeclaration"})
     public boolean isZmqEvent() {
-        return (eventSource == EventData.ZMQ_EVENT);
+        return (eventSource==EventData.ZMQ_EVENT);
     }
 
     private AttributeInfoEx attr_config;
-    private DevError[] errors;
-    private int eventSource;
+    private DevError[]  errors;
+    private int         eventSource;
 }

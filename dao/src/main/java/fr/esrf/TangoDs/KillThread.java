@@ -37,31 +37,31 @@ package fr.esrf.TangoDs;
 class KillThread extends Thread {
 
     public KillThread() {
-        super("KillThread");
+	super("KillThread");
     }
 
     @Override
     public void run() {
-        Util.out4.println("In the killer thread !!!");
+	Util.out4.println("In the killer thread !!!");
 
-        // try
-        // {
-        // sleep(1000);
-        // }
-        // catch (InterruptedException ex)
-        // {
-        // }
+	// try
+	// {
+	// sleep(1000);
+	// }
+	// catch (InterruptedException ex)
+	// {
+	// }
 
-        //
-        // Unregister server device(s) from database
-        //
+	//
+	// Unregister server device(s) from database
+	//
 
-        Util.instance().unregister_server();
+	Util.instance().unregister_server();
 
-        //
-        // Now, the suicide
-        //
+	//
+	// Now, the suicide
+	//
 
-        System.exit(-1);
+	System.exit(-1);
     }
 }

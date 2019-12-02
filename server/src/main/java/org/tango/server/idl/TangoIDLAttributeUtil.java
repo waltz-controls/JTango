@@ -1,30 +1,31 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.idl;
 
-import fr.esrf.Tango.*;
+import java.lang.reflect.Array;
+
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.tango.orb.ORBManager;
@@ -34,13 +35,27 @@ import org.tango.server.attribute.AttributePropertiesImpl;
 import org.tango.server.attribute.AttributeValue;
 import org.tango.utils.DevFailedUtils;
 
-import java.lang.reflect.Array;
+import fr.esrf.Tango.AttrDataFormat;
+import fr.esrf.Tango.AttrQuality;
+import fr.esrf.Tango.AttrValUnion;
+import fr.esrf.Tango.AttrWriteType;
+import fr.esrf.Tango.AttributeAlarm;
+import fr.esrf.Tango.AttributeConfig;
+import fr.esrf.Tango.AttributeConfig_2;
+import fr.esrf.Tango.AttributeConfig_3;
+import fr.esrf.Tango.AttributeConfig_5;
+import fr.esrf.Tango.AttributeDim;
+import fr.esrf.Tango.AttributeValue_3;
+import fr.esrf.Tango.AttributeValue_4;
+import fr.esrf.Tango.AttributeValue_5;
+import fr.esrf.Tango.DevError;
+import fr.esrf.Tango.DevFailed;
 
 /**
  * Util to manage insertion or extraction in Tango IDL classes for attributes.
- *
+ * 
  * @author ABEILLE
- *
+ * 
  */
 public final class TangoIDLAttributeUtil {
 
@@ -55,7 +70,7 @@ public final class TangoIDLAttributeUtil {
     }
 
     public static fr.esrf.Tango.AttributeValue toAttributeValue(final AttributeImpl attributeImpl,
-                                                                final AttributeValue value) throws DevFailed {
+            final AttributeValue value) throws DevFailed {
         XLOGGER.entry();
         final fr.esrf.Tango.AttributeValue value2 = new fr.esrf.Tango.AttributeValue();
         try {
@@ -73,7 +88,7 @@ public final class TangoIDLAttributeUtil {
     }
 
     public static AttributeValue_3 toAttributeValue3(final AttributeImpl attributeImpl, final AttributeValue read,
-                                                     final AttributeValue write) throws DevFailed {
+            final AttributeValue write) throws DevFailed {
         XLOGGER.entry();
         final AttributeValue_3 value3 = new AttributeValue_3();
         try {
@@ -120,7 +135,7 @@ public final class TangoIDLAttributeUtil {
     }
 
     public static AttributeValue_5 toAttributeValue5(final AttributeImpl attributeImpl, final AttributeValue read,
-                                                     final AttributeValue write) throws DevFailed {
+            final AttributeValue write) throws DevFailed {
         XLOGGER.entry();
         final AttributeValue_5 value = new AttributeValue_5();
         try {
@@ -155,7 +170,7 @@ public final class TangoIDLAttributeUtil {
     }
 
     public static AttributeValue_4 toAttributeValue4(final AttributeImpl attributeImpl, final AttributeValue read,
-                                                     final AttributeValue write) throws DevFailed {
+            final AttributeValue write) throws DevFailed {
         XLOGGER.entry();
         final AttributeValue_4 value4 = new AttributeValue_4();
         try {
@@ -208,7 +223,7 @@ public final class TangoIDLAttributeUtil {
     }
 
     public static AttributeValue_4 toAttributeValue4Error(final String name, final AttrDataFormat format,
-                                                          final DevFailed e) {
+            final DevFailed e) {
         final AttributeValue_4 value4 = new AttributeValue_4();
         value4.name = name;
         value4.data_format = format;
@@ -223,7 +238,7 @@ public final class TangoIDLAttributeUtil {
     }
 
     public static AttributeValue_5 toAttributeValue5Error(final String name, final AttrDataFormat format,
-                                                          final int dataType, final DevFailed e) {
+            final int dataType, final DevFailed e) {
         final AttributeValue_5 value = new AttributeValue_5();
         value.name = name;
         value.data_format = format;
@@ -242,9 +257,9 @@ public final class TangoIDLAttributeUtil {
         final AttributePropertiesImpl props = attribute.getProperties();
         return new AttributeConfig(attribute.getName(), attribute.getWritable(), attribute.getFormat(),
                 attribute.getTangoType(), attribute.getMaxX(), attribute.getMaxY(), props.getDescription(), attribute
-                .getProperties().getLabel(), props.getUnit(), props.getStandardUnit(), attribute
-                .getProperties().getDisplayUnit(), props.getFormat(), props.getMinValue(), attribute
-                .getProperties().getMaxValue(), props.getMinAlarm(), props.getMaxAlarm(),
+                        .getProperties().getLabel(), props.getUnit(), props.getStandardUnit(), attribute
+                        .getProperties().getDisplayUnit(), props.getFormat(), props.getMinValue(), attribute
+                        .getProperties().getMaxValue(), props.getMinAlarm(), props.getMaxAlarm(),
                 props.getWritableAttrName(), props.getExtensions());
 
     }
@@ -253,9 +268,9 @@ public final class TangoIDLAttributeUtil {
         final AttributePropertiesImpl props = attribute.getProperties();
         return new AttributeConfig_2(attribute.getName(), attribute.getWritable(), attribute.getFormat(),
                 attribute.getTangoType(), attribute.getMaxX(), attribute.getMaxY(), props.getDescription(), attribute
-                .getProperties().getLabel(), props.getUnit(), props.getStandardUnit(), attribute
-                .getProperties().getDisplayUnit(), props.getFormat(), props.getMinValue(), attribute
-                .getProperties().getMaxValue(), props.getMinAlarm(), props.getMaxAlarm(),
+                        .getProperties().getLabel(), props.getUnit(), props.getStandardUnit(), attribute
+                        .getProperties().getDisplayUnit(), props.getFormat(), props.getMinValue(), attribute
+                        .getProperties().getMaxValue(), props.getMinAlarm(), props.getMaxAlarm(),
                 props.getWritableAttrName(), attribute.getDispLevel(), props.getExtensions());
     }
 
@@ -312,9 +327,9 @@ public final class TangoIDLAttributeUtil {
         alarm.extensions = props.getAlarmExtensions();
         return new AttributeConfig_3(attribute.getName(), attribute.getWritable(), attribute.getFormat(),
                 attribute.getTangoType(), attribute.getMaxX(), attribute.getMaxY(), props.getDescription(), attribute
-                .getProperties().getLabel(), props.getUnit(), props.getStandardUnit(), attribute
-                .getProperties().getDisplayUnit(), props.getFormat(), props.getMinValue(), attribute
-                .getProperties().getMaxValue(), props.getWritableAttrName(), attribute.getDispLevel(), alarm,
+                        .getProperties().getLabel(), props.getUnit(), props.getStandardUnit(), attribute
+                        .getProperties().getDisplayUnit(), props.getFormat(), props.getMinValue(), attribute
+                        .getProperties().getMaxValue(), props.getWritableAttrName(), attribute.getDispLevel(), alarm,
                 props.getEventProp(), props.getExtensions(), props.getSysExtensions());
     }
 

@@ -43,19 +43,18 @@ import java.util.EventListener;
 
 
 /**
- * @author pascal_verdier
+ *
+ * @author  pascal_verdier
  */
 public class TangoUser extends EventDispatcher implements java.io.Serializable {
-
+    
     //=======================================================================
-
     /**
-     * Creates a new instance of AttrPeriodicChange
-     *
+	 *	Creates a new instance of AttrPeriodicChange
      * @param device_proxy device proxy object.
      * @param attr_name    attribute name.
      * @param filters      filter array
-     */
+	 */
     //=======================================================================
     public TangoUser(DeviceProxy device_proxy, String attr_name, String[] filters) {
         super(device_proxy);
@@ -63,26 +62,28 @@ public class TangoUser extends EventDispatcher implements java.io.Serializable {
         this.filters = filters;
         event_identifier = -1;
     }
-
+    
     //=======================================================================
     //=======================================================================
     public void addTangoUserListener(ITangoUserListener listener, boolean stateless)
-            throws DevFailed {
-        event_listeners.add(ITangoUserListener.class, listener);
+                throws DevFailed
+    {
+		event_listeners.add(ITangoUserListener.class, listener);
         event_identifier = subscribe_user_event(attr_name, filters, stateless);
     }
-
+    
 
     //=======================================================================
     //=======================================================================
-    public void removeTangoUserListener(ITangoUserListener listener)
-            throws DevFailed {
-        event_listeners.remove(ITangoUserListener.class, listener);
-        if (event_listeners.size() == 0)
-            unsubscribe_event(event_identifier);
+	public void removeTangoUserListener(ITangoUserListener listener) 
+                throws DevFailed
+    {
+        event_listeners.remove(ITangoUserListener.class,listener);
+        if ( event_listeners.size() == 0 )
+           unsubscribe_event(event_identifier);
 
     }
-
+    
     //=======================================================================
     //=======================================================================
     public void dispatch_event(final EventData eventData) {
@@ -96,8 +97,9 @@ public class TangoUser extends EventDispatcher implements java.io.Serializable {
                 }
             };
             SwingUtilities.invokeLater(do_work_later);
-        } else
-            fireTangoUserEvent(tangoUser, eventData);
+        }
+        else
+            fireTangoUserEvent(tangoUser , eventData);
     }
 
     //=======================================================================
@@ -110,9 +112,9 @@ public class TangoUser extends EventDispatcher implements java.io.Serializable {
             ((ITangoUserListener) eventListener).user(tangoUserEvent);
         }
     }
-
-    //==============================================================
-    //==============================================================
+    
+	//==============================================================
+	//==============================================================
 
     String attr_name;
     int event_identifier;

@@ -33,26 +33,26 @@
 
 
 package fr.esrf.TangoDs;
-
+ 
 
 import fr.esrf.Tango.DevError;
 
-/**
- * Class Description:
+/** 
+ *	Class Description:
  *
- * @author verdier
+ * @author  verdier
  * @version $Revision: 25296 $
  */
 
 
 public class NamedDevFailed {
-    public String name;
-    public long idx_in_call;
-    public DevError[] err_stack;
+	public String     name;
+	public long		  idx_in_call;
+	public DevError[] err_stack;
 
-    NamedDevFailed(DevError[] err, String name, long idx) {
-        err_stack = err;
-        this.name = name;
-        idx_in_call = idx;
-    }
+	NamedDevFailed(DevError[] err, String name, long idx) {
+		err_stack = err;
+		this.name = name;
+		idx_in_call = idx;
+	}	
 }

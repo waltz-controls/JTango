@@ -1,34 +1,35 @@
 /**
  * Copyright (C) :     2012
- * <p>
- * Synchrotron Soleil
- * L'Orme des merisiers
- * Saint Aubin
- * BP48
- * 91192 GIF-SUR-YVETTE CEDEX
- * <p>
+ *
+ * 	Synchrotron Soleil
+ * 	L'Orme des merisiers
+ * 	Saint Aubin
+ * 	BP48
+ * 	91192 GIF-SUR-YVETTE CEDEX
+ *
  * This file is part of Tango.
- * <p>
+ *
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * <p>
+ *
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.cache;
 
-import fr.esrf.Tango.DevError;
-import fr.esrf.Tango.DevFailed;
 import org.tango.server.Constants;
 import org.tango.server.PolledObjectConfig;
 import org.tango.server.properties.AttributePropertiesManager;
+
+import fr.esrf.Tango.DevError;
+import fr.esrf.Tango.DevFailed;
 
 /**
  * Utils for polling
@@ -54,7 +55,7 @@ public final class PollingUtils {
      * @throws DevFailed
      */
     public static void configurePolling(final int pollingPeriod, final PolledObjectConfig config,
-                                        final AttributePropertiesManager attributePropertiesManager) throws DevFailed {
+            final AttributePropertiesManager attributePropertiesManager) throws DevFailed {
         final int unsignedPolling = Math.abs(pollingPeriod);
         config.setPolled(true);
         config.setPollingPeriod(unsignedPolling);
@@ -73,7 +74,7 @@ public final class PollingUtils {
      * @throws DevFailed
      */
     public static void resetPolling(final PolledObjectConfig config,
-                                    final AttributePropertiesManager attributePropertiesManager) throws DevFailed {
+            final AttributePropertiesManager attributePropertiesManager) throws DevFailed {
         config.setPolled(false);
         config.setPollingPeriod(0);
         attributePropertiesManager.setAttributePropertyInDB(config.getName(), Constants.IS_POLLED, "false");
@@ -88,7 +89,7 @@ public final class PollingUtils {
      * @throws DevFailed
      */
     public static void updatePollingConfigFromDB(final PolledObjectConfig config,
-                                                 final AttributePropertiesManager attributePropertiesManager) throws DevFailed {
+            final AttributePropertiesManager attributePropertiesManager) throws DevFailed {
         final String isPolledProp = attributePropertiesManager.getAttributePropertyFromDB(config.getName(),
                 Constants.IS_POLLED);
         if (!isPolledProp.isEmpty()) {

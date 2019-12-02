@@ -41,7 +41,6 @@ import java.util.StringTokenizer;
 /**
  * This class is a TANGO core class used to print attribute value following
  * the format defined as one of the attribute property
- *
  * @author $Author: pascal_verdier $
  * @version $Revision: 25296 $
  */

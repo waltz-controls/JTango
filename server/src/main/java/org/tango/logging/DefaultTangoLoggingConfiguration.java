@@ -1,7 +1,6 @@
 package org.tango.logging;
 
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.joran.action.JMXConfiguratorAction;
@@ -11,6 +10,7 @@ import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.joran.spi.ActionException;
 import ch.qos.logback.core.spi.ContextAwareBase;
+import ch.qos.logback.classic.Logger;
 import ch.qos.logback.core.util.StatusPrinter;
 import org.xml.sax.helpers.AttributesImpl;
 

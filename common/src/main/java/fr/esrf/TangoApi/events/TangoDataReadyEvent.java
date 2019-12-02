@@ -69,13 +69,12 @@ public class TangoDataReadyEvent extends EventObject implements java.io.Serializ
             throw new DevFailed(errors);
         return data_ready;
     }
-
     //-=============================================
     //-=============================================
     @SuppressWarnings({"UnusedDeclaration"})
     public boolean isZmqEvent() {
-        return (eventSource == EventData.ZMQ_EVENT);
+        return (eventSource==EventData.ZMQ_EVENT);
     }
 
-    private int eventSource;
+    private int         eventSource;
 }

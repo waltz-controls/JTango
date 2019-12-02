@@ -39,87 +39,101 @@ import fr.esrf.TangoApi.*;
 
 public class DefaultTangoFactoryImpl implements ITangoFactory {
 
-    public DefaultTangoFactoryImpl() {
-    }
+	public DefaultTangoFactoryImpl()
+	{
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getConnectionDAO()
-     */
-    public IConnectionDAO getConnectionDAO() {
-        return new ConnectionDAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getConnectionDAO()
+		 */
+	public IConnectionDAO getConnectionDAO()
+	{
+		return new ConnectionDAODefaultImpl();
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceProxyDAO()
-     */
-    public IDeviceProxyDAO getDeviceProxyDAO() {
-        return new DeviceProxyDAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceProxyDAO()
+		 */
+	public IDeviceProxyDAO getDeviceProxyDAO()
+	{
+		return new DeviceProxyDAODefaultImpl();
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getTacoTangoDeviceDAO()
-     */
-    public ITacoTangoDeviceDAO getTacoTangoDeviceDAO() {
-        return new TacoTangoDeviceDAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getTacoTangoDeviceDAO()
+		 */
+	public ITacoTangoDeviceDAO getTacoTangoDeviceDAO()
+	{
+		return new TacoTangoDeviceDAODefaultImpl();
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getDatabaseDAO()
-     */
-    public IDatabaseDAO getDatabaseDAO() {
-        try {
-            return new DatabaseDAODefaultImpl();
-        } catch (Exception e) {
-            // we may not have exception we build  DatabaseDAODefaultImpl but ...
-            e.printStackTrace();
-            return null;
-        }
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getDatabaseDAO()
+		 */
+	public IDatabaseDAO getDatabaseDAO()
+	{
+		try
+		{
+		return new DatabaseDAODefaultImpl();
+		}catch(Exception e)
+		{
+			// we may not have exception we build  DatabaseDAODefaultImpl but ...
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceAttributeDAO()
-     */
-    public IDeviceAttributeDAO getDeviceAttributeDAO() {
-        return new DeviceAttributeDAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceAttributeDAO()
+		 */
+	public IDeviceAttributeDAO getDeviceAttributeDAO()
+	{
+		return new DeviceAttributeDAODefaultImpl();
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceAttribute_3DAO()
-     */
-    public IDeviceAttribute_3DAO getDeviceAttribute_3DAO() {
-        return new DeviceAttribute_3DAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceAttribute_3DAO()
+		 */
+	public IDeviceAttribute_3DAO getDeviceAttribute_3DAO()
+	{
+		return new DeviceAttribute_3DAODefaultImpl();
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceDataDAO()
-     */
-    public IDeviceDataDAO getDeviceDataDAO() {
-        return new DeviceDataDAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceDataDAO()
+		 */
+	public IDeviceDataDAO getDeviceDataDAO()
+	{
+		return new DeviceDataDAODefaultImpl();
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceDataHistoryDAO()
-     */
-    public IDeviceDataHistoryDAO getDeviceDataHistoryDAO() {
-        return new DeviceDataHistoryDAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getDeviceDataHistoryDAO()
+		 */
+	public IDeviceDataHistoryDAO getDeviceDataHistoryDAO()
+	{
+		return new DeviceDataHistoryDAODefaultImpl();
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getApiUtilDAO()
-     */
-    public IApiUtilDAO getApiUtilDAO() {
-        return new ApiUtilDAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getApiUtilDAO()
+		 */
+	public IApiUtilDAO getApiUtilDAO()
+	{
+		return new ApiUtilDAODefaultImpl();
+	}
 
-    /* (non-Javadoc)
-     * @see fr.esrf.TangoApi.factory.ITangoFactory#getIORDumpDAO()
-     */
-    public IIORDumpDAO getIORDumpDAO() {
-        return new IORDumpDAODefaultImpl();
-    }
+	/* (non-Javadoc)
+		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getIORDumpDAO()
+		 */
+	public IIORDumpDAO getIORDumpDAO()
+	{
+		return new IORDumpDAODefaultImpl();
+	}
 
-    public String getFactoryName() {
-        return "TANGORB Default";
-    }
+	public String getFactoryName()
+	{
+		return "TANGORB Default";
+	}
 
 }

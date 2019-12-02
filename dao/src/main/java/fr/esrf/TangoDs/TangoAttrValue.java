@@ -38,17 +38,19 @@ import fr.esrf.Tango.DevEncoded;
 import fr.esrf.Tango.DevState;
 
 
-class TangoAttrValue {
-    public DevEncoded[] enc_value;
-    public DevState[] state_seq;
-    public short[] sh_seq;
-    public int[] lg_seq;
-    public long[] lg64_seq;
-    public float[] fl_seq;
-    public double[] db_seq;
-    public String[] str_seq;
-    public boolean[] bool_seq;
+class TangoAttrValue
+{
+	public DevEncoded[]		enc_value;
+	public DevState[]		state_seq;
+	public short[]			sh_seq;
+	public int[]			lg_seq;
+	public long[]			lg64_seq;
+	public float[]			fl_seq;
+	public double[]			db_seq;
+	public String[]			str_seq;
+	public boolean[]		bool_seq;
 
-    public TangoAttrValue() {
-    }
+	public TangoAttrValue()
+	{
+	}
 }

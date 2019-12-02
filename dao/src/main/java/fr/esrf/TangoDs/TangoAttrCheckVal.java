@@ -35,15 +35,18 @@
 package fr.esrf.TangoDs;
 
 
-class TangoAttrCheckVal {
-    public int lg;
-    public long lg64;
-    public short sh;
-    public double db;
 
-    public TangoAttrCheckVal() {
-        lg = 0;
-        sh = 0;
-        db = 0.0;
-    }
+class TangoAttrCheckVal
+{
+	public int      lg;
+	public long     lg64;
+	public short    sh;
+	public double   db;
+	
+	public TangoAttrCheckVal()
+	{
+		lg = 0;
+		sh = 0;
+		db = 0.0;
+	}
 }

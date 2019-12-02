@@ -48,7 +48,7 @@ public class InitCmd extends Command implements TangoConst {
     // --------------------------------------------------------------------------
 
     public InitCmd(final String name, final int in, final int out) {
-        super(name, in, out);
+	super(name, in, out);
     }
 
     // +-------------------------------------------------------------------------
@@ -61,24 +61,24 @@ public class InitCmd extends Command implements TangoConst {
 
     @Override
     public Any execute(final DeviceImpl device, final Any in_any) throws DevFailed {
-        Util.out4.println("InitCmd::execute(): arrived");
+	Util.out4.println("InitCmd::execute(): arrived");
 
-        // Re-initialize the device
-        try {
-            device.delete_device();
-            device.init_device();
-        } catch (final DevFailed e) {
-            final Util tg = Util.instance();
+	// Re-initialize the device
+	try {
+	    device.delete_device();
+	    device.init_device();
+	} catch (final DevFailed e) {
+	    final Util tg = Util.instance();
 
-            Except.re_throw_exception(e, "API_InitThrowsException", "Init command failed!!\n"
-                            + "HINT: RESTART device with the Restart command"
-                            + " of the device server adm. device\n"
-                            + "Device server adm. device name = dserver/" + tg.get_ds_name(),
-                    "InitCmd.execute()");
-        }
+	    Except.re_throw_exception(e, "API_InitThrowsException", "Init command failed!!\n"
+		    + "HINT: RESTART device with the Restart command"
+		    + " of the device server adm. device\n"
+		    + "Device server adm. device name = dserver/" + tg.get_ds_name(),
+		    "InitCmd.execute()");
+	}
 
-        // return to the caller
-        return Util.return_empty_any("Init");
+	// return to the caller
+	return Util.return_empty_any("Init");
     }
 
 }

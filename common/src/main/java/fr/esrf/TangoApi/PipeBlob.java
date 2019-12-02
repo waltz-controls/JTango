@@ -44,13 +44,11 @@ import java.util.ArrayList;
 
 public class PipeBlob extends ArrayList<PipeDataElement> {
     private String name;
-
     // ===================================================================
     // ===================================================================
     public PipeBlob(String name) {
         this.name = name;
     }
-
     // ===================================================================
     // ===================================================================
     public PipeBlob(DevPipeBlob blob) {
@@ -58,7 +56,6 @@ public class PipeBlob extends ArrayList<PipeDataElement> {
         for (DevPipeDataElt element : blob.blob_data)
             add(new PipeDataElement(element));
     }
-
     // ===================================================================
     // ===================================================================
     public PipeBlob(String name, DevPipeDataElt[] elements) {
@@ -67,7 +64,6 @@ public class PipeBlob extends ArrayList<PipeDataElement> {
             add(new PipeDataElement(element));
     }
     // ===================================================================
-
     /**
      * @return blob name
      */
@@ -76,7 +72,6 @@ public class PipeBlob extends ArrayList<PipeDataElement> {
         return name;
     }
     // ===================================================================
-
     /**
      * @return the number of data elements in root blob
      */
@@ -84,12 +79,11 @@ public class PipeBlob extends ArrayList<PipeDataElement> {
     public int getDataElementNumber() {
         return size();
     }
-
     // ===================================================================
     // ===================================================================
     public DevPipeBlob getDevPipeBlobObject() {
-        DevPipeDataElt[] elementList = new DevPipeDataElt[size()];
-        for (int i = 0; i < size(); i++)
+        DevPipeDataElt[]    elementList = new DevPipeDataElt[size()];
+        for (int i=0 ; i<size() ; i++)
             elementList[i] = get(i).getDevPipeDataEltObject();
         return new DevPipeBlob(name, elementList);
     }
@@ -101,13 +95,13 @@ public class PipeBlob extends ArrayList<PipeDataElement> {
      *
     // ===================================================================
     public String getDataElementName(int index) throws DevFailed {
-    try {
-    return get(index).getName();
-    }
-    catch (Exception e) {
-    Except.throw_exception(e.toString(), e.toString());
-    return null;    //  cannot occur.
-    }
+        try {
+            return get(index).getName();
+        }
+        catch (Exception e) {
+            Except.throw_exception(e.toString(), e.toString());
+            return null;    //  cannot occur.
+        }
     }
     // ===================================================================
     /**
@@ -117,14 +111,14 @@ public class PipeBlob extends ArrayList<PipeDataElement> {
      *
     // ===================================================================
     public int getDataElementType(int index) throws DevFailed {
-    int type = TangoConst.Tango_DEV_VOID;
-    try {
-    type = get(index).getType();
-    }
-    catch (Exception e) {
-    Except.throw_exception(e.toString(), e.toString());
-    }
-    return type;
+        int type = TangoConst.Tango_DEV_VOID;
+        try {
+            type = get(index).getType();
+        }
+        catch (Exception e) {
+            Except.throw_exception(e.toString(), e.toString());
+        }
+        return type;
     }
     // ===================================================================
     /**
@@ -134,15 +128,15 @@ public class PipeBlob extends ArrayList<PipeDataElement> {
      *
     // ===================================================================
     public int getDataElementType(String name) throws DevFailed {
-    for (PipeDataElement element : this) {
-    if (element.getName().equals(name)) {
-    return element.getType();
+        for (PipeDataElement element : this) {
+            if (element.getName().equals(name)) {
+                return element.getType();
+            }
+        }
+        Except.throw_exception("TangoApi_NOT_FOUND", "Element named "  + name + " not found");
+        return 0;    //  cannot occur.
     }
-    }
-    Except.throw_exception("TangoApi_NOT_FOUND", "Element named "  + name + " not found");
-    return 0;    //  cannot occur.
-    }
-     */
-    // ===================================================================
+    */
+     // ===================================================================
     // ===================================================================
 }

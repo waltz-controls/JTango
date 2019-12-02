@@ -23,8 +23,10 @@ public final class NoCacheDatabase implements ICachableDatabase {
     /**
      * Ctr
      *
-     * @param host host name of the tango db
-     * @param port port number of the tango db
+     * @param host
+     *            host name of the tango db
+     * @param port
+     *            port number of the tango db
      * @throws DevFailed
      */
     public NoCacheDatabase(final String host, final String port) throws DevFailed {
@@ -37,7 +39,8 @@ public final class NoCacheDatabase implements ICachableDatabase {
      * Export a tango device into the tango db (execute DbExportDevice on DB
      * device)
      *
-     * @param info export info {@link DeviceExportInfo}
+     * @param info
+     *            export info {@link DeviceExportInfo}
      * @throws DevFailed
      */
     @Override
@@ -52,7 +55,8 @@ public final class NoCacheDatabase implements ICachableDatabase {
      * Get the list of instance for an executable.(execute DbGetInstanceNameList
      * on DB device)
      *
-     * @param dsExecName The executable name
+     * @param dsExecName
+     *            The executable name
      * @return the list of instance
      * @throws DevFailed
      */
@@ -68,7 +72,8 @@ public final class NoCacheDatabase implements ICachableDatabase {
      * Import a tango device from the tango db (execute DbImportDevice on DB
      * device)
      *
-     * @param toBeImported the device to import
+     * @param toBeImported
+     *            the device to import
      * @return {@link DeviceImportInfo}
      * @throws DevFailed
      */
@@ -84,7 +89,8 @@ public final class NoCacheDatabase implements ICachableDatabase {
     /**
      * Export a server into the tango db (execute DbUnExportServer on DB device)
      *
-     * @param serverName The server name
+     * @param serverName
+     *            The server name
      * @throws DevFailed
      */
     @Override
@@ -98,15 +104,17 @@ public final class NoCacheDatabase implements ICachableDatabase {
      * Get the list of device for a server and a class (execute DbGetDeviceList
      * on DB device)
      *
-     * @param serverName The server name
-     * @param className  The class name
+     * @param serverName
+     *            The server name
+     * @param className
+     *            The class name
      * @return
      * @throws DevFailed
      */
     @Override
     public String[] getDeviceList(final String serverName, final String className) throws DevFailed {
         final DeviceData send = new DeviceData();
-        send.insert(new String[]{serverName, className});
+        send.insert(new String[] { serverName, className });
         final DeviceData received = database.command_inout("DbGetDeviceList", send);
         return received.extractStringArray();
     }
@@ -115,8 +123,10 @@ public final class NoCacheDatabase implements ICachableDatabase {
      * Get some properties value for a device. (execute DbGetDevicePropertyList
      * on DB device)
      *
-     * @param name          The device name
-     * @param propertyNames The list of properties to retrieve. Empty if all
+     * @param name
+     *            The device name
+     * @param propertyNames
+     *            The list of properties to retrieve. Empty if all
      * @return
      * @throws DevFailed
      */
@@ -135,8 +145,10 @@ public final class NoCacheDatabase implements ICachableDatabase {
      * Set values of device properties. (execute DbPutDeviceProperty on DB
      * device)
      *
-     * @param deviceName The device name
-     * @param properties The properties names and their values
+     * @param deviceName
+     *            The device name
+     * @param properties
+     *            The properties names and their values
      * @throws DevFailed
      */
     @Override
@@ -150,8 +162,10 @@ public final class NoCacheDatabase implements ICachableDatabase {
     /**
      * Get a class properties. (execute DbGetClassPropertyList on DB device)
      *
-     * @param name          The class name
-     * @param propertyNames The properties names
+     * @param name
+     *            The class name
+     * @param propertyNames
+     *            The properties names
      * @return
      * @throws DevFailed
      */
@@ -169,8 +183,10 @@ public final class NoCacheDatabase implements ICachableDatabase {
     /**
      * Set a tango class properties. (execute DbPutClassProperty on DB device)
      *
-     * @param name       The class name
-     * @param properties The properties names and values.
+     * @param name
+     *            The class name
+     * @param properties
+     *            The properties names and values.
      * @throws DevFailed
      */
     @Override
@@ -185,8 +201,10 @@ public final class NoCacheDatabase implements ICachableDatabase {
      * Get an attribute properties. (execute DbGetDeviceAttributeProperty2 on DB
      * device)
      *
-     * @param deviceName    The device name
-     * @param attributeName The attribute name
+     * @param deviceName
+     *            The device name
+     * @param attributeName
+     *            The attribute name
      * @return
      * @throws DevFailed
      */
@@ -211,14 +229,17 @@ public final class NoCacheDatabase implements ICachableDatabase {
      * Set some attribute properties. (execute DbPutDeviceAttributeProperty2 on
      * DB device)
      *
-     * @param deviceName    The device name
-     * @param attributeName The attribute name
-     * @param properties    The properties names and values.
+     * @param deviceName
+     *            The device name
+     * @param attributeName
+     *            The attribute name
+     * @param properties
+     *            The properties names and values.
      * @throws DevFailed
      */
     @Override
     public void setAttributeProperties(final String deviceName, final String attributeName,
-                                       final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         final DeviceData argin = new DeviceData();
         final List<String> args = new ArrayList<String>();
         args.add(deviceName);
@@ -243,7 +264,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
         if (type.equals(PropertyType.Class)) {
             argin.insert(devOrClass);
         } else {
-            argin.insert(new String[]{devOrClass, "*"});
+            argin.insert(new String[] { devOrClass, "*" });
         }
         final DeviceData argout = database.command_inout("DbGet" + type + "PropertyList", argin);
         final List<String> properties = new ArrayList<String>(Arrays.asList(argout.extractStringArray()));
@@ -263,7 +284,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
     }
 
     private Map<String, String[]> getProperty(final PropertyType type, final String devOrClass,
-                                              final String... propNames) throws DevFailed {
+            final String... propNames) throws DevFailed {
         // Format input parameters as string array
         final String[] array = ArrayUtils.add(propNames, 0, devOrClass);
 
@@ -281,8 +302,9 @@ public final class NoCacheDatabase implements ICachableDatabase {
     /**
      * Return a map of properties with name as key and value as entry
      *
-     * @param result        Array {propName, propSize, values...,propNameN, propSizeN,
-     *                      valuesN}
+     * @param result
+     *            Array {propName, propSize, values...,propNameN, propSizeN,
+     *            valuesN}
      * @param startingPoint
      * @return
      */
@@ -331,7 +353,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
     @Override
     public void deleteDeviceProperty(final String deviceName, final String propertyName) throws DevFailed {
         final DeviceData argin = new DeviceData();
-        argin.insert(new String[]{deviceName, propertyName});
+        argin.insert(new String[] { deviceName, propertyName });
         database.command_inout("DbDeleteDeviceProperty", argin);
     }
 
@@ -340,7 +362,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
         final DeviceData argin = new DeviceData();
         if (attributeNames == null || attributeNames.length == 0) {
             // delete all properties of the device
-            argin.insert(new String[]{deviceName, "*"});
+            argin.insert(new String[] { deviceName, "*" });
         } else {
             argin.insert(ArrayUtils.add(attributeNames, 0, deviceName));
         }
@@ -352,7 +374,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
         final DeviceData argin = new DeviceData();
         if (pipeNames == null || pipeNames.length == 0) {
             // delete all properties of the device
-            argin.insert(new String[]{deviceName, "*"});
+            argin.insert(new String[] { deviceName, "*" });
         } else {
             argin.insert(ArrayUtils.add(pipeNames, 0, deviceName));
         }
@@ -406,7 +428,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
             // this is an old database server
             final String desc = e.errors[0].desc.toLowerCase();
             if (desc.startsWith("command ") && desc.endsWith("not found")) {
-                tangoHosts = new String[]{TangoHostManager.getFirstFullTangoHost()};
+                tangoHosts = new String[] { TangoHostManager.getFirstFullTangoHost() };
             } else {
                 throw e;
             }
@@ -418,7 +440,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
     @Override
     public String getFreeProperty(final String name, final String propertyName) throws DevFailed {
         final DeviceData argin = new DeviceData();
-        argin.insert(new String[]{name, propertyName});
+        argin.insert(new String[] { name, propertyName });
         final DeviceData deviceData = database.command_inout("DbGetProperty", argin);
         String result = "";
         if (deviceData.extractStringArray().length > 4) {
@@ -431,7 +453,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
     public Map<String, String[]> getDevicePipeProperties(final String deviceName, final String pipeName)
             throws DevFailed {
         final DeviceData argin = new DeviceData();
-        argin.insert(new String[]{deviceName, pipeName});
+        argin.insert(new String[] { deviceName, pipeName });
         final DeviceData argout = database.command_inout("DbGetDevicePipeProperty", argin);
         final String[] result = argout.extractStringArray();
         return extractArgout(result, 4);
@@ -439,7 +461,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
 
     @Override
     public void setDevicePipeProperties(final String deviceName, final String pipeName,
-                                        final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         // argin desc: Str[0] = Device name,Str[1] = Pipe number,Str[2] = Pipe name
         final List<String> args = getArray(properties, deviceName, "1", pipeName);
         final DeviceData argin = new DeviceData();
@@ -451,7 +473,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
     @Override
     public Map<String, String[]> getClassPipeProperties(final String className, final String pipeName) throws DevFailed {
         final DeviceData argin = new DeviceData();
-        argin.insert(new String[]{className, pipeName});
+        argin.insert(new String[] { className, pipeName });
         final DeviceData argout = database.command_inout("DbGetClassPipeProperty", argin);
         final String[] result = argout.extractStringArray();
         return extractArgout(result, 2);
@@ -459,7 +481,7 @@ public final class NoCacheDatabase implements ICachableDatabase {
 
     @Override
     public void setClassPipeProperties(final String className, final String pipeName,
-                                       final Map<String, String[]> properties) throws DevFailed {
+            final Map<String, String[]> properties) throws DevFailed {
         final List<String> args = getArray(properties, className);
         final DeviceData argin = new DeviceData();
         argin.insert(args.toArray(new String[args.size()]));
