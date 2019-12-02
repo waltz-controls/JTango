@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Implements builder pattern for {@link PipeBlob}
- *
+ * <p>
  * Not thread safe. Designed to be thread confinement.
  *
  * @author Igor Khokhriakov <igor.khokhriakov@hzg.de>
@@ -39,7 +39,6 @@ public class PipeBlobBuilder {
     }
 
     /**
-     *
      * @param name
      * @param value
      * @param asUChar treat Java short (2 bytes) as C++ unsigned char (1 byte)
@@ -55,7 +54,6 @@ public class PipeBlobBuilder {
     }
 
     /**
-     *
      * @param name
      * @param value
      * @param asUShort treat Java int (4 bytes) as C++ unsigned short (2 bytes)
@@ -130,17 +128,17 @@ public class PipeBlobBuilder {
         return this;
     }
 
-	/**
-	 * Adds a generic array to this PipeBlob
-	 *
-	 * @throws IllegalArgumentException if value is not an array
-	 */
-    public PipeBlobBuilder add(String name, Object value){
+    /**
+     * Adds a generic array to this PipeBlob
+     *
+     * @throws IllegalArgumentException if value is not an array
+     */
+    public PipeBlobBuilder add(String name, Object value) {
         elements.add(PipeDataElement.newInstance(name, value));
         return this;
     }
 
-    public PipeBlob build(){
+    public PipeBlob build() {
         PipeBlob blob = new PipeBlob(blobName);
         blob.addAll(elements);
         return blob;

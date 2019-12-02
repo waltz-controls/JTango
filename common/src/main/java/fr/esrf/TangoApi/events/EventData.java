@@ -49,7 +49,7 @@ public class EventData implements java.io.Serializable {
     public int event_type;
     public int event_source;
     public DeviceAttribute attr_value;
-    public DevicePipe   devicePipe;
+    public DevicePipe devicePipe;
     public AttributeInfoEx attr_config;
     public AttDataReady data_ready;
     public DeviceInterface deviceInterface;
@@ -57,25 +57,26 @@ public class EventData implements java.io.Serializable {
     public boolean err;
     public long date;
 
-    public static final int    ZMQ_EVENT    = 0;
-    public static final int    NOTIFD_EVENT = 1;
+    public static final int ZMQ_EVENT = 0;
+    public static final int NOTIFD_EVENT = 1;
     //-=============================================
+
     /**
      * Creates a new instance of EventData
      */
     //-=============================================
     public EventData(
-                DeviceProxy device,
-                String name,
-                String event,
-                int event_type,
-                int event_source,
-                DeviceAttribute attr_value,
-                DevicePipe devicePipe,
-                AttributeInfoEx attr_config,
-                AttDataReady data_ready,
-                DeviceInterface deviceInterface,
-                DevError[] errors) {
+            DeviceProxy device,
+            String name,
+            String event,
+            int event_type,
+            int event_source,
+            DeviceAttribute attr_value,
+            DevicePipe devicePipe,
+            AttributeInfoEx attr_config,
+            AttDataReady data_ready,
+            DeviceInterface deviceInterface,
+            DevError[] errors) {
         this.device = device;
         this.name = name;
         this.event = event;
@@ -90,7 +91,8 @@ public class EventData implements java.io.Serializable {
         err = (errors != null);
         date = System.currentTimeMillis();
     }
-     //-=============================================
+    //-=============================================
+
     /**
      * @return true if event is fom attribute
      */
@@ -100,6 +102,7 @@ public class EventData implements java.io.Serializable {
         return (attr_value != null);
     }
     //-=============================================
+
     /**
      * @return true if event is from pipe
      */
@@ -109,6 +112,7 @@ public class EventData implements java.io.Serializable {
         return (devicePipe != null);
     }
     //-=============================================
+
     /**
      * @return true if event is TangoConst.ATT_CONF_EVENT
      */
@@ -118,6 +122,7 @@ public class EventData implements java.io.Serializable {
         return (attr_config != null);
     }
     //-=============================================
+
     /**
      * @return true if event is TangoConst.DATA_READY_EVENT
      */

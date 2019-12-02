@@ -1,49 +1,40 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.attribute;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
-
+import fr.esrf.Tango.*;
+import fr.esrf.TangoApi.DeviceDataHistory;
 import org.omg.CORBA.Any;
 import org.tango.orb.ORBManager;
 import org.tango.server.idl.CleverAnyAttribute;
 import org.tango.server.idl.TangoIDLUtil;
 
-import fr.esrf.Tango.AttrDataFormat;
-import fr.esrf.Tango.AttrQuality;
-import fr.esrf.Tango.AttributeDim;
-import fr.esrf.Tango.DevAttrHistory_4;
-import fr.esrf.Tango.DevAttrHistory_5;
-import fr.esrf.Tango.DevError;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.EltInArray;
-import fr.esrf.Tango.TimeVal;
-import fr.esrf.TangoApi.DeviceDataHistory;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class AttributeHistoryConvertor {
     private final Deque<HistoryItem> valueHistory;
@@ -63,7 +54,7 @@ public class AttributeHistoryConvertor {
     private final AttrDataFormat format;
 
     AttributeHistoryConvertor(final String attributeName, final Deque<HistoryItem> valueHistory, final int maxSize,
-            final int tangoType, final AttrDataFormat format, final boolean isReadWrite) throws DevFailed {
+                              final int tangoType, final AttrDataFormat format, final boolean isReadWrite) throws DevFailed {
         this.attributeName = attributeName;
         this.valueHistory = valueHistory;
         this.isReadWrite = isReadWrite;
@@ -130,7 +121,7 @@ public class AttributeHistoryConvertor {
                 if (readDim.isEmpty()
                         || !readDim.isEmpty()
                         && (attributeHistory[i].getDimX() != readDim.getLast().dim_x || attributeHistory[i].getDimY() != readDim
-                                .getLast().dim_y)) {
+                        .getLast().dim_y)) {
                     readDimSize.add(new EltInArray(i - 1, 1));
                     readDim.add(new AttributeDim(attributeHistory[i].getDimX(), attributeHistory[i].getDimY()));
                 } else {
@@ -142,7 +133,7 @@ public class AttributeHistoryConvertor {
                     if (writeDim.isEmpty()
                             || !writeDim.isEmpty()
                             && (attributeHistory[i].getWrittenDimX() != writeDim.getLast().dim_x || attributeHistory[i]
-                                    .getWrittenDimY() != writeDim.getLast().dim_y)) {
+                            .getWrittenDimY() != writeDim.getLast().dim_y)) {
                         writeDimSize.add(new EltInArray(i - 1, 1));
                         writeDim.add(new AttributeDim(attributeHistory[i].getWrittenDimX(), attributeHistory[i]
                                 .getWrittenDimY()));
@@ -185,7 +176,7 @@ public class AttributeHistoryConvertor {
         writeDimArray = new AttributeDim[0];
         writeDimSizeArray = new EltInArray[0];
         errorsArrayHist = new EltInArray[0];
-        errorsHist = new DevError[][] {};
+        errorsHist = new DevError[][]{};
         times = new TimeVal[0];
         values = ORBManager.createAny();
     }
@@ -253,7 +244,7 @@ public class AttributeHistoryConvertor {
             if (readDim.isEmpty()
                     || !readDim.isEmpty()
                     && (item.getReadValue().getXDim() != readDim.getLast().dim_x || item.getReadValue().getYDim() != readDim
-                            .getLast().dim_y)) {
+                    .getLast().dim_y)) {
                 readDimSize.add(new EltInArray(i - 1, 1));
                 readDim.add(new AttributeDim(item.getReadValue().getXDim(), item.getReadValue().getYDim()));
             } else {
@@ -265,7 +256,7 @@ public class AttributeHistoryConvertor {
                 if (writeDim.isEmpty()
                         || !writeDim.isEmpty()
                         && (item.getWriteValue().getXDim() != writeDim.getLast().dim_x || item.getWriteValue()
-                                .getYDim() != writeDim.getLast().dim_y)) {
+                        .getYDim() != writeDim.getLast().dim_y)) {
                     writeDimSize.add(new EltInArray(i - 1, 1));
                     writeDim.add(new AttributeDim(item.getWriteValue().getXDim(), item.getWriteValue().getYDim()));
                 } else {

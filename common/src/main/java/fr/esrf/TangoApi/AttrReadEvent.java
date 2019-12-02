@@ -33,33 +33,32 @@
 
 
 package fr.esrf.TangoApi;
- 
+
 import fr.esrf.Tango.DevError;
+
 /**
- *	Class description: This class is an object used by asynchronous calls
- *		to give data to the callbacks.
+ * Class description: This class is an object used by asynchronous calls
+ * to give data to the callbacks.
  */
 
-public class  AttrReadEvent implements java.io.Serializable
-{
-	public DeviceProxy 			device;
-	public String[]				attr_names;
-	public DeviceAttribute[]	argout;
-	public DevError[]			errors;
-	public boolean				err;
+public class AttrReadEvent implements java.io.Serializable {
+    public DeviceProxy device;
+    public String[] attr_names;
+    public DeviceAttribute[] argout;
+    public DevError[] errors;
+    public boolean err;
 
-	//===============================================================
-	//===============================================================
-	public AttrReadEvent(DeviceProxy dev, String[] att, 
-						DeviceAttribute[] arg, DevError[] err_in)
-	{
-		device   = dev;
-		attr_names = att;
-		argout   = arg;
-		errors   = err_in;
-		if (errors==null)
-			err = false;
-		else
-			err = (errors.length!=0) ;
-	}
+    //===============================================================
+    //===============================================================
+    public AttrReadEvent(DeviceProxy dev, String[] att,
+                         DeviceAttribute[] arg, DevError[] err_in) {
+        device = dev;
+        attr_names = att;
+        argout = arg;
+        errors = err_in;
+        if (errors == null)
+            err = false;
+        else
+            err = (errors.length != 0);
+    }
 }

@@ -1,43 +1,38 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.attribute;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
+import fr.esrf.Tango.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.server.Constants;
 
-import fr.esrf.Tango.AttrDataFormat;
-import fr.esrf.Tango.DevAttrHistory_4;
-import fr.esrf.Tango.DevAttrHistory_5;
-import fr.esrf.Tango.DevError;
-import fr.esrf.Tango.DevFailed;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public final class AttributeHistory {
 
@@ -50,7 +45,7 @@ public final class AttributeHistory {
     private final AttrDataFormat format;
 
     public AttributeHistory(final String attributeName, final boolean isReadWrite, final int tangoType,
-            final AttrDataFormat format) {
+                            final AttrDataFormat format) {
         this.attributeName = attributeName;
         this.isReadWrite = isReadWrite;
         this.tangoType = tangoType;
@@ -58,7 +53,7 @@ public final class AttributeHistory {
     }
 
     public synchronized void addToHistory(final AttributeValue readValue, final AttributeValue writeValue,
-            final DevError[] error) {
+                                          final DevError[] error) {
         while (valueHistory.size() >= maxSize - 1) {
             valueHistory.poll();
         }
@@ -78,12 +73,12 @@ public final class AttributeHistory {
 
     public synchronized DevAttrHistory_4 getAttrHistory4(final int maxSize) throws DevFailed {
         return new AttributeHistoryConvertor(attributeName, valueHistory, maxSize, tangoType, format, isReadWrite)
-        .getAttrHistory4();
+                .getAttrHistory4();
     }
 
     public synchronized DevAttrHistory_5 getAttrHistory5(final int maxSize) throws DevFailed {
         return new AttributeHistoryConvertor(attributeName, valueHistory, maxSize, tangoType, format, isReadWrite)
-        .getAttrHistory5();
+                .getAttrHistory5();
     }
 
     @Override

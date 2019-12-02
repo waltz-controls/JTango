@@ -42,65 +42,64 @@ import java.util.ArrayList;
 import java.util.EventListener;
 
 /**
- *
- * @author  pascal_verdier
+ * @author pascal_verdier
  */
 public class TangoPipe extends EventDispatcher implements java.io.Serializable {
 
-	//==============================================================
+    //==============================================================
+
     /**
-	 *	Creates a new instance of TangoPipe
+     * Creates a new instance of TangoPipe
+     *
      * @param device_proxy device proxy object.
      * @param attr_name    attribute name.
      * @param filters      filter array
-	 */
-	//==============================================================
+     */
+    //==============================================================
     public TangoPipe(DeviceProxy device_proxy, String attr_name, String[] filters) {
         super(device_proxy);
         this.attr_name = attr_name;
         this.filters = filters;
         event_identifier = -1;
     }
-    
-	//==============================================================
-	//==============================================================
+
+    //==============================================================
+    //==============================================================
     public void addTangoPipeListener(ITangoPipeListener listener, boolean stateless)
-                throws DevFailed
-    {
-		event_listeners.add(ITangoPipeListener.class, listener);
+            throws DevFailed {
+        event_listeners.add(ITangoPipeListener.class, listener);
         event_identifier = subscribe_pipe_event(attr_name, filters, stateless);
     }
-    
-	//==============================================================
-	//==============================================================
+
+    //==============================================================
+    //==============================================================
     public void removeTangoPipeListener(ITangoPipeListener listener)
-                throws DevFailed
-    {
-        event_listeners.remove(ITangoPipeListener.class,listener);
-        if ( event_listeners.size() == 0 )
-           unsubscribe_event(event_identifier);
+            throws DevFailed {
+        event_listeners.remove(ITangoPipeListener.class, listener);
+        if (event_listeners.size() == 0)
+            unsubscribe_event(event_identifier);
 
     }
-	//==============================================================
-	//==============================================================
-	public void dispatch_event(final EventData eventData) {
-		final TangoPipe tangoPipe = this;
+
+    //==============================================================
+    //==============================================================
+    public void dispatch_event(final EventData eventData) {
+        final TangoPipe tangoPipe = this;
         if (EventUtil.graphicAvailable()) {
-                //   Causes doRun.run() to be executed asynchronously
-                //      on the AWT event dispatching thread.
+            //   Causes doRun.run() to be executed asynchronously
+            //      on the AWT event dispatching thread.
             Runnable do_work_later = new Runnable() {
                 public void run() {
                     fireTangoPipeEvent(tangoPipe, eventData);
                 }
             };
             SwingUtilities.invokeLater(do_work_later);
-        }
-        else
+        } else
             fireTangoPipeEvent(tangoPipe, eventData);
     }
 
-	//==============================================================
-	//==============================================================
+    //==============================================================
+    //==============================================================
     private void fireTangoPipeEvent(TangoPipe tangoPipe, EventData eventData) {
         TangoPipeEvent tangoPipeEvent = new TangoPipeEvent(tangoPipe, eventData);
         // Notifying those that are interested in this event
@@ -109,8 +108,8 @@ public class TangoPipe extends EventDispatcher implements java.io.Serializable {
             ((ITangoPipeListener) eventListener).pipe(tangoPipeEvent);
         }
     }
-	//==============================================================
-	//==============================================================
+    //==============================================================
+    //==============================================================
 
     String attr_name;
     int event_identifier;

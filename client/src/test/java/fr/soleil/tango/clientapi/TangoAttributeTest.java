@@ -1,9 +1,8 @@
 package fr.soleil.tango.clientapi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import fr.esrf.Tango.AttrDataFormat;
+import fr.esrf.Tango.AttrWriteType;
+import fr.esrf.Tango.DevFailed;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,9 +11,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.tango.utils.DevFailedUtils;
 
-import fr.esrf.Tango.AttrDataFormat;
-import fr.esrf.Tango.AttrWriteType;
-import fr.esrf.Tango.DevFailed;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Ignore(value = "a tangotest must be started automatically")
 @RunWith(Parameterized.class)
@@ -31,7 +30,7 @@ public class TangoAttributeTest {
         attrList = dev.getDeviceProxy().get_attribute_list();
 
         for (final String attrName : attrList) {
-            result.add(new Object[] { dev, attrName });
+            result.add(new Object[]{dev, attrName});
         }
         return result;
     }
@@ -85,8 +84,8 @@ public class TangoAttributeTest {
 
                 if (format.equals(AttrDataFormat.IMAGE)) {
                     if (writeType == AttrWriteType.READ_WRITE || writeType == AttrWriteType.WRITE) {
-                        ta.write(new String[][] { { "1", "2.3", "3" }, { "4", "3", "0" } });
-                        ta.writeImage(2, 2, new double[] { 1.0, 2.3, 3.0, 4.0 });
+                        ta.write(new String[][]{{"1", "2.3", "3"}, {"4", "3", "0"}});
+                        ta.writeImage(2, 2, new double[]{1.0, 2.3, 3.0, 4.0});
                     }
                     ta.update();
                     // long time1 = System.nanoTime();
@@ -101,7 +100,7 @@ public class TangoAttributeTest {
                     System.out.println("time ms for getting WRITE: " + (time2 - time1) / 1000000.0);
                 } else if (format.equals(AttrDataFormat.SPECTRUM)) {
                     if (writeType == AttrWriteType.READ_WRITE || writeType == AttrWriteType.WRITE) {
-                        ta.write(new String[] { "1", "2.3", "3", "4", "3", "0" });
+                        ta.write(new String[]{"1", "2.3", "3", "4", "3", "0"});
                         // ta.writeSpectrum(new String[] { "1", "2.3", "3", "4",
                         // "3", "0" });
                     }
@@ -177,7 +176,7 @@ public class TangoAttributeTest {
         ta.update();
         System.out.println(ta.extractToString(",", "\n"));
         final TangoAttribute ta2 = new TangoAttribute(deviceName + "/short_spectrum");
-        final short[] s = { 1 };
+        final short[] s = {1};
         ta2.insert(s);
         ta2.write();
         ta2.update();

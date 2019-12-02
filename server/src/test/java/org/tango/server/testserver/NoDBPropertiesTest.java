@@ -1,24 +1,24 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,9 +45,9 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Test properties without tango db
- * 
+ *
  * @author ABEILLE
- * 
+ *
  */
 public class NoDBPropertiesTest extends NoDBDeviceManager {
 
@@ -83,7 +83,7 @@ public class NoDBPropertiesTest extends NoDBDeviceManager {
         final String propName = "myProp";
 
         Map<String, String[]> map = new HashMap<String, String[]>();
-        map.put(propName, new String[] { propValue });
+        map.put(propName, new String[]{propValue});
         db.setDeviceProperties(JTangoTest.NO_DB_DEVICE_NAME, map);
 
         final DeviceProxy dev = new DeviceProxy(deviceName);
@@ -95,7 +95,7 @@ public class NoDBPropertiesTest extends NoDBDeviceManager {
         Assert.assertEquals(propValue, value);
 
         map = new HashMap<String, String[]>();
-        map.put(propName, new String[] { "" });
+        map.put(propName, new String[]{""});
         db.setDeviceProperties(JTangoTest.NO_DB_DEVICE_NAME, map);
 
         dev.command_inout("Init");
@@ -113,7 +113,7 @@ public class NoDBPropertiesTest extends NoDBDeviceManager {
         final String propName = "booleanProp";
 
         final Map<String, String[]> map = new HashMap<String, String[]>();
-        map.put(propName, new String[] { propValue });
+        map.put(propName, new String[]{propValue});
         db.setDeviceProperties(JTangoTest.NO_DB_DEVICE_NAME, map);
 
         final DeviceProxy dev = new DeviceProxy(deviceName);
@@ -134,7 +134,7 @@ public class NoDBPropertiesTest extends NoDBDeviceManager {
         final String propName = "booleanProp";
 
         final Map<String, String[]> map = new HashMap<String, String[]>();
-        map.put(propName, new String[] { propValue });
+        map.put(propName, new String[]{propValue});
         db.setDeviceProperties(JTangoTest.NO_DB_DEVICE_NAME, map);
 
         final DeviceProxy dev = new DeviceProxy(deviceName);
@@ -155,7 +155,7 @@ public class NoDBPropertiesTest extends NoDBDeviceManager {
         final String propClassName = "myClassProp";
 
         Map<String, String[]> map = new HashMap<String, String[]>();
-        map.put(propClassName, new String[] { propClassValue });
+        map.put(propClassName, new String[]{propClassValue});
         db.setClassProperties(JTangoTest.class.getCanonicalName(), map);
 
         final DeviceProxy dev = new DeviceProxy(deviceName);
@@ -164,24 +164,24 @@ public class NoDBPropertiesTest extends NoDBDeviceManager {
 
         String[] valueClass = devdaClass.extractStringArray();
 
-        Assert.assertArrayEquals(new String[] { propClassValue }, valueClass);
+        Assert.assertArrayEquals(new String[]{propClassValue}, valueClass);
 
         map = new HashMap<String, String[]>();
-        map.put(propClassName, new String[] { "" });
+        map.put(propClassName, new String[]{""});
         db.setClassProperties(JTangoTest.class.getCanonicalName(), map);
 
         dev.command_inout("Init");
         devdaClass = dev.command_inout("getMyClassProperty");
         valueClass = devdaClass.extractStringArray();
-        Assert.assertArrayEquals(new String[] { "classDefault" }, valueClass);
+        Assert.assertArrayEquals(new String[]{"classDefault"}, valueClass);
     }
 
     @Test
-    public void testEmptyArrayProperty() throws DevFailed{
+    public void testEmptyArrayProperty() throws DevFailed {
         final DeviceProxy dev = new DeviceProxy(deviceName);
         DeviceData devdaClass = dev.command_inout("getEmptyArrayProperty");
         String[] valueClass = devdaClass.extractStringArray();
-        System.out.println("test array "+ Arrays.toString(valueClass));
+        System.out.println("test array " + Arrays.toString(valueClass));
         Assert.assertArrayEquals(new String[0], valueClass);
     }
 
@@ -194,7 +194,7 @@ public class NoDBPropertiesTest extends NoDBDeviceManager {
             final DeviceProxy dev = new DeviceProxy(deviceName);
             final AttributeInfoEx info = dev.get_attribute_info_ex(attrName);
             info.description = value;
-            dev.set_attribute_info(new AttributeInfoEx[] { info });
+            dev.set_attribute_info(new AttributeInfoEx[]{info});
             final String actualValue = dev.get_attribute_info_ex(attrName).description;
             Assert.assertEquals(value, actualValue);
         } catch (final DevFailed e) {
@@ -217,9 +217,9 @@ public class NoDBPropertiesTest extends NoDBDeviceManager {
         assertThat(info.alarms.delta_t, equalTo("10"));
         assertThat(info.alarms.delta_val, equalTo("20"));
         assertThat(info.description, equalTo("test"));
-        Assert.assertArrayEquals(info.enum_label, new String[] { "Not specified" });
+        Assert.assertArrayEquals(info.enum_label, new String[]{"Not specified"});
         // test IDL5 properties
         final AttributeInfoEx info2 = dev.get_attribute_info_ex("enumAttribute");
-        Assert.assertArrayEquals(info2.enum_label, new String[] { "VALUE1", "VALUE2" });
+        Assert.assertArrayEquals(info2.enum_label, new String[]{"VALUE1", "VALUE2"});
     }
 }

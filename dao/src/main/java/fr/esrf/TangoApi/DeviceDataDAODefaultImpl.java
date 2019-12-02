@@ -76,6 +76,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================================
+
     /**
      * Constructor for the TgApi Data Object.
      *
@@ -86,6 +87,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         deviceData.setAny(ApiUtil.get_orb().create_any());
     }
     // ===========================================================
+
     /**
      * Constructor for the TgApi Data Object.
      *
@@ -97,6 +99,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         deviceData.setAny(orb.create_any());
     }
     // ===========================================================
+
     /**
      * Constructor for the TgApi Data Object.
      *
@@ -111,6 +114,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     // ********** Insert Methods for basic types *********************
 
     // ===========================================
+
     /**
      * Insert method for argin is void.
      */
@@ -118,6 +122,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     public void insert(final DeviceData deviceData) {
     }
     // ===========================================
+
     /**
      * Insert method for argin is Any (CORBA).
      */
@@ -126,6 +131,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         deviceData.setAny(any);
     }
     // ===========================================
+
     /**
      * Insert method for argin is boolean.
      *
@@ -136,6 +142,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevBooleanHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is short.
      *
@@ -146,6 +153,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevShortHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is long (64 bits)
      *
@@ -156,6 +164,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevLong64Helper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is int.
      *
@@ -166,6 +175,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevLongHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is float.
      *
@@ -176,6 +186,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevFloatHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is double.
      *
@@ -186,6 +197,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevDoubleHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is String.
      *
@@ -196,6 +208,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevStringHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is DevState.
      *
@@ -209,6 +222,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     // ********** Insert Methods for sequence types *********************
 
     // ===========================================
+
     /**
      * Insert method for argin is DevVarCharArray.
      *
@@ -219,6 +233,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarCharArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is DevVarShortArray.
      *
@@ -229,6 +244,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarShortArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is DevVarLongArray.
      *
@@ -239,6 +255,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarLongArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is long array (64 bits).
      *
@@ -249,6 +266,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarLong64ArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is DevVarFloatArray.
      *
@@ -259,6 +277,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarFloatArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is DevVarDoubleArray.
      *
@@ -269,6 +288,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarDoubleArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is DevVarStringArray.
      *
@@ -279,6 +299,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarStringArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is DevVarLongStringArray.
      *
@@ -289,6 +310,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarLongStringArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is DevVarDoubleStringArray.
      *
@@ -302,6 +324,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     // ********** Insert Methods for unsigned types *********************
 
     // ===========================================
+
     /**
      * Insert method for argin is unsigned long 64.array
      *
@@ -312,6 +335,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarULong64ArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned long 64.
      *
@@ -322,6 +346,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevULong64Helper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin int as unsigned char.
      *
@@ -333,6 +358,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevUCharHelper.insert(deviceData.getAny(), val);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned char.
      *
@@ -343,6 +369,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevUCharHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin int as unsigned short.
      *
@@ -354,6 +381,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevUShortHelper.insert(deviceData.getAny(), val);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned short.
      *
@@ -364,6 +392,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevUShortHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned short.
      *
@@ -376,6 +405,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevUShortHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin long ass unsigned int.
      *
@@ -387,6 +417,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevULongHelper.insert(deviceData.getAny(), val);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned int.
      *
@@ -397,6 +428,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevULongHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned int.
      *
@@ -409,6 +441,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevULongHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin int as unsigned short array.
      *
@@ -417,13 +450,14 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     // ===========================================
     public void insert_us(final DeviceData deviceData, final int[] argin) {
         final short[] val = new short[argin.length];
-        for (int i = 0 ; i<argin.length ; i++) {
+        for (int i = 0; i < argin.length; i++) {
             val[i] = (short) (argin[i] & 0xFFFF);
         }
 
         DevVarUShortArrayHelper.insert(deviceData.getAny(), val);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned short array.
      *
@@ -434,6 +468,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarUShortArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned short array.
      *
@@ -446,6 +481,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarUShortArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin long array as unsigned int array.
      *
@@ -454,13 +490,14 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     // ===========================================
     public void insert_ul(final DeviceData deviceData, final long[] argin) {
         final int[] val = new int[argin.length];
-        for (int i = 0 ; i<argin.length ; i++) {
+        for (int i = 0; i < argin.length; i++) {
             val[i] = (int) (argin[i] & 0xFFFFFFFF);
         }
 
         DevVarULongArrayHelper.insert(deviceData.getAny(), val);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned int array.
      *
@@ -471,6 +508,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         DevVarULongArrayHelper.insert(deviceData.getAny(), argin);
     }
     // ===========================================
+
     /**
      * Insert method for argin is unsigned int array.
      *
@@ -486,6 +524,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     // ********** Extract Methods for basic types *********************
 
     // ===========================================
+
     /**
      * extract method for a CORBA Any.
      */
@@ -495,6 +534,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a boolean.
      */
@@ -504,6 +544,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a short.
      */
@@ -513,6 +554,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned char.
      */
@@ -523,16 +565,18 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned short.
      */
     // ===========================================
     public int extractUShort(final DeviceData deviceData) {
         final short tmp = DevUShortHelper.extract(deviceData.getAny());
-        return  0xFFFF & tmp;
+        return 0xFFFF & tmp;
     }
 
     // ===========================================
+
     /**
      * extract method for a long.
      */
@@ -542,6 +586,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a long.
      */
@@ -551,6 +596,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned long.
      */
@@ -563,6 +609,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned long.
      */
@@ -572,6 +619,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a float.
      */
@@ -581,6 +629,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a double.
      */
@@ -590,6 +639,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a String.
      */
@@ -599,6 +649,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a DevState.
      */
@@ -610,6 +661,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     // ********** Extract Methods for sequence types *********************
 
     // ===========================================
+
     /**
      * extract method for a byte Array.
      */
@@ -619,6 +671,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a boolean Array.
      */
@@ -628,6 +681,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a short Array.
      */
@@ -637,6 +691,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned short Array.
      *
@@ -646,13 +701,14 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     public int[] extractUShortArray(final DeviceData deviceData) {
         final short[] argout = DevVarUShortArrayHelper.extract(deviceData.getAny());
         final int[] val = new int[argout.length];
-        for (int i = 0 ; i<argout.length ; i++) {
+        for (int i = 0; i < argout.length; i++) {
             val[i] = 0xFFFF & argout[i];
         }
         return val;
     }
 
     // ===========================================
+
     /**
      * extract method for a long Array.
      */
@@ -662,6 +718,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a long64 Array.
      */
@@ -671,6 +728,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned long Array.
      *
@@ -683,7 +741,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         long mask = 0x7fffffff;
         mask += (long) 1 << 31;
 
-        for (int i = 0 ; i<argout.length ; i++) {
+        for (int i = 0; i < argout.length; i++) {
             val[i] = argout[i] & mask;
         }
 
@@ -691,6 +749,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a long64 Array.
      */
@@ -700,6 +759,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a float Array.
      */
@@ -709,6 +769,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a double Array.
      */
@@ -718,30 +779,33 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
     }
 
     // ===========================================
+
     /**
      * extract method for a String Array.
      */
     // ===========================================
     public String[] extractStringArray(final DeviceData deviceData) {
-        if (deviceData.getAny()==null) {
+        if (deviceData.getAny() == null) {
             System.out.println("any = null !!");
         }
         return DevVarStringArrayHelper.extract(deviceData.getAny());
     }
 
     // ===========================================
+
     /**
      * extract method for a DevVarLongStringArray.
      */
     // ===========================================
     public DevVarLongStringArray extractLongStringArray(final DeviceData deviceData) {
-        if (deviceData.getAny()==null) {
+        if (deviceData.getAny() == null) {
             System.out.println("any = null !!");
         }
         return DevVarLongStringArrayHelper.extract(deviceData.getAny());
     }
 
     // ===========================================
+
     /**
      * extract method for a DevVarDoubleStringArray.
      */
@@ -765,21 +829,21 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
         try {
 
             // Special case for state
-            if (tc.kind().value()==TCKind._tk_enum) {
+            if (tc.kind().value() == TCKind._tk_enum) {
                 return Tango_DEV_STATE;
             }
 
             // Check if struct
-            if (tc.kind().value()==TCKind._tk_struct) {
+            if (tc.kind().value() == TCKind._tk_struct) {
                 is_struct = true;
                 // Get first element of struct
                 tc = tc.member_type(0);
             }
 
             // Check if array
-            if (tc.kind().value()==TCKind._tk_alias) {
+            if (tc.kind().value() == TCKind._tk_alias) {
                 final TypeCode tc_alias = tc.content_type();
-                if (tc_alias.kind().value()==TCKind._tk_sequence) {
+                if (tc_alias.kind().value() == TCKind._tk_sequence) {
                     final TypeCode tc_seq = tc_alias.content_type();
                     kind = tc_seq.kind();
                     is_array = true;
@@ -799,8 +863,7 @@ public class DeviceDataDAODefaultImpl implements TangoConst, IDeviceDataDAO {
                 case TCKind._tk_boolean:
                     if (is_array) {
                         type = Tango_DEVVAR_BOOLEANARRAY;
-                    }
-                    else {
+                    } else {
                         type = Tango_DEV_BOOLEAN;
                     }
                     break;

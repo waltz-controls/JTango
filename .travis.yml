@@ -40,20 +40,17 @@ jobs:
           organization: "tango-controls"
           token:
             secure: $SONAR_TOKEN
-    -
-      name: "Deploy to Codacy"
+    - name: "Deploy to Codacy"
       jdk: openjdk8
       script:
         - mvn clean install -Ptravis
         - mvn com.gavinmogan:codacy-maven-plugin:coverage -Ptravis
-    -
-      name: "Deploy to Codcov.io"
+    - name: "Deploy to Codcov.io"
       jdk: openjdk8
       script:
         - mvn clean install -Ptravis
         - bash <(curl -s https://codecov.io/bash)
-    -
-      name: "Deploy artifacts"
+    - name: "Deploy artifacts"
       jdk: openjdk8
       before_script: true #override before_script
       script:

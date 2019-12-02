@@ -36,11 +36,11 @@ package fr.esrf.TangoApi;
 
 
 /**
- *	This class is extends TangoApi.DeviceProxy 
- *	to manage Tango access device.
- *	 - Check if control access is requested.
- *	 - Check who is the user and the host.
- *	 - Check access for this user, this host and the specified device.
+ * This class is extends TangoApi.DeviceProxy
+ * to manage Tango access device.
+ * - Check if control access is requested.
+ * - Check who is the user and the host.
+ * - Check access for this user, this host and the specified device.
  *
  * @author verdier
  */
@@ -69,6 +69,7 @@ class AccessProxy extends DeviceProxy {
      */
     protected Hashtable<String, String[]> allowed_cmd_table = null;
     //===============================================================
+
     /**
      * Constructor for Access device proxy
      *
@@ -92,6 +93,7 @@ class AccessProxy extends DeviceProxy {
         }
     }
     //===============================================================
+
     /**
      * Check access for specified device
      *
@@ -167,6 +169,7 @@ class AccessProxy extends DeviceProxy {
     }
 
     //===============================================================
+
     /**
      * Check for specified device, the specified command is allowed.
      *
@@ -193,6 +196,7 @@ class AccessProxy extends DeviceProxy {
         return false;
     }
     //===============================================================
+
     /**
      * query access device to know allowed commands for the device and for a specified class
      *

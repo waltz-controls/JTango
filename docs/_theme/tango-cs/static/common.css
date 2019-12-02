@@ -18,15 +18,10 @@ body {
 /* :::: LAYOUT :::: */
 
 
-
-
-
-
 div.body {
     background-color: white;
     padding: 0 20px 30px 20px;
 }
-
 
 
 div.clearer {
@@ -72,19 +67,19 @@ div.related li.right {
 }
 
 div.related a {
-    color: rgb(230,255,230);
+    color: rgb(230, 255, 230);
 }
 
 div.related a:hover {
-    color: rgb(150,200, 150);
+    color: rgb(150, 200, 150);
 }
 
 div.related a:active {
-    color: rgb(150,200, 150);
+    color: rgb(150, 200, 150);
 }
 
 div.related a:visited {
-    color: rgb(230,255,230);
+    color: rgb(230, 255, 230);
 }
 
 /* ::: SIDEBAR :::: */
@@ -433,11 +428,25 @@ p.subhead {
     margin-top: 20px;
 }
 
-a:link:active           { color: rgb(1, 100, 30); }
-a:link:hover            { color: rgb(1, 180, 70); }
-a:visited:hover         { color: rgb(1, 145, 47); }
-a:visited               { color: rgb(1, 180, 70); }
-a:link                  { color: rgb(1, 145, 47); }
+a:link:active {
+    color: rgb(1, 100, 30);
+}
+
+a:link:hover {
+    color: rgb(1, 180, 70);
+}
+
+a:visited:hover {
+    color: rgb(1, 145, 47);
+}
+
+a:visited {
+    color: rgb(1, 180, 70);
+}
+
+a:link {
+    color: rgb(1, 145, 47);
+}
 
 div.body h1,
 div.body h2,
@@ -449,10 +458,21 @@ div.body h6 {
     font-weight: bold;
 }
 
-div.body h1 { font-size: 180%; }
-div.body h2 { font-size: 150%; }
-div.body h3 { font-size: 120%; }
-div.body h4 { font-size: 120%; }
+div.body h1 {
+    font-size: 180%;
+}
+
+div.body h2 {
+    font-size: 150%;
+}
+
+div.body h3 {
+    font-size: 120%;
+}
+
+div.body h4 {
+    font-size: 120%;
+}
 
 a.headerlink,
 a.headerlink,
@@ -660,7 +680,9 @@ code.xref, a code {
     font-weight: bold;
 }
 
-.footnote:target  { background-color: #ffa }
+.footnote:target {
+    background-color: #ffa
+}
 
 .line-block {
     display: block;
@@ -768,11 +790,11 @@ span.eqno {
 }
 
 li ol {
-     padding-top: 0.5em;
+    padding-top: 0.5em;
 }
 
 li ul {
-     padding-top: 0.5em;
+    padding-top: 0.5em;
 }
 
 div.sphinxsidebar li {

@@ -38,9 +38,8 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevStringHelper;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.BAD_OPERATION;
- 
-public class DevRestartCmd extends Command
-{
+
+public class DevRestartCmd extends Command {
 
 //+-------------------------------------------------------------------------
 //
@@ -49,12 +48,11 @@ public class DevRestartCmd extends Command
 // description : 	constructor for Command class Status
 //
 //--------------------------------------------------------------------------
- 
-	public DevRestartCmd(String name,int in,int out,String desc)
-	{
-		super(name,in,out);
-		set_in_type_desc(desc);
-	}
+
+    public DevRestartCmd(String name, int in, int out, String desc) {
+        super(name, in, out);
+        set_in_type_desc(desc);
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -68,41 +66,37 @@ public class DevRestartCmd extends Command
 //
 //--------------------------------------------------------------------------
 
-	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
-	{
+    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
 
-		Util.out4.println("DevRestart.execute(): arrived ");
+        Util.out4.println("DevRestart.execute(): arrived ");
 
 //
 // Extract the input device name.
 //
 
-		String in_dev = null;
-		try
-		{
-			//in_dev = in_any.extract_string();
-			in_dev = DevStringHelper.extract(in_any);
-		}
-		catch(BAD_OPERATION ex)
-		{
-			Util.out3.println("DevRestartCmd.execute() --> Wrong argument type");
-			Except.throw_exception("API_IncompatibleCmdArgumentType",
-					       "Imcompatible command argument type, expected type is : string",
-					       "DevRestartCmd.execute");
-		}
-		Util.out4.println("Received device name = " + in_dev);
+        String in_dev = null;
+        try {
+            //in_dev = in_any.extract_string();
+            in_dev = DevStringHelper.extract(in_any);
+        } catch (BAD_OPERATION ex) {
+            Util.out3.println("DevRestartCmd.execute() --> Wrong argument type");
+            Except.throw_exception("API_IncompatibleCmdArgumentType",
+                    "Imcompatible command argument type, expected type is : string",
+                    "DevRestartCmd.execute");
+        }
+        Util.out4.println("Received device name = " + in_dev);
 
 //
 // Call the DServer object method which will do the work
 //
 
-		((DServer)(device)).restart(in_dev);
-		
+        ((DServer) (device)).restart(in_dev);
+
 //	
 // Leave command
 //
 
-		return Util.return_empty_any("DevRestart");
-	}
+        return Util.return_empty_any("DevRestart");
+    }
 
 }

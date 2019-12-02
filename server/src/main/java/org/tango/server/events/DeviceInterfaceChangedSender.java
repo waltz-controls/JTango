@@ -32,11 +32,7 @@ import org.tango.server.Constants;
 import org.tango.server.ServerManager;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.*;
 
 public class DeviceInterfaceChangedSender {
     private final Logger logger = LoggerFactory.getLogger(DeviceInterfaceChangedSender.class);
@@ -44,6 +40,7 @@ public class DeviceInterfaceChangedSender {
     private final EventSenderTask task;
     private ExecutorService executor;
     private Future<?> future;
+
     public DeviceInterfaceChangedSender(final String deviceName) {
         this.deviceName = deviceName;
         task = new EventSenderTask(deviceName);

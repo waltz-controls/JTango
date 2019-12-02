@@ -34,7 +34,6 @@ import org.tango.utils.DevFailedUtils;
  * A server with 2 classes
  *
  * @author ABEILLE
- *
  */
 public class SeveralClasses {
 

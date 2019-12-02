@@ -58,6 +58,7 @@ public class DeviceInfo extends DbDevImportInfo implements java.io.Serializable 
      */
     public String last_unexported;
     //===============================================
+
     /**
      * Complete constructor.
      */

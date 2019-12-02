@@ -11,31 +11,30 @@ public final class Properties {
     }
 
     public static int getDelay() {
-	return delay;
+        return delay;
     }
 
     /**
      * Delay between 2 retries in case of Tango error
-     * 
+     *
+     * @param delay delay in ms
      * @see RetriableTask
-     * @param delay
-     *            delay in ms
      */
     public static void setDelay(final int delay) {
-	Properties.delay = delay;
+        Properties.delay = delay;
     }
 
     public static int getRetries() {
-	return retries;
+        return retries;
     }
 
     /**
      * The number of retries in case of Tango error
-     * 
-     * @see RetriableTask
+     *
      * @param retries
+     * @see RetriableTask
      */
     public static void setRetries(final int retries) {
-	Properties.retries = retries;
+        Properties.retries = retries;
     }
 }

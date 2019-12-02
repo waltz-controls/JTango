@@ -37,9 +37,8 @@ package fr.esrf.TangoDs;
 import fr.esrf.Tango.DevFailed;
 import org.omg.CORBA.Any;
 
- 
-public class SetTraceLevelCmd extends Command implements TangoConst
-{
+
+public class SetTraceLevelCmd extends Command implements TangoConst {
 
 //+-------------------------------------------------------------------------
 //
@@ -49,12 +48,11 @@ public class SetTraceLevelCmd extends Command implements TangoConst
 //
 //--------------------------------------------------------------------------
 
- 
-	public SetTraceLevelCmd(String name,int in,int out,String desc)
-	{
-		super(name,in,out);
-		set_in_type_desc(desc);
-	}
+
+    public SetTraceLevelCmd(String name, int in, int out, String desc) {
+        super(name, in, out);
+        set_in_type_desc(desc);
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -63,15 +61,14 @@ public class SetTraceLevelCmd extends Command implements TangoConst
 // description : 	Change the trace level variable
 //
 //--------------------------------------------------------------------------
- 
-	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
-	{
-		Util.out4.println("SetTraceLevelCmd.execute(): arrived");
 
-    String desc = "SetTraceLevel is no more supported, please use SetLoggingLevel";
-    Except.throw_exception("API_DeprecatedCommand", desc, "SetTraceLevelCmd::execute");
+    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
+        Util.out4.println("SetTraceLevelCmd.execute(): arrived");
 
-		return Util.return_empty_any("SetTraceLevelCmd");
-	}	
+        String desc = "SetTraceLevel is no more supported, please use SetLoggingLevel";
+        Except.throw_exception("API_DeprecatedCommand", desc, "SetTraceLevelCmd::execute");
+
+        return Util.return_empty_any("SetTraceLevelCmd");
+    }
 
 }

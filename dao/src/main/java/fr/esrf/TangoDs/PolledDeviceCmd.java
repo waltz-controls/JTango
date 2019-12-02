@@ -47,30 +47,29 @@ package fr.esrf.TangoDs;
 import fr.esrf.Tango.DevFailed;
 import org.omg.CORBA.Any;
 
-public class PolledDeviceCmd extends Command
-{
-	//===============================================================
-	/**
-	 *	Constructor for Command class PolledDevice
-	 */
-	//===============================================================
-	PolledDeviceCmd(String name, int in, int out, String out_desc)
-	{
-		super(name,in,out);
-		set_out_type_desc(out_desc);
-	}
-	//===============================================================
-	/**
-	 *	Trigger the execution of the method really implemented
-	 *	the command in the DServer class
-	 */
-	//===============================================================
-	public Any execute(DeviceImpl device, Any in_any) throws DevFailed
-	{
+public class PolledDeviceCmd extends Command {
+    //===============================================================
 
-		Util.out4.println("PolledDeviceCmd.execute(): arrived ");
+    /**
+     * Constructor for Command class PolledDevice
+     */
+    //===============================================================
+    PolledDeviceCmd(String name, int in, int out, String out_desc) {
+        super(name, in, out);
+        set_out_type_desc(out_desc);
+    }
+    //===============================================================
 
-		// Call the device method and return to caller
-		return insert(((DServer)(device)).polled_device());
-	}
+    /**
+     * Trigger the execution of the method really implemented
+     * the command in the DServer class
+     */
+    //===============================================================
+    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
+
+        Util.out4.println("PolledDeviceCmd.execute(): arrived ");
+
+        // Call the device method and return to caller
+        return insert(((DServer) (device)).polled_device());
+    }
 }

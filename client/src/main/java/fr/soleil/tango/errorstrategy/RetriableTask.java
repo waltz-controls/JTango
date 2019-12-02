@@ -16,8 +16,7 @@ import org.tango.utils.DevFailedUtils;
  * propogate instead of causing retries, in order to allow cancellation by an
  * executor service etc.
  *
- * @param <T>
- *            the return type of the call() method
+ * @param <T> the return type of the call() method
  */
 public final class RetriableTask<T> {
 
@@ -32,12 +31,9 @@ public final class RetriableTask<T> {
      * or a negative number for the tries parameter will allow the task to retry
      * an infinite number of times -- use with caution!
      *
-     * @param taskToWrap
-     *            the Callable to wrap
-     * @param tries
-     *            the max number of tries
-     * @param delay
-     *            time in ms before retrying
+     * @param taskToWrap the Callable to wrap
+     * @param tries      the max number of tries
+     * @param delay      time in ms before retrying
      */
     public RetriableTask(final int tries, final int delay) {
         this.tries = tries;

@@ -2,6 +2,7 @@ package fr.esrf.TangoApi;
 
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class DevicePipeTest {
     private PipeBlob blob;
 
     @Before
-    public void before() throws Exception{
+    public void before() throws Exception {
         PipeBlobBuilder childBuilder = new PipeBlobBuilder("Name / Age");
 
         childBuilder.add("Chloe", 30);
@@ -24,18 +25,18 @@ public class DevicePipeTest {
         childBuilder.add("Auxane", 21);
 
         //  Build the main blob and insert inner one
-        PipeBlobBuilder blobBuilder =  new PipeBlobBuilder("Pascal");
-        blobBuilder.add("City",     "Grenoble");
-        blobBuilder.add("Values",   new float[]{1.23f, 4.56f, 7.89f});
+        PipeBlobBuilder blobBuilder = new PipeBlobBuilder("Pascal");
+        blobBuilder.add("City", "Grenoble");
+        blobBuilder.add("Values", new float[]{1.23f, 4.56f, 7.89f});
         blobBuilder.add("Children", childBuilder.build());
-        blobBuilder.add("Status",   DevState.RUNNING);
+        blobBuilder.add("Status", DevState.RUNNING);
 
         blob = blobBuilder.build();
     }
 
     @Test
-    public void testScannerAPI() throws Exception{
-        PipeScanner instance = new DevicePipe("TestPipe",blob);
+    public void testScannerAPI() throws Exception {
+        PipeScanner instance = new DevicePipe("TestPipe", blob);
 
         assertEquals("Grenoble", instance.nextString());
         float[] actualFloatArray = new float[3];
@@ -53,15 +54,15 @@ public class DevicePipeTest {
     }
 
     @Test(expected = DevFailed.class)
-    public void testScannerAPI_wrongType() throws Exception{
-        PipeScanner instance = new DevicePipe("TestPipe",blob);
+    public void testScannerAPI_wrongType() throws Exception {
+        PipeScanner instance = new DevicePipe("TestPipe", blob);
 
         instance.nextDouble();
     }
 
     @Test(expected = DevFailed.class)
-    public void testScannerAPI_wrongSize() throws Exception{
-        PipeScanner instance = new DevicePipe("TestPipe",blob);
+    public void testScannerAPI_wrongSize() throws Exception {
+        PipeScanner instance = new DevicePipe("TestPipe", blob);
 
         instance.move();
 
@@ -85,7 +86,7 @@ public class DevicePipeTest {
 
         float[] result = instance.nextArray(float[].class);
 
-        assertTrue(3 == result.length);
+        Assert.assertEquals(3, result.length);
         assertArrayEquals(new float[]{1.23f, 4.56f, 7.89f}, result, 0.1F);
     }
 }

@@ -4,12 +4,11 @@
  */
 package org.tango.script.evalution;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoDs.TangoConst;
 import fr.soleil.tango.clientapi.TangoAttribute;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Implementation of IContextVariable which gets its value from AttributeProxy.
@@ -27,10 +26,8 @@ public final class AttributeProxyVariable implements IContextVariable {
     /**
      * Build a variable with an AttributeProxy
      *
-     * @param name
-     *            name of the variable
-     * @param attributeName
-     *            name of the attribute proxy
+     * @param name          name of the variable
+     * @param attributeName name of the attribute proxy
      */
     public AttributeProxyVariable(final String name, final String attributeName) {
         super();

@@ -1,9 +1,7 @@
 package fr.soleil.tango.clientapi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoApi.CommandInfo;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,8 +10,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.tango.utils.DevFailedUtils;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.CommandInfo;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(Parameterized.class)
 @Ignore
@@ -31,7 +30,7 @@ public class TangoCommandTest {
 
         for (final CommandInfo cmdInfo : cmdList) {
             final String cmdName = cmdInfo.cmd_name;
-            result.add(new Object[] { dev, cmdName });
+            result.add(new Object[]{dev, cmdName});
         }
         return result;
     }

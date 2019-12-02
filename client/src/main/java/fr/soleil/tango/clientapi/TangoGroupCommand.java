@@ -1,9 +1,5 @@
 package fr.soleil.tango.clientapi;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.tango.utils.DevFailedUtils;
-import org.tango.utils.TangoUtil;
-
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarDoubleStringArray;
 import fr.esrf.Tango.DevVarLongStringArray;
@@ -14,12 +10,14 @@ import fr.esrf.TangoApi.Group.GroupCmdReply;
 import fr.esrf.TangoApi.Group.GroupCmdReplyList;
 import fr.esrf.TangoDs.TangoConst;
 import fr.soleil.tango.clientapi.factory.ProxyFactory;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.tango.utils.DevFailedUtils;
+import org.tango.utils.TangoUtil;
 
 /**
  * Manage a group of tango commands. TODO mock
  *
  * @author ABEILLE
- *
  */
 public final class TangoGroupCommand {
     private static final String ALL_INPUT_TYPES_MUST_BE_THE_SAME = "all input types must be the same";
@@ -83,8 +81,7 @@ public final class TangoGroupCommand {
     /**
      * insert a value per command
      *
-     * @param value
-     *            The values to insert. Size must be equals to the number of commands
+     * @param value The values to insert. Size must be equals to the number of commands
      * @throws DevFailed
      */
     public void insert(final Object... value) throws DevFailed {
@@ -170,7 +167,6 @@ public final class TangoGroupCommand {
     }
 
     /**
-     *
      * @return true if all parameter types are void
      * @throws DevFailed
      */
@@ -188,7 +184,6 @@ public final class TangoGroupCommand {
     }
 
     /**
-     *
      * @return true if all parameter types are scalars
      * @throws DevFailed
      */
@@ -206,7 +201,6 @@ public final class TangoGroupCommand {
     }
 
     /**
-     *
      * @return true if all parameter types are spectrum
      * @throws DevFailed
      */
@@ -224,7 +218,6 @@ public final class TangoGroupCommand {
     }
 
     /**
-     *
      * @return rue if all parameter types DEVVAR_DOUBLESTRINGARRAY or DEVVAR_LONGSTRINGARRAY
      * @throws DevFailed
      */

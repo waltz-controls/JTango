@@ -36,9 +36,8 @@ package fr.esrf.TangoDs;
 
 import fr.esrf.Tango.DevFailed;
 import org.omg.CORBA.Any;
- 
-public class RestartServerCmd extends Command
-{
+
+public class RestartServerCmd extends Command {
 
 //+-------------------------------------------------------------------------
 //
@@ -47,11 +46,10 @@ public class RestartServerCmd extends Command
 // description : 	constructor for Command class Status
 //
 //--------------------------------------------------------------------------
- 
-	public RestartServerCmd(String name,int in,int out)
-	{
-		super(name,in,out);
-	}
+
+    public RestartServerCmd(String name, int in, int out) {
+        super(name, in, out);
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -64,13 +62,12 @@ public class RestartServerCmd extends Command
 //
 //--------------------------------------------------------------------------
 
-	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
-	{
+    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
 
-		Util.out4.println("RestartServer.execute(): arrived ");
+        Util.out4.println("RestartServer.execute(): arrived ");
 
-		((DServer)(device)).restart_server();
+        ((DServer) (device)).restart_server();
 
-		return Util.return_empty_any("RestartServer");
-	}
+        return Util.return_empty_any("RestartServer");
+    }
 }

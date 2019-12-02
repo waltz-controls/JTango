@@ -1,43 +1,28 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.dynamic.command;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.server.StateMachineBehavior;
-import org.tango.server.command.CommandConfiguration;
-import org.tango.server.command.ICommandBehavior;
-import org.tango.utils.DevFailedUtils;
 
 import fr.esrf.Tango.DevError;
 import fr.esrf.Tango.DevFailed;
@@ -50,6 +35,15 @@ import fr.esrf.TangoApi.Group.GroupCmdReply;
 import fr.esrf.TangoApi.Group.GroupCmdReplyList;
 import fr.esrf.TangoApi.Group.GroupReply;
 import fr.soleil.tango.clientapi.InsertExtractUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.server.StateMachineBehavior;
+import org.tango.server.command.CommandConfiguration;
+import org.tango.server.command.ICommandBehavior;
+import org.tango.utils.DevFailedUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public final class GroupCommand implements ICommandBehavior {
 
@@ -128,7 +122,7 @@ public final class GroupCommand implements ICommandBehavior {
                 ((GroupCmdReply) tmpReply).get_data();
             } catch (final DevFailed e) {
                 LOGGER.error("command failed on {}/{} - {}",
-                        new Object[] { tmpReplyName, name, DevFailedUtils.toString(e) });
+                        new Object[]{tmpReplyName, name, DevFailedUtils.toString(e)});
                 hasFailed = true;
                 errors.add(e.errors);
                 size = +e.errors.length;

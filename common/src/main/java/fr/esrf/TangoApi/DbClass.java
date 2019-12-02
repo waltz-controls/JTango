@@ -63,11 +63,12 @@ public class DbClass implements java.io.Serializable {
     private String className;
 
     //===================================================================
+
     /**
      * DbClass constructor.
      * It will make a connection to the TANGO database.
      *
-     * @param    className        Name of the class oject.
+     * @param className Name of the class oject.
      */
     //===================================================================
     public DbClass(String className) throws DevFailed {
@@ -77,13 +78,14 @@ public class DbClass implements java.io.Serializable {
     }
 
     //===================================================================
+
     /**
      * DbClass constructor.
      * It will make a connection to the TANGO database.
      *
-     * @param    className        Name of the class oject.
-     * @param    host    host where database is running.
-     * @param    port    port for database connection.
+     * @param className Name of the class oject.
+     * @param host      host where database is running.
+     * @param port      port for database connection.
      */
     //===================================================================
     public DbClass(String className, String host, String port) throws DevFailed {
@@ -94,6 +96,7 @@ public class DbClass implements java.io.Serializable {
 
 
     //==========================================================================
+
     /**
      * Query the database for a list of class
      * properties for the specified object.
@@ -107,6 +110,7 @@ public class DbClass implements java.io.Serializable {
         return database.get_class_property_list(className, wildcard);
     }
     //==========================================================================
+
     /**
      * Query the database for a list of properties for this class.
      *
@@ -118,6 +122,7 @@ public class DbClass implements java.io.Serializable {
         return database.get_class_property(className, propertyNames);
     }
     //==========================================================================
+
     /**
      * Query the database for a property for this class.
      *
@@ -129,6 +134,7 @@ public class DbClass implements java.io.Serializable {
         return database.get_class_property(className, propertyName);
     }
     //==========================================================================
+
     /**
      * Query the database for a list of properties for this class.
      * The property names are specified by the DbDatum array objects.
@@ -142,6 +148,7 @@ public class DbClass implements java.io.Serializable {
     }
 
     //==========================================================================
+
     /**
      * Insert or update a list of properties for this class
      * The property names and their values are specified by the DbDatum array.
@@ -153,6 +160,7 @@ public class DbClass implements java.io.Serializable {
         database.put_class_property(className, properties);
     }
     //==========================================================================
+
     /**
      * Delete a list of properties for this class.
      *
@@ -163,6 +171,7 @@ public class DbClass implements java.io.Serializable {
         database.delete_class_property(className, propertyNames);
     }
     //==========================================================================
+
     /**
      * Delete a property for this class.
      *
@@ -173,6 +182,7 @@ public class DbClass implements java.io.Serializable {
         database.delete_class_property(className, propertyName);
     }
     //==========================================================================
+
     /**
      * Delete a list of properties for this class.
      *
@@ -188,6 +198,7 @@ public class DbClass implements java.io.Serializable {
     //	ATTRIBUTES
     //================================================================
     //==========================================================================
+
     /**
      * Query the database for a attributes defined for a class.
      * All attributes for a class attribute are returned.
@@ -200,6 +211,7 @@ public class DbClass implements java.io.Serializable {
         return database.get_class_attribute_list(className, wildcard);
     }
     //==========================================================================
+
     /**
      * Insert or update a list of attribute properties for this class.
      * The property names and their values are specified by the DbAttribute array.
@@ -211,6 +223,7 @@ public class DbClass implements java.io.Serializable {
         database.put_class_attribute_property(className, attr);
     }
     //==========================================================================
+
     /**
      * Insert or update a list of attribute properties for this class.
      * The property names and their values are specified by the DbAttribue.
@@ -222,6 +235,7 @@ public class DbClass implements java.io.Serializable {
         database.put_class_attribute_property(className, attr);
     }
     //==========================================================================
+
     /**
      * Delete a list of properties for this object.
      *
@@ -232,6 +246,7 @@ public class DbClass implements java.io.Serializable {
         database.delete_class_attribute_property(className, attributeName, propertyNames);
     }
     //==========================================================================
+
     /**
      * Delete a property for this object.
      *
@@ -242,6 +257,7 @@ public class DbClass implements java.io.Serializable {
         database.delete_class_attribute_property(className, attributeName, propertyName);
     }
     //==========================================================================
+
     /**
      * Query the database for a list of class attribute
      * properties for this device.
@@ -250,10 +266,11 @@ public class DbClass implements java.io.Serializable {
      * @return properties in DbDatum objects.
      */
     //==========================================================================
-    public DbAttribute[] get_attribute_property(String[] attributeNames)  throws DevFailed {
+    public DbAttribute[] get_attribute_property(String[] attributeNames) throws DevFailed {
         return database.get_class_attribute_property(className, attributeNames);
     }
     //==========================================================================
+
     /**
      * Query the database for of class attribute
      * property for this device.
@@ -262,11 +279,12 @@ public class DbClass implements java.io.Serializable {
      * @return properties in DbDatum objects.
      */
     //==========================================================================
-    public DbAttribute get_attribute_property(String attributeName)  throws DevFailed {
+    public DbAttribute get_attribute_property(String attributeName) throws DevFailed {
         return database.get_class_attribute_property(className, attributeName);
     }
 
     //===========================================================
+
     /**
      * return the class name.
      */
@@ -276,9 +294,6 @@ public class DbClass implements java.io.Serializable {
     }
 
 
-
-
-
     // ===================================================================
     /*
      * Pipe related methods
@@ -286,9 +301,11 @@ public class DbClass implements java.io.Serializable {
     // ===================================================================
 
     // ===================================================================
+
     /**
      * Query the database for a list of class pipe properties
      * for the specified pipe.
+     *
      * @param pipeName specified pipe.
      * @return a list of class pipe properties.
      * @throws DevFailed in case of database access failed
@@ -298,10 +315,12 @@ public class DbClass implements java.io.Serializable {
         return database.getClassPipeProperties(className, pipeName);
     }
     // ===================================================================
+
     /**
      * Query the database for a class pipe property
      * for the specified pipe.
-     * @param pipeName specified pipe.
+     *
+     * @param pipeName     specified pipe.
      * @param propertyName specified property.
      * @return class pipe property.
      * @throws DevFailed in case of database access failed
@@ -310,12 +329,13 @@ public class DbClass implements java.io.Serializable {
     public DbDatum getPipeProperty(String pipeName, String propertyName) throws DevFailed {
         DbPipe dbPipe = database.getClassPipeProperties(className, pipeName);
         DbDatum datum = dbPipe.getDatum(propertyName);
-        if (datum==null)
+        if (datum == null)
             Except.throw_exception("TangoApi_PropertyNotFound",
                     "Property " + propertyName + " not found for pipe " + pipeName);
         return datum;
     }
     // ==========================================================================
+
     /**
      * Insert or update a list of pipe properties for the specified class.
      * The property names and their values are specified by the DbAPipe.
@@ -328,6 +348,7 @@ public class DbClass implements java.io.Serializable {
         database.putClassPipeProperty(className, dbPipe);
     }
     // ==========================================================================
+
     /**
      * Insert or update a list of pipe properties for the specified class.
      * The property names and their values are specified by the DbAPipe.
@@ -341,8 +362,10 @@ public class DbClass implements java.io.Serializable {
             database.putClassPipeProperty(className, dbPipe);
     }
     // ===================================================================
+
     /**
      * Query database for a list of pipes for specified class.
+     *
      * @return a list of pipes defined in database for specified class.
      * @throws DevFailed in case of database access failed
      */
@@ -351,8 +374,10 @@ public class DbClass implements java.io.Serializable {
         return getPipeList("*");
     }
     // ===================================================================
+
     /**
      * Query database for a list of pipes for specified class and specified wildcard.
+     *
      * @param wildcard specified wildcard.
      * @return a list of pipes defined in database for specified class and specified wildcard.
      * @throws DevFailed in case of database access failed
@@ -362,10 +387,11 @@ public class DbClass implements java.io.Serializable {
         return database.getClassPipeList(className, wildcard);
     }
     // ==========================================================================
+
     /**
      * Delete a pipe property for the specified class.
      *
-     * @param pipeName pipe name
+     * @param pipeName     pipe name
      * @param propertyName property name
      * @throws DevFailed in case of database access failed
      */
@@ -376,24 +402,26 @@ public class DbClass implements java.io.Serializable {
         deletePipeProperties(pipeName, list);
     }
     // ==========================================================================
+
     /**
      * Delete a pipe property for the specified class.
      *
-     * @param pipeName pipe name
+     * @param pipeName      pipe name
      * @param propertyNames property names
      * @throws DevFailed in case of database access failed
      */
     // ==========================================================================
     public void deletePipeProperties(String pipeName, String[] propertyNames) throws DevFailed {
-        ArrayList<String>   list = new ArrayList<String>(propertyNames.length);
+        ArrayList<String> list = new ArrayList<String>(propertyNames.length);
         Collections.addAll(list, propertyNames);
         deletePipeProperties(pipeName, list);
     }
     // ==========================================================================
+
     /**
      * Delete a pipe property for the specified class.
      *
-     * @param pipeName pipe name
+     * @param pipeName      pipe name
      * @param propertyNames property names
      * @throws DevFailed in case of database access failed
      */
@@ -402,25 +430,29 @@ public class DbClass implements java.io.Serializable {
         database.deleteClassPipeProperties(className, pipeName, propertyNames);
     }
     // ===================================================================
+
     /**
      * Delete specified pipe for specified class.
-     * @param pipeName      pipe name
+     *
+     * @param pipeName pipe name
      * @throws DevFailed in case of database access failed
      */
     // ===================================================================
     public void deletePipe(String pipeName) throws DevFailed {
         database.deleteClassPipe(className, pipeName);
     }
+
     /**
      * Returns the property history for specified pipe.
-     * @param pipeName      pipe name
-     * @param propertyName  property Name
+     *
+     * @param pipeName     pipe name
+     * @param propertyName property Name
      * @return the property history for specified pipe.
-     * @throws DevFailed  in case of database access failed
+     * @throws DevFailed in case of database access failed
      */
     // ===================================================================
     public List<DbHistory> getPipePropertyHistory(String pipeName,
-                                                       String propertyName) throws DevFailed {
+                                                  String propertyName) throws DevFailed {
         return database.getClassPipePropertyHistory(className, pipeName, propertyName);
     }
 }

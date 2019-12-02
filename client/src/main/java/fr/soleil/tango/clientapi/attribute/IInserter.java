@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package fr.soleil.tango.clientapi.attribute;
 
@@ -8,14 +8,14 @@ import fr.esrf.TangoApi.DeviceAttribute;
 
 /**
  * @author ABEILLE
- * 
+ *
  */
 public interface IInserter {
     void insert(final DeviceAttribute da, final Object value) throws DevFailed;
 
     /**
      * For Images
-     * 
+     *
      * @param value
      * @param dimX
      * @param dimY

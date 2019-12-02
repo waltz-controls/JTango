@@ -1,53 +1,52 @@
 package fr.soleil.tango.util;
 
-import org.tango.DeviceState;
-
 import fr.esrf.Tango.DevState;
+import org.tango.DeviceState;
 
 /**
  * Utility to use DevState as an enum
- * 
+ *
  * @author ABEILLE
  * @deprecated use {@link DeviceState}
  */
 @Deprecated
 public enum TangoState {
     ON(DevState.ON), OFF(DevState.OFF), CLOSE(DevState.CLOSE), OPEN(DevState.OPEN), INSERT(DevState.INSERT), EXTRACT(
-	    DevState.EXTRACT), MOVING(DevState.MOVING), STANDBY(DevState.STANDBY), FAULT(DevState.FAULT), INIT(
-	    DevState.INIT), RUNNING(DevState.RUNNING), ALARM(DevState.ALARM), DISABLE(DevState.DISABLE), UNKNOWN(
-	    DevState.UNKNOWN);
+            DevState.EXTRACT), MOVING(DevState.MOVING), STANDBY(DevState.STANDBY), FAULT(DevState.FAULT), INIT(
+            DevState.INIT), RUNNING(DevState.RUNNING), ALARM(DevState.ALARM), DISABLE(DevState.DISABLE), UNKNOWN(
+            DevState.UNKNOWN);
 
     private final DevState state;
 
     TangoState(final DevState state) {
-	this.state = state;
+        this.state = state;
     }
 
     public DevState getDevState() {
-	return state;
+        return state;
     }
 
     public static String getStringFromDevState(final DevState state) {
-	String result = null;
-	for (final TangoState stateName : TangoState.values()) {
-	    if (state.equals(stateName.getDevState())) {
-		result = stateName.toString();
-		break;
-	    }
-	}
-	return result;
-	// return TangoConst.Tango_DevStateName[state.value()];
+        String result = null;
+        for (final TangoState stateName : TangoState.values()) {
+            if (state.equals(stateName.getDevState())) {
+                result = stateName.toString();
+                break;
+            }
+        }
+        return result;
+        // return TangoConst.Tango_DevStateName[state.value()];
     }
 
     public static DevState getDevStateFromString(final String state) {
-	DevState devState = null;
-	for (final TangoState stateName : TangoState.values()) {
-	    if (state.compareTo(stateName.toString()) == 0) {
-		devState = DevState.from_int(stateName.ordinal());
-		break;
-	    }
-	}
-	return devState;
+        DevState devState = null;
+        for (final TangoState stateName : TangoState.values()) {
+            if (state.compareTo(stateName.toString()) == 0) {
+                devState = DevState.from_int(stateName.ordinal());
+                break;
+            }
+        }
+        return devState;
     }
 }
 
@@ -71,7 +70,7 @@ public enum TangoState {
  * public static final DevState DISABLE = new DevState(_DISABLE); public static
  * final int _UNKNOWN = 13; public static final DevState UNKNOWN = new
  * DevState(_UNKNOWN);
- * 
+ *
  * public static final String[] Tango_DevStateName = { "ON", "OFF", "CLOSE",
  * "OPEN", "INSERT", "EXTRACT", "MOVING", "STANDBY", "FAULT", "INIT", "RUNNING",
  * "ALARM", "DISABLE", "UNKNOWN" };

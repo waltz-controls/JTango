@@ -50,6 +50,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
     private String name;
 
     //===========================================================
+
     /**
      * Default constructor for the DbPipe Object.
      *
@@ -61,6 +62,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         this.name = name;
     }
     //===========================================================
+
     /**
      * return pipe name.
      *
@@ -72,6 +74,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
     }
 
     //===========================================================
+
     /**
      * get the DbDatum object by DbDatum.name.
      *
@@ -87,6 +90,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
     }
 
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -97,6 +101,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         add(new DbDatum(name, ""));
     }
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -108,6 +113,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         add(new DbDatum(name, value));
     }
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -119,6 +125,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         add(new DbDatum(name, value));
     }
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -130,6 +137,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         add(new DbDatum(name, value));
     }
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -143,6 +151,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
 
 
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -154,6 +163,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         add(new DbDatum(name, values));
     }
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -165,6 +175,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         add(new DbDatum(name, values));
     }
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -176,6 +187,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         add(new DbDatum(name, values));
     }
     //===========================================================
+
     /**
      * Add a new DbDatum in Vector
      *
@@ -187,6 +199,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         add(new DbDatum(name, values));
     }
     //===========================================================
+
     /**
      * Return the property name
      *
@@ -199,6 +212,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
     }
 
     //===========================================================
+
     /**
      * Return the property value
      *
@@ -210,6 +224,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         return get(idx).extractStringArray();
     }
     //===========================================================
+
     /**
      * Return the property value as a String object
      *
@@ -220,7 +235,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
     public String getStringValue(int index) {
         String[] array = get(index).extractStringArray();
         String str = "";
-        for (int i=0 ; i<array.length ; i++) {
+        for (int i = 0; i < array.length; i++) {
             str += array[i];
             if (i < array.length - 1)
                 str += "\n";
@@ -228,6 +243,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         return str;
     }
     //===========================================================
+
     /**
      * Return the property value
      *
@@ -239,6 +255,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         return getDatum(name).extractStringArray();
     }
     //===========================================================
+
     /**
      * Return the property value in aString object
      *
@@ -263,6 +280,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
         return str;
     }
     //===========================================================
+
     /**
      * Return true if property not found;
      *
@@ -272,9 +290,10 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
     //===========================================================
     public boolean is_empty(String name) {
         DbDatum datum = getDatum(name);
-        return datum==null || datum.is_empty();
+        return datum == null || datum.is_empty();
     }
     //===========================================================
+
     /**
      * Return a list of properties found;
      *
@@ -283,7 +302,7 @@ public class DbPipe extends ArrayList<DbDatum> implements java.io.Serializable {
     //===========================================================
     public String[] getPropertyList() {
         String[] array = new String[size()];
-        for (int i=0 ; i<size(); i++)
+        for (int i = 0; i < size(); i++)
             array[i] = get(i).name;
         return array;
     }

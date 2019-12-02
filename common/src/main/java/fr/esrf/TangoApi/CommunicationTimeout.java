@@ -35,41 +35,38 @@
 package fr.esrf.TangoApi;
 
 /**
- *	<b>Class Description:</b><Br>
- *	Exception thrown in case of coommunication failed on timeout.<Br>
- *	Can be instancied by <i>Except.throw_communication_timeout</i> method.
+ * <b>Class Description:</b><Br>
+ * Exception thrown in case of coommunication failed on timeout.<Br>
+ * Can be instancied by <i>Except.throw_communication_timeout</i> method.
  *
- *	@see fr.esrf.TangoDs.Except
- *	@see fr.esrf.TangoApi.CommunicationFailed
- *
- *
- * @author  verdier
+ * @author verdier
  * @version $Revision: 25296 $
+ * @see fr.esrf.TangoDs.Except
+ * @see fr.esrf.TangoApi.CommunicationFailed
  */
 
 @SuppressWarnings({"CheckedExceptionClass"})
-public class CommunicationTimeout extends CommunicationFailed implements ApiDefs, java.io.Serializable
-{
-	//===================================================================
-	/**
-	 *	Exception constructor.<Br>
-	 *	Can be instancied by <i>Except.throw_communication_timeout</i> method.
-	 *
-	 *	@see fr.esrf.TangoDs.Except
-	 */
-	//===================================================================
-	public CommunicationTimeout(fr.esrf.Tango.DevError[] errors)
-	{
-		super(errors);
-	}
+public class CommunicationTimeout extends CommunicationFailed implements ApiDefs, java.io.Serializable {
+    //===================================================================
 
-	//===================================================================
-	/**
-	 *	Return exception name.
-	 */
-	//===================================================================
-	public String toString()
-	{
-		return"fr.esrf.TangoApi.CommunicationTimeout";
-	}
+    /**
+     * Exception constructor.<Br>
+     * Can be instancied by <i>Except.throw_communication_timeout</i> method.
+     *
+     * @see fr.esrf.TangoDs.Except
+     */
+    //===================================================================
+    public CommunicationTimeout(fr.esrf.Tango.DevError[] errors) {
+        super(errors);
+    }
+
+    //===================================================================
+
+    /**
+     * Return exception name.
+     */
+    //===================================================================
+    public String toString() {
+        return "fr.esrf.TangoApi.CommunicationTimeout";
+    }
 }

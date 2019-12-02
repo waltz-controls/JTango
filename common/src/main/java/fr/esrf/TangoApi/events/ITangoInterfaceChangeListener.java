@@ -38,8 +38,7 @@ package fr.esrf.TangoApi.events;
 import java.util.EventListener;
 
 /**
- *
- * @author  pascal_verdier
+ * @author pascal_verdier
  */
 public interface ITangoInterfaceChangeListener extends EventListener {
     public void interface_change(TangoInterfaceChangeEvent e);

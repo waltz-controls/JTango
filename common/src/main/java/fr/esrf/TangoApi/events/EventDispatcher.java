@@ -48,6 +48,7 @@ public abstract class EventDispatcher extends CallBack
 
     /**
      * Creates a new instance of EventDispatcher
+     *
      * @param device_proxy device object
      */
     public EventDispatcher(DeviceProxy device_proxy) {
@@ -123,6 +124,7 @@ public abstract class EventDispatcher extends CallBack
         return event_supplier.subscribe_event(attr_name,
                 DATA_READY_EVENT, this, filters, stateless);
     }
+
     //=======================================================================
     //=======================================================================
     protected int subscribe_interface_change_event(boolean stateless)

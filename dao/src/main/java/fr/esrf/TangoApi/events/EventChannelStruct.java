@@ -34,57 +34,61 @@
 
 package fr.esrf.TangoApi.events;
 
-import fr.esrf.TangoApi.DeviceProxy;
 import fr.esrf.TangoApi.Database;
+import fr.esrf.TangoApi.DeviceProxy;
 import org.omg.CosNotifyChannelAdmin.EventChannel;
 import org.omg.CosNotifyChannelAdmin.StructuredProxyPushSupplier;
 
 /**
- *
- * @author  pascal_verdier
+ * @author pascal_verdier
  */
 public class EventChannelStruct {
-    
-    public EventChannel		eventChannel;
+
+    public EventChannel eventChannel;
     public StructuredProxyPushSupplier
-                            structuredProxyPushSupplier;
-    public DeviceProxy		adm_device_proxy;
-    public long		        last_subscribed;
-    public long	            last_heartbeat;
-    public boolean          heartbeat_skipped;
-    public int	            heartbeat_filter_id;
-	public String           host;
-	public boolean	        notifd_failed = false;
-	public boolean	        use_db = true;
-	public Database	        dbase = null;
-	public int		        has_notifd_closed_the_connection;
-    public EventConsumer    consumer;
-    public String           zmqEndpoint;
+            structuredProxyPushSupplier;
+    public DeviceProxy adm_device_proxy;
+    public long last_subscribed;
+    public long last_heartbeat;
+    public boolean heartbeat_skipped;
+    public int heartbeat_filter_id;
+    public String host;
+    public boolean notifd_failed = false;
+    public boolean use_db = true;
+    public Database dbase = null;
+    public int has_notifd_closed_the_connection;
+    public EventConsumer consumer;
+    public String zmqEndpoint;
     private int idlVersion = 0;     //  used by zmq management
     private int tangoRelease = 0;   //  used by zmq management
 
     //=======================================================================
+
     /**
-     *  Creates a new instance of EventChannelStruct
+     * Creates a new instance of EventChannelStruct
      */
     //=======================================================================
     public EventChannelStruct() {
     }
+
     //=======================================================================
     //=======================================================================
     int getIdlVersion() {
         return idlVersion;
     }
+
     //=======================================================================
     //=======================================================================
     void setIdlVersion(int idlVersion) {
         this.idlVersion = idlVersion;
     }
+
     //=======================================================================
     //=======================================================================
     int getTangoRelease() {
         return tangoRelease;
     }
+
     //=======================================================================
     //=======================================================================
     void setTangoRelease(int tangoRelease) {
@@ -107,5 +111,5 @@ public class EventChannelStruct {
         sb.append("dbase        = ").append(dbase).append('\n');
         sb.append("zmqEndpoint  = ").append(zmqEndpoint).append('\n');
         return sb.toString();
-	}
+    }
 }

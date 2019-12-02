@@ -15,28 +15,28 @@ public final class TangoDevice {
     private final String deviceName;
 
     public TangoDevice(final String deviceName) throws DevFailed {
-	this(ProxyFactory.getInstance().createDeviceProxy(deviceName));
+        this(ProxyFactory.getInstance().createDeviceProxy(deviceName));
     }
 
     public TangoDevice(final DeviceProxy deviceProxy) {
-	super();
-	deviceName = deviceProxy.name();
-	dev = deviceProxy;
+        super();
+        deviceName = deviceProxy.name();
+        dev = deviceProxy;
     }
 
     public DeviceProxy getDeviceProxy() {
-	return dev;
+        return dev;
     }
 
     public TangoAttribute getTangoAttribute(final String attributeName) throws DevFailed {
-	TangoAttribute ta;
-	if (attributes.containsKey(attributeName)) {
-	    ta = attributes.get(attributeName);
-	} else {
-	    ta = new TangoAttribute(deviceName + "/" + attributeName);
-	    attributes.put(attributeName, ta);
-	}
-	return ta;
+        TangoAttribute ta;
+        if (attributes.containsKey(attributeName)) {
+            ta = attributes.get(attributeName);
+        } else {
+            ta = new TangoAttribute(deviceName + "/" + attributeName);
+            attributes.put(attributeName, ta);
+        }
+        return ta;
     }
 
 	public TangoCommand getTangoCommand(final String commandName) throws DevFailed {
@@ -51,6 +51,6 @@ public final class TangoDevice {
 	}
 
     public DevState state() throws DevFailed {
-	return dev.state();
+        return dev.state();
     }
 }

@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Class Description: This class is an object containing the imported device information.
- *
  */
 public final class DeviceImportInfo {
     /**
@@ -30,7 +29,7 @@ public final class DeviceImportInfo {
     private final String server;
 
     public DeviceImportInfo(final String name, final boolean exported, final String ior, final String server,
-            final int pid) {
+                            final int pid) {
         this.name = name;
         this.ior = ior;
         this.exported = exported;

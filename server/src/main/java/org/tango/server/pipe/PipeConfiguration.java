@@ -1,41 +1,40 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.pipe;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.DispLevel;
+import fr.esrf.Tango.PipeWriteType;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.tango.server.Constants;
 import org.tango.server.IConfigurable;
 import org.tango.server.properties.PropertiesUtils;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DispLevel;
-import fr.esrf.Tango.PipeWriteType;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class PipeConfiguration implements IConfigurable {
 
@@ -107,10 +106,10 @@ public final class PipeConfiguration implements IConfigurable {
     public void persist(final String deviceName) throws DevFailed {
         final Map<String, String[]> properties = new HashMap<String, String[]>();
         if (!getLabel().isEmpty()) {
-            properties.put(Constants.LABEL, new String[] { getLabel() });
+            properties.put(Constants.LABEL, new String[]{getLabel()});
         }
         if (!getDescription().equals(Constants.NO_DESCRIPTION)) {
-            properties.put(Constants.DESC, new String[] { getDescription() });
+            properties.put(Constants.DESC, new String[]{getDescription()});
         }
         PropertiesUtils.setDevicePipePropertiesInDB(deviceName, name, properties);
     }

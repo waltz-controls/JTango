@@ -57,23 +57,25 @@ public class PipeInfo {
     //==========================================================
     //==========================================================
     public PipeInfo(PipeConfig pipeConfig) {
-        this.name        = pipeConfig.name;
+        this.name = pipeConfig.name;
         this.description = pipeConfig.description;
-        this.label       = pipeConfig.label;
-        this.level       = pipeConfig.level;
-        this.writeType   = pipeConfig.writable;
+        this.label = pipeConfig.label;
+        this.level = pipeConfig.level;
+        this.writeType = pipeConfig.writable;
     }
+
     //==========================================================
     //==========================================================
     public PipeInfo(String name, String description,
                     String label, DispLevel level, PipeWriteType writeType) {
-        this.name        = name;
+        this.name = name;
         this.description = description;
-        this.label       = label;
-        this.level       = level;
-        this.writeType   = writeType;
+        this.label = label;
+        this.level = level;
+        this.writeType = writeType;
     }
     //==========================================================
+
     /**
      * @return pipe name
      */
@@ -82,6 +84,7 @@ public class PipeInfo {
         return name;
     }
     //==========================================================
+
     /**
      * @return pipe description
      */
@@ -90,6 +93,7 @@ public class PipeInfo {
         return description;
     }
     //==========================================================
+
     /**
      * @return pipe label
      */
@@ -98,6 +102,7 @@ public class PipeInfo {
         return label;
     }
     //==========================================================
+
     /**
      * @return pipe display level (DispLevel.OPERATOR or DispLevel.EXPERT)
      */
@@ -106,14 +111,16 @@ public class PipeInfo {
         return level;
     }
     //==========================================================
+
     /**
      * @return true if writable
      */
     //==========================================================
     public boolean isWritable() {
-        return writeType==PipeWriteType.PIPE_READ_WRITE;
+        return writeType == PipeWriteType.PIPE_READ_WRITE;
     }
     //==========================================================
+
     /**
      * @return true if writable
      */
@@ -122,17 +129,21 @@ public class PipeInfo {
         return writeType;
     }
     //==========================================================
+
     /**
      * Set pipe name
-     * @param name    pipe name
+     *
+     * @param name pipe name
      */
     //==========================================================
     public void setName(String name) {
         this.name = name;
     }
     //==========================================================
+
     /**
      * Set pipe description
+     *
      * @param description pipe description
      */
     //==========================================================
@@ -140,8 +151,10 @@ public class PipeInfo {
         this.description = description;
     }
     //==========================================================
+
     /**
      * Set pipe label
+     *
      * @param label pipe label
      */
     //==========================================================
@@ -149,8 +162,10 @@ public class PipeInfo {
         this.label = label;
     }
     //==========================================================
+
     /**
      * Set pipe display level (DispLevel.Operator or DispLevel.EXPERT)
+     *
      * @param level pipe display level
      */
     //==========================================================
@@ -158,8 +173,10 @@ public class PipeInfo {
         this.level = level;
     }
     //==========================================================
+
     /**
      * Set the pipe write type
+     *
      * @param writeType PipeWriteType.PIPE_READ or PipeWriteType.PIPE_READ_WRITE
      */
     //==========================================================
@@ -167,8 +184,10 @@ public class PipeInfo {
         this.writeType = writeType;
     }
     //==========================================================
+
     /**
      * Set the pipe writable or readable
+     *
      * @param b set pipe writable if true, readable otherwise.
      */
     //==========================================================
@@ -179,6 +198,7 @@ public class PipeInfo {
             writeType = PipeWriteType.PIPE_READ;
     }
     //==========================================================
+
     /**
      * @return the IDL PipeConfig object
      */
@@ -186,9 +206,10 @@ public class PipeInfo {
     //==========================================================
     public PipeConfig getPipeConfig() {
         return new PipeConfig(name, description, label, level,
-                writeType,  extensions);
+                writeType, extensions);
 
     }
+
     //==========================================================
     //==========================================================
     public String toString() {
@@ -196,7 +217,7 @@ public class PipeInfo {
         sb.append("Pipe Name:     ").append(name).append("\n");
         sb.append("Description:   ").append(description).append('\n');
         sb.append("Label:         ").append(label).append('\n');
-        sb.append("Display Level: ").append((level==DispLevel.EXPERT)? "EXPERT":"OPERATOR").append('\n');
+        sb.append("Display Level: ").append((level == DispLevel.EXPERT) ? "EXPERT" : "OPERATOR").append('\n');
         sb.append("Writable:      ").append(isWritable()).append('\n');
         return sb.toString().trim();
     }

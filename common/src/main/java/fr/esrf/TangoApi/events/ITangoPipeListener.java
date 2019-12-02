@@ -38,8 +38,7 @@ package fr.esrf.TangoApi.events;
 import java.util.EventListener;
 
 /**
- *
- * @author  pascal_verdier
+ * @author pascal_verdier
  */
 public interface ITangoPipeListener extends EventListener {
     public void pipe(TangoPipeEvent e);

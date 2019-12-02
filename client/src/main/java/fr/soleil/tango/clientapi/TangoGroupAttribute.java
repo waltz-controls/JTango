@@ -1,17 +1,16 @@
 package fr.soleil.tango.clientapi;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.tango.utils.DevFailedUtils;
-
 import fr.esrf.Tango.DevError;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.AttributeInfoEx;
 import fr.esrf.TangoApi.DeviceAttribute;
 import fr.esrf.TangoApi.Group.AttributeGroup;
 import fr.soleil.tango.clientapi.factory.ProxyFactory;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.tango.utils.DevFailedUtils;
+
+import java.util.Arrays;
+import java.util.Map;
 
 public final class TangoGroupAttribute {
 
@@ -32,8 +31,6 @@ public final class TangoGroupAttribute {
     }
 
     /**
-     *
-     *
      * @param throwExceptions
      * @param attributeNames
      * @throws DevFailed
@@ -72,8 +69,7 @@ public final class TangoGroupAttribute {
     /**
      * Write a value on several attributes
      *
-     * @param value
-     *            Can be an array
+     * @param value Can be an array
      * @throws DevFailed
      */
     public void write(final Object value) throws DevFailed {
@@ -103,8 +99,7 @@ public final class TangoGroupAttribute {
     /**
      * Write a value on several attribute
      *
-     * @param value
-     *            Can be an array
+     * @param value Can be an array
      * @throws DevFailed
      */
     public void write(final Object... value) throws DevFailed {

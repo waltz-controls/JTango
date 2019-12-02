@@ -34,25 +34,25 @@
 
 package fr.esrf.TangoApi;
 
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.Request;
-
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
-import fr.esrf.TangoApi.events.IEventConsumer;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.Request;
 
 public interface IApiUtilDAO {
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
-     * 
+     *
      * @param tango_host host and port (hostname:portnumber) where database is running.
      */
     // ===================================================================
     public Database get_db_obj(String tango_host) throws DevFailed;
 
     // ===================================================================
+
     /**
      * Return the database object created with TANGO_HOST environment variable .
      */
@@ -60,6 +60,7 @@ public interface IApiUtilDAO {
     public Database get_default_db_obj() throws DevFailed;
 
     // ===================================================================
+
     /**
      * Return tru if the database object has been created.
      */
@@ -67,6 +68,7 @@ public interface IApiUtilDAO {
     public boolean default_db_obj_exists() throws DevFailed;
 
     // ===================================================================
+
     /**
      * Return the database object created with TANGO_HOST environment variable .
      */
@@ -74,9 +76,10 @@ public interface IApiUtilDAO {
     public Database get_db_obj() throws DevFailed;
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
-     * 
+     *
      * @param host host where database is running.
      * @param port port for database connection.
      */
@@ -84,10 +87,11 @@ public interface IApiUtilDAO {
     public Database get_db_obj(String host, String port) throws DevFailed;
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port, and set
      * this database object for all following uses..
-     * 
+     *
      * @param host host where database is running.
      * @param port port for database connection.
      */
@@ -95,10 +99,11 @@ public interface IApiUtilDAO {
     public Database change_db_obj(String host, String port) throws DevFailed;
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port, and set
      * this database object for all following uses..
-     * 
+     *
      * @param host host where database is running.
      * @param port port for database connection.
      */
@@ -106,9 +111,10 @@ public interface IApiUtilDAO {
     public Database set_db_obj(String host, String port) throws DevFailed;
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
-     * 
+     *
      * @param tango_host host and port (hostname:portnumber) where database is running.
      */
     // ===================================================================
@@ -124,6 +130,7 @@ public interface IApiUtilDAO {
     public ORB get_orb() throws DevFailed;
 
     // ===================================================================
+
     /**
      * Return the orb object
      */
@@ -131,6 +138,7 @@ public interface IApiUtilDAO {
     public void set_in_server(boolean val);
 
     // ===================================================================
+
     /**
      * Return true if in server code or false if in client code.
      */
@@ -138,6 +146,7 @@ public interface IApiUtilDAO {
     public boolean in_server();
 
     // ===================================================================
+
     /**
      * Return reconnection delay for controle system.
      */
@@ -150,6 +159,7 @@ public interface IApiUtilDAO {
      */
     // ==========================================================================
     // ==========================================================================
+
     /**
      * Add request in hash table and return id
      */
@@ -157,15 +167,17 @@ public interface IApiUtilDAO {
     public int put_async_request(AsyncCallObject aco);
 
     // ==========================================================================
+
     /**
      * Return the request in hash table for the id
-     * 
+     *
      * @throws DevFailed
      */
     // ==========================================================================
     public Request get_async_request(int id) throws DevFailed;
 
     // ==========================================================================
+
     /**
      * Return the Asynch Object in hash table for the id
      */
@@ -173,6 +185,7 @@ public interface IApiUtilDAO {
     public AsyncCallObject get_async_object(int id);
 
     // ==========================================================================
+
     /**
      * Remove asynchronous call request and id from hashtable.
      */
@@ -180,6 +193,7 @@ public interface IApiUtilDAO {
     public void remove_async_request(int id);
 
     // ==========================================================================
+
     /**
      * Set the reply_model in AsyncCallObject for the id key.
      */
@@ -187,6 +201,7 @@ public interface IApiUtilDAO {
     public void set_async_reply_model(int id, int reply_model);
 
     // ==========================================================================
+
     /**
      * Set the Callback object in AsyncCallObject for the id key.
      */
@@ -194,34 +209,38 @@ public interface IApiUtilDAO {
     public void set_async_reply_cb(int id, CallBack cb);
 
     // ==========================================================================
+
     /**
      * return the still pending asynchronous call for a reply model.
-     * 
-     * @param dev DeviceProxy object.
+     *
+     * @param dev         DeviceProxy object.
      * @param reply_model ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
      */
     // ==========================================================================
     public int pending_asynch_call(DeviceProxy dev, int reply_model);
 
     // ==========================================================================
+
     /**
      * return the still pending asynchronous call for a reply model.
-     * 
-     * @param reply_model  ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
+     *
+     * @param reply_model ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
      */
     // ==========================================================================
     public int pending_asynch_call(int reply_model);
 
     // ==========================================================================
+
     /**
      * Return the callback sub model used.
-     * 
+     *
      * @param model ApiDefs.PUSH_CALLBACK or ApiDefs.PULL_CALLBACK.
      */
     // ==========================================================================
     public void set_asynch_cb_sub_model(int model);
 
     // ==========================================================================
+
     /**
      * Set the callback sub model used (ApiDefs.PUSH_CALLBACK or
      * ApiDefs.PULL_CALLBACK).
@@ -230,6 +249,7 @@ public interface IApiUtilDAO {
     public int get_asynch_cb_sub_model();
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
@@ -238,6 +258,7 @@ public interface IApiUtilDAO {
     public void get_asynch_replies();
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
@@ -246,6 +267,7 @@ public interface IApiUtilDAO {
     public void get_asynch_replies(int timeout);
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
@@ -254,6 +276,7 @@ public interface IApiUtilDAO {
     public void get_asynch_replies(DeviceProxy dev);
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
@@ -284,6 +307,7 @@ public interface IApiUtilDAO {
     public String qualityName(short att_q_val);
 
     // ===================================================================
+
     /**
      * Parse Tango host (check multi Tango_host)
      */

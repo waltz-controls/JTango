@@ -1,18 +1,13 @@
 package org.tango.command;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-
+import fr.esrf.Tango.*;
+import fr.esrf.TangoDs.TangoConst;
 import org.tango.DeviceState;
 import org.tango.utils.DevFailedUtils;
 
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
-import fr.esrf.Tango.DevVarDoubleStringArray;
-import fr.esrf.Tango.DevVarLongStringArray;
-import fr.esrf.TangoDs.TangoConst;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum CommandTangoType {
     /**
@@ -127,6 +122,7 @@ public enum CommandTangoType {
     DEVVARDOUBLESTRINGARRAY(TangoConst.Tango_DEVVAR_DOUBLESTRINGARRAY, DevVarDoubleStringArray.class);
 
     private static final Map<Class<?>, CommandTangoType> CLASS_TYPE_MAP = new HashMap<Class<?>, CommandTangoType>();
+
     static {
 
         CLASS_TYPE_MAP.put(Void.class, VOID);
@@ -185,6 +181,7 @@ public enum CommandTangoType {
     private final Class<?> clazz;
 
     private static final Map<Integer, CommandTangoType> TANGO_TYPE_MAP = new HashMap<Integer, CommandTangoType>();
+
     static {
         for (final CommandTangoType s : EnumSet.allOf(CommandTangoType.class)) {
             TANGO_TYPE_MAP.put(s.getTangoIDLType(), s);

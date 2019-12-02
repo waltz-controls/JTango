@@ -61,13 +61,14 @@ public class TangoUrl implements ApiDefs, java.io.Serializable {
     boolean use_db = true;
     static private boolean envRead = false;
 
-    public static final String  NO_DATABASE = "#dbase=no";
+    public static final String NO_DATABASE = "#dbase=no";
     //===================================================================
+
     /**
      * Object Constructor.
      *
+     * @param urlStr url string to connect.
      * @throws fr.esrf.Tango.DevFailed in case of problem to find TANGO_HOST
-     * @param    urlStr    url string to connect.
      */
     //===================================================================
     public TangoUrl(String urlStr) throws DevFailed {
@@ -140,17 +141,16 @@ public class TangoUrl implements ApiDefs, java.io.Serializable {
 
         //	Check if tango host and port OK
         //	Else retreive from environment
-        if (protocol==TANGO && (host == null || host.isEmpty())) {
+        if (protocol == TANGO && (host == null || host.isEmpty())) {
             //  Check if database already connected
             Database db = null;
             //  If default database already create, get it
             if (ApiUtil.default_db_obj_exists()) {
                 db = ApiUtil.get_default_db_obj();
-            }
-            else {
+            } else {
                 //  if tango_host is unknown --> get it from environment
                 setFromEnv();
-                if (host!=null && !host.isEmpty())
+                if (host != null && !host.isEmpty())
                     db = ApiUtil.get_db_obj(host, strPort);
                 else
                     db = ApiUtil.get_db_obj();
@@ -209,12 +209,13 @@ public class TangoUrl implements ApiDefs, java.io.Serializable {
                 if (url.getRef().indexOf("dbase=no") == 0)
                     use_db = false;
 
-            if (host!=null)
+            if (host != null)
                 host = getCanonicalName(host);
         }
         //trace(urlStr);
     }
     //===================================================================
+
     /**
      * Get url only from environment.
      *
@@ -229,19 +230,19 @@ public class TangoUrl implements ApiDefs, java.io.Serializable {
     //===================================================================
     //===================================================================
     public static String getCanonicalName(String hostName) throws DevFailed {
-        String  canonicalHostName = null;
+        String canonicalHostName = null;
         try {
             //  Get FQDN for host and real name if alias used
             canonicalHostName = InetAddress.getByName(hostName).getCanonicalHostName();
             if (!canonicalHostName.contains(hostName))
                 ApiUtil.printTrace(hostName + " ========> " + canonicalHostName);
-        }
-        catch (UnknownHostException e) {
+        } catch (UnknownHostException e) {
             Except.throw_exception("Api_GetCanonicalHostNameFailed", e.toString());
         }
 
         return canonicalHostName;
     }
+
     //===================================================================
     //===================================================================
     private void setFromEnv() throws DevFailed {
@@ -279,9 +280,11 @@ public class TangoUrl implements ApiDefs, java.io.Serializable {
         return sb.toString();
     }
     //===================================================================
+
     /**
-     *  Trace the url parameters
-     *  @param urlStr the url string
+     * Trace the url parameters
+     *
+     * @param urlStr the url string
      */
     //===================================================================
     public void trace(String urlStr) {

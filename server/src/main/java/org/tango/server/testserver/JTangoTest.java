@@ -24,33 +24,13 @@
  */
 package org.tango.server.testserver;
 
-import fr.esrf.Tango.AttrQuality;
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
-import fr.esrf.Tango.DevVarDoubleStringArray;
-import fr.esrf.Tango.DevVarLongStringArray;
+import fr.esrf.Tango.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.DeviceState;
 import org.tango.server.ServerManager;
-import org.tango.server.annotation.AroundInvoke;
-import org.tango.server.annotation.Attribute;
-import org.tango.server.annotation.AttributeProperties;
-import org.tango.server.annotation.ClassProperty;
-import org.tango.server.annotation.Command;
-import org.tango.server.annotation.Delete;
 import org.tango.server.annotation.Device;
-import org.tango.server.annotation.DeviceManagement;
-import org.tango.server.annotation.DeviceProperties;
-import org.tango.server.annotation.DeviceProperty;
-import org.tango.server.annotation.DynamicManagement;
-import org.tango.server.annotation.Init;
-import org.tango.server.annotation.Schedule;
-import org.tango.server.annotation.State;
-import org.tango.server.annotation.StateMachine;
-import org.tango.server.annotation.Status;
-import org.tango.server.annotation.TransactionType;
+import org.tango.server.annotation.*;
 import org.tango.server.attribute.AttributeValue;
 import org.tango.server.device.DeviceManager;
 import org.tango.server.dynamic.DynamicManager;
@@ -65,7 +45,6 @@ import java.util.Map;
  * Tango device to test all commands and attributes
  *
  * @author FOURNEAU
- *
  */
 @Device(transactionType = TransactionType.NONE)
 public final class JTangoTest {
@@ -386,7 +365,6 @@ public final class JTangoTest {
     // INTEGER
 
     /**
-     *
      * @return shortScalar attribute
      */
     @Attribute
@@ -395,9 +373,7 @@ public final class JTangoTest {
     }
 
     /**
-     *
-     * @param shortScalar
-     *            scalar
+     * @param shortScalar scalar
      */
 
     public void setShortScalar(final short shortScalar) {
@@ -405,9 +381,7 @@ public final class JTangoTest {
     }
 
     /**
-     *
-     * @param shortSpectrum
-     *            spectrum
+     * @param shortSpectrum spectrum
      */
     public void setShortSpectrum(final short[] shortSpectrum) {
         this.shortSpectrum = new short[shortSpectrum.length];
@@ -415,7 +389,6 @@ public final class JTangoTest {
     }
 
     /**
-     *
      * @return Image of short
      */
     public short[][] getShortImage() {
@@ -423,9 +396,7 @@ public final class JTangoTest {
     }
 
     /**
-     *
-     * @param shortImage
-     *            image
+     * @param shortImage image
      */
     public void setShortImage(final short[][] shortImage) {
         this.shortImage = ArrayUtils.copyOf(shortImage);
@@ -784,9 +755,7 @@ public final class JTangoTest {
     }
 
     /**
-     *
-     * @param myProp
-     *            String []
+     * @param myProp String []
      */
     public void setMyProp(final String myProp) {
         this.myProp = myProp;
@@ -799,9 +768,7 @@ public final class JTangoTest {
     // PROPERTIES
 
     /**
-     *
-     * @param myClassProp
-     *            String []
+     * @param myClassProp String []
      */
     public void setMyClassProp(final String[] myClassProp) {
         this.myClassProp = Arrays.copyOf(myClassProp, myClassProp.length);
@@ -816,7 +783,6 @@ public final class JTangoTest {
     }
 
     /**
-     *
      * @return class property myClassProp
      */
     @Command

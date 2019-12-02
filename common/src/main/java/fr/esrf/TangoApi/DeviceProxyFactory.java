@@ -59,6 +59,7 @@ public class DeviceProxyFactory {
             new Hashtable<String, DeviceProxy>();
 
     //===================================================================
+
     /**
      * DeviceProxy single connection management.
      * If it does not already exist, create it.
@@ -85,13 +86,14 @@ public class DeviceProxyFactory {
         return get(fullDeviceName, tangoHost);
     }
     //===================================================================
+
     /**
      * DeviceProxy single connection management.
      * If it does not already exist, create it.
      * Else get it from table and return it.
      *
      * @param deviceName Device name to be created or get.
-     * @param tangoHost to build the url (full device name).
+     * @param tangoHost  to build the url (full device name).
      * @return the DeviceProxy object
      * @throws DevFailed if DeviceProxy creation failed
      */
@@ -102,17 +104,16 @@ public class DeviceProxyFactory {
         if (deviceName.startsWith("tango://") || deviceName.startsWith("//"))
             fullDeviceName = deviceName;
         else
-            fullDeviceName = "tango://"+tangoHost + "/"+deviceName;
+            fullDeviceName = "tango://" + tangoHost + "/" + deviceName;
 
         //	Get it if already exists
-        DeviceProxy dev =  proxy_table.get(fullDeviceName);
+        DeviceProxy dev = proxy_table.get(fullDeviceName);
         if (dev == null) {
             try {
                 //	Else create it.
                 dev = new DeviceProxy(deviceName);
                 proxy_table.put(fullDeviceName, dev);
-            }
-            catch(DevFailed e) {
+            } catch (DevFailed e) {
                 e.printStackTrace();
                 throw e;
             }
@@ -120,6 +121,7 @@ public class DeviceProxyFactory {
         return dev;
     }
     //===================================================================
+
     /**
      * DeviceProxy single connection management.
      * returns true it does already exist
@@ -138,6 +140,7 @@ public class DeviceProxyFactory {
         return (dev != null);
     }
     //===================================================================
+
     /**
      * Remove the specified DeviceProxy in table.
      *
@@ -158,6 +161,7 @@ public class DeviceProxyFactory {
         }
     }
     //===================================================================
+
     /**
      * Remove the specified DeviceProxy in table.
      *
@@ -174,9 +178,11 @@ public class DeviceProxyFactory {
     }
 
     //===================================================================
+
     /**
      * Add a new device proxy in table
-     * @param dev the DeviceProxy to store in table. 
+     *
+     * @param dev the DeviceProxy to store in table.
      */
     //===================================================================
     static void add(DeviceProxy dev) {

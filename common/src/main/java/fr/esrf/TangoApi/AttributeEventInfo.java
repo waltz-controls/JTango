@@ -41,41 +41,40 @@ import fr.esrf.Tango.PeriodicEventProp;
 
 
 /**
- *	Class Description: This class is the same class as EventProperties, 
- *	                   but created for C++ compatibility.
+ * Class Description: This class is the same class as EventProperties,
+ * but created for C++ compatibility.
  *
- * @author  verdier
- * @version  $Revision: 25296 $
+ * @author verdier
+ * @version $Revision: 25296 $
  */
-public class AttributeEventInfo implements java.io.Serializable
-{
-	public ChangeEventInfo		ch_event;
-	public PeriodicEventInfo	per_event;
-	public ArchiveEventInfo		arch_event;
-	//-======================================================================
-	//-======================================================================
-	public AttributeEventInfo(ChangeEventProp ch_event, PeriodicEventProp per_event, ArchiveEventProp arch_event)
-	{
-		this.ch_event   = new ChangeEventInfo(ch_event);
-		this.per_event  = new PeriodicEventInfo(per_event);
-		this.arch_event = new ArchiveEventInfo(arch_event);
-	}
-	//-======================================================================
-	//-======================================================================
-	public AttributeEventInfo(EventProperties ev_prop)
-	{
-		this.ch_event   = new ChangeEventInfo(ev_prop.ch_event);
-		this.per_event  = new PeriodicEventInfo(ev_prop.per_event);
-		this.arch_event = new ArchiveEventInfo(ev_prop.arch_event);
-	}
-	//-======================================================================
-	//-======================================================================
-	public EventProperties getTangoObj()
-	{
-		return new EventProperties(ch_event.getTangoObj(),
-									per_event.getTangoObj(),
-									arch_event.getTangoObj());
-	}
-	//-======================================================================
-	//-======================================================================
+public class AttributeEventInfo implements java.io.Serializable {
+    public ChangeEventInfo ch_event;
+    public PeriodicEventInfo per_event;
+    public ArchiveEventInfo arch_event;
+
+    //-======================================================================
+    //-======================================================================
+    public AttributeEventInfo(ChangeEventProp ch_event, PeriodicEventProp per_event, ArchiveEventProp arch_event) {
+        this.ch_event = new ChangeEventInfo(ch_event);
+        this.per_event = new PeriodicEventInfo(per_event);
+        this.arch_event = new ArchiveEventInfo(arch_event);
+    }
+
+    //-======================================================================
+    //-======================================================================
+    public AttributeEventInfo(EventProperties ev_prop) {
+        this.ch_event = new ChangeEventInfo(ev_prop.ch_event);
+        this.per_event = new PeriodicEventInfo(ev_prop.per_event);
+        this.arch_event = new ArchiveEventInfo(ev_prop.arch_event);
+    }
+
+    //-======================================================================
+    //-======================================================================
+    public EventProperties getTangoObj() {
+        return new EventProperties(ch_event.getTangoObj(),
+                per_event.getTangoObj(),
+                arch_event.getTangoObj());
+    }
+    //-======================================================================
+    //-======================================================================
 }

@@ -107,14 +107,15 @@ public class DeviceAttribute {
     private IDeviceAttributeDAO deviceAttributeDAO = null;
 
     public DeviceAttribute() {
-	deviceAttributeDAO = TangoFactory.getSingleton()
-		.getDeviceAttributeDAO();
+        deviceAttributeDAO = TangoFactory.getSingleton()
+                .getDeviceAttributeDAO();
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
+     *
      * @param attributeValue_5 AttributeValue_5 IDL object.
      */
     // ===========================================
@@ -124,6 +125,7 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
      *
@@ -136,46 +138,50 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
+     *
      * @param attributeValue_3 AttributeValue_3 IDL object.
      */
     // ===========================================
     public DeviceAttribute(final AttributeValue_3 attributeValue_3) {
-    	deviceAttributeDAO = TangoFactory.getSingleton().getDeviceAttributeDAO();
+        deviceAttributeDAO = TangoFactory.getSingleton().getDeviceAttributeDAO();
         deviceAttributeDAO.init(attributeValue_3);
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
+     *
      * @param attributeValue AttributeValue IDL object.
      */
     // ===========================================
     public DeviceAttribute(final AttributeValue attributeValue) {
-	    deviceAttributeDAO = TangoFactory.getSingleton().getDeviceAttributeDAO();
-    	deviceAttributeDAO.init(attributeValue);
+        deviceAttributeDAO = TangoFactory.getSingleton().getDeviceAttributeDAO();
+        deviceAttributeDAO.init(attributeValue);
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
+     *
      * @param name Attribute name.
      */
     // ===========================================
     public DeviceAttribute(final String name) {
-	    deviceAttributeDAO = TangoFactory.getSingleton().getDeviceAttributeDAO();
-    	deviceAttributeDAO.init(name);
+        deviceAttributeDAO = TangoFactory.getSingleton().getDeviceAttributeDAO();
+        deviceAttributeDAO.init(name);
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
      */
@@ -186,10 +192,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -199,10 +206,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -212,10 +220,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -226,10 +235,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -239,10 +249,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -253,10 +264,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -266,10 +278,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name   Attribute name.
      * @param values Attribute values.
      * @param dim_x  array dimention in X
      * @param dim_y  array dimention in Y
@@ -282,10 +295,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -295,13 +309,14 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name   Attribute name.
      * @param values Attribute values.
-     * @param dim_x array dimention in X
-     * @param dim_y array dimention in Y
+     * @param dim_x  array dimention in X
+     * @param dim_y  array dimention in Y
      */
     // ===========================================
     public DeviceAttribute(final String name,
@@ -311,9 +326,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
+     *
      * @param name  Attribute name.
      * @param value Attribute value.
      */
@@ -324,25 +340,27 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name   Attribute name.
      * @param values Attribute values.
-     * @param dim_x array dimention in X
-     * @param dim_y array dimention in Y
+     * @param dim_x  array dimention in X
+     * @param dim_y  array dimention in Y
      */
     // ===========================================
     public DeviceAttribute(final String name, final long[] values, final int dim_x, final int dim_y) {
-        deviceAttributeDAO = TangoFactory.getSingleton() .getDeviceAttributeDAO();
+        deviceAttributeDAO = TangoFactory.getSingleton().getDeviceAttributeDAO();
         deviceAttributeDAO.init(name, values, dim_x, dim_y);
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -352,13 +370,14 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name   Attribute name.
      * @param values Attribute values.
-     * @param dim_x array dimention in X
-     * @param dim_y array dimention in Y
+     * @param dim_x  array dimention in X
+     * @param dim_y  array dimention in Y
      */
     // ===========================================
     public DeviceAttribute(final String name,
@@ -368,10 +387,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -381,13 +401,14 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name   Attribute name.
      * @param values Attribute values.
-     * @param dim_x array dimention in X
-     * @param dim_y array dimention in Y
+     * @param dim_x  array dimention in X
+     * @param dim_y  array dimention in Y
      */
     // ===========================================
     public DeviceAttribute(final String name,
@@ -397,10 +418,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name  Attribute name.
      * @param value Attribute value.
      */
     // ===========================================
@@ -410,13 +432,14 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * DeviceAttribute class constructor.
-     * 
-     * @param name Attribute name.
+     *
+     * @param name   Attribute name.
      * @param values Attribute values.
-     * @param dim_x array dimention in X
-     * @param dim_y array dimention in Y
+     * @param dim_x  array dimention in X
+     * @param dim_y  array dimention in Y
      */
     // ===========================================
     public DeviceAttribute(final String name,
@@ -432,6 +455,7 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Returns the attribute errors list
      */
@@ -441,9 +465,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Set the AttributeValue internal object with input one.
-     * 
+     *
      * @param attributeValue3 AttributeValue_3 input object
      */
     // ===========================================
@@ -452,9 +477,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Set the AttributeValue internal object with input one.
-     * 
+     *
      * @param attributeValue AttributeValue input object
      */
     // ===========================================
@@ -467,9 +493,10 @@ public class DeviceAttribute {
     // ===========================================
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -478,9 +505,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -489,9 +517,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
@@ -502,9 +531,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -513,20 +543,22 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
     public void insert(final boolean[] argIn) {
-	deviceAttributeDAO.insert(argIn);
+        deviceAttributeDAO.insert(argIn);
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
@@ -537,9 +569,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -548,9 +581,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -559,9 +593,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -570,9 +605,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -581,9 +617,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x nb data.in x direction
      * @param dim_y nb data.in y direction
@@ -594,9 +631,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -605,9 +643,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -616,9 +655,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -627,9 +667,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
@@ -640,9 +681,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -651,9 +693,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -662,9 +705,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute valuesas unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -673,9 +717,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute valuesas unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -684,9 +729,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute valuesas unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -695,9 +741,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute valuesas unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -706,9 +753,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -717,9 +765,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -728,9 +777,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
@@ -741,9 +791,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -752,9 +803,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -763,22 +815,24 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
      */
     // ===========================================
     public void insert(final long[] argIn, final int dim_x, final int dim_y) {
-	deviceAttributeDAO.insert(argIn, dim_x, dim_y);
+        deviceAttributeDAO.insert(argIn, dim_x, dim_y);
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -787,9 +841,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values as unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -798,9 +853,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute valuesas unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -809,9 +865,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute valuesas unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -820,9 +877,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute valuesas unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -831,9 +889,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute valuesas unsigned.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -842,9 +901,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -853,9 +913,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -864,9 +925,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
@@ -877,9 +939,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -888,9 +951,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -899,9 +963,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
@@ -912,9 +977,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -923,9 +989,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -934,9 +1001,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
@@ -947,9 +1015,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -958,9 +1027,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -969,9 +1039,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      * @param dim_x array dimention in X
      * @param dim_y array dimention in Y
@@ -982,9 +1053,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Insert method for attribute values.
-     * 
+     *
      * @param argIn Attribute values.
      */
     // ===========================================
@@ -993,13 +1065,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an DevState Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public DevState[] extractDevStateArray() throws DevFailed {
@@ -1007,13 +1079,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an DevState.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public DevState extractDevState() throws DevFailed {
@@ -1021,13 +1093,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an boolean.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public boolean extractBoolean() throws DevFailed {
@@ -1035,13 +1107,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an boolean Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public boolean[] extractBooleanArray() throws DevFailed {
@@ -1049,13 +1121,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned char.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public short extractUChar() throws DevFailed {
@@ -1063,13 +1135,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned char Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public short[] extractUCharArray() throws DevFailed {
@@ -1077,13 +1149,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned char Array as a char array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public byte[] extractCharArray() throws DevFailed {
@@ -1091,13 +1163,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a short.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public short extractShort() throws DevFailed {
@@ -1105,13 +1177,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a short Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public short[] extractShortArray() throws DevFailed {
@@ -1119,13 +1191,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned short.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public int extractUShort() throws DevFailed {
@@ -1133,13 +1205,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for an unsigned short Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public int[] extractUShortArray() throws DevFailed {
@@ -1147,13 +1219,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a long.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public int extractLong() throws DevFailed {
@@ -1161,13 +1233,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a long Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public int[] extractLongArray() throws DevFailed {
@@ -1175,13 +1247,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a unsigned long.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public long extractULong() throws DevFailed {
@@ -1189,13 +1261,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a unsigned long.array
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public long[] extractULongArray() throws DevFailed {
@@ -1203,13 +1275,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a long.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public long extractLong64() throws DevFailed {
@@ -1217,13 +1289,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a long Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public long[] extractLong64Array() throws DevFailed {
@@ -1231,13 +1303,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a long.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public long extractULong64() throws DevFailed {
@@ -1245,13 +1317,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a long Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public long[] extractULong64Array() throws DevFailed {
@@ -1259,27 +1331,27 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a float.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public float extractFloat() throws DevFailed {
-	return deviceAttributeDAO.extractFloat();
+        return deviceAttributeDAO.extractFloat();
     }
 
     // ===========================================
+
     /**
      * extract method for a float Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public float[] extractFloatArray() throws DevFailed {
@@ -1287,13 +1359,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a double.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public double extractDouble() throws DevFailed {
@@ -1301,13 +1373,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a double Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public double[] extractDoubleArray() throws DevFailed {
@@ -1315,13 +1387,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a DevState (state attribute).
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public DevState extractState() throws DevFailed {
@@ -1329,13 +1401,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a String.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public String extractString() throws DevFailed {
@@ -1343,13 +1415,13 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a double Array.
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed
-     *             in case of read_attribute failed or if AttrQuality is
-     *             ATTR_INVALID.
+     * @throws DevFailed in case of read_attribute failed or if AttrQuality is
+     *                   ATTR_INVALID.
      */
     // ===========================================
     public String[] extractStringArray() throws DevFailed {
@@ -1357,11 +1429,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute quality
-     * 
-     * @throws DevFailed
-     *             in case of read_attribute failed
+     *
+     * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
     public AttrQuality getQuality() throws DevFailed {
@@ -1369,11 +1441,12 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a DevEncoded
-     * 
+     *
      * @return the extracted value.
-     * @throws DevFailed  in case of read_attribute failed
+     * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
     public DevEncoded extractDevEncoded() throws DevFailed {
@@ -1381,9 +1454,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * extract method for a DevEncoded[]
-     * 
+     *
      * @return the extracted value.
      * @throws DevFailed in case of read_attribute failed
      */
@@ -1393,11 +1467,12 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute data format (SCALAR, . * SPECTRUM, IMAGE or FMT_UNKNOWN)
      * If device is older than Device_4Impl, FMT_UNKNOWN is returned.
-     * 
-     * @throws DevFailed  in case of read_attribute failed
+     *
+     * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
     public AttrDataFormat getDataFormat() throws DevFailed {
@@ -1405,9 +1480,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute time value.
-     * 
+     *
      * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
@@ -1416,9 +1492,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute time value in seconds since EPOCH.
-     * 
+     *
      * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
@@ -1427,9 +1504,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute time value in milli seconds since EPOCH.
-     * 
+     *
      * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
@@ -1438,10 +1516,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute name.
-     * 
-     * @throws DevFailed  in case of read_attribute failed
+     *
+     * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
     public String getName() throws DevFailed {
@@ -1449,9 +1528,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return number of data read.
-     * 
+     *
      * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
@@ -1460,9 +1540,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return number of data read.
-     * 
+     *
      * @throws DevFailed in case of read_attribute failed
      */
     public AttributeDim getReadAttributeDim() throws DevFailed {
@@ -1470,19 +1551,21 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return number of data write.
-     * 
-     * @throws DevFailed  in case of read_attribute failed
+     *
+     * @throws DevFailed in case of read_attribute failed
      */
     public AttributeDim getWriteAttributeDim() throws DevFailed {
         return deviceAttributeDAO.getWriteAttributeDim();
     }
 
     // ===========================================
+
     /**
      * Return number of data written.
-     * 
+     *
      * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
@@ -1491,10 +1574,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute dim_x.
-     * 
-     * @throws DevFailed  in case of read_attribute failed
+     *
+     * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
     public int getDimX() throws DevFailed {
@@ -1502,9 +1586,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute dim_y.
-     * 
+     *
      * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
@@ -1513,10 +1598,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute written dim_x.
-     * 
-     * @throws DevFailed  in case of read_attribute failed
+     *
+     * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
     public int getWrittenDimX() throws DevFailed {
@@ -1524,10 +1610,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return attribute written dim_y.
-     * 
-     * @throws DevFailed  in case of read_attribute failed
+     *
+     * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
     public int getWrittenDimY() throws DevFailed {
@@ -1535,9 +1622,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return AttributeValue IDL object.
-     * 
+     *
      * @throws DevFailed
      */
     // ===========================================
@@ -1546,9 +1634,10 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return AttributeValue IDL object.
-     * 
+     *
      * @throws DevFailed
      */
     // ===========================================
@@ -1557,6 +1646,7 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return AttributeValue IDL object.
      */
@@ -1566,6 +1656,7 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * Return AttributeValue IDL object.
      */
@@ -1575,11 +1666,11 @@ public class DeviceAttribute {
     }
 
     // ===========================================
+
     /**
      * return time in milliseconds since 1/1/70
-     * 
-     * @throws DevFailed
-     *             in case of read_attribute failed
+     *
+     * @throws DevFailed in case of read_attribute failed
      */
     // ===========================================
     public long getTime() throws DevFailed {

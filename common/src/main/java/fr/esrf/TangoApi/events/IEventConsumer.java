@@ -39,36 +39,36 @@ import fr.esrf.TangoApi.CallBack;
 import fr.esrf.TangoApi.DeviceProxy;
 
 /**
- * 
  * @author Gwenaelle Abeille
  */
 public interface IEventConsumer {
 
-	// ===============================================================
-	// ===============================================================
-	public int subscribe_event(final DeviceProxy device,
-			final String attribute, final int event, final CallBack callback,
-			final String[] filters, final boolean stateless) throws DevFailed;
+    // ===============================================================
+    // ===============================================================
+    public int subscribe_event(final DeviceProxy device,
+                               final String attribute, final int event, final CallBack callback,
+                               final String[] filters, final boolean stateless) throws DevFailed;
 
-	// ===============================================================
-	// ===============================================================
-	public int subscribe_event(final DeviceProxy device,
-			final String attribute, final int event, final int max_size,
-			final String[] filters, final boolean stateless) throws DevFailed;
+    // ===============================================================
+    // ===============================================================
+    public int subscribe_event(final DeviceProxy device,
+                               final String attribute, final int event, final int max_size,
+                               final String[] filters, final boolean stateless) throws DevFailed;
 
-	// ===============================================================
-	// ===============================================================
-	public int subscribe_event(final DeviceProxy device,
-			final String attribute, final int event, final CallBack callback,
-			final int max_size, final String[] filters, final boolean stateless)
-			throws DevFailed;
-	// ===============================================================
-	// ===============================================================
-	public int subscribe_event(final DeviceProxy device,
-			final int event, final CallBack callback,final int max_size,
-            final boolean stateless) throws DevFailed;
+    // ===============================================================
+    // ===============================================================
+    public int subscribe_event(final DeviceProxy device,
+                               final String attribute, final int event, final CallBack callback,
+                               final int max_size, final String[] filters, final boolean stateless)
+            throws DevFailed;
 
-	// ===============================================================
-	// ===============================================================
-	public void unsubscribe_event(final int event_id) throws DevFailed;
+    // ===============================================================
+    // ===============================================================
+    public int subscribe_event(final DeviceProxy device,
+                               final int event, final CallBack callback, final int max_size,
+                               final boolean stateless) throws DevFailed;
+
+    // ===============================================================
+    // ===============================================================
+    public void unsubscribe_event(final int event_id) throws DevFailed;
 }

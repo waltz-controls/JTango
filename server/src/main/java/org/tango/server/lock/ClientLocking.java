@@ -47,7 +47,6 @@ import java.util.Arrays;
  * Manage device locking with client request
  *
  * @author ABEILLE
- *
  */
 public final class ClientLocking {
 
@@ -135,7 +134,6 @@ public final class ClientLocking {
     }
 
     /**
-     *
      * @param clIdent
      * @param names
      * @throws DevFailed

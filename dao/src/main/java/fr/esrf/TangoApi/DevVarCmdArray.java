@@ -35,96 +35,89 @@
 package fr.esrf.TangoApi;
 
 
-
-
 import fr.esrf.Tango.DevCmdInfo;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoDs.Except;
 
 
-public class DevVarCmdArray
-{
-	/**
-	 *	manage an array of CommandInfo objects.
-	 */
-	protected CommandInfo[]	cmd_info;
-	/**
-	 *	The device name
-	 */
-	protected String	devname;
-	
-	//======================================================
-	//======================================================
-	public DevVarCmdArray(String devname, DevCmdInfo[] info)
-	{
-		this.devname = devname;
-		cmd_info = new CommandInfo[info.length];
-		for (int i=0 ; i<info.length ; i++)
-			cmd_info[i] = new CommandInfo(info[i]);
-	}
-	//======================================================
-	//======================================================
-	public DevVarCmdArray(String devname, CommandInfo[] info)
-	{
-		this.devname  = devname;
-		this.cmd_info = info;
-	}
-	
-	//======================================================
-	//======================================================
-	public int size()
-	{
-		return cmd_info.length;
-	}
-	//======================================================
-	//======================================================
-	public CommandInfo elementAt(int i)
-	{
-		return cmd_info[i];
-	}
-	
-	//======================================================
-	//======================================================
-	public CommandInfo[] getInfoArray()
-	{
-		return cmd_info;
-	}
-	//======================================================
-	//======================================================
-	public int argoutType(String cmdname) throws DevFailed
-	{
-		for (CommandInfo info : cmd_info)
-			if (cmdname.equals(info.cmd_name))
-				return info.out_type;
+public class DevVarCmdArray {
+    /**
+     * manage an array of CommandInfo objects.
+     */
+    protected CommandInfo[] cmd_info;
+    /**
+     * The device name
+     */
+    protected String devname;
 
-		Except.throw_non_supported_exception("TACO_CMD_UNAVAILABLE",
-				cmdname + " command unknown for device " + devname,
-				"DevVarCmdArray.argoutType()");
-		return -1;
-	}
-	//======================================================
-	//======================================================
-	public int arginType(String cmdname) throws DevFailed
-	{
-		for (CommandInfo info : cmd_info)
-			if (cmdname.equals(info.cmd_name))
-				return info.in_type;
-		Except.throw_non_supported_exception("TACO_CMD_UNAVAILABLE",
-				cmdname + " command unknown for device " + devname,
-				"DevVarCmdArray.arginType()");
-		return -1;
-	}
-	//======================================================
-	//======================================================
-	public String toString()
-	{
-		StringBuffer	sb = new StringBuffer();
-		for (CommandInfo info : cmd_info)
-		{
-			sb.append(info.cmd_name);
-			sb.append("(").append(info.in_type);
-			sb.append(", ").append(info.out_type).append(")\n");
-		}
-		return sb.toString();
-	}
+    //======================================================
+    //======================================================
+    public DevVarCmdArray(String devname, DevCmdInfo[] info) {
+        this.devname = devname;
+        cmd_info = new CommandInfo[info.length];
+        for (int i = 0; i < info.length; i++)
+            cmd_info[i] = new CommandInfo(info[i]);
+    }
+
+    //======================================================
+    //======================================================
+    public DevVarCmdArray(String devname, CommandInfo[] info) {
+        this.devname = devname;
+        this.cmd_info = info;
+    }
+
+    //======================================================
+    //======================================================
+    public int size() {
+        return cmd_info.length;
+    }
+
+    //======================================================
+    //======================================================
+    public CommandInfo elementAt(int i) {
+        return cmd_info[i];
+    }
+
+    //======================================================
+    //======================================================
+    public CommandInfo[] getInfoArray() {
+        return cmd_info;
+    }
+
+    //======================================================
+    //======================================================
+    public int argoutType(String cmdname) throws DevFailed {
+        for (CommandInfo info : cmd_info)
+            if (cmdname.equals(info.cmd_name))
+                return info.out_type;
+
+        Except.throw_non_supported_exception("TACO_CMD_UNAVAILABLE",
+                cmdname + " command unknown for device " + devname,
+                "DevVarCmdArray.argoutType()");
+        return -1;
+    }
+
+    //======================================================
+    //======================================================
+    public int arginType(String cmdname) throws DevFailed {
+        for (CommandInfo info : cmd_info)
+            if (cmdname.equals(info.cmd_name))
+                return info.in_type;
+        Except.throw_non_supported_exception("TACO_CMD_UNAVAILABLE",
+                cmdname + " command unknown for device " + devname,
+                "DevVarCmdArray.arginType()");
+        return -1;
+    }
+
+    //======================================================
+    //======================================================
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        for (CommandInfo info : cmd_info) {
+            sb.append(info.cmd_name);
+            sb.append("(").append(info.in_type);
+            sb.append(", ").append(info.out_type).append(")\n");
+        }
+        return sb.toString();
+    }
 }

@@ -37,9 +37,8 @@ package fr.esrf.TangoDs;
 import fr.esrf.Tango.DevFailed;
 import org.omg.CORBA.Any;
 
- 
-public class KillCmd extends Command implements TangoConst
-{
+
+public class KillCmd extends Command implements TangoConst {
 
 //+-------------------------------------------------------------------------
 //
@@ -48,11 +47,10 @@ public class KillCmd extends Command implements TangoConst
 // description : 	constructor for Command class Kill
 //
 //--------------------------------------------------------------------------
- 
-	public KillCmd(String name,int in,int out)
-	{
-		super(name,in,out);
-	}
+
+    public KillCmd(String name, int in, int out) {
+        super(name, in, out);
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -61,18 +59,17 @@ public class KillCmd extends Command implements TangoConst
 // description : 	Kill the device server
 //
 //--------------------------------------------------------------------------
- 
-	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
-	{
-		Util.out4.println("KillCmd::execute(): arrived");
+
+    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
+        Util.out4.println("KillCmd::execute(): arrived");
 //	
 // call DServer method which implements this command
 //
-		((DServer)(device)).kill();
+        ((DServer) (device)).kill();
 //
 // return to the caller
 //
-		return Util.return_empty_any("Kill");
-	}
+        return Util.return_empty_any("Kill");
+    }
 
 }

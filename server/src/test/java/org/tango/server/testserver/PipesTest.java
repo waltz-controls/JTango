@@ -1,36 +1,34 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.testserver;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.util.List;
-
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.DevState;
+import fr.esrf.Tango.DispLevel;
+import fr.esrf.Tango.PipeWriteType;
+import fr.esrf.TangoApi.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,16 +36,12 @@ import org.tango.server.Constants;
 import org.tango.server.ServerManager;
 import org.tango.utils.DevFailedUtils;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
-import fr.esrf.Tango.DispLevel;
-import fr.esrf.Tango.PipeWriteType;
-import fr.esrf.TangoApi.DevicePipe;
-import fr.esrf.TangoApi.DeviceProxy;
-import fr.esrf.TangoApi.PipeBlob;
-import fr.esrf.TangoApi.PipeDataElement;
-import fr.esrf.TangoApi.PipeInfo;
-import fr.esrf.TangoApi.PipeScanner;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.List;
+
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class PipesTest extends NoDBDeviceManager {
 
@@ -146,7 +140,7 @@ public class PipesTest extends NoDBDeviceManager {
             // Build the main blob and insert inner one
             final PipeBlob pipeBlob = new PipeBlob("Pascal");
             pipeBlob.add(new PipeDataElement("City", "Grenoble"));
-            pipeBlob.add(new PipeDataElement("Values", new float[] { 1.23f, 4.56f, 7.89f }));
+            pipeBlob.add(new PipeDataElement("Values", new float[]{1.23f, 4.56f, 7.89f}));
             pipeBlob.add(new PipeDataElement("Children", children));
             pipeBlob.add(new PipeDataElement("Status", DevState.RUNNING));
 
@@ -163,7 +157,7 @@ public class PipesTest extends NoDBDeviceManager {
             assertThat(pipe.nextString(), equalTo("Grenoble"));
             final float[] array = new float[3];
             pipe.nextArray(array, 3);
-            assertThat(array, equalTo(new float[] { 1.23f, 4.56f, 7.89f }));
+            assertThat(array, equalTo(new float[]{1.23f, 4.56f, 7.89f}));
             final PipeScanner scanner = pipe.nextScanner();
             assertThat(scanner.nextInt(), equalTo(30));
             assertThat(scanner.nextInt(), equalTo(28));

@@ -1,22 +1,20 @@
 package org.tango;
 
+import fr.esrf.Tango.DevFailed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.utils.DevFailedUtils;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.utils.DevFailedUtils;
-
-import fr.esrf.Tango.DevFailed;
-
 /**
  * Management of tango host
- * 
+ *
  * @author ABEILLE
- * 
  */
 public final class TangoHostManager {
 
@@ -95,7 +93,7 @@ public final class TangoHostManager {
 
     /**
      * Returns the TANGO_HOST with full qualified name.
-     * 
+     *
      * @param tangoHost default Tango_host
      * @return the TANGO_HOST with full qualified name.
      * @throws DevFailed if TANGO_HOST value has a bad syntax.

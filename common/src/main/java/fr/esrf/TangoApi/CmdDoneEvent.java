@@ -33,40 +33,39 @@
 
 
 package fr.esrf.TangoApi;
- 
+
 import fr.esrf.Tango.DevError;
 
 
 /**
- *	Object defining result of an asynchronous call.
+ * Object defining result of an asynchronous call.
  */
 
 
-public class  CmdDoneEvent
-{
-	public DeviceProxy 	device;
-	public String		cmdname;
-	public DeviceData	argout;
-	public DevError[]	errors;
-	public boolean		err;
+public class CmdDoneEvent {
+    public DeviceProxy device;
+    public String cmdname;
+    public DeviceData argout;
+    public DevError[] errors;
+    public boolean err;
 
-	//===============================================================
-	/**
-	 *	Object constructor
-	 */
-	//===============================================================
-	public CmdDoneEvent(DeviceProxy dev, String cmd, 
-						DeviceData arg, DevError[] err_in)
-	{
-		device  = dev;
-		cmdname = cmd;
-		argout  = arg;
-		errors  = err_in;
-		if (errors==null)
-			err = false;
-		else
-			err = (errors.length!=0) ;
-	}
-	//===============================================================
-	//===============================================================
+    //===============================================================
+
+    /**
+     * Object constructor
+     */
+    //===============================================================
+    public CmdDoneEvent(DeviceProxy dev, String cmd,
+                        DeviceData arg, DevError[] err_in) {
+        device = dev;
+        cmdname = cmd;
+        argout = arg;
+        errors = err_in;
+        if (errors == null)
+            err = false;
+        else
+            err = (errors.length != 0);
+    }
+    //===============================================================
+    //===============================================================
 }

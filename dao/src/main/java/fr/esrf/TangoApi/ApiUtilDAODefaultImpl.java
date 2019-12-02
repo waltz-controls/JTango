@@ -73,23 +73,24 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     static private boolean in_server_code = false;
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
      *
-     * @param tango_host
-     *            host and port (hostname:portnumber) where database is running.
+     * @param tango_host host and port (hostname:portnumber) where database is running.
      */
     // ===================================================================
     public Database get_db_obj(final String tango_host) throws DevFailed {
         final int i = tango_host.indexOf(":");
         if (i <= 0) {
             Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
-                "Cannot parse port number", "ApiUtil.get_db_obj()");
+                    "Cannot parse port number", "ApiUtil.get_db_obj()");
         }
         return get_db_obj(tango_host.substring(0, i), tango_host.substring(i + 1));
     }
 
     // ===================================================================
+
     /**
      * Return the database object created with TANGO_HOST environment variable .
      */
@@ -102,15 +103,17 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
         }
     }
     // ===================================================================
+
     /**
      * Return tru if the database object has been created.
      */
     // ===================================================================
     public boolean default_db_obj_exists() throws DevFailed {
-        return  (defaultDatabase != null);
+        return (defaultDatabase != null);
     }
 
     // ===================================================================
+
     /**
      * Return the database object created with TANGO_HOST environment variable .
      */
@@ -135,6 +138,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
      *
@@ -175,6 +179,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port, and set
      * this database object for all following uses..
@@ -194,43 +199,44 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port, and set
      * this database object for all following uses..
      *
-     * @param host
-     *            host where database is running.
-     * @param port
-     *            port for database connection.
+     * @param host host where database is running.
+     * @param port port for database connection.
      */
     // ===================================================================
     public Database set_db_obj(final String host, final String port) throws DevFailed {
-	return change_db_obj(host, port);
+        return change_db_obj(host, port);
     }
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
      *
-     * @param tango_host
-     *            host and port (hostname:portnumber) where database is running.
+     * @param tango_host host and port (hostname:portnumber) where database is running.
      */
     // ===================================================================
     public Database set_db_obj(final String tango_host) throws DevFailed {
-	final int i = tango_host.indexOf(":");
-	if (i <= 0) {
-	    Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
-		    "Cannot parse port number", "ApiUtil.set_db_obj()");
-	}
-	return change_db_obj(tango_host.substring(0, i), tango_host.substring(i + 1));
+        final int i = tango_host.indexOf(":");
+        if (i <= 0) {
+            Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
+                    "Cannot parse port number", "ApiUtil.set_db_obj()");
+        }
+        return change_db_obj(tango_host.substring(0, i), tango_host.substring(i + 1));
     }
 
     // ===================================================================
     // ===================================================================
 
     // ===================================================================
+
     /**
      * Create the orb object
+     *
      * @throws DevFailed if ORB creation failed
      */
     // ===================================================================
@@ -252,11 +258,11 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
             // Set the Largest transfer.
             final String str = checkORBgiopMaxMsgSize();
             props.put("jacorb.maxManagedBufSize", str);
-			
-			//	Check for max threads
-			final String nbThreads = System.getProperty("max_receptor_threads");
-			if (nbThreads!=null)
-				props.put("jacorb.connection.client.max_receptor_threads", nbThreads);
+
+            //	Check for max threads
+            final String nbThreads = System.getProperty("max_receptor_threads");
+            if (nbThreads != null)
+                props.put("jacorb.connection.client.max_receptor_threads", nbThreads);
 
             // Set jacorb verbosity at minimum value
             props.put("jacorb.config.log.verbosity", "0");
@@ -267,7 +273,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
 
             //  Add directory to get jacorb.properties
             props.put("jacorb.config.dir", "fr/esrf/TangoApi/etc");
-			System.setProperties(props);
+            System.setProperties(props);
 
             // Initialize ORB
             // -----------------------------
@@ -281,17 +287,19 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
             ApiUtil.setOrb(null);
             ex.printStackTrace();
             Except.throw_connection_failed(ex.toString(), "Initializing ORB failed !",
-                "ApiUtil.create_orb()");
+                    "ApiUtil.create_orb()");
         } catch (final Exception e) {
             e.printStackTrace();
         }
     }
 
     // ===================================================================
+
     /**
      * Check if the checkORBgiopMaxMsgSize has been set. This environment
      * variable should be set in Mega bytes.
-     * @return  the property string  to be set.
+     *
+     * @return the property string  to be set.
      */
     // ===================================================================
     private static String checkORBgiopMaxMsgSize() {
@@ -349,33 +357,36 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ===================================================================
+
     /**
      * Return the orb object
      */
     // ===================================================================
     public ORB get_orb() throws DevFailed {
-	if (ApiUtil.getOrb() == null) {
-	    create_orb();
-	}
-	return ApiUtil.getOrb();
+        if (ApiUtil.getOrb() == null) {
+            create_orb();
+        }
+        return ApiUtil.getOrb();
     }
 
     // ===================================================================
+
     /**
      * Return the orb object
      */
     // ===================================================================
     public void set_in_server(final boolean val) {
-	in_server_code = val;
+        in_server_code = val;
     }
 
     // ===================================================================
+
     /**
      * Return true if in server code or false if in client code.
      */
     // ===================================================================
     public boolean in_server() {
-	return in_server_code;
+        return in_server_code;
     }
 
     // ===================================================================
@@ -389,7 +400,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
         if (reconnection_delay < 0) {
             try {
                 final DbDatum data = get_db_obj().get_property(TangoConst.CONTROL_SYSTEM,
-                    "ReconnectionDelay");
+                        "ReconnectionDelay");
                 if (!data.is_empty()) {
                     reconnection_delay = data.extractLong();
                 }
@@ -405,13 +416,11 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
 
     // ==========================================================================
     // ==========================================================================
-    public static String getUser()
-    {
+    public static String getUser() {
         return System.getProperty("user.name");
     }
     // ==========================================================================
     // ==========================================================================
-
 
 
     // ==========================================================================
@@ -420,6 +429,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ==========================================================================
     // ==========================================================================
+
     /**
      * Add request in hash table and return id
      */
@@ -433,6 +443,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ==========================================================================
+
     /**
      * Return the request in hash table for the id
      *
@@ -441,24 +452,26 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     // ==========================================================================
     public Request get_async_request(final int id) throws DevFailed {
 
-	if (!async_request_table.containsKey(id)) {
-	    Except.throw_exception("ASYNC_API_ERROR", "request for id " + id + " does not exist",
-		    this.getClass().getCanonicalName() + ".get_async_request");
-	}
-	final AsyncCallObject aco = async_request_table.get(id);
-	return aco.request;
+        if (!async_request_table.containsKey(id)) {
+            Except.throw_exception("ASYNC_API_ERROR", "request for id " + id + " does not exist",
+                    this.getClass().getCanonicalName() + ".get_async_request");
+        }
+        final AsyncCallObject aco = async_request_table.get(id);
+        return aco.request;
     }
 
     // ==========================================================================
+
     /**
      * Return the Asynch Object in hash table for the id
      */
     // ==========================================================================
     public AsyncCallObject get_async_object(final int id) {
-	return async_request_table.get(id);
+        return async_request_table.get(id);
     }
 
     // ==========================================================================
+
     /**
      * Remove asynchronous call request and id from hashtable.
      */
@@ -467,7 +480,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     public synchronized void remove_async_request(final int id) {
 
         // Try to destroye Request object (added by PV 7/9/06)
-        final AsyncCallObject aco =  async_request_table.get(id);
+        final AsyncCallObject aco = async_request_table.get(id);
         if (aco != null) {
             removePendingRepliesOfRequest(aco.request);
             ((org.jacorb.orb.ORB) ApiUtil.getOrb()).removeRequest(aco.request);
@@ -481,15 +494,16 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
         // try to solve a memory leak. pending_replies is still growing when
         // server is in timeout
         /*****
-        Removed for JacORB-3
-        if (!delegate.get_pending_replies().isEmpty()) {
-            delegate.get_pending_replies().clear();
-        }
-        *****/
+         Removed for JacORB-3
+         if (!delegate.get_pending_replies().isEmpty()) {
+         delegate.get_pending_replies().clear();
+         }
+         *****/
     }
+
     public static void removePendingRepliesOfRequest(final Request request) {
         final org.jacorb.orb.Delegate delegate = (org.jacorb.orb.Delegate) ((org.omg.CORBA.portable.ObjectImpl) request
-            .target())._get_delegate();
+                .target())._get_delegate();
         removePendingReplies(delegate);
     }
 
@@ -497,24 +511,24 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
         final org.jacorb.orb.Delegate delegate;
         if (connection.device_4 != null) {
             delegate = (org.jacorb.orb.Delegate) ((org.omg.CORBA.portable.ObjectImpl) connection.device_4)
-                ._get_delegate();
+                    ._get_delegate();
         } else if (connection.device_3 != null) {
             delegate = (org.jacorb.orb.Delegate) ((org.omg.CORBA.portable.ObjectImpl) connection.device_3)
-                ._get_delegate();
+                    ._get_delegate();
         } else if (connection.device_2 != null) {
             delegate = (org.jacorb.orb.Delegate) ((org.omg.CORBA.portable.ObjectImpl) connection.device_2)
-                ._get_delegate();
+                    ._get_delegate();
         } else if (connection.device != null) {
             delegate = (org.jacorb.orb.Delegate) ((org.omg.CORBA.portable.ObjectImpl) connection.device)
-                ._get_delegate();
-        }
-        else {
+                    ._get_delegate();
+        } else {
             return;
         }
         removePendingReplies(delegate);
     }
 
     // ==========================================================================
+
     /**
      * Set the reply_model in AsyncCallObject for the id key.
      */
@@ -527,6 +541,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ==========================================================================
+
     /**
      * Set the Callback object in AsyncCallObject for the id key.
      */
@@ -539,41 +554,41 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ==========================================================================
+
     /**
      * return the still pending asynchronous call for a reply model.
      *
-     * @param dev   DeviceProxy object.
-     * @param reply_model
-     *            ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
+     * @param dev         DeviceProxy object.
+     * @param reply_model ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
      */
     // ==========================================================================
     public int pending_asynch_call(final DeviceProxy dev, final int reply_model) {
         int cnt = 0;
         final Enumeration _enum = async_request_table.keys();
         while (_enum.hasMoreElements()) {
-            int n = (Integer)_enum.nextElement();
+            int n = (Integer) _enum.nextElement();
             final AsyncCallObject aco = async_request_table.get(n);
             if (aco.dev == dev
-                && (reply_model == ApiDefs.ALL_ASYNCH || aco.reply_model == reply_model)) {
-            cnt++;
+                    && (reply_model == ApiDefs.ALL_ASYNCH || aco.reply_model == reply_model)) {
+                cnt++;
             }
         }
         return cnt;
     }
 
     // ==========================================================================
+
     /**
      * return the still pending asynchronous call for a reply model.
      *
-     * @param reply_model
-     *            ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
+     * @param reply_model ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
      */
     // ==========================================================================
     public int pending_asynch_call(final int reply_model) {
         int cnt = 0;
         final Enumeration _enum = async_request_table.keys();
         while (_enum.hasMoreElements()) {
-            int n = (Integer)_enum.nextElement();
+            int n = (Integer) _enum.nextElement();
             final AsyncCallObject aco = async_request_table.get(n);
             if (reply_model == ApiDefs.ALL_ASYNCH || aco.reply_model == reply_model) {
                 cnt++;
@@ -583,28 +598,30 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ==========================================================================
+
     /**
      * Return the callback sub model used.
      *
-     * @param model
-     *            ApiDefs.PUSH_CALLBACK or ApiDefs.PULL_CALLBACK.
+     * @param model ApiDefs.PUSH_CALLBACK or ApiDefs.PULL_CALLBACK.
      */
     // ==========================================================================
     public void set_asynch_cb_sub_model(final int model) {
-    	async_cb_sub_model = model;
+        async_cb_sub_model = model;
     }
 
     // ==========================================================================
+
     /**
      * Set the callback sub model used (ApiDefs.PUSH_CALLBACK or
      * ApiDefs.PULL_CALLBACK).
      */
     // ==========================================================================
     public int get_asynch_cb_sub_model() {
-    	return async_cb_sub_model;
+        return async_cb_sub_model;
     }
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
@@ -613,13 +630,14 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     public void get_asynch_replies() {
         final Enumeration _enum = async_request_table.keys();
         while (_enum.hasMoreElements()) {
-            int n = (Integer)_enum.nextElement();
+            int n = (Integer) _enum.nextElement();
             final AsyncCallObject aco = async_request_table.get(n);
             aco.manage_reply(ApiDefs.NO_TIMEOUT);
         }
     }
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
@@ -628,13 +646,14 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     public void get_asynch_replies(final int timeout) {
         final Enumeration _enum = async_request_table.keys();
         while (_enum.hasMoreElements()) {
-            int n = (Integer)_enum.nextElement();
+            int n = (Integer) _enum.nextElement();
             final AsyncCallObject aco = async_request_table.get(n);
             aco.manage_reply(timeout);
         }
     }
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
@@ -643,15 +662,16 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     public void get_asynch_replies(final DeviceProxy dev) {
         final Enumeration _enum = async_request_table.keys();
         while (_enum.hasMoreElements()) {
-            int n = (Integer)_enum.nextElement();
-                final AsyncCallObject aco = async_request_table.get(n);
-                if (aco.dev == dev) {
-                    aco.manage_reply(ApiDefs.NO_TIMEOUT);
+            int n = (Integer) _enum.nextElement();
+            final AsyncCallObject aco = async_request_table.get(n);
+            if (aco.dev == dev) {
+                aco.manage_reply(ApiDefs.NO_TIMEOUT);
             }
         }
     }
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
@@ -660,10 +680,10 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     public void get_asynch_replies(final DeviceProxy dev, final int timeout) {
         final Enumeration _enum = async_request_table.keys();
         while (_enum.hasMoreElements()) {
-            int n = (Integer)_enum.nextElement();
-                final AsyncCallObject aco = async_request_table.get(n);
-                if (aco.dev == dev) {
-                    aco.manage_reply(timeout);
+            int n = (Integer) _enum.nextElement();
+            final AsyncCallObject aco = async_request_table.get(n);
+            if (aco.dev == dev) {
+                aco.manage_reply(timeout);
             }
         }
     }
@@ -678,28 +698,29 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     // ==========================================================================
     // ==========================================================================
     public String stateName(final DevState state) {
-	    return TangoConst.Tango_DevStateName[state.value()];
+        return TangoConst.Tango_DevStateName[state.value()];
     }
 
     // ==========================================================================
     // ==========================================================================
     public String stateName(final short state_val) {
-    	return TangoConst.Tango_DevStateName[state_val];
+        return TangoConst.Tango_DevStateName[state_val];
     }
 
     // ==========================================================================
     // ==========================================================================
     public String qualityName(final AttrQuality att_q) {
-	    return TangoConst.Tango_QualityName[att_q.value()];
+        return TangoConst.Tango_QualityName[att_q.value()];
     }
 
     // ==========================================================================
     // ==========================================================================
     public String qualityName(final short att_q_val) {
-	    return TangoConst.Tango_QualityName[att_q_val];
+        return TangoConst.Tango_QualityName[att_q_val];
     }
 
     // ===================================================================
+
     /**
      * Parse Tango host (check multi Tango_host)
      */
@@ -711,22 +732,22 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
             // Check if there is more than one Tango Host
             StringTokenizer stk;
             if (tgh.indexOf(",") > 0) {
-            stk = new StringTokenizer(tgh, ",");
+                stk = new StringTokenizer(tgh, ",");
             } else {
-            stk = new StringTokenizer(tgh);
+                stk = new StringTokenizer(tgh);
             }
 
             final ArrayList<String> arrayList = new ArrayList<String>();
             while (stk.hasMoreTokens()) {
-            // Get each Tango_host
-            final String th = stk.nextToken();
-            final StringTokenizer stk2 = new StringTokenizer(th, ":");
-            arrayList.add(stk2.nextToken()); // Host Name
-            arrayList.add(stk2.nextToken()); // Port Number
+                // Get each Tango_host
+                final String th = stk.nextToken();
+                final StringTokenizer stk2 = new StringTokenizer(th, ":");
+                arrayList.add(stk2.nextToken()); // Host Name
+                arrayList.add(stk2.nextToken()); // Port Number
             }
 
             // Get the default one (first)
-            host    = arrayList.get(0);
+            host = arrayList.get(0);
             strport = arrayList.get(1);
             Integer.parseInt(strport);
 
@@ -734,24 +755,24 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
             final String def_tango_host = host + ":" + strport;
             final DbRedundancy dbr = DbRedundancy.get_instance();
             if (arrayList.size() > 3) {
-            final String redun = arrayList.get(2) + ":"
+                final String redun = arrayList.get(2) + ":"
                         + arrayList.get(3);
-            dbr.put(def_tango_host, redun);
+                dbr.put(def_tango_host, redun);
             }
         } catch (final Exception e) {
             Except.throw_exception("TangoApi_TANGO_HOST_NOT_SET", e.toString()
-                + " occurs when parsing " + "\"TANGO_HOST\" property " + tgh,
-                "TangoApi.ApiUtil.parseTangoHost()");
+                            + " occurs when parsing " + "\"TANGO_HOST\" property " + tgh,
+                    "TangoApi.ApiUtil.parseTangoHost()");
         }
-        return new String[] { host, strport };
+        return new String[]{host, strport};
     }
+
     // ===================================================================
     // ===================================================================
     public double getZmqVersion() {
         if (EventConsumerUtil.isZmqLoadable()) {
             return ZMQutils.getZmqVersion();
-        }
-        else
+        } else
             return -1.0;
     }
     // ===================================================================

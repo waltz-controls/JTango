@@ -46,7 +46,6 @@ import java.util.Arrays;
  * manage trigger for {@link EventType#CHANGE_EVENT}
  *
  * @author ABEILLE
- *
  */
 public class ChangeEventTrigger implements IEventTrigger {
 
@@ -68,8 +67,8 @@ public class ChangeEventTrigger implements IEventTrigger {
      * Ctr
      *
      * @param attribute The attribute that send event
-     * @param absolute The absolute change delta
-     * @param relative The relative change delta
+     * @param absolute  The absolute change delta
+     * @param relative  The relative change delta
      */
     public ChangeEventTrigger(final AttributeImpl attribute, final String absolute, final String relative) {
         this.attribute = attribute;

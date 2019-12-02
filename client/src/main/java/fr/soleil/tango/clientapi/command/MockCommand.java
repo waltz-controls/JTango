@@ -1,15 +1,14 @@
 package fr.soleil.tango.clientapi.command;
 
-import java.util.Arrays;
-
-import org.tango.command.CommandTangoType;
-import org.tango.utils.DevFailedUtils;
-
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarDoubleStringArray;
 import fr.esrf.Tango.DevVarLongStringArray;
 import fr.esrf.TangoApi.DeviceProxy;
 import fr.soleil.tango.clientapi.util.TypeConversionUtil;
+import org.tango.command.CommandTangoType;
+import org.tango.utils.DevFailedUtils;
+
+import java.util.Arrays;
 
 public final class MockCommand implements ITangoCommand {
 
