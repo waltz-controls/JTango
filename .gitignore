@@ -9,10 +9,8 @@
 #ignore release if present
 release/
 
-
-## Plugin-specific files:
-
 # output and build
+.gradle/
 out/
 build/
 target/

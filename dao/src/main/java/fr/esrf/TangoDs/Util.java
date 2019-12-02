@@ -1249,13 +1249,7 @@ public class Util {
 
             try {
                 db.unexport_server(ds_name.toString());
-            } catch (final SystemException e) {
-                Except.print_exception(e);
-                System.exit(-1);
-            } catch (final DevFailed e) {
-                Except.print_exception(e);
-                System.exit(-1);
-            } catch (final UserException e) {
+            } catch (SystemException | UserException e) {
                 Except.print_exception(e);
                 System.exit(-1);
             }

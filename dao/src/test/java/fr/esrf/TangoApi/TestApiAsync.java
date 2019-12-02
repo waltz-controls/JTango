@@ -2,14 +2,13 @@ package fr.esrf.TangoApi;
 
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoDs.Except;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
 //TODO environment independent
 public class TestApiAsync {
     @BeforeClass
     public static void init() {
+        Assume.assumeNotNull(System.getProperty("TANGO_HOST"));
         System.setProperty("TANGO_HOST", "calypso:20001");
     }
 
