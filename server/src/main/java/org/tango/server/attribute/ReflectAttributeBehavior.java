@@ -24,8 +24,9 @@
  */
 package org.tango.server.attribute;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -36,8 +37,8 @@ import org.tango.server.ExceptionMessages;
 import org.tango.server.StateMachineBehavior;
 import org.tango.utils.DevFailedUtils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.DevState;
 
 /**
  * Behavior a Tango attribute using java reflection

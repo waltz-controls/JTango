@@ -258,7 +258,7 @@ public class ZmqEventConsumer extends EventConsumer implements
     //===============================================================
     @Override
     protected void setAdditionalInfoToEventCallBackStruct(EventCallBackStruct callback_struct,
-                                                          String device_name, String attribute, String event_name, String[] filters, EventChannelStruct channel_struct) {
+                          String device_name, String attribute, String event_name, String[] filters, EventChannelStruct channel_struct) {
         // Nothing
         ApiUtil.printTrace("-------------> Set as ZmqEventConsumer for "+device_name);
         callback_struct.consumer  = this;
@@ -594,7 +594,7 @@ public class ZmqEventConsumer extends EventConsumer implements
                         callBackStruct.device.name(),
                         callBackStruct.attr_name,
                         callBackStruct.event_name);
-            DevVarLongStringArray lsa = checkZmqAddress(argOut, callBackStruct.device).extractLongStringArray();
+            DevVarLongStringArray   lsa = checkZmqAddress(argOut, callBackStruct.device).extractLongStringArray();
 
             //  Build the buffer to connect event and send it
             ZMQutils.connectEvent(callBackStruct.device.get_tango_host(),

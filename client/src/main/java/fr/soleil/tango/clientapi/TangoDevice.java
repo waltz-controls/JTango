@@ -1,12 +1,12 @@
 package fr.soleil.tango.clientapi;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
 import fr.esrf.TangoApi.DeviceProxy;
 import fr.soleil.tango.clientapi.factory.ProxyFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public final class TangoDevice {
     private final Map<String, TangoAttribute> attributes = new HashMap<String, TangoAttribute>();

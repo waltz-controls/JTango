@@ -53,8 +53,7 @@ public class AlarmQualityTest extends NoDBDeviceManager {
         final Map<String, String[]> map = new HashMap<String, String[]>();
         map.put(propName, new String[] { "true" });
         db.setDeviceProperties(JTangoTest.NO_DB_DEVICE_NAME, map);
-        DeviceProxy deviceProxy = new DeviceProxy(deviceName);
-        deviceProxy.command_inout("Init");
+        new DeviceProxy(deviceName).command_inout("Init");
     }
 
     @AfterClass

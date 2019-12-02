@@ -32,6 +32,7 @@ import org.tango.utils.DevFailedUtils;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeThat;
 
 /**
  * Integration tests with tango db
@@ -45,7 +46,7 @@ public class PropertiesTest {
     @BeforeClass
     public static void createDeviceInTangoDB() throws DevFailed {
         System.out.println("Tango host = " + System.getProperty("TANGO_HOST"));
-        assertThat(System.getProperty("TANGO_HOST"), notNullValue());
+        assumeThat(System.getProperty("TANGO_HOST"), notNullValue());
         Database tangoDb = ApiUtil.get_db_obj();
         tangoDb.add_device(deviceName, JTangoTest.class.getCanonicalName(), JTangoTest.SERVER_NAME + "/" + JTangoTest.INSTANCE_NAME);
     }

@@ -24,8 +24,10 @@
  */
 package org.tango.server.build;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
@@ -36,9 +38,8 @@ import org.tango.server.device.StateImpl;
 import org.tango.server.servant.DeviceImpl;
 import org.tango.utils.DevFailedUtils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Locale;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.DevState;
 
 /**
  * Build a {@link State}

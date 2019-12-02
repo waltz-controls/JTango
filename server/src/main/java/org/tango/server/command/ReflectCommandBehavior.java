@@ -24,7 +24,9 @@
  */
 package org.tango.server.command;
 
-import fr.esrf.Tango.DevFailed;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -33,8 +35,7 @@ import org.slf4j.ext.XLoggerFactory;
 import org.tango.server.StateMachineBehavior;
 import org.tango.utils.DevFailedUtils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import fr.esrf.Tango.DevFailed;
 
 public final class ReflectCommandBehavior implements ICommandBehavior {
 

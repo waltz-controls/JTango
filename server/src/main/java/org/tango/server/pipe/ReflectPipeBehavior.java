@@ -24,15 +24,16 @@
  */
 package org.tango.server.pipe;
 
-import fr.esrf.Tango.DevFailed;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.server.StateMachineBehavior;
 import org.tango.server.attribute.ReflectAttributeBehavior;
 import org.tango.utils.DevFailedUtils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import fr.esrf.Tango.DevFailed;
 
 public final class ReflectPipeBehavior implements IPipeBehavior {
 

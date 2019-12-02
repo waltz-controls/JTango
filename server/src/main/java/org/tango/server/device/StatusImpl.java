@@ -24,7 +24,11 @@
  */
 package org.tango.server.device;
 
-import fr.esrf.Tango.DevFailed;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -36,10 +40,7 @@ import org.tango.DeviceState;
 import org.tango.server.annotation.Status;
 import org.tango.utils.DevFailedUtils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import fr.esrf.Tango.DevFailed;
 
 /**
  * Manage the status of the device

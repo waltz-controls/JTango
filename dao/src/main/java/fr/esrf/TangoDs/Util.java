@@ -1256,20 +1256,14 @@ public class Util {
 	    // Mark all the devices belonging to this server as unexported
 	    //
 
-	    try {
-		db.unexport_server(ds_name.toString());
-	    } catch (final SystemException e) {
-		Except.print_exception(e);
-		System.exit(-1);
-	    } catch (final DevFailed e) {
-		Except.print_exception(e);
-		System.exit(-1);
-	    } catch (final UserException e) {
-		Except.print_exception(e);
-		System.exit(-1);
-	    }
-	}
-	Util.out4.println("Leaving Tango::unregister_server method");
+            try {
+                db.unexport_server(ds_name.toString());
+            } catch (SystemException | UserException e) {
+                Except.print_exception(e);
+                System.exit(-1);
+            }
+        }
+        Util.out4.println("Leaving Tango::unregister_server method");
     }
 
     /**

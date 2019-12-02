@@ -624,6 +624,9 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
             EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
     }
 
+
+
+
     //===============================================================
     //===============================================================
     protected class ConnectionStructure {
