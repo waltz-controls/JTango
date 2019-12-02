@@ -47,30 +47,29 @@ package fr.esrf.TangoDs;
 import fr.esrf.Tango.DevFailed;
 import org.omg.CORBA.Any;
 
-public class StartPollingCmd extends Command
-{
-	//===============================================================
-	/**
-	 *	Constructor for Command class StartPollingCmd
-	 */
-	//===============================================================
-	StartPollingCmd(String name, int in, int out)
-	{
-		super(name,in,out);
-	}
-	//===============================================================
-	/**
-	 *	Trigger the execution of the method really implemented
-	 *	the command in the DServer class
-	 */
-	//===============================================================
-	public Any execute(DeviceImpl device, Any in_any) throws DevFailed
-	{
+public class StartPollingCmd extends Command {
+    //===============================================================
 
-		Util.out4.println("StartPollingCmd.execute(): arrived ");
+    /**
+     * Constructor for Command class StartPollingCmd
+     */
+    //===============================================================
+    StartPollingCmd(String name, int in, int out) {
+        super(name, in, out);
+    }
+    //===============================================================
 
-		// Call the device method and return to caller
-		((DServer)(device)).start_polling();
-		return insert();
-	}
+    /**
+     * Trigger the execution of the method really implemented
+     * the command in the DServer class
+     */
+    //===============================================================
+    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
+
+        Util.out4.println("StartPollingCmd.execute(): arrived ");
+
+        // Call the device method and return to caller
+        ((DServer) (device)).start_polling();
+        return insert();
+    }
 }

@@ -55,10 +55,11 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     private int idl_version = -1;
 
     //===================================================================
+
     /**
      * AttributeProxy constructor. It will import the device.
      *
-     * @param    deviceName    name of the attribute or its alias.
+     * @param deviceName name of the attribute or its alias.
      * @throws DevFailed in case of database access failed
      */
     //===================================================================
@@ -95,8 +96,10 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     }
 
     //==========================================================================
+
     /**
      * Returns the alias name for this attribute
+     *
      * @return the alias name for this attribute
      * @throws DevFailed in case of database access failed
      */
@@ -127,6 +130,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return idl_version;
     }
     //==========================================================================
+
     /**
      * Return full attribute name
      */
@@ -135,6 +139,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return full_deviceName;
     }
     //==========================================================================
+
     /**
      * Return attribute name
      */
@@ -143,6 +148,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return deviceName;
     }
     //==========================================================================
+
     /**
      * Ping the device proxy of this attribute.
      */
@@ -151,6 +157,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.ping();
     }
     //==========================================================================
+
     /**
      * Check state of the device proxy of this attribute.
      */
@@ -159,6 +166,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.state();
     }
     //==========================================================================
+
     /**
      * Check status of the device proxy of this attribute.
      */
@@ -167,6 +175,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.status();
     }
     //==========================================================================
+
     /**
      * Query the database for a device attribute
      * property for this device.
@@ -179,6 +188,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.get_attribute_property(deviceName);
     }
     //==========================================================================
+
     /**
      * Insert or update an attribute properties for this device.
      * The property names and their values are specified by the DbAttribute array.
@@ -194,6 +204,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     }
 
     //==========================================================================
+
     /**
      * Insert or update an attribute properties for this device.
      * The property names and their values are specified by the DbAttribute array.
@@ -209,6 +220,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     }
 
     //==========================================================================
+
     /**
      * Delete a property for this object.
      *
@@ -220,6 +232,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         dev.delete_attribute_property(deviceName, propname);
     }
     //==========================================================================
+
     /**
      * Delete a list of properties for this object.
      *
@@ -231,6 +244,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         dev.delete_attribute_property(deviceName, propnames);
     }
     //==========================================================================
+
     /**
      * Get the attribute info.
      *
@@ -241,6 +255,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.get_attribute_info(deviceName);
     }
     //==========================================================================
+
     /**
      * Get the attribute extended info.
      *
@@ -251,6 +266,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.get_attribute_info_ex(deviceName);
     }
     //==========================================================================
+
     /**
      * Update the attributes info for the specified device.
      *
@@ -261,6 +277,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         dev.set_attribute_info(attr);
     }
     //==========================================================================
+
     /**
      * Update the attributes extended info for the specified device.
      *
@@ -271,6 +288,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         dev.set_attribute_info(attr);
     }
     //==========================================================================
+
     /**
      * Read the attribute value for the specified device.
      *
@@ -281,6 +299,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.read_attribute(deviceName);
     }
     //==========================================================================
+
     /**
      * Write the attribute value for the specified device.
      *
@@ -291,6 +310,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         dev.write_attribute(devattr);
     }
     // ==========================================================================
+
     /**
      * Write and then read the attribute values, for the specified device.
      *
@@ -301,6 +321,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.write_read_attribute(devattr);
     }
     // ==========================================================================
+
     /**
      * Write and then read the attribute values, for the specified device.
      *
@@ -312,16 +333,18 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     }
 
     //==========================================================================
+
     /**
      * Return the history for attribute polled.
      *
-     * @param    nb        nb data to read.
+     * @param nb nb data to read.
      */
     //==========================================================================
     public DeviceDataHistory[] history(int nb) throws DevFailed {
         return dev.attribute_history(deviceName, nb);
     }
     //==========================================================================
+
     /**
      * Return the full history for attribute polled.
      */
@@ -330,17 +353,19 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.attribute_history(deviceName);
     }
     //==========================================================================
+
     /**
      * Add a attribute to be polled for the device.
      * If already polled, update its polling period.
      *
-     * @param    period    polling period.
+     * @param period polling period.
      */
     //==========================================================================
     public void poll(int period) throws DevFailed {
         dev.poll_attribute(deviceName, period);
     }
     //==========================================================================
+
     /**
      * Returns the polling period (in ms) for specified attribute.
      */
@@ -349,6 +374,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.get_attribute_polling_period(deviceName);
     }
     //==========================================================================
+
     /**
      * Remove attribute of polled object list
      */
@@ -357,6 +383,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         dev.stop_poll_attribute(deviceName);
     }
     //==========================================================================
+
     /**
      * Asynchronous read_attribute.
      */
@@ -365,21 +392,23 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         return dev.read_attribute_asynch(deviceName);
     }
     //==========================================================================
+
     /**
      * Asynchronous read_attribute using callback for reply.
      *
-     * @param    cb        a CallBack object instance.
+     * @param cb a CallBack object instance.
      */
     //==========================================================================
     public void read_asynch(CallBack cb) throws DevFailed {
         dev.read_attribute_asynch(deviceName, cb);
     }
     //==========================================================================
+
     /**
      * Read Asynchronous read_attribute reply.
      *
-     * @param    id    asynchronous call id (returned by read_attribute_asynch).
-     * @param    timeout    number of milliseconds to wait reply before throw an excption.
+     * @param id      asynchronous call id (returned by read_attribute_asynch).
+     * @param timeout number of milliseconds to wait reply before throw an excption.
      */
     //==========================================================================
     public DeviceAttribute[] read_reply(int id, int timeout) throws DevFailed {
@@ -390,71 +419,77 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     /**
      * Read Asynchronous read_attribute reply.
      *
-     * @param    id    asynchronous call id (returned by read_attribute_asynch).
+     * @param id asynchronous call id (returned by read_attribute_asynch).
      */
     //==========================================================================
     public DeviceAttribute[] read_reply(int id) throws DevFailed {
         return dev.read_attribute_reply(id);
     }
     //==========================================================================
+
     /**
      * Asynchronous write_attribute.
      *
-     * @param    attr    Attribute value (name, writing value...)
+     * @param attr Attribute value (name, writing value...)
      */
     //==========================================================================
     public int write_asynch(DeviceAttribute attr) throws DevFailed {
         return dev.write_attribute_asynch(attr);
     }
     //==========================================================================
+
     /**
      * Asynchronous write_attribute.
      *
-     * @param    attr    Attribute value (name, writing value...)
-     * @param    forget    forget the response if true
+     * @param attr   Attribute value (name, writing value...)
+     * @param forget forget the response if true
      */
     //==========================================================================
     public int write_asynch(DeviceAttribute attr, boolean forget) throws DevFailed {
         return dev.write_attribute_asynch(attr, forget);
     }
     //==========================================================================
+
     /**
      * Asynchronous write_attribute using callback for reply.
      *
-     * @param    attr    Attribute values (name, writing value...)
-     * @param    cb        a CallBack object instance.
+     * @param attr Attribute values (name, writing value...)
+     * @param cb   a CallBack object instance.
      */
     //==========================================================================
-    public void write_asynch(DeviceAttribute attr, CallBack cb)  throws DevFailed {
+    public void write_asynch(DeviceAttribute attr, CallBack cb) throws DevFailed {
         dev.write_attribute_asynch(attr, cb);
     }
     //==========================================================================
+
     /**
      * check for Asynchronous write_attribute reply.
      *
-     * @param    id    asynchronous call id (returned by read_attribute_asynch).
+     * @param id asynchronous call id (returned by read_attribute_asynch).
      */
     //==========================================================================
     public void write_reply(int id) throws DevFailed {
         dev.write_attribute_reply(id);
     }
     //==========================================================================
+
     /**
      * check for Asynchronous write_attribute reply.
      *
-     * @param    id    asynchronous call id (returned by write_attribute_asynch).
-     * @param    timeout    number of milliseconds to wait reply before throw an excption.
+     * @param id      asynchronous call id (returned by write_attribute_asynch).
+     * @param timeout number of milliseconds to wait reply before throw an excption.
      */
     //==========================================================================
     public void write_reply(int id, int timeout) throws DevFailed {
         dev.write_attribute_reply(id, timeout);
     }
     //==========================================================================
+
     /**
      * Subscribe to an event.
      *
      * @param callback event callback.
-     * @param    event event name.
+     * @param event    event name.
      */
     //==========================================================================
     public int subscribe_event(int event, CallBack callback, String[] filters) throws DevFailed {
@@ -465,6 +500,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
 
 
     //==========================================================================
+
     /**
      * Just a main method to check API methods.
      */

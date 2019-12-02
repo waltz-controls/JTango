@@ -35,11 +35,10 @@
 package fr.esrf.TangoDs;
 
 
-
 /**
  * User class to create attribute default properties.
- *
- * This class is used to set attribute default properties. Three levels of 
+ * <p>
+ * This class is used to set attribute default properties. Three levels of
  * attributes properties setting are implemented within Tango. The highest
  * property setting priority is the database. Then the user default (set using
  * this UserDefaultAttrProp class) and finally a Tango library default
@@ -48,125 +47,112 @@ package fr.esrf.TangoDs;
  * @author $Author: pascal_verdier $
  * @version $Revision: 25297 $
  */
- 
-public class UserDefaultAttrProp implements TangoConst
-{
-	String		       label;
-	String		       description;
-	String		       unit;
-	String		       standard_unit;
-	String		       display_unit;
-	String		       format;
-	String		       min_value;
-	String		       max_value;
-	String		       min_alarm;
-	String		       max_alarm;
-		
-/**
- * Constructs a newly allocated UserDefaultAttrProp object.
- *
- */
-	public UserDefaultAttrProp()
-	{
-	}
 
-/**
- * Set default label property
- *
- * @param	def_label	The user default label property
- */
-	public void set_label(String def_label)
-	{
-		label = def_label;
-	}
-	
-/**
- * Set default description property
- *
- * @param	def_desc	The user default description property
- */	
-	public void set_description(String def_desc)
-	{
-		description = def_desc;
-	}
-	
-/**
- * Set default unit property
- *
- * @param	def_unit	The user default unit property
- */
-	public void set_unit(String def_unit)
-	{
-		unit = def_unit;
-	}
-	
-/**
- * Set default standard unit property
- *
- * @param	def_std_unit	The user default standard unit property
- */
-	public void set_standard_unit(String def_std_unit)
-	{
-		standard_unit = def_std_unit;
-	}
-	
-/**
- * Set default display unit property
- *
- * @param	def_disp_unit	The user default display unit property
- */
-	public void set_display_unit(String def_disp_unit)
-	{
-		display_unit = def_disp_unit;
-	}
-	
-/**
- * Set default format property
- *
- * @param	def_format	The user default format property
- */
-	public void set_format(String def_format)
-	{
-		format = def_format;
-	}
-	
-/**
- * Set default min_value property
- *
- * @param	def_min_value	The user default min_value property
- */
-	public void set_min_value(String def_min_value)
-	{
-		min_value = def_min_value;
-	}
-	
-/**
- * Set default max_value property
- *
- * @param	def_max_value	The user default max_value property
- */
-	public void set_max_value(String def_max_value)
-	{
-		max_value = def_max_value;
-	}
-	
-/**
- * Set default min_alarm property
- *
- * @param	def_min_alarm	The user default min_alarm property
- */
-	public void set_min_alarm(String def_min_alarm)
-	{
-		min_alarm = def_min_alarm;
-	}
-	
-/**
- * Set default max_alarm property
- *
- * @param	def_max_alarm	The user default max_alarm property
- */
-	public void set_max_alarm(String def_max_alarm)
-	{
-		max_alarm = def_max_alarm;
-	}
+public class UserDefaultAttrProp implements TangoConst {
+    String label;
+    String description;
+    String unit;
+    String standard_unit;
+    String display_unit;
+    String format;
+    String min_value;
+    String max_value;
+    String min_alarm;
+    String max_alarm;
+
+    /**
+     * Constructs a newly allocated UserDefaultAttrProp object.
+     */
+    public UserDefaultAttrProp() {
+    }
+
+    /**
+     * Set default label property
+     *
+     * @param    def_label    The user default label property
+     */
+    public void set_label(String def_label) {
+        label = def_label;
+    }
+
+    /**
+     * Set default description property
+     *
+     * @param    def_desc    The user default description property
+     */
+    public void set_description(String def_desc) {
+        description = def_desc;
+    }
+
+    /**
+     * Set default unit property
+     *
+     * @param    def_unit    The user default unit property
+     */
+    public void set_unit(String def_unit) {
+        unit = def_unit;
+    }
+
+    /**
+     * Set default standard unit property
+     *
+     * @param    def_std_unit    The user default standard unit property
+     */
+    public void set_standard_unit(String def_std_unit) {
+        standard_unit = def_std_unit;
+    }
+
+    /**
+     * Set default display unit property
+     *
+     * @param    def_disp_unit    The user default display unit property
+     */
+    public void set_display_unit(String def_disp_unit) {
+        display_unit = def_disp_unit;
+    }
+
+    /**
+     * Set default format property
+     *
+     * @param    def_format    The user default format property
+     */
+    public void set_format(String def_format) {
+        format = def_format;
+    }
+
+    /**
+     * Set default min_value property
+     *
+     * @param    def_min_value    The user default min_value property
+     */
+    public void set_min_value(String def_min_value) {
+        min_value = def_min_value;
+    }
+
+    /**
+     * Set default max_value property
+     *
+     * @param    def_max_value    The user default max_value property
+     */
+    public void set_max_value(String def_max_value) {
+        max_value = def_max_value;
+    }
+
+    /**
+     * Set default min_alarm property
+     *
+     * @param    def_min_alarm    The user default min_alarm property
+     */
+    public void set_min_alarm(String def_min_alarm) {
+        min_alarm = def_min_alarm;
+    }
+
+    /**
+     * Set default max_alarm property
+     *
+     * @param    def_max_alarm    The user default max_alarm property
+     */
+    public void set_max_alarm(String def_max_alarm) {
+        max_alarm = def_max_alarm;
+    }
 }

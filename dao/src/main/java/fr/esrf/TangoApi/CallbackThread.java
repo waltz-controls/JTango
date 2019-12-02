@@ -42,33 +42,34 @@ public class CallbackThread extends Thread implements ApiDefs {
     private final AsyncCallObject aco;
 
     // ===============================================================
+
     /**
      * Object constructor
-     * 
-     * @param aco
-     *            Asynchronous call object
+     *
+     * @param aco Asynchronous call object
      */
     // ===============================================================
     public CallbackThread(final AsyncCallObject aco) {
-	super("Async callaback");
-	this.aco = aco;
+        super("Async callaback");
+        this.aco = aco;
     }
 
     // ===============================================================
+
     /**
      * Start thread.
      */
     // ===============================================================
     @Override
     public void run() {
-	// System.out.println("I am in thread!");
+        // System.out.println("I am in thread!");
 
-	// All info are in AsyncCallObjec. It does everything itself
-	try {
-	    aco.manage_reply(0);
-	} catch (final Exception e) {
-	    System.err.println(e);
-	}
+        // All info are in AsyncCallObjec. It does everything itself
+        try {
+            aco.manage_reply(0);
+        } catch (final Exception e) {
+            System.err.println(e);
+        }
     }
     // ===============================================================
     // ===============================================================

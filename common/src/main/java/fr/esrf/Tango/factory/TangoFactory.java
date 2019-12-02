@@ -55,9 +55,7 @@ import java.lang.reflect.Constructor;
 import java.util.Properties;
 
 /**
- * 
  * @author BARBA-ROSSA
- * 
  */
 public class TangoFactory {
     public static final String FACTORY_PROPERTIES = "tango_factory.properties";
@@ -129,7 +127,6 @@ public class TangoFactory {
 
     /**
      * Load properties with impl specification and create instances
-     *
      */
     private void initTangoFactory() {
         // we get the properties with instance of objects

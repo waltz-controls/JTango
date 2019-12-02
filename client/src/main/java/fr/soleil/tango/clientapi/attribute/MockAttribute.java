@@ -1,10 +1,5 @@
 package fr.soleil.tango.clientapi.attribute;
 
-import java.lang.reflect.Array;
-
-import org.tango.attribute.AttributeTangoType;
-import org.tango.utils.ArrayUtils;
-
 import fr.esrf.Tango.AttrDataFormat;
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.AttrWriteType;
@@ -12,6 +7,10 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.AttributeProxy;
 import fr.esrf.TangoApi.DeviceAttribute;
 import fr.soleil.tango.clientapi.util.TypeConversionUtil;
+import org.tango.attribute.AttributeTangoType;
+import org.tango.utils.ArrayUtils;
+
+import java.lang.reflect.Array;
 
 public final class MockAttribute implements ITangoAttribute {
     private final String attributeName;

@@ -41,7 +41,7 @@ import fr.esrf.Tango.DispLevel;
 
 /**
  * User class to create a two dimensions attribute object.
- *
+ * <p>
  * Information from this class and information fetched out from the Tango
  * database allows the Tango core software to create the Attribute object
  * for the attribute created by the user.
@@ -49,74 +49,66 @@ import fr.esrf.Tango.DispLevel;
  * @author $Author: pascal_verdier $
  * @version $Revision: 25297 $
  */
- 
-public class ImageAttr extends SpectrumAttr implements TangoConst
-{
-	int		max_y;
 
-/**
- * Constructs a newly allocated ImageAttr object.
- * The attribute display type is set to OPERATOR_ATTR.
- *
- * @param 	name	The attribute name
- * @param	type	The attribute data type
- * @param	x	The attribute maximum x dimension
- * @param	y	The attribute maximum y dimension
- *
- */
+public class ImageAttr extends SpectrumAttr implements TangoConst {
+    int max_y;
 
-	public ImageAttr(String  name,int type,int x,int y) throws DevFailed
-	{
-		super(name,type,x);
-		format = AttrDataFormat.IMAGE;
-		if (y <= 0)
-		{
-			Util.out3.println("ImageAttr.ImageAttr throwing exception");
-		
-			StringBuffer o = new StringBuffer("Attribute : ");
-			o.append(name);
-			o.append(": "); 
-			o.append(" Maximum y dim. wrongly defined");
-			Except.throw_exception("API_AttrWrongDefined",
-				      	       o.toString(),
-				      	       "ImageAttr.ImageAttr");
-		}
-		this.max_y = y;	
-	}
+    /**
+     * Constructs a newly allocated ImageAttr object.
+     * The attribute display type is set to OPERATOR_ATTR.
+     *
+     * @param name The attribute name
+     * @param    type    The attribute data type
+     * @param    x    The attribute maximum x dimension
+     * @param    y    The attribute maximum y dimension
+     */
 
-/**
- * Constructs a newly allocated ImageAttr object.
- *
- * @param 	name	The attribute name
- * @param	type	The attribute data type
- * @param	x	The attribute maximum x dimension
- * @param	y	The attribute maximum y dimension
- * @param	disp	The attribute display type
- *
- */
+    public ImageAttr(String name, int type, int x, int y) throws DevFailed {
+        super(name, type, x);
+        format = AttrDataFormat.IMAGE;
+        if (y <= 0) {
+            Util.out3.println("ImageAttr.ImageAttr throwing exception");
 
-	public ImageAttr(String  name,int type,int x,int y,DispLevel disp) throws DevFailed
-	{
-		super(name,type,x,disp);
-		format = AttrDataFormat.IMAGE;
-		if (y <= 0)
-		{
-			Util.out3.println("ImageAttr.ImageAttr throwing exception");
-		
-			StringBuffer o = new StringBuffer("Attribute : ");
-			o.append(name);
-			o.append(": "); 
-			o.append(" Maximum y dim. wrongly defined");
-			Except.throw_exception("API_AttrWrongDefined",
-				      	       o.toString(),
-				      	       "ImageAttr.ImageAttr");
-		}
-		this.max_y = y;	
-	}
-		
-	int get_max_y()
-	{
-		return max_y;
-	}
-	
+            StringBuffer o = new StringBuffer("Attribute : ");
+            o.append(name);
+            o.append(": ");
+            o.append(" Maximum y dim. wrongly defined");
+            Except.throw_exception("API_AttrWrongDefined",
+                    o.toString(),
+                    "ImageAttr.ImageAttr");
+        }
+        this.max_y = y;
+    }
+
+    /**
+     * Constructs a newly allocated ImageAttr object.
+     *
+     * @param name The attribute name
+     * @param    type    The attribute data type
+     * @param    x    The attribute maximum x dimension
+     * @param    y    The attribute maximum y dimension
+     * @param    disp    The attribute display type
+     */
+
+    public ImageAttr(String name, int type, int x, int y, DispLevel disp) throws DevFailed {
+        super(name, type, x, disp);
+        format = AttrDataFormat.IMAGE;
+        if (y <= 0) {
+            Util.out3.println("ImageAttr.ImageAttr throwing exception");
+
+            StringBuffer o = new StringBuffer("Attribute : ");
+            o.append(name);
+            o.append(": ");
+            o.append(" Maximum y dim. wrongly defined");
+            Except.throw_exception("API_AttrWrongDefined",
+                    o.toString(),
+                    "ImageAttr.ImageAttr");
+        }
+        this.max_y = y;
+    }
+
+    int get_max_y() {
+        return max_y;
+    }
+
 }

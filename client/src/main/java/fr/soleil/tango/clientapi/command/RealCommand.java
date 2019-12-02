@@ -1,10 +1,5 @@
 package fr.soleil.tango.clientapi.command;
 
-import java.util.Arrays;
-
-import org.tango.utils.DevFailedUtils;
-import org.tango.utils.TangoUtil;
-
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarDoubleStringArray;
 import fr.esrf.Tango.DevVarLongStringArray;
@@ -17,6 +12,10 @@ import fr.soleil.tango.clientapi.factory.ProxyFactory;
 import fr.soleil.tango.clientapi.util.TypeConversionUtil;
 import fr.soleil.tango.errorstrategy.RetriableTask;
 import fr.soleil.tango.errorstrategy.Task;
+import org.tango.utils.DevFailedUtils;
+import org.tango.utils.TangoUtil;
+
+import java.util.Arrays;
 
 public final class RealCommand implements ITangoCommand {
 
@@ -32,11 +31,8 @@ public final class RealCommand implements ITangoCommand {
     private final int retries;
 
     /**
-     *
-     * @param deviceName
-     *            The device tango (e.g. domain/family/member)
-     * @param commandName
-     *            The command name
+     * @param deviceName  The device tango (e.g. domain/family/member)
+     * @param commandName The command name
      * @throws DevFailed
      */
     public RealCommand(final String deviceName, final String commandName) throws DevFailed {
@@ -57,9 +53,7 @@ public final class RealCommand implements ITangoCommand {
     }
 
     /**
-     *
-     * @param commandName
-     *            The device and command name in 4 fields (e.g. domain/family/member/commandName)
+     * @param commandName The device and command name in 4 fields (e.g. domain/family/member/commandName)
      * @throws DevFailed
      */
     public RealCommand(final String commandName) throws DevFailed {

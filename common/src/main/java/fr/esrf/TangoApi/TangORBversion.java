@@ -61,7 +61,7 @@ public class TangORBversion implements java.io.Serializable {
      */
     public String ZMQ = null;
     /**
-     *  package version used.
+     * package version used.
      */
     public String slf4j = null;
 
@@ -69,7 +69,6 @@ public class TangORBversion implements java.io.Serializable {
     public String javatuples;
     public String transmorph;
     public String cal10n;
-
 
 
     public String jarfile;
@@ -87,8 +86,8 @@ public class TangORBversion implements java.io.Serializable {
 
     //========================================================================
     /*
-      *	Constructor analysing classpath to find TangORB jar file.
-      */
+     *	Constructor analysing classpath to find TangORB jar file.
+     */
     //========================================================================
     public TangORBversion() throws DevFailed, IOException {
         //	Get classpath from environment
@@ -98,9 +97,9 @@ public class TangORBversion implements java.io.Serializable {
         //	Parse for TangORB jar file path
         String target = "JTango";
         int start, end;
-        if ((start=classpath.indexOf(target)) < 0) {
+        if ((start = classpath.indexOf(target)) < 0) {
             target = "TangORB";
-            if ((start=classpath.indexOf(target)) < 0)
+            if ((start = classpath.indexOf(target)) < 0)
                 Except.throw_exception("TangORB_NotFound",
                         "TangORB jar file not found in CLASSPATH",
                         "TangORBversion.TangORBversion()");
@@ -112,7 +111,7 @@ public class TangORBversion implements java.io.Serializable {
             start++;
 
         //	Search end
-        if ((end=classpath.indexOf(separator, start)) < 0)
+        if ((end = classpath.indexOf(separator, start)) < 0)
             jarfile = classpath.substring(start);
         else
             jarfile = classpath.substring(start, end);
@@ -124,9 +123,9 @@ public class TangORBversion implements java.io.Serializable {
 
     //========================================================================
     /*
-      *	Constructor initialising object with jar file passed.
-      *	@param filename jar file to initialise object.
-      */
+     *	Constructor initialising object with jar file passed.
+     *	@param filename jar file to initialise object.
+     */
     //========================================================================
     public TangORBversion(String filename) throws DevFailed, IOException {
         jarfile = filename;
@@ -135,8 +134,8 @@ public class TangORBversion implements java.io.Serializable {
 
     //========================================================================
     /*
-      *	Read jar file manifest and fill fields.
-      */
+     *	Read jar file manifest and fill fields.
+     */
     //========================================================================
     private void initObject() throws DevFailed, IOException {
         //	Check if file exists
@@ -191,7 +190,7 @@ public class TangORBversion implements java.io.Serializable {
                     case 8:
                         cal10n = version.trim();
                         break;
-               }
+                }
             }
         }
     }
@@ -207,7 +206,7 @@ public class TangORBversion implements java.io.Serializable {
 
         //	Display package versions
         StringBuilder sb = new StringBuilder();
-        for (int i=0 ; i<packages.length ; i++) {
+        for (int i = 0; i < packages.length; i++) {
             switch (i) {
                 case 0:
                     sb.append(buildVersion(packages[i], api, max_length));
@@ -216,7 +215,7 @@ public class TangORBversion implements java.io.Serializable {
                     sb.append(buildVersion(packages[i], Tango, max_length));
                     break;
                 case 2:
-                    sb.append(buildVersion(packages[i],JacORB, max_length));
+                    sb.append(buildVersion(packages[i], JacORB, max_length));
                     break;
                 case 3:
                     sb.append(buildVersion(packages[i], ZMQ, max_length));
@@ -244,17 +243,18 @@ public class TangORBversion implements java.io.Serializable {
     //========================================================================
     //========================================================================
     private String buildVersion(String packageName, String release, int maxLength) {
-        if (release==null || release.isEmpty())
+        if (release == null || release.isEmpty())
             return "";
 
-        int length = maxLength - packageName.length()+3;
+        int length = maxLength - packageName.length() + 3;
 
-        StringBuilder   sb = new StringBuilder(packageName + " version");
-        for (int j=0 ; j<length ; j++)
+        StringBuilder sb = new StringBuilder(packageName + " version");
+        for (int j = 0; j < length; j++)
             sb.append(".");
         sb.append(release).append('\n');
         return sb.toString();
     }
+
     //========================================================================
     //========================================================================
     public static void main(String[] args) {

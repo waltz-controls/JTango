@@ -35,6 +35,7 @@
 package fr.esrf.TangoApi.Group;
 
 //- Import TANGO stuffs
+
 import fr.esrf.Tango.DevError;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.CommunicationTimeout;
@@ -42,7 +43,7 @@ import fr.esrf.TangoApi.CommunicationTimeout;
 /**
  * TANGO group reply base class
  */
-public class GroupReply implements java.io.Serializable{
+public class GroupReply implements java.io.Serializable {
 
     /**
      * Enable/disable exceptions
@@ -68,24 +69,30 @@ public class GroupReply implements java.io.Serializable{
      * TimeOut
      */
     protected boolean has_timeout;
-    
-    /** Creates a new instance of GroupReply - defauly ctor */
+
+    /**
+     * Creates a new instance of GroupReply - defauly ctor
+     */
     public GroupReply() {
         dev_name = "unknown";
         obj_name = "unknown";
         has_failed = false;
         exception = null;
     }
-    
-    /** Creates a new instance of GroupReply */
+
+    /**
+     * Creates a new instance of GroupReply
+     */
     public GroupReply(String _dev_name, String _obj_name) {
         dev_name = _dev_name;
         obj_name = _obj_name;
         has_failed = false;
         exception = null;
     }
-    
-    /** Creates a new instance of GroupReply */
+
+    /**
+     * Creates a new instance of GroupReply
+     */
     public GroupReply(String _dev_name, String _obj_name, DevFailed _ex) {
         dev_name = _dev_name;
         obj_name = _obj_name;
@@ -102,28 +109,38 @@ public class GroupReply implements java.io.Serializable{
         exception_enabled = ex_mode;
         return tmp;
     }
-    
-    /** Returns error flag */
+
+    /**
+     * Returns error flag
+     */
     public boolean has_failed() {
         return has_failed;
     }
-    
-    /** Returns timeout flag */
+
+    /**
+     * Returns timeout flag
+     */
     public boolean has_timeout() {
         return has_timeout;
     }
-    
-    /** Returns associated device name */
+
+    /**
+     * Returns associated device name
+     */
     public String dev_name() {
         return dev_name;
     }
-    
-    /** Returns associated obj. name (i.e command or attribute name)*/
+
+    /**
+     * Returns associated obj. name (i.e command or attribute name)
+     */
     public String obj_name() {
         return obj_name;
     }
-    
-    /** Returns the error stack - returns null if has_failed is set to false */
+
+    /**
+     * Returns the error stack - returns null if has_failed is set to false
+     */
     public DevError[] get_err_stack() {
         return (has_failed && exception != null) ? exception.errors : null;
     }

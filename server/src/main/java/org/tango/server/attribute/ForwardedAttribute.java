@@ -1,29 +1,38 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.attribute;
 
+import fr.esrf.Tango.AttributeValue_5;
+import fr.esrf.Tango.DevAttrHistory_5;
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.Device_5;
+import fr.esrf.TangoApi.AttributeInfoEx;
+import fr.esrf.TangoApi.CallBack;
+import fr.esrf.TangoApi.Connection;
+import fr.esrf.TangoApi.events.EventData;
+import fr.soleil.tango.clientapi.TangoAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.server.ExceptionMessages;
@@ -35,21 +44,11 @@ import org.tango.server.servant.DeviceImpl;
 import org.tango.utils.DevFailedUtils;
 import org.tango.utils.TangoUtil;
 
-import fr.esrf.Tango.AttributeValue_5;
-import fr.esrf.Tango.DevAttrHistory_5;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.Device_5;
-import fr.esrf.TangoApi.AttributeInfoEx;
-import fr.esrf.TangoApi.CallBack;
-import fr.esrf.TangoApi.Connection;
-import fr.esrf.TangoApi.events.EventData;
-import fr.soleil.tango.clientapi.TangoAttribute;
-
 /**
  * Attribute that is a proxy to another attribute. Works only for IDL5 device and client
- * 
+ *
  * @author ABEILLE
- * 
+ *
  */
 public class ForwardedAttribute implements IAttributeBehavior {
     private final Logger logger = LoggerFactory.getLogger(ForwardedAttribute.class);
@@ -65,7 +64,7 @@ public class ForwardedAttribute implements IAttributeBehavior {
 
     /**
      * Create a forwarded attribute.
-     * 
+     *
      * @param fullRootAttributeName The default value of the root attribute. May be overriden by __root_attr attribute
      *            property
      * @param attributeName The name of the fowarded attribute
@@ -154,7 +153,7 @@ public class ForwardedAttribute implements IAttributeBehavior {
         info.name = rootAttributeName;
         localLabel = info.label;
         info.label = remoteLabel;
-        proxy.getAttributeProxy().set_info(new AttributeInfoEx[] { info });
+        proxy.getAttributeProxy().set_info(new AttributeInfoEx[]{info});
     }
 
     AttributePropertiesImpl getProperties() throws DevFailed {
@@ -178,8 +177,7 @@ public class ForwardedAttribute implements IAttributeBehavior {
 
     public void subscribe(final EventType eventType) throws DevFailed {
         logger.info("fowarded attribute \"{}\" event subscribe {}", attributeName, eventType);
-        @SuppressWarnings("serial")
-        final CallBack callback = new CallBack() {
+        @SuppressWarnings("serial") final CallBack callback = new CallBack() {
             @Override
             public void push_event(final EventData evt) {
                 try {
@@ -196,7 +194,7 @@ public class ForwardedAttribute implements IAttributeBehavior {
                                 EventManager.getInstance().pushAttributeValueIDL5Event(deviceName, attributeName, evt.attr_value.getAttributeValueObject_5(), evtT);
                                 break;
                             case ATT_CONF_EVENT:
-                                EventManager.getInstance().pushAttributeConfigIDL5Event(deviceName, attributeName,evt.attr_config.get_attribute_config_obj_5());
+                                EventManager.getInstance().pushAttributeConfigIDL5Event(deviceName, attributeName, evt.attr_config.get_attribute_config_obj_5());
                                 break;
                             case DATA_READY_EVENT:
                                 EventManager.getInstance().pushAttributeDataReadyEvent(deviceName, attributeName,
@@ -213,7 +211,7 @@ public class ForwardedAttribute implements IAttributeBehavior {
                 }
             }
         };
-        proxy.getAttributeProxy().subscribe_event(eventType.getValue(), callback, new String[] {});
+        proxy.getAttributeProxy().subscribe_event(eventType.getValue(), callback, new String[]{});
     }
 
 }

@@ -35,6 +35,7 @@
 package fr.esrf.TangoApi.Group;
 
 //- Import Tango stuffs
+
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.DeviceAttribute;
 import fr.esrf.TangoApi.DeviceData;
@@ -52,49 +53,57 @@ abstract class GroupElement implements java.io.Serializable {
     // ** Parent element */
     private GroupElement parent;
 
-    /** Creates a new instance of GroupElement */
+    /**
+     * Creates a new instance of GroupElement
+     */
     GroupElement(final String _name) {
-	name = _name;
-	parent = null;
+        name = _name;
+        parent = null;
     }
 
-    /** Returns the group element name */
+    /**
+     * Returns the group element name
+     */
     public String get_name() {
-	return name;
+        return name;
     }
 
     /**
      * Returns the group element fully qualified name
      */
     public String get_fully_qualified_name() {
-	if (parent != null) {
-	    return parent.get_fully_qualified_name() + "." + name;
-	}
-	return name;
+        if (parent != null) {
+            return parent.get_fully_qualified_name() + "." + name;
+        }
+        return name;
     }
 
     ;
 
-    /** Returns the group element size - default impl - returns 1 */
+    /**
+     * Returns the group element size - default impl - returns 1
+     */
     public int get_size(final boolean fwd) {
         return 1;
     }
 
     ;
 
-    /** Returns parent element - access limited to package Group */
+    /**
+     * Returns parent element - access limited to package Group
+     */
     GroupElement get_parent() {
-	return parent;
+        return parent;
     }
 
-/**
+    /**
      * Change parent element to <_parent> then return previous parent - access
      * limited to package Group
      */
     GroupElement set_parent(final GroupElement _parent) {
-	final GroupElement previous_parent = parent;
-	parent = _parent;
-	return previous_parent;
+        final GroupElement previous_parent = parent;
+        parent = _parent;
+        return previous_parent;
     }
 
     /**
@@ -102,12 +111,14 @@ abstract class GroupElement implements java.io.Serializable {
      * package Group
      */
     String[] get_device_name_list(final boolean fwd) {
-	final String[] dl = new String[1];
-	dl[0] = name;
-	return dl;
+        final String[] dl = new String[1];
+        dl[0] = name;
+        return dl;
     }
 
-    /** Returns the underlying DeviceProxy - access limited to package Group */
+    /**
+     * Returns the underlying DeviceProxy - access limited to package Group
+     */
     abstract DeviceProxy get_device_i(String name);
 
     /**
@@ -115,13 +126,19 @@ abstract class GroupElement implements java.io.Serializable {
      */
     abstract DeviceProxy get_device_i(int i);
 
-    /** Dump element */
+    /**
+     * Dump element
+     */
     abstract void dump_i(int indent_level);
 
-    /** Ping element */
+    /**
+     * Ping element
+     */
     abstract boolean ping_i(boolean fwd);
 
-    /** command_inout wrappers - access limited to package Group */
+    /**
+     * command_inout wrappers - access limited to package Group
+     */
     abstract void set_timeout_millis(int timeout, boolean fwd) throws DevFailed;
 
     abstract int command_inout_asynch_i(String c, boolean fgt, boolean fwd, int rid) throws DevFailed;
@@ -130,14 +147,18 @@ abstract class GroupElement implements java.io.Serializable {
 
     abstract GroupCmdReplyList command_inout_reply_i(int rid, int tmo, boolean fwd) throws DevFailed;
 
-    /** read_attribute wrappers - access limited to package Group */
+    /**
+     * read_attribute wrappers - access limited to package Group
+     */
     abstract int read_attribute_asynch_i(String a, boolean fwd, int rid) throws DevFailed;
 
     abstract int read_attribute_asynch_i(String[] a, boolean fwd, int rid) throws DevFailed;
 
     abstract GroupAttrReplyList read_attribute_reply_i(int rid, int tmo, boolean fwd) throws DevFailed;
 
-    /** read_attribute wrappers - access limited to package Group */
+    /**
+     * read_attribute wrappers - access limited to package Group
+     */
     abstract int write_attribute_asynch_i(DeviceAttribute da, boolean fwd, int rid) throws DevFailed;
 
     abstract GroupReplyList write_attribute_reply_i(int rid, int tmo, boolean fwd) throws DevFailed;
@@ -147,17 +168,21 @@ abstract class GroupElement implements java.io.Serializable {
      * to package Group
      */
     GroupElement find(final String n, final boolean fwd) {
-	return name_equals(n) ? this : null;
+        return name_equals(n) ? this : null;
     }
 
-    /** Returns true if <n> equals name or fully_qualified_name, false otherwise */
+    /**
+     * Returns true if <n> equals name or fully_qualified_name, false otherwise
+     */
     protected boolean name_equals(final String n) {
-	return n.equalsIgnoreCase(name) || n.equalsIgnoreCase(get_fully_qualified_name());
+        return n.equalsIgnoreCase(name) || n.equalsIgnoreCase(get_fully_qualified_name());
     }
 
-    /** Returns true if name matches pattern */
+    /**
+     * Returns true if name matches pattern
+     */
     protected boolean name_matches(String pattern) {
-	pattern = pattern.toLowerCase().replaceAll("[*]{1}", ".*?");
-	return name.toLowerCase().matches(pattern) || get_fully_qualified_name().toLowerCase().matches(pattern);
+        pattern = pattern.toLowerCase().replaceAll("[*]{1}", ".*?");
+        return name.toLowerCase().matches(pattern) || get_fully_qualified_name().toLowerCase().matches(pattern);
     }
 }

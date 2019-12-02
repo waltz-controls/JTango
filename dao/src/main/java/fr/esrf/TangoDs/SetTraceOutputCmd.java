@@ -37,10 +37,9 @@ package fr.esrf.TangoDs;
 import fr.esrf.Tango.DevFailed;
 import org.omg.CORBA.Any;
 
- 
-public class SetTraceOutputCmd extends Command implements TangoConst
-{
-	
+
+public class SetTraceOutputCmd extends Command implements TangoConst {
+
 //+-------------------------------------------------------------------------
 //
 // method : 		SetTraceOutputCmd 
@@ -49,12 +48,11 @@ public class SetTraceOutputCmd extends Command implements TangoConst
 //
 //--------------------------------------------------------------------------
 
- 
-	public SetTraceOutputCmd(String name,int in,int out,String desc)
-	{
-		super(name,in,out);
-		set_in_type_desc(desc);
-	}
+
+    public SetTraceOutputCmd(String name, int in, int out, String desc) {
+        super(name, in, out);
+        set_in_type_desc(desc);
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -63,15 +61,14 @@ public class SetTraceOutputCmd extends Command implements TangoConst
 // description : 	Change the trace output
 //
 //--------------------------------------------------------------------------
- 
-	public Any execute(DeviceImpl device,Any in_any) throws DevFailed
-	{
-		Util.out4.println("SetTraceOutputCmd.execute(): arrived");
 
-    String desc = "SetTraceOutput is no more supported, please use SetLoggingTarget";
-    Except.throw_exception("API_DeprecatedCommand", desc, "SetTraceOutputCmd::execute");
+    public Any execute(DeviceImpl device, Any in_any) throws DevFailed {
+        Util.out4.println("SetTraceOutputCmd.execute(): arrived");
 
-    //- make compiler happy
-		return Util.return_empty_any("SetTraceOutput");
-	}
+        String desc = "SetTraceOutput is no more supported, please use SetLoggingTarget";
+        Except.throw_exception("API_DeprecatedCommand", desc, "SetTraceOutputCmd::execute");
+
+        //- make compiler happy
+        return Util.return_empty_any("SetTraceOutput");
+    }
 }

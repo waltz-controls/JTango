@@ -1,40 +1,35 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.testserver;
 
+import fr.esrf.Tango.DevFailed;
 import org.tango.DeviceState;
 import org.tango.server.ServerManager;
-import org.tango.server.annotation.Command;
-import org.tango.server.annotation.Device;
-import org.tango.server.annotation.DeviceManagement;
-import org.tango.server.annotation.DynamicManagement;
-import org.tango.server.annotation.Init;
+import org.tango.server.annotation.*;
 import org.tango.server.device.DeviceManager;
 import org.tango.server.dynamic.DynamicManager;
-
-import fr.esrf.Tango.DevFailed;
 
 @Device
 public class SubServer extends SuperServer {
@@ -56,7 +51,7 @@ public class SubServer extends SuperServer {
     public static void startNoDb(final int portNr) throws DevFailed {
         System.setProperty("OAPort", Integer.toString(portNr));
         ServerManager.getInstance().addClass(SubServer.class.getCanonicalName(), SubServer.class);
-        ServerManager.getInstance().startError(new String[] { INSTANCE_NAME, "-nodb", "-dlist", NO_DB_DEVICE_NAME },
+        ServerManager.getInstance().startError(new String[]{INSTANCE_NAME, "-nodb", "-dlist", NO_DB_DEVICE_NAME},
                 SERVER_NAME);
         // ServerManager.getInstance().startDevice("1/2/4", SubServer.class);
     }

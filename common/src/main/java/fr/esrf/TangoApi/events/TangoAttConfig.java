@@ -90,14 +90,13 @@ public class TangoAttConfig extends EventDispatcher implements java.io.Serializa
             //      on the AWT event dispatching thread.
             Runnable do_work_later = new Runnable() {
                 public void run() {
-                    fireTangoAttConfigEvent(tangoAttConfig,eventData);
+                    fireTangoAttConfigEvent(tangoAttConfig, eventData);
                 }
             };
             SwingUtilities.invokeLater(do_work_later);
-        }
-        else
+        } else
             fireTangoAttConfigEvent(tangoAttConfig, eventData);
-   }
+    }
 
     //=======================================================================
     //=======================================================================

@@ -86,16 +86,15 @@ public class TangoDataReady extends EventDispatcher implements java.io.Serializa
     public void dispatch_event(final EventData eventData) {
         final TangoDataReady tangoDataReady = this;
         if (EventUtil.graphicAvailable()) {
-                //   Causes doRun.run() to be executed asynchronously
-                //      on the AWT event dispatching thread.
+            //   Causes doRun.run() to be executed asynchronously
+            //      on the AWT event dispatching thread.
             Runnable do_work_later = new Runnable() {
                 public void run() {
                     fireTangoDataReadyEvent(tangoDataReady, eventData);
                 }
             };
             SwingUtilities.invokeLater(do_work_later);
-        }
-        else
+        } else
             fireTangoDataReadyEvent(tangoDataReady, eventData);
     }
 

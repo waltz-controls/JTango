@@ -92,7 +92,7 @@ used with JMX monitors.
 
     -->
     <diskStore path="java.io.tmpdir"/>
-    
+
     <!-- 
     TransactionManagerLookup configuration
     ======================================
@@ -112,7 +112,7 @@ used with JMX monitors.
 
     <transactionManagerLookup class="net.sf.ehcache.transaction.manager.DefaultTransactionManagerLookup"
                               properties="jndiName=java:/TransactionManager" propertySeparator=";"/>
- 
+
 
     <!--
     CacheManagerEventListener
@@ -286,7 +286,7 @@ used with JMX monitors.
                         multicastGroupAddress=230.0.0.1,
                         multicastGroupPort=4446, timeToLive=1"
             propertySeparator=","
-            />
+    />
 
 
     <!--
@@ -836,7 +836,7 @@ used with JMX monitors.
             diskExpiryThreadIntervalSeconds="120"
             memoryStoreEvictionPolicy="LRU"
             statistics="false"
-            />
+    />
 
     <!--
     Sample caches. Following are some example caches. Remove these before use.
@@ -862,7 +862,7 @@ used with JMX monitors.
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off"
-            />
+    />
 
 
     <!--
@@ -876,7 +876,7 @@ used with JMX monitors.
            eternal="true"
            overflowToDisk="false"
            memoryStoreEvictionPolicy="FIFO"
-            />
+    />
 
 
     <!--
@@ -893,7 +893,7 @@ used with JMX monitors.
            diskPersistent="true"
            diskExpiryThreadIntervalSeconds="1"
            memoryStoreEvictionPolicy="LFU"
-            />
+    />
 
 
     <!--

@@ -32,22 +32,14 @@ import org.tango.server.Constants;
 import org.tango.server.ExceptionMessages;
 import org.tango.server.annotation.DynamicManagement;
 import org.tango.server.annotation.Init;
-import org.tango.server.attribute.AttributeConfiguration;
-import org.tango.server.attribute.AttributeImpl;
-import org.tango.server.attribute.AttributePropertiesImpl;
-import org.tango.server.attribute.ForwardedAttribute;
-import org.tango.server.attribute.IAttributeBehavior;
+import org.tango.server.attribute.*;
 import org.tango.server.command.CommandImpl;
 import org.tango.server.command.ICommandBehavior;
 import org.tango.server.properties.AttributePropertiesManager;
 import org.tango.server.servant.DeviceImpl;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Manage dynamic commands and attributes. This class is injected by {@link DynamicManagement}
@@ -151,7 +143,7 @@ public final class DynamicManager {
             toConfigure.lock();
             try {
                 toConfigure.loadTangoDbConfig();
-            }finally {
+            } finally {
                 toConfigure.unlock();
             }
         }

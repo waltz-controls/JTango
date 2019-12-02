@@ -34,30 +34,27 @@
 
 package fr.esrf.TangoApi;
 
-/** 
- *	This class is able to to generate a UUID and
- *	retreive the main class of this JVM to
- *	identify the client to use the device lock features.
- *	It also manage a thread class for all admin devices needed
- *	to relock devices.
+/**
+ * This class is able to to generate a UUID and
+ * retreive the main class of this JVM to
+ * identify the client to use the device lock features.
+ * It also manage a thread class for all admin devices needed
+ * to relock devices.
  *
- * @author  verdier
+ * @author verdier
  */
 
 //import java.lang.management.ManagementFactory;
 //import java.lang.management.RuntimeMXBean;
+
+import fr.esrf.Tango.*;
+import fr.esrf.TangoDs.Except;
+import fr.esrf.TangoDs.TangoConst;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.UUID;
 import java.util.Vector;
-
-import fr.esrf.Tango.ClntIdent;
-import fr.esrf.Tango.DevError;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevVarLongStringArray;
-import fr.esrf.Tango.JavaClntIdent;
-import fr.esrf.TangoDs.Except;
-import fr.esrf.TangoDs.TangoConst;
 
 class DevLockManager {
     static private DevLockManager instance = null;
@@ -69,27 +66,26 @@ class DevLockManager {
     static private ClntIdent ident;
     private static String strPID = null;
 
-	//	java.lang.management.ManagementFactory and
-	//	java.lang.management.RuntimeMXBean
-	//	     Not available on Android JVM
-	static private boolean hasManagementClasses = true;
+    //	java.lang.management.ManagementFactory and
+    //	java.lang.management.RuntimeMXBean
+    //	     Not available on Android JVM
+    static private boolean hasManagementClasses = true;
 
     // ===============================================================
     // ===============================================================
-	static {
+    static {
         //  Check if java.lang.management classes can be loaded
-		try {
+        try {
             //noinspection UnusedDeclaration
             Class c = java.lang.management.ManagementFactory.class;
-		}
-		catch (Exception e) {
-			hasManagementClasses = false;	//	Not available
-		}
-		catch (Error e) {
-			hasManagementClasses = false;	//	Not available
-		}
-	}
+        } catch (Exception e) {
+            hasManagementClasses = false;    //	Not available
+        } catch (Error e) {
+            hasManagementClasses = false;    //	Not available
+        }
+    }
     // ===============================================================
+
     /**
      * Returns instance of the Object.
      * @return instance of the Object.
@@ -103,6 +99,7 @@ class DevLockManager {
     }
 
     // ===============================================================
+
     /**
      * The object constrauctor
      */
@@ -163,6 +160,7 @@ class DevLockManager {
     //
     // ===============================================================
     // ===============================================================
+
     /**
      *
      * @return the JVM process ID if found, -1 otherwise.
@@ -170,60 +168,61 @@ class DevLockManager {
     // ===============================================================
     public int getJvmPid() {
         int pid = -1;
-        if (strPID !=null) {
+        if (strPID != null) {
             try {
                 pid = Integer.parseInt(strPID);
-            }
-            catch (NumberFormatException e) {/* */  }
+            } catch (NumberFormatException e) {/* */ }
         }
         return pid;
     }
     // ===============================================================
+
     /**
      * @return the java client identifier object
      */
     // ===============================================================
     @SuppressWarnings("UnusedDeclaration")
     JavaClntIdent getJavaClntIdent() {
-	    return j_ident;
+        return j_ident;
     }
 
     // ===============================================================
+
     /**
      * @return the IDL client identifier object
      */
     // ===============================================================
     ClntIdent getClntIdent() {
-	    return ident;
+        return ident;
     }
 
     // ===============================================================
     // ===============================================================
     String getMainClass() {
-	    return mainClass;
+        return mainClass;
     }
 
     // ===============================================================
     // ===============================================================
     String getHost() {
-	    return host_add;
+        return host_add;
     }
 
     // ===============================================================
     // ===============================================================
     UUID getUUID() {
-	    return uuid;
+        return uuid;
     }
 
     // ===============================================================
     // ===============================================================
     @Override
     public String toString() {
-	String str = mainClass + ":\n";
-	for (final long an_uuid : l_uuid) {
-	    str += an_uuid + "\n";
-	}
-	return str.trim();
+        String str = mainClass + ":\n";
+        for (final long an_uuid : l_uuid) {
+            str += an_uuid + "\n";
+        }
+        return str.trim();
     }
 
     // ===============================================================
@@ -235,9 +234,10 @@ class DevLockManager {
     //
     // ===============================================================
     // ==========================================================================
+
     /**
      * Lock the device
-     * 
+     *
      * @param validity Lock validity (in seconds)
      */
     // ==========================================================================
@@ -257,6 +257,7 @@ class DevLockManager {
     }
 
     // ==========================================================================
+
     /**
      * Unlock the device
      */
@@ -280,6 +281,7 @@ class DevLockManager {
     }
 
     // ==========================================================================
+
     /**
      * Returns true if the device is locked
      */
@@ -290,6 +292,7 @@ class DevLockManager {
     }
 
     // ==========================================================================
+
     /**
      * Returns true if the device is locked by this process
      */
@@ -300,6 +303,7 @@ class DevLockManager {
     }
 
     // ==========================================================================
+
     /**
      * Returns the device lock status
      */
@@ -310,6 +314,7 @@ class DevLockManager {
     }
 
     // ==========================================================================
+
     /**
      * Returns the device lock info
      */
@@ -389,6 +394,7 @@ class DevLockManager {
     // ===============================================================
 
     // ===============================================================
+
     /**
      * A thread to unlock all devices at exit
      */
@@ -399,14 +405,15 @@ class DevLockManager {
             System.out.println("exiting.....");
             final Enumeration keys = relockMap.keys();
             while (keys.hasMoreElements()) {
-            final String key = (String) keys.nextElement();
-            final LockedDeviceAmin lda = relockMap.get(key);
-            lda.cleanUp();
+                final String key = (String) keys.nextElement();
+                final LockedDeviceAmin lda = relockMap.get(key);
+                lda.cleanUp();
             }
         }
     }
 
     // ===============================================================
+
     /**
      * A thread to activate the garbage collector to do not re-lock the unsuded
      * devices (finalize() will be called).
@@ -432,13 +439,14 @@ class DevLockManager {
     }
 
     // ===============================================================
+
     /**
      * Loccked device object to relocked periodicaly
      */
     // ===============================================================
     private class LockedDevice {
-	private final String name;
-	private final int validity;
+        private final String name;
+        private final int validity;
 
         // ===========================================================
         LockedDevice(final String devname, final int valid) {
@@ -448,6 +456,7 @@ class DevLockManager {
     }
 
     // ===============================================================
+
     /**
      * One thread class for each admin device, to ReLock devices.
      */
@@ -484,7 +493,7 @@ class DevLockManager {
         private String[] getDeviceNames() {
             final String[] array = new String[devices.size()];
             for (int i = 0; i < devices.size(); i++) {
-            array[i] = devices.get(i).name;
+                array[i] = devices.get(i).name;
             }
             return array;
         }
@@ -524,7 +533,7 @@ class DevLockManager {
                 dev.getAdm_dev().command_inout("UnlockDevice", argin);
                 System.out.println("all devices unlocked.");
             } catch (final DevFailed e) {
-            Except.print_exception(e);
+                Except.print_exception(e);
             }
         }
 
@@ -542,7 +551,7 @@ class DevLockManager {
             }
 
             if (min == 0xFFFFFFF) {
-            min = 1;
+                min = 1;
             }
             return min;
         }
@@ -561,39 +570,39 @@ class DevLockManager {
             final String[] devnames = getDeviceNames();
             traceRelock(devnames);
             try {
-            final DeviceData argin = new DeviceData();
-            argin.insert(devnames);
-            device.command_inout("RelockDevices", argin);
+                final DeviceData argin = new DeviceData();
+                argin.insert(devnames);
+                device.command_inout("RelockDevices", argin);
 
             } catch (final DevFailed e) {
-            // Check exception for special cases
-            for (final DevError error : e.errors) {
-                final String reason = error.reason;
-                if (reason.equals("TangoApi_DEVICE_NOT_EXPORTED")) {
-                    // If admin device not exported,
-                    // remove alle devices.
-                    for (final String devname : devnames) {
-                        remove(devname);
-                    }
-                } else if (reason.equals("API_DeviceNotLocked") || // Server
-                                           // could
-                                           // have
-                                           // been
-                                           // restarted.
-                    reason.equals("API_DeviceLocked")) // Another client
-                                       // has lokced (Is
-                                       // it possible
-                                       // ??)
-                {
-                    // Parse for device name
-                    final String desc = error.desc;
-                    final int idx = desc.indexOf(':');
-                    if (idx > 0) {
-                        final String devname = desc.substring(0, idx).trim();
-                        remove(devname);
+                // Check exception for special cases
+                for (final DevError error : e.errors) {
+                    final String reason = error.reason;
+                    if (reason.equals("TangoApi_DEVICE_NOT_EXPORTED")) {
+                        // If admin device not exported,
+                        // remove alle devices.
+                        for (final String devname : devnames) {
+                            remove(devname);
+                        }
+                    } else if (reason.equals("API_DeviceNotLocked") || // Server
+                            // could
+                            // have
+                            // been
+                            // restarted.
+                            reason.equals("API_DeviceLocked")) // Another client
+                    // has lokced (Is
+                    // it possible
+                    // ??)
+                    {
+                        // Parse for device name
+                        final String desc = error.desc;
+                        final int idx = desc.indexOf(':');
+                        if (idx > 0) {
+                            final String devname = desc.substring(0, idx).trim();
+                            remove(devname);
+                        }
                     }
                 }
-            }
             }
         }
 
@@ -607,14 +616,16 @@ class DevLockManager {
             final long now = System.currentTimeMillis();
             final int minValidity = getMinValidity() * 1000;
             return minValidity - (now - t_relock) - VALIDITY_DELAY; // few ms
-                                        // before
+            // before
         }
 
         // ===========================================================
         private synchronized void waitNext() {
             long t_sleep = getTimeToSleep();
             while (t_sleep > VALIDITY_DELAY && devices.size() > 0) {
-                try { wait(t_sleep); } catch (final InterruptedException e) { /* */ }
+                try {
+                    wait(t_sleep);
+                } catch (final InterruptedException e) { /* */ }
                 t_sleep = getTimeToSleep();
             }
         }

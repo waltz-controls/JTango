@@ -24,12 +24,7 @@
  */
 package org.tango.server.attribute;
 
-import fr.esrf.Tango.ArchiveEventProp;
-import fr.esrf.Tango.ChangeEventProp;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
-import fr.esrf.Tango.EventProperties;
-import fr.esrf.Tango.PeriodicEventProp;
+import fr.esrf.Tango.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.tango.DeviceState;
@@ -39,13 +34,8 @@ import org.tango.server.properties.AttributePropertiesManager;
 import org.tango.utils.CaseInsensitiveMap;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * User class to create attribute properties.

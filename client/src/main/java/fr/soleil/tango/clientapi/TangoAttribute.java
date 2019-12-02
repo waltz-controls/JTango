@@ -1,10 +1,5 @@
 package fr.soleil.tango.clientapi;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.utils.DevFailedUtils;
-
 import fr.esrf.Tango.AttrDataFormat;
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.AttrWriteType;
@@ -15,6 +10,10 @@ import fr.esrf.TangoDs.TangoConst;
 import fr.soleil.tango.clientapi.attribute.ITangoAttribute;
 import fr.soleil.tango.clientapi.attribute.MockAttribute;
 import fr.soleil.tango.clientapi.attribute.RealAttribute;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.utils.DevFailedUtils;
 
 /**
  * Manage access to a tango attribute.
@@ -34,10 +33,8 @@ public final class TangoAttribute {
     /**
      * Build a <b>mock</b> connection to a tango attribute.
      *
-     * @param name
-     *            the attribute name
-     * @param mockValue
-     *            The default mock value
+     * @param name      the attribute name
+     * @param mockValue The default mock value
      * @throws DevFailed
      */
     public TangoAttribute(final String name, final Object mockValue) throws DevFailed {
@@ -47,9 +44,8 @@ public final class TangoAttribute {
     /**
      * Build a <b>mock</b> connection to a tango attribute.
      *
-     * @param attribute
-     *            The mock attribute behavior. Default behavior may be changed
-     *            by using a mock library like http://mockito.org
+     * @param attribute The mock attribute behavior. Default behavior may be changed
+     *                  by using a mock library like http://mockito.org
      * @throws DevFailed
      */
     public TangoAttribute(final ITangoAttribute attribute) throws DevFailed {
@@ -59,8 +55,7 @@ public final class TangoAttribute {
     /**
      * Build a connection to a tango attribute.
      *
-     * @param name
-     *            the attribute name The full name of the attribute
+     * @param name the attribute name The full name of the attribute
      */
     public TangoAttribute(final String name) throws DevFailed {
         attributeImpl = new RealAttribute(name);
@@ -93,8 +88,7 @@ public final class TangoAttribute {
      * Read the tango attribute with SCALAR format and convert it
      *
      * @param <T>
-     * @param type
-     *            The requested output type
+     * @param type The requested output type
      * @return
      * @throws DevFailed
      */
@@ -104,9 +98,9 @@ public final class TangoAttribute {
     }
 
     /**
-     * @see #extract()
      * @return
      * @throws DevFailed
+     * @see #extract()
      */
     public Object read() throws DevFailed {
         update();
@@ -128,9 +122,8 @@ public final class TangoAttribute {
     /**
      * Read attribute and return result as array.
      *
-     * @param type
-     *            The requested output type, is the component type (double,
-     *            Double...).
+     * @param type The requested output type, is the component type (double,
+     *             Double...).
      * @return
      * @throws DevFailed
      */
@@ -148,8 +141,7 @@ public final class TangoAttribute {
      * Read written value of attribute
      *
      * @param <T>
-     * @param type
-     *            The requested output type
+     * @param type The requested output type
      * @return
      * @throws DevFailed
      */
@@ -212,10 +204,8 @@ public final class TangoAttribute {
     /**
      * Read attribute and convert it to a String with separators
      *
-     * @param separator
-     *            between each value (for SPECTRUM and IMAGE only)
-     * @param endSeparator
-     *            between each dimension (for IMAGE only)
+     * @param separator    between each value (for SPECTRUM and IMAGE only)
+     * @param endSeparator between each dimension (for IMAGE only)
      * @return The formatted string
      * @throws DevFailed
      */

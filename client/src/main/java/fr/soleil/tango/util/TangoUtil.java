@@ -1,22 +1,21 @@
 /*
  * (c) Copyright 2004, iSencia Belgium NV
  * All Rights Reserved.
- * 
+ *
  * This software is the proprietary information of iSencia Belgium NV.
  * Use is subject to license terms.
  */
 package fr.soleil.tango.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.tango.utils.DevFailedUtils;
-
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.ApiUtil;
 import fr.esrf.TangoApi.Database;
 import fr.esrf.TangoDs.TangoConst;
+import org.tango.utils.DevFailedUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Some utilities for tango. Moved to JTangoCommons, org.tango.utils
@@ -29,6 +28,7 @@ public final class TangoUtil {
      * Contains all tango types for scalar commands
      */
     public static final List<Integer> SCALARS;
+
     static {
         final List<Integer> tempList = new ArrayList<Integer>();
         tempList.add(TangoConst.Tango_DEV_BOOLEAN);
@@ -50,6 +50,7 @@ public final class TangoUtil {
      * Contains all tango types for spectrum commands
      */
     public static final List<Integer> SPECTRUMS;
+
     static {
         final List<Integer> tempList2 = new ArrayList<Integer>();
         tempList2.add(TangoConst.Tango_DEVVAR_CHARARRAY);
@@ -71,7 +72,7 @@ public final class TangoUtil {
 
     /**
      * Get the full device name for an attribute
-     * 
+     *
      * @param attributeName
      * @return
      * @throws DevFailed
@@ -94,7 +95,7 @@ public final class TangoUtil {
 
     /**
      * Get the full attribute name
-     * 
+     *
      * @param attributeName
      * @return
      * @throws DevFailed
@@ -121,7 +122,7 @@ public final class TangoUtil {
 
     /**
      * Get the full device name
-     * 
+     *
      * @param deviceName
      * @return
      * @throws DevFailed
@@ -145,9 +146,8 @@ public final class TangoUtil {
 
     /**
      * Get the list of device names which matches the pattern p
-     * 
-     * @param deviceNamePattern
-     *            The pattern. The wild char is *
+     *
+     * @param deviceNamePattern The pattern. The wild char is *
      * @return A list of device names
      * @throws DevFailed
      */
@@ -168,7 +168,7 @@ public final class TangoUtil {
 
     /**
      * Return the attribute name part without device name It is able to resolve attribute alias before
-     * 
+     *
      * @param fullname
      * @return
      * @throws DevFailed

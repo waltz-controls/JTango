@@ -41,7 +41,7 @@ public final class DeviceCache {
     }
 
     public AttributeCache getAttributeCache(final String name) {
-             return attributeCaches.get(name);
+        return attributeCaches.get(name);
     }
 
     /**

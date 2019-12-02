@@ -66,7 +66,7 @@ public class AttributeInfoEx extends AttributeInfo implements ApiDefs, java.io.S
     public boolean isMemorized;
     public boolean isSetAtInit;
     public Memorized memorized = Memorized.UNKNOWN;
-    public String   root_attr_name = "Not specified";
+    public String root_attr_name = "Not specified";
     public String[] enum_label = null;
 
     /**
@@ -100,7 +100,7 @@ public class AttributeInfoEx extends AttributeInfo implements ApiDefs, java.io.S
                     return "Write value is Memorized and set at init";
                 default:
                     return "Not available (IDL too old)";
-             }
+            }
         }
     }
 
@@ -121,14 +121,14 @@ public class AttributeInfoEx extends AttributeInfo implements ApiDefs, java.io.S
                 this.memorized = Memorized.MEMORIZED_SET_AT_INIT;
             else
                 this.memorized = Memorized.MEMORIZED;
-        }
-        else {
+        } else {
             this.memorized = Memorized.NOT_MEMORIZED;
         }
 
         root_attr_name = attributeConfig5.root_attr_name;
         enum_label = attributeConfig5.enum_labels;
     }
+
     //==========================================================================
     //==========================================================================
     public AttributeInfoEx(AttributeConfig_3 attributeConfig3) {
@@ -179,6 +179,7 @@ public class AttributeInfoEx extends AttributeInfo implements ApiDefs, java.io.S
                 extensions,
                 sys_extensions);
     }
+
     //==========================================================================
     //==========================================================================
     public AttributeConfig_5 get_attribute_config_obj_5() {
@@ -210,22 +211,23 @@ public class AttributeInfoEx extends AttributeInfo implements ApiDefs, java.io.S
     }
 
     //==========================================================================
+
     /**
      * Returns the label for specified index from enum
+     *
      * @param index short value from enum
-     * @return  the label for specified index from enum
+     * @return the label for specified index from enum
      * @throws DevFailed if Labels not defined or index out of bounds.
      */
     //==========================================================================
-    public String getEnumLabel(short index) throws DevFailed  {
-        if (enum_label==null)
+    public String getEnumLabel(short index) throws DevFailed {
+        if (enum_label == null)
             Except.throw_exception("NoLabels", "Attribute " +
                     name + " has no labels defined");
-        String  label = "";
+        String label = "";
         try {
             label = enum_label[index];
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Except.throw_exception(e.toString(), e.toString());
         }
         return label;

@@ -13,9 +13,9 @@ public interface IExtractor {
     Object extractReadArray(final DeviceAttribute da, AttrDataFormat format) throws DevFailed;
 
     Object extractWrite(final DeviceAttribute da, final AttrWriteType writeType, AttrDataFormat format)
-	    throws DevFailed;
+            throws DevFailed;
 
     Object extractWriteArray(final DeviceAttribute da, final AttrWriteType writeType, AttrDataFormat format)
-	    throws DevFailed;
+            throws DevFailed;
 
 }

@@ -45,27 +45,26 @@ import java.util.Vector;
 
 /**
  * There is one instance of this class for each device. This class is mainly
- * an aggregate of Attribute or WAttribute objects. It eases management of 
+ * an aggregate of Attribute or WAttribute objects. It eases management of
  * multiple attributes
  *
  * @author $Author: pascal_verdier $
  * @version $Revision: 25297 $
  */
- 
-public class MultiAttribute implements TangoConst
-{
-	private static final AttrProperty[] def_opt_prop = new AttrProperty[] {
-	new AttrProperty("label",Tango_LabelNotSpec),
-	new AttrProperty("description",Tango_DescNotSpec),
+
+public class MultiAttribute implements TangoConst {
+    private static final AttrProperty[] def_opt_prop = new AttrProperty[]{
+            new AttrProperty("label", Tango_LabelNotSpec),
+            new AttrProperty("description", Tango_DescNotSpec),
             new AttrProperty("unit", Tango_UnitNotSpec),
-            new AttrProperty("standard_unit",Tango_StdUnitNotSpec),
-	new AttrProperty("display_unit",Tango_DispUnitNotSpec),
-	new AttrProperty("format",Tango_FormatNotSpec),
-	new AttrProperty("min_value",Tango_AlrmValueNotSpec),
-	new AttrProperty("max_value",Tango_AlrmValueNotSpec),
-	new AttrProperty("min_alarm",Tango_AlrmValueNotSpec),
-	new AttrProperty("max_alarm",Tango_AlrmValueNotSpec),
-	new AttrProperty("writable_attr_name",Tango_AssocWritNotSpec)};
+            new AttrProperty("standard_unit", Tango_StdUnitNotSpec),
+            new AttrProperty("display_unit", Tango_DispUnitNotSpec),
+            new AttrProperty("format", Tango_FormatNotSpec),
+            new AttrProperty("min_value", Tango_AlrmValueNotSpec),
+            new AttrProperty("max_value", Tango_AlrmValueNotSpec),
+            new AttrProperty("min_alarm", Tango_AlrmValueNotSpec),
+            new AttrProperty("max_alarm", Tango_AlrmValueNotSpec),
+            new AttrProperty("writable_attr_name", Tango_AssocWritNotSpec)};
     /**
      * The Attribute objects vector.
      * <p>
@@ -85,91 +84,87 @@ public class MultiAttribute implements TangoConst
      */
     protected Vector alarm_attr_list = new Vector();
 
-/**
- * Create a new MultiAttribute object.
- *
- * This constructor will in-turn call the constructor of the Attribute or
- * WAttribute class of all the device class attributes.
- *
- * @param dev_name The device name
- * @param dev_class Reference to the device DeviceClass object
- * @exception DevFailed If the command sent to the database failed.
- * Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
- * <b>DevFailed</b> exception specification
- */
- 
-	public MultiAttribute(String dev_name, DeviceClass dev_class) throws DevFailed
-	{
-		Util.out4.println("Entering MultiAttribute class constructor for device " + dev_name);
-	
-		// Retrieve attr name list 
-		Vector tmp_attr_list = dev_class.get_class_attr().get_attr_list();
-		String[]	attrlist = new String[tmp_attr_list.size()];
-		for (int i=0 ; i<tmp_attr_list.size() ; i++)
-			attrlist[i] = ((Attr)tmp_attr_list.get(i)).get_name();
+    /**
+     * Create a new MultiAttribute object.
+     * <p>
+     * This constructor will in-turn call the constructor of the Attribute or
+     * WAttribute class of all the device class attributes.
+     *
+     * @param dev_name  The device name
+     * @param dev_class Reference to the device DeviceClass object
+     * @throws DevFailed If the command sent to the database failed.
+     *                   Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
+     *                   <b>DevFailed</b> exception specification
+     */
 
-		// Get device attribute properties
-		DbAttribute[]	db_attr = new DbAttribute[0];
-		if (Util._UseDb)
-			db_attr = ApiUtil.get_db_obj().get_device_attribute_property(dev_name, attrlist);
+    public MultiAttribute(String dev_name, DeviceClass dev_class) throws DevFailed {
+        Util.out4.println("Entering MultiAttribute class constructor for device " + dev_name);
 
-		// Build property list for each attribute
-		for (int i=0 ; i<attrlist.length ; i++)
-		{
-			// Get attribute class properties
-			Attr attr = dev_class.get_class_attr().get_attr(((Attr)(tmp_attr_list.elementAt(i))).get_name());
-			Vector class_prop = attr.get_class_properties();
-			Vector def_user_prop = attr.get_user_default_properties();
+        // Retrieve attr name list
+        Vector tmp_attr_list = dev_class.get_class_attr().get_attr_list();
+        String[] attrlist = new String[tmp_attr_list.size()];
+        for (int i = 0; i < tmp_attr_list.size(); i++)
+            attrlist[i] = ((Attr) tmp_attr_list.get(i)).get_name();
 
-			// If the attribute has some properties defined at device level,
-			//	build a vector of these properties
-			Vector dev_prop = new Vector();
-			if (Util._UseDb)
-			{
-				String[]	propnames = db_attr[i].get_property_list();
-				for (int p=0 ; p<propnames.length ; p++)
-				{
-					AttrProperty	property =
-						new AttrProperty(propnames[p], db_attr[i].get_value(p));
-					dev_prop.add(property);
-					//System.out.println(property);
-				}
-			}
+        // Get device attribute properties
+        DbAttribute[] db_attr = new DbAttribute[0];
+        if (Util._UseDb)
+            db_attr = ApiUtil.get_db_obj().get_device_attribute_property(dev_name, attrlist);
 
-			// Concatenate these two attribute properties levels
-			Vector prop_list = new Vector();
-			concat(dev_prop, class_prop, prop_list);
-			add_user_default(prop_list, def_user_prop);
-			add_default(prop_list);
+        // Build property list for each attribute
+        for (int i = 0; i < attrlist.length; i++) {
+            // Get attribute class properties
+            Attr attr = dev_class.get_class_attr().get_attr(((Attr) (tmp_attr_list.elementAt(i))).get_name());
+            Vector class_prop = attr.get_class_properties();
+            Vector def_user_prop = attr.get_user_default_properties();
 
-			// Create an Attribute instance
-			Attribute	attribute;
-			if ((attr.get_writable() == AttrWriteType.WRITE) || 
-				(attr.get_writable() == AttrWriteType.READ_WRITE))
-				attribute  = new WAttribute(prop_list,attr, dev_name);
-			else
-				attribute  = new Attribute(prop_list,attr, dev_name);
-			attr_list.add(attribute);
-			// If it is writable, add it to the writable attribute list
-			if (attribute.get_writable() == AttrWriteType.WRITE ||
-				attribute.get_writable() == AttrWriteType.READ_WRITE)
-					writable_attr_list.addElement(i);
+            // If the attribute has some properties defined at device level,
+            //	build a vector of these properties
+            Vector dev_prop = new Vector();
+            if (Util._UseDb) {
+                String[] propnames = db_attr[i].get_property_list();
+                for (int p = 0; p < propnames.length; p++) {
+                    AttrProperty property =
+                            new AttrProperty(propnames[p], db_attr[i].get_value(p));
+                    dev_prop.add(property);
+                    //System.out.println(property);
+                }
+            }
 
-			// If one of the alarm properties is defined, add it to the alarmed attribute list
-			if (attribute.is_alarmed() == true)
-				if (attribute.get_writable() != AttrWriteType.WRITE)
-					alarm_attr_list.addElement(i);
-			
-			Util.out4.println(attr_list.elementAt(i));
-		}
-	
-		// For each attribute, check if the writable_attr_name is set and in this
-		// case, check if the associated attribute exists and is writable
-		for (int i=0 ; i<tmp_attr_list.size() ; i++)
-			check_associated(i, dev_name);
-	
-		Util.out4.println("Leaving MultiAttribute class constructor");
-	}	
+            // Concatenate these two attribute properties levels
+            Vector prop_list = new Vector();
+            concat(dev_prop, class_prop, prop_list);
+            add_user_default(prop_list, def_user_prop);
+            add_default(prop_list);
+
+            // Create an Attribute instance
+            Attribute attribute;
+            if ((attr.get_writable() == AttrWriteType.WRITE) ||
+                    (attr.get_writable() == AttrWriteType.READ_WRITE))
+                attribute = new WAttribute(prop_list, attr, dev_name);
+            else
+                attribute = new Attribute(prop_list, attr, dev_name);
+            attr_list.add(attribute);
+            // If it is writable, add it to the writable attribute list
+            if (attribute.get_writable() == AttrWriteType.WRITE ||
+                    attribute.get_writable() == AttrWriteType.READ_WRITE)
+                writable_attr_list.addElement(i);
+
+            // If one of the alarm properties is defined, add it to the alarmed attribute list
+            if (attribute.is_alarmed() == true)
+                if (attribute.get_writable() != AttrWriteType.WRITE)
+                    alarm_attr_list.addElement(i);
+
+            Util.out4.println(attr_list.elementAt(i));
+        }
+
+        // For each attribute, check if the writable_attr_name is set and in this
+        // case, check if the associated attribute exists and is writable
+        for (int i = 0; i < tmp_attr_list.size(); i++)
+            check_associated(i, dev_name);
+
+        Util.out4.println("Leaving MultiAttribute class constructor");
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -187,40 +182,36 @@ public class MultiAttribute implements TangoConst
 //--------------------------------------------------------------------------
 
 
-	private void concat(Vector dev_prop,
-			    Vector class_prop,
-			    Vector result)
-	{
-	
+    private void concat(Vector dev_prop,
+                        Vector class_prop,
+                        Vector result) {
+
 //
 // Copy all device properties
 //
 
-		int i;
-		for (i = 0;i < dev_prop.size();i++)
-			result.addElement(dev_prop.elementAt(i));
-		
+        int i;
+        for (i = 0; i < dev_prop.size(); i++)
+            result.addElement(dev_prop.elementAt(i));
+
 //
 // Add class properties if they have not been redefined at the device level
 //
 
-		Vector tmp_result = (Vector)(result.clone());
-		int nb_class_check = class_prop.size();
-		for (i = 0;i < nb_class_check;i++)
-		{
-			int j;
-			for (j = 0;j < tmp_result.size();j++)
-			{
-				if (((AttrProperty)(tmp_result.elementAt(j))).get_name().equals(((AttrProperty)(class_prop.elementAt(i))).get_name()) == true)
-				{
-					break;
-				}
-			}
-			
-			if (j == tmp_result.size())
-				result.addElement(class_prop.elementAt(i));
-		}
-	}
+        Vector tmp_result = (Vector) (result.clone());
+        int nb_class_check = class_prop.size();
+        for (i = 0; i < nb_class_check; i++) {
+            int j;
+            for (j = 0; j < tmp_result.size(); j++) {
+                if (((AttrProperty) (tmp_result.elementAt(j))).get_name().equals(((AttrProperty) (class_prop.elementAt(i))).get_name()) == true) {
+                    break;
+                }
+            }
+
+            if (j == tmp_result.size())
+                result.addElement(class_prop.elementAt(i));
+        }
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -233,32 +224,28 @@ public class MultiAttribute implements TangoConst
 //
 //--------------------------------------------------------------------------
 
-	private void add_default(Vector prop_list)
-	{
-		int nb_opt_prop = def_opt_prop.length;
+    private void add_default(Vector prop_list) {
+        int nb_opt_prop = def_opt_prop.length;
 
 //
 // For all the optional attribute properties, search in the already built
 // vector of attributes if they are defined. If yes, continue. Otherwise,
 // add a new property with the default value
 //
-	
-		for (int i = 0;i < nb_opt_prop;i++)
-		{
-			String opt_prop_name = def_opt_prop[i].get_name();
 
-			int j;
-			for (j = 0;j < prop_list.size();j++)
-			{
-				if (((AttrProperty)(prop_list.elementAt(j))).get_name().equals(opt_prop_name) == true)
-					break;
-			}
-			if (j == prop_list.size())
-			{
-				prop_list.addElement(def_opt_prop[i]);
-			}
-		}
-	}
+        for (int i = 0; i < nb_opt_prop; i++) {
+            String opt_prop_name = def_opt_prop[i].get_name();
+
+            int j;
+            for (j = 0; j < prop_list.size(); j++) {
+                if (((AttrProperty) (prop_list.elementAt(j))).get_name().equals(opt_prop_name) == true)
+                    break;
+            }
+            if (j == prop_list.size()) {
+                prop_list.addElement(def_opt_prop[i]);
+            }
+        }
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -272,30 +259,27 @@ public class MultiAttribute implements TangoConst
 //
 //--------------------------------------------------------------------------
 
-	void add_user_default(Vector prop_list,
-			      Vector user_default)
-	{
+    void add_user_default(Vector prop_list,
+                          Vector user_default) {
 
 //
 // Add default user properties if they have not been defined in the database
 //
 
-		int nb_user = user_default.size();
-		for (int i = 0;i < nb_user;i++)
-		{
-			String user_prop_name = ((AttrProperty)(user_default.elementAt(i))).get_name();
+        int nb_user = user_default.size();
+        for (int i = 0; i < nb_user; i++) {
+            String user_prop_name = ((AttrProperty) (user_default.elementAt(i))).get_name();
 
-			int j;
-			for (j = 0;j < prop_list.size();j++)
-			{
-				if (((AttrProperty)(prop_list.elementAt(j))).get_name().equals(user_prop_name) == true)
-					break;
-			}
-		
-			if (j == prop_list.size())
-				prop_list.addElement(user_default.elementAt(i));
-		}
-	}
+            int j;
+            for (j = 0; j < prop_list.size(); j++) {
+                if (((AttrProperty) (prop_list.elementAt(j))).get_name().equals(user_prop_name) == true)
+                    break;
+            }
+
+            if (j == prop_list.size())
+                prop_list.addElement(user_default.elementAt(i));
+        }
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -312,94 +296,87 @@ public class MultiAttribute implements TangoConst
 //
 //--------------------------------------------------------------------------
 
-	void check_associated(int index,String dev_name) throws DevFailed
-	{
+    void check_associated(int index, String dev_name) throws DevFailed {
 
-		Attribute att = ((Attribute)(attr_list.elementAt(index)));
-		if ((att.get_writable() == AttrWriteType.READ_WITH_WRITE) ||
-		    (att.get_writable() == AttrWriteType.READ_WRITE))
-		{
-		
-			if (att.get_data_format().value() != AttrDataFormat._SCALAR)
-			{
-				StringBuffer o = new StringBuffer("Device --> ");
-				
-				o.append(dev_name);
-				o.append("\nProperty writable_attr_name for attribute ");
-				o.append(att.get_name());
-				o.append(" is defined but this attribute data format is not SCALAR");
-				Except.throw_exception("API_AttrOptProp",
-						       o.toString(),
-						       "MultiAttribute.check_associated");
-			}
-			
-			int j;
-			int tmp_ind = 0;
-			String assoc_name = att.get_assoc_name();
-			for (j = 0;j < writable_attr_list.size();j++)
-			{
-				tmp_ind = (Integer) (writable_attr_list.elementAt(j));
-				if (((Attribute)(attr_list.elementAt(tmp_ind))).get_name().equals(assoc_name) == true)
-					break;
-			}
-			if (j == writable_attr_list.size())
-			{
-				StringBuffer o = new StringBuffer("Device --> ");
+        Attribute att = ((Attribute) (attr_list.elementAt(index)));
+        if ((att.get_writable() == AttrWriteType.READ_WITH_WRITE) ||
+                (att.get_writable() == AttrWriteType.READ_WRITE)) {
 
-				o.append(dev_name);		
-				o.append("\nProperty writable_attr_name for attribute ");
-				o.append(att.get_name()); 
-				o.append(" is set to ");
-				o.append(assoc_name);
-				o.append(", but this attribute does not exists or is not writable");
-				Except.throw_exception("API_AttrOptProp",
-						       o.toString(),
-						       "MultiAttribute.check_associated");
-			}
+            if (att.get_data_format().value() != AttrDataFormat._SCALAR) {
+                StringBuffer o = new StringBuffer("Device --> ");
+
+                o.append(dev_name);
+                o.append("\nProperty writable_attr_name for attribute ");
+                o.append(att.get_name());
+                o.append(" is defined but this attribute data format is not SCALAR");
+                Except.throw_exception("API_AttrOptProp",
+                        o.toString(),
+                        "MultiAttribute.check_associated");
+            }
+
+            int j;
+            int tmp_ind = 0;
+            String assoc_name = att.get_assoc_name();
+            for (j = 0; j < writable_attr_list.size(); j++) {
+                tmp_ind = (Integer) (writable_attr_list.elementAt(j));
+                if (((Attribute) (attr_list.elementAt(tmp_ind))).get_name().equals(assoc_name) == true)
+                    break;
+            }
+            if (j == writable_attr_list.size()) {
+                StringBuffer o = new StringBuffer("Device --> ");
+
+                o.append(dev_name);
+                o.append("\nProperty writable_attr_name for attribute ");
+                o.append(att.get_name());
+                o.append(" is set to ");
+                o.append(assoc_name);
+                o.append(", but this attribute does not exists or is not writable");
+                Except.throw_exception("API_AttrOptProp",
+                        o.toString(),
+                        "MultiAttribute.check_associated");
+            }
 
 //
 // Also check if the associated write attribute is a scalar one
 //
 
-			Attribute tmp_att = ((Attribute)(attr_list.elementAt(tmp_ind)));			
-			if (tmp_att.get_data_format().value() != AttrDataFormat._SCALAR)
-			{
-				StringBuffer o = new StringBuffer("Device --> ");
+            Attribute tmp_att = ((Attribute) (attr_list.elementAt(tmp_ind)));
+            if (tmp_att.get_data_format().value() != AttrDataFormat._SCALAR) {
+                StringBuffer o = new StringBuffer("Device --> ");
 
-				o.append(dev_name);		
-				o.append("\nProperty writable_attr_name for attribute ");
-				o.append(att.get_name()); 
-				o.append(" is set to ");
-				o.append(assoc_name);
-				o.append(", but this attribute is not of the SCALAR data format");
-				Except.throw_exception("API_AttrOptProp",
-						       o.toString(),
-						       "MultiAttribute.check_assiocated");
-			}
+                o.append(dev_name);
+                o.append("\nProperty writable_attr_name for attribute ");
+                o.append(att.get_name());
+                o.append(" is set to ");
+                o.append(assoc_name);
+                o.append(", but this attribute is not of the SCALAR data format");
+                Except.throw_exception("API_AttrOptProp",
+                        o.toString(),
+                        "MultiAttribute.check_assiocated");
+            }
 
 //
 // Check that the two associated attributes have the same data type
 //
-			
-			if (tmp_att.get_data_type() != att.get_data_type())
-			{
-				StringBuffer o = new StringBuffer("Device --> ");
 
-				o.append(dev_name);		
-				o.append("\nProperty writable_attr_name for attribute ");
-				o.append(att.get_name()); 
-				o.append(" is set to ");
-				o.append(assoc_name);
-				o.append(", but these two attributes do not support the same data type");
-				Except.throw_exception("API_AttrOptProp",o.toString(),
-						       "MultiAttribute.check_associated");
-			}
-			
-			att.set_assoc_ind(tmp_ind);
-		}
+            if (tmp_att.get_data_type() != att.get_data_type()) {
+                StringBuffer o = new StringBuffer("Device --> ");
 
-	}
-	
+                o.append(dev_name);
+                o.append("\nProperty writable_attr_name for attribute ");
+                o.append(att.get_name());
+                o.append(" is set to ");
+                o.append(assoc_name);
+                o.append(", but these two attributes do not support the same data type");
+                Except.throw_exception("API_AttrOptProp", o.toString(),
+                        "MultiAttribute.check_associated");
+            }
+
+            att.set_assoc_ind(tmp_ind);
+        }
+
+    }
+
 //+-------------------------------------------------------------------------
 //
 // method : 		add_attribute
@@ -414,245 +391,227 @@ public class MultiAttribute implements TangoConst
 //
 //--------------------------------------------------------------------------
 
-	void add_attribute(String dev_name, DeviceClass dev_class, int index) throws DevFailed
-	{
-		Util.out4.println("Entering MultiAttribute::add_attribute");
+    void add_attribute(String dev_name, DeviceClass dev_class, int index) throws DevFailed {
+        Util.out4.println("Entering MultiAttribute::add_attribute");
 
-		// Retrieve attr name list
-		Vector tmp_attr_list = dev_class.get_class_attr().get_attr_list();
-		Attr attr = (Attr) tmp_attr_list.get(index);
+        // Retrieve attr name list
+        Vector tmp_attr_list = dev_class.get_class_attr().get_attr_list();
+        Attr attr = (Attr) tmp_attr_list.get(index);
 
-		// Get device attribute properties
-		DbAttribute	db_attr = null;
-		if (Util._UseDb)
-			db_attr = ApiUtil.get_db_obj().get_device_attribute_property(dev_name, attr.get_name());
+        // Get device attribute properties
+        DbAttribute db_attr = null;
+        if (Util._UseDb)
+            db_attr = ApiUtil.get_db_obj().get_device_attribute_property(dev_name, attr.get_name());
 
-		// Get attribute class properties
-		Vector class_prop = attr.get_class_properties();
-		Vector def_user_prop = attr.get_user_default_properties();
+        // Get attribute class properties
+        Vector class_prop = attr.get_class_properties();
+        Vector def_user_prop = attr.get_user_default_properties();
 
-		// If the attribute has some properties defined at device level,
-		//	build a vector of these properties
-		Vector dev_prop = new Vector();
-		if (Util._UseDb)
-		{
-			assert db_attr != null;
-			String[]	propnames = db_attr.get_property_list();
-			for (int p=0 ; p<propnames.length ; p++)
-			{
-				AttrProperty	property =
-					new AttrProperty(propnames[p], db_attr.get_value(p));
-				dev_prop.add(property);
-			}
-		}
+        // If the attribute has some properties defined at device level,
+        //	build a vector of these properties
+        Vector dev_prop = new Vector();
+        if (Util._UseDb) {
+            assert db_attr != null;
+            String[] propnames = db_attr.get_property_list();
+            for (int p = 0; p < propnames.length; p++) {
+                AttrProperty property =
+                        new AttrProperty(propnames[p], db_attr.get_value(p));
+                dev_prop.add(property);
+            }
+        }
 
-		// Concatenate these two attribute properties levels
-		Vector prop_list = new Vector();
-		concat(dev_prop,class_prop,prop_list);
-		add_user_default(prop_list,def_user_prop);
-		add_default(prop_list);
+        // Concatenate these two attribute properties levels
+        Vector prop_list = new Vector();
+        concat(dev_prop, class_prop, prop_list);
+        add_user_default(prop_list, def_user_prop);
+        add_default(prop_list);
 
-		// Create an Attribute instance
-		Attribute	attribute;
-		if (attr.get_writable() == AttrWriteType.WRITE || 
-		    attr.get_writable() == AttrWriteType.READ_WRITE)
-			attribute = new WAttribute(prop_list,attr,dev_name);
-		else
-			attribute = new Attribute(prop_list,attr,dev_name);
-		attr_list.add(attribute);
-				
-		// If it is writable, add it to the writable attribute list
-		if (attribute.get_writable() == AttrWriteType.WRITE ||
-		    attribute.get_writable() == AttrWriteType.READ_WRITE)
-				writable_attr_list.addElement(index);
-		
-		// If one of the alarm properties is defined, add it to the alarmed attribute list
-		if (attribute.is_alarmed() == true)
-			if (attribute.get_writable() != AttrWriteType.WRITE)
-				alarm_attr_list.addElement(index);
+        // Create an Attribute instance
+        Attribute attribute;
+        if (attr.get_writable() == AttrWriteType.WRITE ||
+                attr.get_writable() == AttrWriteType.READ_WRITE)
+            attribute = new WAttribute(prop_list, attr, dev_name);
+        else
+            attribute = new Attribute(prop_list, attr, dev_name);
+        attr_list.add(attribute);
 
-		// For each attribute, check if the writable_attr_name is set and in this
-		// case, check if the associated attribute exists and is writable
-		check_associated(attr_list.size()-1, dev_name);
-	
-		Util.out4.println("Leaving MultiAttribute::add_attribute");
-	}
+        // If it is writable, add it to the writable attribute list
+        if (attribute.get_writable() == AttrWriteType.WRITE ||
+                attribute.get_writable() == AttrWriteType.READ_WRITE)
+            writable_attr_list.addElement(index);
+
+        // If one of the alarm properties is defined, add it to the alarmed attribute list
+        if (attribute.is_alarmed() == true)
+            if (attribute.get_writable() != AttrWriteType.WRITE)
+                alarm_attr_list.addElement(index);
+
+        // For each attribute, check if the writable_attr_name is set and in this
+        // case, check if the associated attribute exists and is writable
+        check_associated(attr_list.size() - 1, dev_name);
+
+        Util.out4.println("Leaving MultiAttribute::add_attribute");
+    }
 //=================================================================
-/**
- * Remove an attribute on the device attribute list.
- *
- * @param attname Attribute's name to be removed to the list
- * @throws DevFailed .
- */
+
+    /**
+     * Remove an attribute on the device attribute list.
+     *
+     * @param attname Attribute's name to be removed to the list
+     * @throws DevFailed .
+     */
 //=================================================================
-	public void remove_attribute(String attname) throws DevFailed
-	{
-		// Check if this attribute is already defined for this device.
-		Attribute attr = get_attr_by_name(attname);
-		
-		//	And remove it
-		attr_list.remove(attr);
-	}
+    public void remove_attribute(String attname) throws DevFailed {
+        // Check if this attribute is already defined for this device.
+        Attribute attr = get_attr_by_name(attname);
 
-	
-/**
- * Get Attribute object from its name.
- *
- * This method returns a reference to the Attribute object with a name passed
- * as parameter. The equality on attribute name is case independant.
- *
- * @param attr_name The attribute name
- * @return A reference to the Attribute object
- * @exception DevFailed If the attribute is not defined.
- * Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
- * <b>DevFailed</b> exception specification
- */
- 
-	public Attribute get_attr_by_name(String attr_name) throws DevFailed
-	{
-		Attribute	attribute = null;
-		for (int i=0 ; i<attr_list.size() ; i++)
-		{
-			Attribute	att = (Attribute)attr_list.elementAt(i);
-			if (att.get_name().equalsIgnoreCase(attr_name))
-				attribute = att;
-		}
+        //	And remove it
+        attr_list.remove(attr);
+    }
 
-		if (attribute==null)
-		{
-			Util.out3.println("MultiAttribute.get_attr throwing exception");
-			Except.throw_exception("API_AttrNotFound",
-					    attr_name + " attribute not found" ,
-					     "MultiAttribute.get_attr");
-		}
-		return attribute;
-	}
 
-/**
- * Get Writable Attribute object from its name.
- *
- * This method returns a reference to the WAttribute object with a name passed
- * as parameter. The equality on attribute name is case independant.
- *
- * @param attr_name The attribute name
- * @return A reference to the writable attribute object
- * @exception DevFailed If the attribute is not defined.
- * Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
- * <b>DevFailed</b> exception specification
- */
+    /**
+     * Get Attribute object from its name.
+     * <p>
+     * This method returns a reference to the Attribute object with a name passed
+     * as parameter. The equality on attribute name is case independant.
+     *
+     * @param attr_name The attribute name
+     * @return A reference to the Attribute object
+     * @throws DevFailed If the attribute is not defined.
+     *                   Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
+     *                   <b>DevFailed</b> exception specification
+     */
 
-	public WAttribute get_w_attr_by_name(String attr_name) throws DevFailed
-	{
-		Attribute att = get_attr_by_name(attr_name);
-		
-		return ((WAttribute)(att));
-	} 
+    public Attribute get_attr_by_name(String attr_name) throws DevFailed {
+        Attribute attribute = null;
+        for (int i = 0; i < attr_list.size(); i++) {
+            Attribute att = (Attribute) attr_list.elementAt(i);
+            if (att.get_name().equalsIgnoreCase(attr_name))
+                attribute = att;
+        }
 
-/**
- * Get Attribute index into the main attribute vector from its name.
- *
- * This method returns the index in the Attribute vector (stored in the
- * MultiAttribute object) of an attribute with a given name. The name equality
- * is case independant
- *
- * @param attr_name The attribute name
- * @return The index in the main attributes vector
- * @exception DevFailed If the attribute is not found in the vector.
- * Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
- * <b>DevFailed</b> exception specification
- */
- 
-	public int get_attr_ind_by_name(String attr_name) throws DevFailed
-	{
-		int i;
+        if (attribute == null) {
+            Util.out3.println("MultiAttribute.get_attr throwing exception");
+            Except.throw_exception("API_AttrNotFound",
+                    attr_name + " attribute not found",
+                    "MultiAttribute.get_attr");
+        }
+        return attribute;
+    }
 
-		int nb_attr = attr_list.size();
-		for (i = 0;i < nb_attr;i++)
-		{
-			if (((Attribute)(attr_list.elementAt(i))).get_name().equalsIgnoreCase(attr_name) == true)
-				break;
-		}
-	
-		if (i == nb_attr)
-		{
-			Util.out3.println("MultiAttribute.get_attr_ind_by_name throwing exception");
-			Except.throw_exception("API_AttrNotFound",
-					      attr_name + " attribute not found",
-					      "MultiAttribute.get_attr_ind_by_name");
-		}
-	
-		return i;
-	}
+    /**
+     * Get Writable Attribute object from its name.
+     * <p>
+     * This method returns a reference to the WAttribute object with a name passed
+     * as parameter. The equality on attribute name is case independant.
+     *
+     * @param attr_name The attribute name
+     * @return A reference to the writable attribute object
+     * @throws DevFailed If the attribute is not defined.
+     *                   Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
+     *                   <b>DevFailed</b> exception specification
+     */
 
-/**
- * Check alarm on all attribute(s) with an alarm defined.
- *
- * This method returns a boolean set to true if one of the attribute with an 
- * alarm level defined is in alarm condition.
- *
- * @return A boolean set to true if one attribute is in alarm
- * @exception DevFailed If the alarm level are not defined for one of the
- * attribute in the list of alarmable one
- * Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
- * <b>DevFailed</b> exception specification
- *
- */
- 
-	public boolean check_alarm() throws DevFailed
-	{
-		boolean ret = false;
-		int nb_alarm = alarm_attr_list.size();
+    public WAttribute get_w_attr_by_name(String attr_name) throws DevFailed {
+        Attribute att = get_attr_by_name(attr_name);
 
-		for (int i = 0;i < nb_alarm;i++)
-		{
-			boolean tmp_ret = check_alarm((Integer) (alarm_attr_list.elementAt(i)));
-			if (tmp_ret == true)
-			{
-				ret = true;
-				break;
-			}
-		}
-	
-		return ret;
-	}
+        return ((WAttribute) (att));
+    }
 
-/**
- * Check alarm for one attribute with a given name.
- *
- * This method returns a boolean set to true if the attribute with the given
- * name is in alarm condition
- *
- * @param  attr_name  The attribute name
- * @return A boolean set to true if the attribute is in alarm
- * @exception DevFailed If the attribute does not have any alarm level defined.
- * Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
- * <b>DevFailed</b> exception specification
- *
- */
- 	
-	public boolean check_alarm(String attr_name) throws DevFailed
-	{
-		return get_attr_by_name(attr_name).check_alarm();
-	}
+    /**
+     * Get Attribute index into the main attribute vector from its name.
+     * <p>
+     * This method returns the index in the Attribute vector (stored in the
+     * MultiAttribute object) of an attribute with a given name. The name equality
+     * is case independant
+     *
+     * @param attr_name The attribute name
+     * @return The index in the main attributes vector
+     * @throws DevFailed If the attribute is not found in the vector.
+     *                   Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
+     *                   <b>DevFailed</b> exception specification
+     */
 
-/**
- * Check alarm for one attribute from its index in the main attributes vector.
- *
- * This method returns a boolean set to true if the attribute with the given
- * index in the attrobite object vector is in alarm condition
- *
- * @param  ind  The attribute index
- * @return A boolean set to true if the attribute is in alarm
- * @exception DevFailed If the attribute does not have any alarm level defined.
- * Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
- * <b>DevFailed</b> exception specification
- *
- */
- 	
-	public boolean check_alarm(int ind) throws DevFailed
-	{
-		return get_attr_by_ind(ind).check_alarm();
-	}
+    public int get_attr_ind_by_name(String attr_name) throws DevFailed {
+        int i;
+
+        int nb_attr = attr_list.size();
+        for (i = 0; i < nb_attr; i++) {
+            if (((Attribute) (attr_list.elementAt(i))).get_name().equalsIgnoreCase(attr_name) == true)
+                break;
+        }
+
+        if (i == nb_attr) {
+            Util.out3.println("MultiAttribute.get_attr_ind_by_name throwing exception");
+            Except.throw_exception("API_AttrNotFound",
+                    attr_name + " attribute not found",
+                    "MultiAttribute.get_attr_ind_by_name");
+        }
+
+        return i;
+    }
+
+    /**
+     * Check alarm on all attribute(s) with an alarm defined.
+     * <p>
+     * This method returns a boolean set to true if one of the attribute with an
+     * alarm level defined is in alarm condition.
+     *
+     * @return A boolean set to true if one attribute is in alarm
+     * @throws DevFailed If the alarm level are not defined for one of the
+     *                   attribute in the list of alarmable one
+     *                   Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
+     *                   <b>DevFailed</b> exception specification
+     */
+
+    public boolean check_alarm() throws DevFailed {
+        boolean ret = false;
+        int nb_alarm = alarm_attr_list.size();
+
+        for (int i = 0; i < nb_alarm; i++) {
+            boolean tmp_ret = check_alarm((Integer) (alarm_attr_list.elementAt(i)));
+            if (tmp_ret == true) {
+                ret = true;
+                break;
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * Check alarm for one attribute with a given name.
+     * <p>
+     * This method returns a boolean set to true if the attribute with the given
+     * name is in alarm condition
+     *
+     * @param attr_name The attribute name
+     * @return A boolean set to true if the attribute is in alarm
+     * @throws DevFailed If the attribute does not have any alarm level defined.
+     *                   Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
+     *                   <b>DevFailed</b> exception specification
+     */
+
+    public boolean check_alarm(String attr_name) throws DevFailed {
+        return get_attr_by_name(attr_name).check_alarm();
+    }
+
+    /**
+     * Check alarm for one attribute from its index in the main attributes vector.
+     * <p>
+     * This method returns a boolean set to true if the attribute with the given
+     * index in the attrobite object vector is in alarm condition
+     *
+     * @param ind The attribute index
+     * @return A boolean set to true if the attribute is in alarm
+     * @throws DevFailed If the attribute does not have any alarm level defined.
+     *                   Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
+     *                   <b>DevFailed</b> exception specification
+     */
+
+    public boolean check_alarm(int ind) throws DevFailed {
+        return get_attr_by_ind(ind).check_alarm();
+    }
 
 //+-------------------------------------------------------------------------
 //
@@ -668,59 +627,57 @@ public class MultiAttribute implements TangoConst
 //
 //--------------------------------------------------------------------------
 
-	void add_write_value(Attribute att)
-	{
-		WAttribute assoc_att = get_w_attr_by_ind(att.get_assoc_ind());
-	
-		switch (att.get_data_type())
-		{
-		case Tango_DEV_BOOLEAN :
-			boolean	bool_write_val = assoc_att.getBooleanWriteValue();		
-			att.add_write_value(bool_write_val);
-			break;
-		
-		case Tango_DEV_SHORT :
-			short sh_write_val = assoc_att.getShortWriteValue();		
-			att.add_write_value(sh_write_val);
-			break;
-		
-		case Tango_DEV_USHORT :
-			short ush_write_val = assoc_att.getShortWriteValue();		
-			att.add_write_value(ush_write_val);
-			break;
-		
-		case Tango_DEV_LONG :
-			int lg_write_val = assoc_att.getLongWriteValue();		
-			att.add_write_value(lg_write_val);
-			break;
-		
-		case Tango_DEV_ULONG :
-			int ulg_write_val = assoc_att.getLongWriteValue();		
-			att.add_write_value(ulg_write_val);
-			break;
-		
-		case Tango_DEV_LONG64 :
-			long lg64_write_val = assoc_att.getLong64WriteValue();		
-			att.add_write_value(lg64_write_val);
-			break;
-		
-		case Tango_DEV_ULONG64 :
-			long ulg64_write_val = assoc_att.getULong64WriteValue();		
-			att.add_write_value(ulg64_write_val);
-			break;
-		
-		case Tango_DEV_DOUBLE :
-			double db_write_val = assoc_att.getDoubleWriteValue();		
-			att.add_write_value(db_write_val);
-			break;
-		
-		case Tango_DEV_STRING :
-			String str_write_val = assoc_att.getStringWriteValue();		
-			att.add_write_value(str_write_val);
-			break;
-		}
-	}
-	
+    void add_write_value(Attribute att) {
+        WAttribute assoc_att = get_w_attr_by_ind(att.get_assoc_ind());
+
+        switch (att.get_data_type()) {
+            case Tango_DEV_BOOLEAN:
+                boolean bool_write_val = assoc_att.getBooleanWriteValue();
+                att.add_write_value(bool_write_val);
+                break;
+
+            case Tango_DEV_SHORT:
+                short sh_write_val = assoc_att.getShortWriteValue();
+                att.add_write_value(sh_write_val);
+                break;
+
+            case Tango_DEV_USHORT:
+                short ush_write_val = assoc_att.getShortWriteValue();
+                att.add_write_value(ush_write_val);
+                break;
+
+            case Tango_DEV_LONG:
+                int lg_write_val = assoc_att.getLongWriteValue();
+                att.add_write_value(lg_write_val);
+                break;
+
+            case Tango_DEV_ULONG:
+                int ulg_write_val = assoc_att.getLongWriteValue();
+                att.add_write_value(ulg_write_val);
+                break;
+
+            case Tango_DEV_LONG64:
+                long lg64_write_val = assoc_att.getLong64WriteValue();
+                att.add_write_value(lg64_write_val);
+                break;
+
+            case Tango_DEV_ULONG64:
+                long ulg64_write_val = assoc_att.getULong64WriteValue();
+                att.add_write_value(ulg64_write_val);
+                break;
+
+            case Tango_DEV_DOUBLE:
+                double db_write_val = assoc_att.getDoubleWriteValue();
+                att.add_write_value(db_write_val);
+                break;
+
+            case Tango_DEV_STRING:
+                String str_write_val = assoc_att.getStringWriteValue();
+                att.add_write_value(str_write_val);
+                break;
+        }
+    }
+
 //+-------------------------------------------------------------------------
 //
 // method : 		read_alarm
@@ -732,48 +689,43 @@ public class MultiAttribute implements TangoConst
 //
 //--------------------------------------------------------------------------
 
-/**
- * Add alarm message to device status.
- *
- * This method add alarm mesage to the string passed as parameter. A message
- * is added for each attribute which is in alarm condition
- *
- * @param  status  The string (should be the device status)
- */
-	public void read_alarm(StringBuffer status)
-	{
-		int i;
-	
-		for (i = 0;i < alarm_attr_list.size();i++)
-		{
-			Attribute att = get_attr_by_ind((Integer) (alarm_attr_list.elementAt(i)));
-			if (att.get_quality().value() == AttrQuality._ATTR_ALARM)
-			{
-		
+    /**
+     * Add alarm message to device status.
+     * <p>
+     * This method add alarm mesage to the string passed as parameter. A message
+     * is added for each attribute which is in alarm condition
+     *
+     * @param status The string (should be the device status)
+     */
+    public void read_alarm(StringBuffer status) {
+        int i;
+
+        for (i = 0; i < alarm_attr_list.size(); i++) {
+            Attribute att = get_attr_by_ind((Integer) (alarm_attr_list.elementAt(i)));
+            if (att.get_quality().value() == AttrQuality._ATTR_ALARM) {
+
 //
 // Add a message for low level alarm
 //
 
-				if (att.is_min_alarm() == true)
-				{
-					status.append("\nAlarm : Value too low for attribute ");
-					status.append(att.get_name());				
-				}
+                if (att.is_min_alarm() == true) {
+                    status.append("\nAlarm : Value too low for attribute ");
+                    status.append(att.get_name());
+                }
 
 //
 // Add a message for high level alarm
 //
-			
-				if (att.is_max_alarm() == true)
-				{
-					status.append("\nAlarm : Value too high for attribute ");
-					status.append(att.get_name());
-				}
-			}			
-		}
-	}
 
-					
+                if (att.is_max_alarm() == true) {
+                    status.append("\nAlarm : Value too high for attribute ");
+                    status.append(att.get_name());
+                }
+            }
+        }
+    }
+
+
 //+-------------------------------------------------------------------------
 //
 // Methods to retrieve/set some data members from outside the class and all
@@ -781,56 +733,52 @@ public class MultiAttribute implements TangoConst
 //
 //--------------------------------------------------------------------------
 
-/**
- * Get list of attribute with an alarm level defined.
- *
- * @return  A vector of Integer object. Each object is the index in the main
- * attribute vector of attribute with alarm level defined
- */
- 
-	public Vector get_alarm_list()
-	{
-		return alarm_attr_list;
-	}
+    /**
+     * Get list of attribute with an alarm level defined.
+     *
+     * @return A vector of Integer object. Each object is the index in the main
+     * attribute vector of attribute with alarm level defined
+     */
 
-/**
- * Get attribute number.
- *
- * @return  The attribute number
- */
- 	
-	public int get_attr_nb()
-	{
-		return attr_list.size();
-	}
-	
-/**
- * Get Attribute object from its index.
- *
- * This method returns a reference to the Attribute object from the index in the
- * main attribute vector
- *
- * @param ind The attribute index
- * @return A reference to the Attribute object
- */
- 	
-	public Attribute get_attr_by_ind(int ind)
-	{
-		return ((Attribute)(attr_list.elementAt(ind)));
-	}
+    public Vector get_alarm_list() {
+        return alarm_attr_list;
+    }
 
-/**
- * Get Writable Attribute object from its index.
- *
- * This method returns a reference to the Writable Attribute object from the
- * index in the main attribute vector
- *
- * @param ind The attribute index
- * @return A reference to the WAttribute object
- */
- 	
-	public WAttribute get_w_attr_by_ind(int ind)
-	{
-		return ((WAttribute)(attr_list.elementAt(ind)));
-	}
+    /**
+     * Get attribute number.
+     *
+     * @return The attribute number
+     */
+
+    public int get_attr_nb() {
+        return attr_list.size();
+    }
+
+    /**
+     * Get Attribute object from its index.
+     * <p>
+     * This method returns a reference to the Attribute object from the index in the
+     * main attribute vector
+     *
+     * @param ind The attribute index
+     * @return A reference to the Attribute object
+     */
+
+    public Attribute get_attr_by_ind(int ind) {
+        return ((Attribute) (attr_list.elementAt(ind)));
+    }
+
+    /**
+     * Get Writable Attribute object from its index.
+     * <p>
+     * This method returns a reference to the Writable Attribute object from the
+     * index in the main attribute vector
+     *
+     * @param ind The attribute index
+     * @return A reference to the WAttribute object
+     */
+
+    public WAttribute get_w_attr_by_ind(int ind) {
+        return ((WAttribute) (attr_list.elementAt(ind)));
+    }
 }

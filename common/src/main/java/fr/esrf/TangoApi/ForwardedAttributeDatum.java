@@ -36,59 +36,55 @@ package fr.esrf.TangoApi;
 
 
 /**
- *	Class Description:
- *	This class manage data object for Tango forwarded attribute information.
+ * Class Description:
+ * This class manage data object for Tango forwarded attribute information.
  *
- * @author  verdier
- * @version  $Revision: 25723 $
+ * @author verdier
+ * @version $Revision: 25723 $
  */
 
-public class ForwardedAttributeDatum implements java.io.Serializable
-{
-	/**
-	 *	The device name.
-	 */
-	private String deviceName;
-	/**
-	 *	The forwarded attribute name.
-	 */
-	private String forwardedAttributeName;
-	/**
-	 *	root attribute name
-	 */
-	private String rootAttributeName;
+public class ForwardedAttributeDatum implements java.io.Serializable {
+    /**
+     * The device name.
+     */
+    private String deviceName;
+    /**
+     * The forwarded attribute name.
+     */
+    private String forwardedAttributeName;
+    /**
+     * root attribute name
+     */
+    private String rootAttributeName;
 
-	ForwardedAttributeDatum(String deviceName, String forwardedAttributeName, String rootAttributeName) {
-		this.deviceName = deviceName;
-		this.forwardedAttributeName = forwardedAttributeName;
-		this.rootAttributeName = rootAttributeName;
-	}
+    ForwardedAttributeDatum(String deviceName, String forwardedAttributeName, String rootAttributeName) {
+        this.deviceName = deviceName;
+        this.forwardedAttributeName = forwardedAttributeName;
+        this.rootAttributeName = rootAttributeName;
+    }
 
-	/**
-	 *
-	 * @return the device name which owns the forwarded attribute
-	 */
-	public String getDeviceName() {
-		return deviceName;
-	}
+    /**
+     * @return the device name which owns the forwarded attribute
+     */
+    public String getDeviceName() {
+        return deviceName;
+    }
 
-	/**
-	 *
-	 * @return the forwarded attribute name
-	 */
-	public String getForwardedAttributeName() {
-		return forwardedAttributeName;
-	}
+    /**
+     * @return the forwarded attribute name
+     */
+    public String getForwardedAttributeName() {
+        return forwardedAttributeName;
+    }
 
-	/**
-	 *
-	 * @return the root attribute (__root_att) .
-	 */
-	public String getRootAttributeName() {
-		return rootAttributeName;
-	}
+    /**
+     * @return the root attribute (__root_att) .
+     */
+    public String getRootAttributeName() {
+        return rootAttributeName;
+    }
 
-	public String toString() {
-		return deviceName + "/" + forwardedAttributeName + " (__root_att) is " + rootAttributeName;
-	}
+    public String toString() {
+        return deviceName + "/" + forwardedAttributeName + " (__root_att) is " + rootAttributeName;
+    }
 }

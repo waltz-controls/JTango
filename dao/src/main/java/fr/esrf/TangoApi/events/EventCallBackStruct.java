@@ -34,7 +34,6 @@
 
 package fr.esrf.TangoApi.events;
 
-import fr.esrf.TangoApi.ApiUtil;
 import fr.esrf.TangoApi.CallBack;
 import fr.esrf.TangoApi.DeviceProxy;
 
@@ -57,7 +56,7 @@ public class EventCallBackStruct implements java.io.Serializable {
     public String[] filters;
     public boolean filter_ok;
     public boolean use_ev_queue;
-    public EventConsumer    consumer;
+    public EventConsumer consumer;
     private long zmqCounter = Long.MAX_VALUE;
     private boolean synchronousDone = false;
 
@@ -88,6 +87,7 @@ public class EventCallBackStruct implements java.io.Serializable {
         this.filter_ok = filter_ok;
         this.use_ev_queue = (callback == null);
     }
+
     //-======================================================================
     /*
      * Creates a new instance of EventCallBackStruct
@@ -112,6 +112,7 @@ public class EventCallBackStruct implements java.io.Serializable {
         this.filter_ok = filter_ok;
         this.use_ev_queue = (callback == null);
     }
+
     //=======================================================================
     //=======================================================================
     public String toString() {
@@ -128,21 +129,25 @@ public class EventCallBackStruct implements java.io.Serializable {
         sb.append("use_ev_queue = ").append(use_ev_queue).append('\n');
         return sb.toString();
     }
+
     //=======================================================================
     //=======================================================================
     public long getZmqCounter() {
         return zmqCounter;
     }
+
     //=======================================================================
     //=======================================================================
     public void setZmqCounter(long zmqCounter) {
         this.zmqCounter = zmqCounter;
     }
+
     //=======================================================================
     //=======================================================================
     public boolean isSynchronousDone() {
         return synchronousDone;
     }
+
     //=======================================================================
     //=======================================================================
     public void setSynchronousDone(boolean synchronousDone) {

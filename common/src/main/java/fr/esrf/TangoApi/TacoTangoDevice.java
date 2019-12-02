@@ -73,11 +73,12 @@ public class TacoTangoDevice {
     private AttributeConfig[] att_config = null;
 
     //======================================================
+
     /**
      * Constructor for a Taco Device Object.
      *
-     * @param    deviceName    the device name
-     * @param    netHost    the $NETHOST (where Taco database is)
+     * @param deviceName the device name
+     * @param netHost    the $NETHOST (where Taco database is)
      */
     //======================================================
     TacoTangoDevice(String deviceName, String netHost) throws DevFailed {
@@ -85,11 +86,12 @@ public class TacoTangoDevice {
         tacoDevice.init(this, deviceName, netHost);
     }
     //======================================================
+
     /**
      * Excute a command on a TACO device
      *
-     * @param    command    Command name to be executed on the device
-     * @param    argin    Input command argument (Tango data)
+     * @param command Command name to be executed on the device
+     * @param argin   Input command argument (Tango data)
      * @return Output command argument (Tango data)
      */
     //======================================================
@@ -109,17 +111,19 @@ public class TacoTangoDevice {
         return tacoDevice.commandQuery(this, cmdname);
     }
     //======================================================
+
     /**
      * Execute the dev_rpc_protocol TACO command to change RPC protocol mode.
      *
-     * @param    mode RPC protocol mode to be seted
-     * (TangoApi.ApiDefs.<b>D_TCP</b> or ApiDefs.TacoTangoDevice.<b>D_TCP</b>).
+     * @param mode RPC protocol mode to be seted
+     *             (TangoApi.ApiDefs.<b>D_TCP</b> or ApiDefs.TacoTangoDevice.<b>D_TCP</b>).
      */
     //======================================================
     void set_rpc_protocol(int mode) throws DevFailed {
         tacoDevice.set_rpc_protocol(this, mode);
     }
     //======================================================
+
     /**
      * Return the dev_rpc_protocol use by TACO device
      *
@@ -131,6 +135,7 @@ public class TacoTangoDevice {
         return tacoDevice.get_rpc_protocol(this);
     }
     //======================================================
+
     /**
      * Execute the dev_rpc_timeout TACO command to get RPC timeout.
      */
@@ -139,6 +144,7 @@ public class TacoTangoDevice {
         return tacoDevice.get_rpc_timeout(this);
     }
     //======================================================
+
     /**
      * Execute the dev_rpc_timeout TACO command to set RPC timeout.
      */
@@ -147,16 +153,17 @@ public class TacoTangoDevice {
         tacoDevice.set_rpc_timeout(this, millis);
     }
     //==========================================================================
+
     /**
      * Returns  TACO device information.
      *
      * @return TACO device information as String array.
-     *         <li> Device name.
-     *         <li> Class name
-     *         <li> Device type
-     *         <li> Device server name
-     *         <li> Host name
-     *         <li> Nethost name
+     * <li> Device name.
+     * <li> Class name
+     * <li> Device type
+     * <li> Device server name
+     * <li> Host name
+     * <li> Nethost name
      */
     //==========================================================================
     String[] dev_inform() throws DevFailed {
@@ -169,6 +176,7 @@ public class TacoTangoDevice {
         return tacoDevice.get_property(this, propnames);
     }
     //==========================================================================
+
     /**
      * Set the device data source
      *
@@ -179,6 +187,7 @@ public class TacoTangoDevice {
         tacoDevice.set_source(this, src);
     }
     //==========================================================================
+
     /**
      * returns the device data source
      *
@@ -194,8 +203,8 @@ public class TacoTangoDevice {
 
     //==========================================================================
     /*
-	 *	Signal / Attribute management
-	 */
+     *	Signal / Attribute management
+     */
     //==========================================================================
 
     //==========================================================================
@@ -217,17 +226,18 @@ public class TacoTangoDevice {
     }
 
     //======================================================
-	/*
-	 *	Taco  <--> Tango  data conversion methods
-	 */
+    /*
+     *	Taco  <--> Tango  data conversion methods
+     */
     //======================================================
 
     //======================================================
+
     /**
      * Taco  --> Tango  data convertion method
      *
+     * @param taco_type Taco data
      * @return the TANGO converted data
-     * @param    taco_type Taco data
      */
     //======================================================
     int tangoType(int taco_type) {
@@ -235,18 +245,19 @@ public class TacoTangoDevice {
     }
 
     //======================================================
+
     /**
      * Taco  --> Tango  data conversion method
      *
+     * @param taco_info Taco data
      * @return the TANGO converted data
-     *         <ul>
-     *         <li> Device name.
-     *         <li> Class name
-     *         <li> Device type
-     *         <li> Device server name
-     *         <li> Host name
-     *         </ul>
-     * @param    taco_info Taco data
+     * <ul>
+     * <li> Device name.
+     * <li> Class name
+     * <li> Device type
+     * <li> Device server name
+     * <li> Host name
+     * </ul>
      */
     //======================================================
     String[] infoToTango(String taco_info) {

@@ -1,8 +1,5 @@
 package org.tango.client.database.cache;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.tango.utils.CaseInsensitiveMap;
 
 import java.util.Arrays;
@@ -43,8 +40,8 @@ public final class AttributeCache {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(name).append(" = [");
-        for (Map.Entry<String, String[]> entry:  propertiesCache.entrySet()) {
-           builder.append(entry.getKey()).append(" = ").append(Arrays.toString(entry.getValue())).append(",");
+        for (Map.Entry<String, String[]> entry : propertiesCache.entrySet()) {
+            builder.append(entry.getKey()).append(" = ").append(Arrays.toString(entry.getValue())).append(",");
         }
         builder.append("]");
         return builder.toString();

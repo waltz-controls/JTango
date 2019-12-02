@@ -274,7 +274,7 @@ public final class DeviceManager {
                 attribute.lock();
                 try {
                     // convert to the State type use on API side
-                    if (value.getValue() instanceof  DeviceState) {
+                    if (value.getValue() instanceof DeviceState) {
                         DeviceState state = (DeviceState) value.getValue();
                         value.setValue(state.getDevState());
                     }

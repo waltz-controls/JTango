@@ -1,42 +1,28 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.logging;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.server.Constants;
-import org.tango.server.ExceptionMessages;
-import org.tango.utils.DevFailedUtils;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
@@ -47,6 +33,15 @@ import ch.qos.logback.core.rolling.FixedWindowRollingPolicy;
 import ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy;
 import ch.qos.logback.core.util.FileSize;
 import fr.esrf.Tango.DevFailed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.server.Constants;
+import org.tango.server.ExceptionMessages;
+import org.tango.utils.DevFailedUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Manage tango logging. Based on LogBack logging system
@@ -174,7 +169,7 @@ public final class LoggingManager {
      * @throws DevFailed
      */
     public void addDeviceAppender(final String deviceTargetName, final Class<?> deviceClassName,
-            final String loggingDeviceName) throws DevFailed {
+                                  final String loggingDeviceName) throws DevFailed {
         if (rootLoggerBack != null) {
             logger.debug("add device appender {} on {}", deviceTargetName, loggingDeviceName);
             final DeviceAppender appender = new DeviceAppender(deviceTargetName, loggingDeviceName);

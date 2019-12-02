@@ -28,11 +28,7 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoDs.TangoConst;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public enum EventType {
     /**
@@ -139,6 +135,7 @@ public enum EventType {
 
     /**
      * Get event types used only for attribute value events
+     *
      * @return
      */
     public static List<EventType> getEventAttrValueTypeList() {
@@ -146,7 +143,6 @@ public enum EventType {
     }
 
     /**
-     *
      * @return EventType as a String
      */
     public String getString() {
@@ -154,7 +150,6 @@ public enum EventType {
     }
 
     /**
-     *
      * @return EventType as an int
      */
     public int getValue() {

@@ -24,16 +24,7 @@
  */
 package org.tango.server.servant;
 
-import fr.esrf.Tango.AttrDataFormat;
-import fr.esrf.Tango.AttributeValue_3;
-import fr.esrf.Tango.AttributeValue_4;
-import fr.esrf.Tango.AttributeValue_5;
-import fr.esrf.Tango.ClntIdent;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevSource;
-import fr.esrf.Tango.DevState;
-import fr.esrf.Tango.MultiDevFailed;
-import fr.esrf.Tango.NamedDevError;
+import fr.esrf.Tango.*;
 import net.sf.ehcache.CacheException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

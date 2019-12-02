@@ -37,7 +37,6 @@ package fr.esrf.TangoApi.events;
 
 import fr.esrf.Tango.DevError;
 import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.DeviceAttribute;
 import fr.esrf.TangoApi.DeviceInterface;
 
 import java.util.EventObject;
@@ -50,7 +49,7 @@ public class TangoInterfaceChangeEvent extends EventObject implements java.io.Se
     /**
      * Creates a new instance of AttrAbsoluteChangeEvent
      *
-     * @param source     event source
+     * @param source    event source
      * @param eventData event data
      */
     public TangoInterfaceChangeEvent(TangoInterfaceChange source, EventData eventData) {
@@ -64,7 +63,7 @@ public class TangoInterfaceChangeEvent extends EventObject implements java.io.Se
     //-=============================================
     @SuppressWarnings({"UnusedDeclaration"})
     public DeviceInterface getValue() throws DevFailed {
-        if (deviceInterface==null)
+        if (deviceInterface == null)
             throw new DevFailed(errors);
         return deviceInterface;
     }
@@ -73,9 +72,10 @@ public class TangoInterfaceChangeEvent extends EventObject implements java.io.Se
     //-=============================================
     @SuppressWarnings({"UnusedDeclaration"})
     public boolean isZmqEvent() {
-        return (eventSource==EventData.ZMQ_EVENT);
+        return (eventSource == EventData.ZMQ_EVENT);
     }
+
     private DeviceInterface deviceInterface;
-    private DevError[]  errors;
-    private int         eventSource;
+    private DevError[] errors;
+    private int eventSource;
 }

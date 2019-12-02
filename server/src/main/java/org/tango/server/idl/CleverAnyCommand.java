@@ -1,77 +1,46 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.idl;
+
+import fr.esrf.Tango.*;
+import fr.esrf.TangoDs.TangoConst;
+import org.omg.CORBA.Any;
+import org.tango.orb.ORBManager;
+import org.tango.server.ExceptionMessages;
+import org.tango.utils.DevFailedUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.omg.CORBA.Any;
-import org.tango.orb.ORBManager;
-import org.tango.server.ExceptionMessages;
-import org.tango.utils.DevFailedUtils;
-
-import fr.esrf.Tango.DevBooleanHelper;
-import fr.esrf.Tango.DevDoubleHelper;
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevEncodedHelper;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevFloatHelper;
-import fr.esrf.Tango.DevLong64Helper;
-import fr.esrf.Tango.DevLongHelper;
-import fr.esrf.Tango.DevShortHelper;
-import fr.esrf.Tango.DevState;
-import fr.esrf.Tango.DevStateHelper;
-import fr.esrf.Tango.DevStringHelper;
-import fr.esrf.Tango.DevUCharHelper;
-import fr.esrf.Tango.DevULong64Helper;
-import fr.esrf.Tango.DevULongHelper;
-import fr.esrf.Tango.DevUShortHelper;
-import fr.esrf.Tango.DevVarCharArrayHelper;
-import fr.esrf.Tango.DevVarDoubleArrayHelper;
-import fr.esrf.Tango.DevVarDoubleStringArray;
-import fr.esrf.Tango.DevVarDoubleStringArrayHelper;
-import fr.esrf.Tango.DevVarFloatArrayHelper;
-import fr.esrf.Tango.DevVarLong64ArrayHelper;
-import fr.esrf.Tango.DevVarLongArrayHelper;
-import fr.esrf.Tango.DevVarLongStringArray;
-import fr.esrf.Tango.DevVarLongStringArrayHelper;
-import fr.esrf.Tango.DevVarShortArrayHelper;
-import fr.esrf.Tango.DevVarStateArrayHelper;
-import fr.esrf.Tango.DevVarStringArrayHelper;
-import fr.esrf.Tango.DevVarULong64ArrayHelper;
-import fr.esrf.Tango.DevVarULongArrayHelper;
-import fr.esrf.Tango.DevVarUShortArrayHelper;
-import fr.esrf.TangoDs.TangoConst;
-
 /**
  * Convertion tool between java types and tango types for commands
- * 
+ *
  * @author ABEILLE
- * 
+ *
  */
 public final class CleverAnyCommand {
 
@@ -136,10 +105,12 @@ public final class CleverAnyCommand {
         PARAM_MAP.put(TangoConst.Tango_DEVVAR_DOUBLESTRINGARRAY, DevVarDoubleStringArray.class);
         PARAM_MAP.put(TangoConst.Tango_DEVVAR_LONGSTRINGARRAY, DevVarLongStringArray.class);
     }
+
     /**
      * Command types for which, insertion must be done on Any (otherwise C++ client crashes)
      */
     private static final Map<Integer, String> INSERT_ANY_MAP = new HashMap<Integer, String>();
+
     static {
         INSERT_ANY_MAP.put(TangoConst.Tango_DEV_BOOLEAN, "insert_boolean");
         INSERT_ANY_MAP.put(TangoConst.Tango_DEV_SHORT, "insert_short");
@@ -156,7 +127,7 @@ public final class CleverAnyCommand {
 
     /**
      * Get value of an Any
-     * 
+     *
      * @param any
      * @param tangoType
      * @return The value

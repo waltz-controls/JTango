@@ -123,8 +123,8 @@ final class EventImpl {
     /**
      * Fire an event containing a value is condition is valid.
      *
-     * @throws DevFailed
      * @param eventSocket
+     * @throws DevFailed
      */
     protected void pushAttributeValueEvent(ZMQ.Socket eventSocket) throws DevFailed {
         xlogger.entry();
@@ -176,7 +176,7 @@ final class EventImpl {
     /**
      * Send a data ready event
      *
-     * @param counter  a counter value
+     * @param counter     a counter value
      * @param eventSocket
      * @throws DevFailed
      */
@@ -254,7 +254,7 @@ final class EventImpl {
     /**
      * Fire an event containing a DevFailed.
      *
-     * @param devFailed the failed object to be sent.
+     * @param devFailed   the failed object to be sent.
      * @param eventSocket
      * @throws DevFailed
      */

@@ -1,38 +1,33 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.testserver;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.util.Scanner;
-
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoApi.AttributeInfoEx;
+import fr.soleil.tango.clientapi.TangoAttribute;
+import fr.soleil.tango.clientapi.TangoCommand;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,16 +35,20 @@ import org.tango.server.Constants;
 import org.tango.server.PolledObjectType;
 import org.tango.server.ServerManager;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.AttributeInfoEx;
-import fr.soleil.tango.clientapi.TangoAttribute;
-import fr.soleil.tango.clientapi.TangoCommand;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.util.Scanner;
+
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  * TODO: test polling
- * 
+ *
  * @author ABEILLE
- * 
+ *
  */
 
 public class ForwardedAttributeTest {
@@ -112,7 +111,7 @@ public class ForwardedAttributeTest {
             public void run() {
                 final Scanner sc = new Scanner(src);
                 while (sc.hasNextLine()) {
-                    dest.println("//forked process// "+ sc.nextLine());
+                    dest.println("//forked process// " + sc.nextLine());
                 }
                 dest.flush();
                 sc.close();
@@ -158,7 +157,7 @@ public class ForwardedAttributeTest {
         System.out.println("name " + info.name);
         info.description = "a description";
         info.label = "a label";
-        attr.getAttributeProxy().set_info(new AttributeInfoEx[] { info });
+        attr.getAttributeProxy().set_info(new AttributeInfoEx[]{info});
         final AttributeInfoEx infoRoot = attrRoot.getAttributeProxy().get_info_ex();
         assertThat(infoRoot.description, equalTo(info.description));
         assertThat(infoRoot.label, equalTo("doubleScalar"));
@@ -167,7 +166,7 @@ public class ForwardedAttributeTest {
         assertThat(info2.label, equalTo("a label"));
         // reset value for others tests
         info.label = "testfowarded";
-        attr.getAttributeProxy().set_info(new AttributeInfoEx[] { info });
+        attr.getAttributeProxy().set_info(new AttributeInfoEx[]{info});
     }
 
     @Test
@@ -177,7 +176,7 @@ public class ForwardedAttributeTest {
         final AttributeInfoEx info = attrRoot.getAttributeProxy().get_info_ex();
         info.description = "a description";
         info.label = "a label";
-        attrRoot.getAttributeProxy().set_info(new AttributeInfoEx[] { info });
+        attrRoot.getAttributeProxy().set_info(new AttributeInfoEx[]{info});
         final AttributeInfoEx infoRoot = attrRoot.getAttributeProxy().get_info_ex();
         assertThat(infoRoot.description, equalTo(info.description));
         assertThat(infoRoot.label, equalTo(info.label));
@@ -186,16 +185,16 @@ public class ForwardedAttributeTest {
         assertThat(info2.label, equalTo("testfowarded"));
         // reset value for others tests
         info.label = "doubleScalar";
-        attrRoot.getAttributeProxy().set_info(new AttributeInfoEx[] { info });
+        attrRoot.getAttributeProxy().set_info(new AttributeInfoEx[]{info});
     }
 
     @Test(expected = DevFailed.class)
     public void configurePolling() throws DevFailed {
         // install polling
         final TangoCommand cmd = new TangoCommand(adminName, "AddObjPolling");
-        final int[] param1 = new int[] { 10 };
-        final String[] param2 = new String[] { ForwardedServer.NO_DB_DEVICE_NAME,
-                PolledObjectType.ATTRIBUTE.toString(), "testfowarded" };
+        final int[] param1 = new int[]{10};
+        final String[] param2 = new String[]{ForwardedServer.NO_DB_DEVICE_NAME,
+                PolledObjectType.ATTRIBUTE.toString(), "testfowarded"};
         cmd.insertMixArgin(param1, param2);
         cmd.execute();
     }

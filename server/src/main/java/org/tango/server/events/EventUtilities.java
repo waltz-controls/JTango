@@ -24,24 +24,7 @@
  */
 package org.tango.server.events;
 
-import fr.esrf.Tango.AttDataReady;
-import fr.esrf.Tango.AttDataReadyHelper;
-import fr.esrf.Tango.AttributeConfig_3;
-import fr.esrf.Tango.AttributeConfig_3Helper;
-import fr.esrf.Tango.AttributeConfig_5;
-import fr.esrf.Tango.AttributeConfig_5Helper;
-import fr.esrf.Tango.AttributeValue_4;
-import fr.esrf.Tango.AttributeValue_4Helper;
-import fr.esrf.Tango.AttributeValue_5;
-import fr.esrf.Tango.AttributeValue_5Helper;
-import fr.esrf.Tango.DevErrorListHelper;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevIntrChange;
-import fr.esrf.Tango.DevIntrChangeHelper;
-import fr.esrf.Tango.DevPipeData;
-import fr.esrf.Tango.DevPipeDataHelper;
-import fr.esrf.Tango.ZmqCallInfo;
-import fr.esrf.Tango.ZmqCallInfoHelper;
+import fr.esrf.Tango.*;
 import org.jacorb.orb.CDROutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

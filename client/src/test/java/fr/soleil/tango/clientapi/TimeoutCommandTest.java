@@ -1,13 +1,12 @@
 package fr.soleil.tango.clientapi;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.TangoApi.DeviceProxy;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.DeviceProxy;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
 @Ignore("a tango test must be running")
 public class TimeoutCommandTest {

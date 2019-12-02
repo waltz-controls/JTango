@@ -35,7 +35,8 @@
 package fr.esrf.TangoApi.events;
 
 
-import fr.esrf.Tango.*;
+import fr.esrf.Tango.DevError;
+import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.*;
 import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
@@ -54,39 +55,43 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         implements TangoConst, IEventConsumer {
 
     protected static int subscribe_event_id = 0;
-    protected static Hashtable<String, EventChannelStruct>   channel_map        = new Hashtable<>();
-    protected static Hashtable<String, String>               device_channel_map = new Hashtable<>();
-    protected static Hashtable<String, EventCallBackStruct>  event_callback_map = new Hashtable<>();
-    protected static Hashtable<String, EventCallBackStruct>  failed_event_callback_map = new Hashtable<>();
+    protected static Hashtable<String, EventChannelStruct> channel_map = new Hashtable<>();
+    protected static Hashtable<String, String> device_channel_map = new Hashtable<>();
+    protected static Hashtable<String, EventCallBackStruct> event_callback_map = new Hashtable<>();
+    protected static Hashtable<String, EventCallBackStruct> failed_event_callback_map = new Hashtable<>();
 
     //  Alternate tango hosts
     static List<String> possibleTangoHosts = new ArrayList<>();
+
     //===============================================================
     //===============================================================
-    abstract protected  void checkDeviceConnection(DeviceProxy device,
-                        String attribute, DeviceData deviceData, String event_name) throws DevFailed;
+    abstract protected void checkDeviceConnection(DeviceProxy device,
+                                                  String attribute, DeviceData deviceData, String event_name) throws DevFailed;
 
     abstract protected void connect_event_channel(ConnectionStructure cs) throws DevFailed;
+
     abstract protected boolean reSubscribe(EventChannelStruct event_channel_struct,
-                                  EventCallBackStruct callback_struct);
+                                           EventCallBackStruct callback_struct);
+
     abstract protected void removeFilters(EventCallBackStruct cb_struct) throws DevFailed;
 
     abstract protected String getEventSubscriptionCommandName();
 
     abstract protected void checkIfAlreadyConnected(DeviceProxy device,
-                                           String attribute,
-                                           String event_name,
-                                           CallBack callback,
-                                           int max_size,
-                                           boolean stateless) throws DevFailed;
+                                                    String attribute,
+                                                    String event_name,
+                                                    CallBack callback,
+                                                    int max_size,
+                                                    boolean stateless) throws DevFailed;
 
     abstract protected void setAdditionalInfoToEventCallBackStruct(EventCallBackStruct callback_struct,
-                            String device_name, String attribute, String event_name,
-                            String[]filters, EventChannelStruct channel_struct)throws DevFailed;
+                                                                   String device_name, String attribute, String event_name,
+                                                                   String[] filters, EventChannelStruct channel_struct) throws DevFailed;
 
     abstract protected void unsubscribeTheEvent(EventCallBackStruct callbackStruct) throws DevFailed;
 
     abstract protected void checkIfHeartbeatSkipped(String name, EventChannelStruct eventChannelStruct);
+
     //===============================================================
     //===============================================================
     protected EventConsumer() throws DevFailed {
@@ -94,27 +99,32 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         //  Start the KeepAliveThread loop
         KeepAliveThread.getInstance();
     }
+
     //===============================================================
     //===============================================================
     static Hashtable<String, EventChannelStruct> getChannelMap() {
         return channel_map;
     }
+
     //===============================================================
     //===============================================================
-    static Hashtable<String, EventCallBackStruct>  getEventCallbackMap() {
+    static Hashtable<String, EventCallBackStruct> getEventCallbackMap() {
         return event_callback_map;
     }
+
     //===============================================================
     //===============================================================
     public void disconnect_structured_push_consumer() {
         System.out.println("calling EventConsumer.disconnect_structured_push_consumer()");
     }
+
     //===============================================================
     //===============================================================
     public void offer_change(org.omg.CosNotification.EventType[] added, org.omg.CosNotification.EventType[] removed)
             throws org.omg.CosNotifyComm.InvalidEventType {
         System.out.println("calling EventConsumer.offer_change()");
     }
+
     //===============================================================
     //===============================================================
     private EventChannelStruct getEventChannelStruct(String channelName) {
@@ -123,8 +133,8 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         }
         //  Check with other TangoHosts using possibleTangoHosts as header
         int index = channelName.indexOf("//");
-        if (index>0) {
-            index = channelName.indexOf('/', index+2); //  "//".length()
+        if (index > 0) {
+            index = channelName.indexOf('/', index + 2); //  "//".length()
             for (String possibleTangoHost : possibleTangoHosts) {
                 String key = possibleTangoHost + channelName.substring(index);
                 if (channel_map.containsKey(key))
@@ -133,6 +143,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         }
         return null;
     }
+
     //===============================================================
     //===============================================================
     protected void push_structured_event_heartbeat(String channelName) {
@@ -140,8 +151,8 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         try {
             //  If full name try to get structure from channel_map with different tango hosts
             if (channelName.startsWith("tango://")) {
-                EventChannelStruct  eventChannelStruct = getEventChannelStruct(channelName);
-                if (eventChannelStruct!=null) {
+                EventChannelStruct eventChannelStruct = getEventChannelStruct(channelName);
+                if (eventChannelStruct != null) {
                     eventChannelStruct.last_heartbeat = System.currentTimeMillis();
                     return;
                 }
@@ -157,7 +168,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                 String name = (String) keys.nextElement();
                 EventChannelStruct eventChannelStruct = channel_map.get(name);
                 //  Check with device name for adm device
-                String  admDeviceName = eventChannelStruct.adm_device_proxy.name();
+                String admDeviceName = eventChannelStruct.adm_device_proxy.name();
                 if (admDeviceName.equalsIgnoreCase(channelName)) {
                     eventChannelStruct.last_heartbeat = System.currentTimeMillis();
                     found = true;
@@ -177,9 +188,9 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                                                  String eventType) throws DevFailed {
 
         String device_name = device.name();
-        if (attribute==null) // Interface change event on device.
+        if (attribute == null) // Interface change event on device.
             attribute = "";
-        String[] info = new String[] {
+        String[] info = new String[]{
                 device_name,
                 attribute,
                 "subscribe",
@@ -190,13 +201,14 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         argIn.insert(info);
         String cmdName = getEventSubscriptionCommandName();
         ApiUtil.printTrace(device.get_adm_dev().name() + ".command_inout(\"" +
-                    cmdName + "\") for " + device_name + "/" + attribute + "." + eventType);
+                cmdName + "\") for " + device_name + "/" + attribute + "." + eventType);
         DeviceData argOut = device.get_adm_dev().command_inout(cmdName, argIn);
         ApiUtil.printTrace("    command_inout done.");
 
         //	And then connect to device
         checkDeviceConnection(device, attribute, argOut, eventType);
     }
+
     //===============================================================
     //===============================================================
     public int subscribe_event(DeviceProxy device,
@@ -234,7 +246,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         //	Set the event name;
         String event_name = eventNames[event];
         ApiUtil.printTrace("=============> subscribing for " + device.name() +
-                ((attribute==null)? "" : "/" + attribute) + "." +event_name);
+                ((attribute == null) ? "" : "/" + attribute) + "." + event_name);
 
         //	Check if already connected
         checkIfAlreadyConnected(device, attribute, event_name, callback, max_size, stateless);
@@ -253,7 +265,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         String callback_key = deviceName.toLowerCase();
         try {
             //  Check idl version
-            if (device.get_idl_version()>=5) {
+            if (device.get_idl_version() >= 5) {
                 switch (event_name) {
                     case "intr_change":
                         //  No IDL for interface change
@@ -267,21 +279,19 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                         callback_key += "/" + attribute + ".idl" + device.get_idl_version() + "_" + event_name;
                         break;
                 }
-            }
-            else
+            } else
                 callback_key += "/" + attribute + "." + event_name;
 
             //	Inform server that we want to subscribe and try to connect
             ApiUtil.printTrace("calling callEventSubscriptionAndConnect() method");
-            String  att = (attribute==null)? null : attribute.toLowerCase();
+            String att = (attribute == null) ? null : attribute.toLowerCase();
             callEventSubscriptionAndConnect(device, att, event_name);
             ApiUtil.printTrace("call callEventSubscriptionAndConnect() method done");
         } catch (DevFailed e) {
             //  re throw if not stateless
             if (!stateless || e.errors[0].desc.equals(ZMQutils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
                 throw e;
-            }
-            else {
+            } else {
                 //	Build Event CallBack Structure and add it to map
                 subscribe_event_id++;
                 EventCallBackStruct new_event_callback_struct =
@@ -304,10 +314,10 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
 
         //	Prepare filters for heartbeat events on channelName
         String channelName = device_channel_map.get(deviceName);
-        if (channelName==null) {
+        if (channelName == null) {
             //  If from notifd, tango host not used.
             int start = deviceName.indexOf('/', "tango:// ".length());
-            deviceName = deviceName.substring(start+1);
+            deviceName = deviceName.substring(start + 1);
             channelName = device_channel_map.get(deviceName);
         }
         EventChannelStruct event_channel_struct = channel_map.get(channelName);
@@ -359,24 +369,24 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         return evnt_id;
     }
     //===============================================================
+
     /**
      * Try to connect if it failed at subscribe
      */
     //===============================================================
     static void subscribeIfNotDone() {
-        Enumeration<String > callbackKeys = failed_event_callback_map.keys();
+        Enumeration<String> callbackKeys = failed_event_callback_map.keys();
         while (callbackKeys.hasMoreElements()) {
             String callbackKey = callbackKeys.nextElement();
             EventCallBackStruct eventCallBackStruct = failed_event_callback_map.get(callbackKey);
-            if (eventCallBackStruct.consumer!=null) {
+            if (eventCallBackStruct.consumer != null) {
                 try {
                     subscribeIfNotDone(eventCallBackStruct, callbackKey);
                 } catch (DevFailed e) {
                     //	Send error to callback
                     sendErrorToCallback(eventCallBackStruct, callbackKey, e);
                 }
-            }
-            else {
+            } else {
                 if (EventConsumerUtil.isZmqLoadable()) {
                     try {
                         //  Try for zmq
@@ -384,41 +394,35 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                         subscribeIfNotDone(eventCallBackStruct, callbackKey);
                         return;
 
-                    }
-                    catch (DevFailed e) {
+                    } catch (DevFailed e) {
                         if (e.errors[0].desc.equals(ZMQutils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
                             try {
                                 //  Try for notifd
                                 eventCallBackStruct.consumer = NotifdEventConsumer.getInstance();
                                 subscribeIfNotDone(eventCallBackStruct, callbackKey);
                                 return;
-                            }
-                            catch (DevFailed e2) {
-								//TODO use DevFailedUtils#printDevFailed from JTangoCommons
-                               System.err.println(e2.errors[0].desc);
+                            } catch (DevFailed e2) {
+                                //TODO use DevFailedUtils#printDevFailed from JTangoCommons
+                                System.err.println(e2.errors[0].desc);
                                 //  reset if both have failed
                                 eventCallBackStruct.consumer = null;
                                 //	Send error to callback
                                 sendErrorToCallback(eventCallBackStruct, callbackKey, e2);
                             }
-                        }
-                        else {
+                        } else {
                             //	Send error to callback
                             eventCallBackStruct.consumer = null;
                             sendErrorToCallback(eventCallBackStruct, callbackKey, e);
                         }
                     }
-                }
-                else
-                {
+                } else {
                     try {
                         //  Try for notifd
                         eventCallBackStruct.consumer = NotifdEventConsumer.getInstance();
                         subscribeIfNotDone(eventCallBackStruct, callbackKey);
                         return;
-                    }
-                    catch (DevFailed e) {
-						//TODO use DevFailedUtils#printDevFailed from JTangoCommons
+                    } catch (DevFailed e) {
+                        //TODO use DevFailedUtils#printDevFailed from JTangoCommons
                         System.err.println(e.errors[0].desc);
                         //	Send error to callback
                         sendErrorToCallback(eventCallBackStruct, callbackKey, e);
@@ -427,11 +431,12 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
             }
         }
     }
+
     //===============================================================
     //===============================================================
     private static void sendErrorToCallback(EventCallBackStruct cs, String callbackKey, DevFailed e) {
 
-        int source = (cs.consumer instanceof NotifdEventConsumer)?
+        int source = (cs.consumer instanceof NotifdEventConsumer) ?
                 EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
         EventData eventData =
                 new EventData(cs.device, callbackKey,
@@ -444,10 +449,11 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         } else
             cs.callback.push_event(eventData);
     }
-     //===============================================================
+
+    //===============================================================
     //===============================================================
     private static void subscribeIfNotDone(EventCallBackStruct eventCallBackStruct,
-                                          String callbackKey) throws DevFailed{
+                                           String callbackKey) throws DevFailed {
 
         eventCallBackStruct.consumer.subscribe_event(
                 eventCallBackStruct.device,
@@ -459,6 +465,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                 false);
         failed_event_callback_map.remove(callbackKey);
     }
+
     //===============================================================
     //===============================================================
     static EventCallBackStruct getCallBackStruct(Hashtable map, int id) {
@@ -491,8 +498,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         if (callbackStruct != null) {
             removeCallBackStruct(event_callback_map, callbackStruct);
             unsubscribeTheEvent(callbackStruct);
-        }
-        else {
+        } else {
             //	If not found check if in failed map
             callbackStruct =
                     getCallBackStruct(failed_event_callback_map, event_id);
@@ -511,7 +517,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
      * Re subscribe event selected by name
      */
     //===============================================================
-     void reSubscribeByName(EventChannelStruct event_channel_struct, String name) {
+    void reSubscribeByName(EventChannelStruct event_channel_struct, String name) {
         Enumeration callback_structs = event_callback_map.elements();
         while (callback_structs.hasMoreElements()) {
             EventCallBackStruct callback_struct = (EventCallBackStruct) callback_structs.nextElement();
@@ -520,6 +526,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
             }
         }
     }
+
     //===============================================================
     /*
      * Push event containing exception
@@ -538,11 +545,11 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
             } else
                 return;
 
-            int eventSource = (event_channel_struct.consumer instanceof NotifdEventConsumer)?
+            int eventSource = (event_channel_struct.consumer instanceof NotifdEventConsumer) ?
                     EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
             DevError[] errors = {error};
             String domain_name = callback_struct.device.name();
-            if (callback_struct.attr_name!=null)
+            if (callback_struct.attr_name != null)
                 domain_name += "/" + callback_struct.attr_name.toLowerCase();
             EventData event_data =
                     new EventData(event_channel_struct.adm_device_proxy,
@@ -562,6 +569,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
 
         } catch (DevFailed e) { /* */ }
     }
+
     //===============================================================
     /*
      * Read attribute and push result as event.
@@ -577,7 +585,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
 
         //	Else do the synchronous call
         DeviceAttribute deviceAttribute = null;
-        DevicePipe      devicePipe = null;
+        DevicePipe devicePipe = null;
         AttributeInfoEx info = null;
         DeviceInterface deviceInterface = null;
         DevError[] err = null;
@@ -588,16 +596,11 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
             callbackStruct.setSynchronousDone(false);
             if (callbackStruct.event_name.equals(eventNames[ATT_CONF_EVENT])) {
                 info = callbackStruct.device.get_attribute_info_ex(callbackStruct.attr_name);
-            }
-            else
-            if (callbackStruct.event_name.equals(eventNames[PIPE_EVENT])) {
+            } else if (callbackStruct.event_name.equals(eventNames[PIPE_EVENT])) {
                 devicePipe = callbackStruct.device.readPipe(callbackStruct.attr_name);
-            }
-            else
-            if (callbackStruct.event_name.equals(eventNames[INTERFACE_CHANGE])) {
+            } else if (callbackStruct.event_name.equals(eventNames[INTERFACE_CHANGE])) {
                 deviceInterface = new DeviceInterface(callbackStruct.device);
-            }
-            else {
+            } else {
                 deviceAttribute = callbackStruct.device.read_attribute(callbackStruct.attr_name);
             }
             callbackStruct.setSynchronousDone(true);
@@ -631,14 +634,14 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
     }
 
 
-
     //===============================================================
     //===============================================================
     private int getSource(EventConsumer consumer) {
         return (consumer instanceof NotifdEventConsumer) ?
-            EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
+                EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
     }
     //===============================================================
+
     /**
      * Thread to read the attribute by a simple synchronous call and
      * force callback execution after release monitor.
@@ -657,30 +660,25 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
 
         //===============================================================
         public void run() {
-             //	Then read attribute
+            //	Then read attribute
             DeviceAttribute deviceAttribute = null;
-            DevicePipe      devicePipe = null;
+            DevicePipe devicePipe = null;
             AttributeInfoEx attributeInfo = null;
             DeviceInterface deviceInterface = null;
             DevError[] err = null;
             String eventName = cb_struct.device.name();
-            if (cb_struct.event_type!=INTERFACE_CHANGE) {
+            if (cb_struct.event_type != INTERFACE_CHANGE) {
 
                 eventName += "/" + cb_struct.attr_name.toLowerCase();
             }
             try {
-                if (cb_struct.event_type==INTERFACE_CHANGE) {
+                if (cb_struct.event_type == INTERFACE_CHANGE) {
                     deviceInterface = new DeviceInterface(cb_struct.device);
-                }
-                else
-                if (cb_struct.event_type==PIPE_EVENT) {
+                } else if (cb_struct.event_type == PIPE_EVENT) {
                     devicePipe = cb_struct.device.readPipe(cb_struct.attr_name);
-                }
-                else
-                if (cb_struct.event_type==ATT_CONF_EVENT) {
+                } else if (cb_struct.event_type == ATT_CONF_EVENT) {
                     attributeInfo = cb_struct.device.get_attribute_info_ex(cb_struct.attr_name);
-                }
-                else {
+                } else {
                     deviceAttribute = cb_struct.device.read_attribute(cb_struct.attr_name);
                 }
             } catch (DevFailed e) {
@@ -688,7 +686,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
             }
 
             //	And push value
-            int eventSource = (cb_struct.consumer instanceof NotifdEventConsumer)?
+            int eventSource = (cb_struct.consumer instanceof NotifdEventConsumer) ?
                     EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
             EventData event_data =
                     new EventData(cb_struct.device,
@@ -711,20 +709,18 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
     //===============================================================
 
 
-
-
-
     //===============================================================
     //===============================================================
     protected class ConnectionStructure {
-        String      tangoHost;
-        String      channelName;
-        String      attributeName;
-        String      deviceName;
-        String      eventName;
-        Database    database;
-        DeviceData  deviceData = null;
-        boolean     reconnect = false;
+        String tangoHost;
+        String channelName;
+        String attributeName;
+        String deviceName;
+        String eventName;
+        Database database;
+        DeviceData deviceData = null;
+        boolean reconnect = false;
+
         //===========================================================
         ConnectionStructure(String tangoHost,
                             String channelName,
@@ -734,24 +730,26 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                             Database database,
                             DeviceData deviceData,
                             boolean reconnect) {
-            this.tangoHost      = tangoHost;
-            this.channelName    = channelName;
-            this.deviceName     = deviceName;
-            this.attributeName  = attributeName;
-            this.eventName      = eventName;
-            this.database          = database;
-            this.deviceData     = deviceData;
-            this.reconnect      = reconnect;
+            this.tangoHost = tangoHost;
+            this.channelName = channelName;
+            this.deviceName = deviceName;
+            this.attributeName = attributeName;
+            this.eventName = eventName;
+            this.database = database;
+            this.deviceData = deviceData;
+            this.reconnect = reconnect;
         }
+
         //===========================================================
         ConnectionStructure(String tangoHost, String name, Database dbase, boolean reconnect) {
             this(tangoHost, name, null, null, null, dbase, null, reconnect);
         }
+
         //===========================================================
         public String toString() {
             return "channel name: " + channelName +
-                 "\ndatabase:     " + database +
-                 "\nreconnect:    " + reconnect;
+                    "\ndatabase:     " + database +
+                    "\nreconnect:    " + reconnect;
         }
         //===========================================================
     }

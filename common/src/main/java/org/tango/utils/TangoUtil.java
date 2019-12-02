@@ -1,7 +1,7 @@
 /*
  * (c) Copyright 2004, iSencia Belgium NV
  * All Rights Reserved.
- * 
+ *
  * This software is the proprietary information of iSencia Belgium NV.
  * Use is subject to license terms.
  */

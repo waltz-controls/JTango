@@ -41,7 +41,7 @@ import fr.esrf.Tango.DispLevel;
 
 /**
  * User class to create a one dimension attribute object.
- *
+ * <p>
  * Information from this class and information fetched out from the Tango
  * database allows the Tango core software to create the Attribute object
  * for the attribute created by the user.
@@ -49,71 +49,63 @@ import fr.esrf.Tango.DispLevel;
  * @author $Author: pascal_verdier $
  * @version $Revision: 25297 $
  */
- 
-public class SpectrumAttr extends Attr implements TangoConst
-{
-	int		max_x;
 
-/**
- * Constructs a newly allocated SpectrumAttr object.
- * The attribute display type is set to OPERATOR_ATTR.
- *
- * @param 	name	The attribute name
- * @param	data_type	The attribute data type
- * @param	max_x	The attribute maximum x dimension
- *
- */
-	public SpectrumAttr(String name,int data_type,int max_x) throws DevFailed
-	{
-		super(name,data_type);
-		
-		format = AttrDataFormat.SPECTRUM;
-		if (max_x <= 0)
-		{
-			Util.out3.println("SpectrumAttr.SpectrumAttr throwing exception");
-		
-			StringBuffer o = new StringBuffer("Attribute : ");
-			o.append(name);
-			o.append(": "); 
-			o.append(" Maximum x dim. wrongly defined");
-			Except.throw_exception("API_AttrWrongDefined",
-				      	       o.toString(),"SpectrumAttr.SpectrumAttr");
-		}
-		this.max_x = max_x;	
-	}
+public class SpectrumAttr extends Attr implements TangoConst {
+    int max_x;
 
-/**
- * Constructs a newly allocated SpectrumAttr object.
- *
- * @param 	name	The attribute name
- * @param	data_type	The attribute data type
- * @param	max_x	The attribute maximum x dimension
- * @param	disp	The attribute display type
- *
- */
-	public SpectrumAttr(String name,int data_type,int max_x,DispLevel disp) throws DevFailed
-	{
-		super(name,data_type,disp);
-		
-		format = AttrDataFormat.SPECTRUM;
-		if (max_x <= 0)
-		{
-			Util.out3.println("SpectrumAttr.SpectrumAttr throwing exception");
-		
-			StringBuffer o = new StringBuffer("Attribute : ");
-			o.append(name);
-			o.append(": "); 
-			o.append(" Maximum x dim. wrongly defined");
-			Except.throw_exception("API_AttrWrongDefined",
-				      	       o.toString(),"SpectrumAttr.SpectrumAttr");
-		}
-		this.max_x = max_x;	
-	}
-			
-	int get_max_x()
-	{
-		return max_x;
-	}
-	
+    /**
+     * Constructs a newly allocated SpectrumAttr object.
+     * The attribute display type is set to OPERATOR_ATTR.
+     *
+     * @param name The attribute name
+     * @param    data_type    The attribute data type
+     * @param    max_x    The attribute maximum x dimension
+     */
+    public SpectrumAttr(String name, int data_type, int max_x) throws DevFailed {
+        super(name, data_type);
+
+        format = AttrDataFormat.SPECTRUM;
+        if (max_x <= 0) {
+            Util.out3.println("SpectrumAttr.SpectrumAttr throwing exception");
+
+            StringBuffer o = new StringBuffer("Attribute : ");
+            o.append(name);
+            o.append(": ");
+            o.append(" Maximum x dim. wrongly defined");
+            Except.throw_exception("API_AttrWrongDefined",
+                    o.toString(), "SpectrumAttr.SpectrumAttr");
+        }
+        this.max_x = max_x;
+    }
+
+    /**
+     * Constructs a newly allocated SpectrumAttr object.
+     *
+     * @param name The attribute name
+     * @param    data_type    The attribute data type
+     * @param    max_x    The attribute maximum x dimension
+     * @param    disp    The attribute display type
+     */
+    public SpectrumAttr(String name, int data_type, int max_x, DispLevel disp) throws DevFailed {
+        super(name, data_type, disp);
+
+        format = AttrDataFormat.SPECTRUM;
+        if (max_x <= 0) {
+            Util.out3.println("SpectrumAttr.SpectrumAttr throwing exception");
+
+            StringBuffer o = new StringBuffer("Attribute : ");
+            o.append(name);
+            o.append(": ");
+            o.append(" Maximum x dim. wrongly defined");
+            Except.throw_exception("API_AttrWrongDefined",
+                    o.toString(), "SpectrumAttr.SpectrumAttr");
+        }
+        this.max_x = max_x;
+    }
+
+    int get_max_x() {
+        return max_x;
+    }
+
 }
 

@@ -25,13 +25,11 @@
 package org.tango.server.testserver;
 
 import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.ApiUtil;
-import fr.esrf.TangoApi.AttributeInfo;
-import fr.esrf.TangoApi.Database;
-import fr.esrf.TangoApi.DbDatum;
-import fr.esrf.TangoApi.DeviceData;
-import fr.esrf.TangoApi.DeviceProxy;
-import org.junit.*;
+import fr.esrf.TangoApi.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.tango.server.ServerManager;
 import org.tango.utils.DevFailedUtils;
 
@@ -60,7 +58,7 @@ public class PropertiesTest {
             final Database db = ApiUtil.get_db_obj();
             final DbDatum[] dbDatum = new DbDatum[1];
 
-            final Double d = new Double(Math.random());
+            final Double d = Math.random();
             final String propValue = d.toString();
 
             final String propName = "myProp";

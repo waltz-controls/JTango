@@ -178,6 +178,7 @@ public class EventQueue {
     private ArrayList<EventData> events = new ArrayList<EventData>();
 
     //==================================================================
+
     /**
      * Creates a new instance of EventQueue for infinite EventData number
      */
@@ -196,6 +197,7 @@ public class EventQueue {
         this.max_size = max_size;
     }
     //==================================================================
+
     /**
      * @return true if no EventData in queue.
      */
@@ -204,9 +206,9 @@ public class EventQueue {
         return (events.size() == 0);
     }
     //==================================================================
+
     /**
-     *
-     * @param    event_type    Specified event type.
+     * @param event_type Specified event type.
      * @return the number of EventData in queue.
      */
     //==================================================================
@@ -218,6 +220,7 @@ public class EventQueue {
         return cnt;
     }
     //==================================================================
+
     /**
      * @return the number of EventData in queue for specified type.
      */
@@ -226,6 +229,7 @@ public class EventQueue {
         return events.size();
     }
     //==================================================================
+
     /**
      * Insert an event in queue.
      *
@@ -238,6 +242,7 @@ public class EventQueue {
             events.remove(0);
     }
     //==================================================================
+
     /**
      * @return the first event in queue.
      * @throws DevFailed if queue is empty
@@ -253,9 +258,9 @@ public class EventQueue {
         return ev_data;
     }
     //==================================================================
+
     /**
-     *
-     * @param    event_type    Specified event type.
+     * @param event_type Specified event type.
      * @return the first event in queue for specified type.
      * @throws DevFailed if queue has no specified event
      */
@@ -273,6 +278,7 @@ public class EventQueue {
         return ev_data;
     }
     // ==========================================================================
+
     /**
      * @return all EventData in queue.
      */
@@ -285,9 +291,9 @@ public class EventQueue {
         return ev_data;
     }
     // ==========================================================================
+
     /**
-     *
-     * @param    event_type    Specified event type.
+     * @param event_type Specified event type.
      * @return all events in queue for specified type.
      */
     // ==========================================================================
@@ -304,6 +310,7 @@ public class EventQueue {
         return periodic;
     }
     //==================================================================
+
     /**
      * @return the date of the last inserted and not yet extracted event.
      * @throws DevFailed if queue is empty
@@ -314,7 +321,7 @@ public class EventQueue {
             Except.throw_exception("BUFFER_EMPTY",
                     "Event queue is empty.",
                     "EventQueu.getNextEvent()");
-        EventData event = events.get(events.size()-1);
+        EventData event = events.get(events.size() - 1);
         return event.date;
     }
 }

@@ -33,85 +33,81 @@
 
 
 package fr.esrf.TangoApi;
- 
+
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.ErrSeverity;
 
 
-/** 
- *	<b>Class Description:</b><Br>
- *	Exception thrown in case of bad syntax or bad name..<Br>
- *	Can be instancied by <i>Except.throw_wrong_syntax_exception</i> method.
+/**
+ * <b>Class Description:</b><Br>
+ * Exception thrown in case of bad syntax or bad name..<Br>
+ * Can be instancied by <i>Except.throw_wrong_syntax_exception</i> method.
  *
- *	@see fr.esrf.TangoDs.Except
- *
- * @author  verdier
+ * @author verdier
  * @version $Revision: 25296 $
+ * @see fr.esrf.TangoDs.Except
  */
 
 @SuppressWarnings({"CheckedExceptionClass"})
-public class WrongNameSyntax extends DevFailed implements ApiDefs
-{
-	//===================================================================
-	/**
-	 *	Exception constructor.<Br>
-	 *	Can be instancied by <i>Except.throw_wrong_syntax_exception</i> method.
-	 *
-	 *	@see fr.esrf.TangoDs.Except
-	 */
-	//===================================================================
-	public WrongNameSyntax(fr.esrf.Tango.DevError[] errors)
-	{
-		super(errors);
-	}
+public class WrongNameSyntax extends DevFailed implements ApiDefs {
+    //===================================================================
 
-	//===================================================================
-	/**
-	 *	Return exception name.
-	 */
-	//===================================================================
-	public String toString()
-	{
-		return"fr.esrf.TangoApi.WrongNameSyntax";
-	}
+    /**
+     * Exception constructor.<Br>
+     * Can be instancied by <i>Except.throw_wrong_syntax_exception</i> method.
+     *
+     * @see fr.esrf.TangoDs.Except
+     */
+    //===================================================================
+    public WrongNameSyntax(fr.esrf.Tango.DevError[] errors) {
+        super(errors);
+    }
 
-	//===================================================================
-	/**
-	 *	Return full exception.
-	 */
-	//===================================================================
-	public String getStack()
-	{
-		StringBuffer	sb =
-			new StringBuffer("fr.esrf.TangoApi.WrongNameSyntax:\n");
-		for (int i=0 ; i<errors.length ; i++)
-		{
-			sb.append("Severity -> ");
-			switch (errors[i].severity.value())
-			{
-			case ErrSeverity._WARN :
-				sb.append("WARNING \n");
-				break;
+    //===================================================================
 
-			case ErrSeverity._ERR :
-				sb.append("ERROR \n");
-				break;
+    /**
+     * Return exception name.
+     */
+    //===================================================================
+    public String toString() {
+        return "fr.esrf.TangoApi.WrongNameSyntax";
+    }
 
-			case ErrSeverity._PANIC :
-				sb.append("PANIC \n");
-				break;
+    //===================================================================
 
-			default :
-				sb.append("Unknown severity code");
-				break;
-			}
-			sb.append("Desc     -> ").append(errors[i].desc).append("\n");
-			sb.append("Reason   -> ").append(errors[i].reason).append("\n");
-			sb.append("Origin   -> ").append(errors[i].origin).append("\n");
+    /**
+     * Return full exception.
+     */
+    //===================================================================
+    public String getStack() {
+        StringBuffer sb =
+                new StringBuffer("fr.esrf.TangoApi.WrongNameSyntax:\n");
+        for (int i = 0; i < errors.length; i++) {
+            sb.append("Severity -> ");
+            switch (errors[i].severity.value()) {
+                case ErrSeverity._WARN:
+                    sb.append("WARNING \n");
+                    break;
 
-			if (i<errors.length-1)
-				sb.append("-------------------------------------------------------------\n");
-		}
-		return sb.toString();
-	}
+                case ErrSeverity._ERR:
+                    sb.append("ERROR \n");
+                    break;
+
+                case ErrSeverity._PANIC:
+                    sb.append("PANIC \n");
+                    break;
+
+                default:
+                    sb.append("Unknown severity code");
+                    break;
+            }
+            sb.append("Desc     -> ").append(errors[i].desc).append("\n");
+            sb.append("Reason   -> ").append(errors[i].reason).append("\n");
+            sb.append("Origin   -> ").append(errors[i].origin).append("\n");
+
+            if (i < errors.length - 1)
+                sb.append("-------------------------------------------------------------\n");
+        }
+        return sb.toString();
+    }
 }

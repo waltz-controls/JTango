@@ -1,38 +1,36 @@
 package fr.soleil.tango.clientapi.util;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.MessageFormat;
-
 import net.entropysoft.transmorph.ConversionContext;
 import net.entropysoft.transmorph.ConverterException;
 import net.entropysoft.transmorph.IConverter;
 import net.entropysoft.transmorph.type.TypeReference;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.MessageFormat;
 
 /**
  * convert an object to any number. Force conversion for all types (eg double to int)
  *
  * @author ABEILLE
- *
  */
 public final class ObjectToNumberConverter implements IConverter {
 
-    private static final Class<?>[] BYTE_TYPE = new Class<?>[] { Byte.TYPE, Byte.class };
-    private static final Class<?>[] DOUBLE_TYPE = new Class<?>[] { Double.TYPE, Double.class };
-    private static final Class<?>[] FLOAT_TYPE = new Class<?>[] { Float.TYPE, Float.class };
-    private static final Class<?>[] INT_TYPE = new Class<?>[] { Integer.TYPE, Integer.class };
-    private static final Class<?>[] LONG_TYPE = new Class<?>[] { Long.TYPE, Long.class };
-    private static final Class<?>[] SHORT_TYPE = new Class<?>[] { Short.TYPE, Short.class };
+    private static final Class<?>[] BYTE_TYPE = new Class<?>[]{Byte.TYPE, Byte.class};
+    private static final Class<?>[] DOUBLE_TYPE = new Class<?>[]{Double.TYPE, Double.class};
+    private static final Class<?>[] FLOAT_TYPE = new Class<?>[]{Float.TYPE, Float.class};
+    private static final Class<?>[] INT_TYPE = new Class<?>[]{Integer.TYPE, Integer.class};
+    private static final Class<?>[] LONG_TYPE = new Class<?>[]{Long.TYPE, Long.class};
+    private static final Class<?>[] SHORT_TYPE = new Class<?>[]{Short.TYPE, Short.class};
 
     private final Logger logger = LoggerFactory.getLogger(ObjectToNumberConverter.class);
 
     @Override
     public Object convert(final ConversionContext context, final Object sourceObject,
-            final TypeReference<?> destinationType) throws ConverterException {
+                          final TypeReference<?> destinationType) throws ConverterException {
         double value;
         if (Boolean.class.isAssignableFrom(sourceObject.getClass())) {
             value = getDouble((Boolean) sourceObject);
@@ -104,10 +102,10 @@ public final class ObjectToNumberConverter implements IConverter {
 
     @Override
     public boolean canHandle(final ConversionContext context, final Object sourceObject,
-            final TypeReference<?> destinationType) {
+                             final TypeReference<?> destinationType) {
         return destinationType.isNumber()
                 && (Number.class.isAssignableFrom(sourceObject.getClass())
-                        || Boolean.class.isAssignableFrom(sourceObject.getClass()) || String.class
-                            .isAssignableFrom(sourceObject.getClass()));
+                || Boolean.class.isAssignableFrom(sourceObject.getClass()) || String.class
+                .isAssignableFrom(sourceObject.getClass()));
     }
 }

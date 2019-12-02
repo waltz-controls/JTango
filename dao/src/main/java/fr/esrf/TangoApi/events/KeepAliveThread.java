@@ -46,9 +46,8 @@ import java.util.Hashtable;
  */
 
 
-
-
 //===============================================================
+
 /**
  * A class inherited from TimerTask class
  */
@@ -56,10 +55,11 @@ import java.util.Hashtable;
 class KeepAliveThread extends Thread implements TangoConst {
 
     private static final long EVENT_RESUBSCRIBE_PERIOD = 600000;
-    private static final long EVENT_HEARTBEAT_PERIOD   =  10000;
+    private static final long EVENT_HEARTBEAT_PERIOD = 10000;
     private static boolean stop = false;
-    private static KeepAliveThread  instance = null;
+    private static KeepAliveThread instance = null;
     //===============================================================
+
     /**
      * Creates a new instance of EventConsumer.KeepAliveThread
      */
@@ -79,20 +79,19 @@ class KeepAliveThread extends Thread implements TangoConst {
             try {
                 EventConsumer.subscribeIfNotDone();
                 resubscribe_if_needed();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            catch (Error err) {
+            } catch (Error err) {
                 err.printStackTrace();
             }
 
             long msToSleep = EVENT_HEARTBEAT_PERIOD - (System.currentTimeMillis() - t0);
-            if (msToSleep<5)
+            if (msToSleep < 5)
                 msToSleep = 5;
             waitNextLoop(msToSleep);
         }
     }
+
     //===============================================================
     //===============================================================
     private synchronized void waitNextLoop(long ms) {
@@ -102,23 +101,26 @@ class KeepAliveThread extends Thread implements TangoConst {
             System.err.println(e);
         }
     }
+
     //===============================================================
     //===============================================================
     synchronized void stopThread() {
         stop = true;
-        if (instance!=null)
+        if (instance != null)
             notify();
         instance = null;
     }
+
     //===============================================================
     //===============================================================
     static KeepAliveThread getInstance() {
-        if (instance==null) {
+        if (instance == null) {
             instance = new KeepAliveThread();
             instance.start();
         }
         return instance;
     }
+
     //===============================================================
     //===============================================================
     static boolean heartbeatHasBeenSkipped(EventChannelStruct eventChannelStruct) {
@@ -129,8 +131,6 @@ class KeepAliveThread extends Thread implements TangoConst {
     }
     //===============================================================
     //===============================================================
-
-
 
 
     //===============================================================
@@ -150,6 +150,7 @@ class KeepAliveThread extends Thread implements TangoConst {
 
         }// end while  channel_names.hasMoreElements()
     }
+
     //===============================================================
     /*
      * Re subscribe event selected by name
@@ -163,7 +164,7 @@ class KeepAliveThread extends Thread implements TangoConst {
         EventCallBackStruct callbackStruct = null;
         Enumeration channelNames = callBackMap.keys();
         while (channelNames.hasMoreElements()) {
-            String  key = (String) channelNames.nextElement();
+            String key = (String) channelNames.nextElement();
             EventCallBackStruct eventStruct = callBackMap.get(key);
             if (eventStruct.channel_name.equals(name)) {
                 callbackStruct = eventStruct;
@@ -171,7 +172,7 @@ class KeepAliveThread extends Thread implements TangoConst {
         }
 
         //  Get the callback structure
-        if (callbackStruct!=null) {
+        if (callbackStruct != null) {
             callbackStruct.consumer.reSubscribeByName(eventChannelStruct, name);
         }
     }

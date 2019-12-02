@@ -1,32 +1,35 @@
 /**
  * Copyright (C) :     2012
- *
- * 	Synchrotron Soleil
- * 	L'Orme des merisiers
- * 	Saint Aubin
- * 	BP48
- * 	91192 GIF-SUR-YVETTE CEDEX
- *
+ * <p>
+ * Synchrotron Soleil
+ * L'Orme des merisiers
+ * Saint Aubin
+ * BP48
+ * 91192 GIF-SUR-YVETTE CEDEX
+ * <p>
  * This file is part of Tango.
- *
+ * <p>
  * Tango is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Tango is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with Tango.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.tango.server.testserver;
 
-import java.io.IOException;
-
+import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
+import fr.esrf.TangoApi.DeviceDataHistory;
+import fr.esrf.TangoApi.DeviceProxy;
+import fr.esrf.TangoApi.events.EventData;
+import fr.esrf.TangoDs.TangoConst;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -34,17 +37,13 @@ import org.junit.Test;
 import org.tango.server.ServerManager;
 import org.tango.utils.DevFailedUtils;
 
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.DeviceDataHistory;
-import fr.esrf.TangoApi.DeviceProxy;
-import fr.esrf.TangoApi.events.EventData;
-import fr.esrf.TangoDs.TangoConst;
+import java.io.IOException;
 
 /**
  * TODO: test polling, locking, attribute props, several attributes on same device, error init
- * 
+ *
  * @author ABEILLE
- * 
+ *
  */
 @Ignore("Tests need a tangdb")
 public class ForwardedAttributeWithTangoDB {
@@ -77,11 +76,11 @@ public class ForwardedAttributeWithTangoDB {
             System.out.println(devRoot.state());
             System.out.println(devRoot.status());
             System.out.println(" root device started");
-            ForwardedServer.setNoDbFwdAttributeName(deviceNameRoot +"/doubleAtt");
-            ForwardedServer.setNoDbFwdAttributeName2(deviceNameRoot +"/doubleArrayAtt");
-            ForwardedServer.setNoDbFwdAttributeName3(deviceNameRoot +"/userEvent");
+            ForwardedServer.setNoDbFwdAttributeName(deviceNameRoot + "/doubleAtt");
+            ForwardedServer.setNoDbFwdAttributeName2(deviceNameRoot + "/doubleArrayAtt");
+            ForwardedServer.setNoDbFwdAttributeName3(deviceNameRoot + "/userEvent");
             ServerManager.getInstance().addClass("ForwardedServer", ForwardedServer.class);
-            ServerManager.getInstance().startError(new String[] { ForwardedServer.INSTANCE_NAME }, "ForwardedServer");
+            ServerManager.getInstance().startError(new String[]{ForwardedServer.INSTANCE_NAME}, "ForwardedServer");
             try {
                 Thread.sleep(5000);
             } catch (final InterruptedException e) {
@@ -89,8 +88,8 @@ public class ForwardedAttributeWithTangoDB {
             final DeviceProxy dev = new DeviceProxy(deviceName);
             System.out.println(dev.state());
             System.out.println(dev.status());
-            if(dev.state().equals(DevState.FAULT) ){
-                throw  DevFailedUtils.newDevFailed(dev.status());
+            if (dev.state().equals(DevState.FAULT)) {
+                throw DevFailedUtils.newDevFailed(dev.status());
             }
             System.out.println("forwarded device started");
         } catch (final DevFailed e) {
@@ -129,26 +128,26 @@ public class ForwardedAttributeWithTangoDB {
     }
 
     @Test(timeout = 5000)
-    public void userEvent() throws DevFailed{
+    public void userEvent() throws DevFailed {
         try {
-        final DeviceProxy devRoot = new DeviceProxy(deviceNameRoot);
-        final DeviceProxy dev = new DeviceProxy(deviceName);
+            final DeviceProxy devRoot = new DeviceProxy(deviceNameRoot);
+            final DeviceProxy dev = new DeviceProxy(deviceName);
 
-        final int id = dev.subscribe_event("testfowarded3", TangoConst.USER_EVENT, 100, new String[] {},
-                TangoConst.NOT_STATELESS);
-        int eventsNb = 0;
-        while (eventsNb < 3) {
-            devRoot.command_inout("pushUserEvent");
-            final EventData[] events = dev.get_events();
-            for (final EventData eventData : events) {
-                if (eventData.name.contains("testfowarded3")) {
-                    eventsNb++;
-                    final String value = eventData.attr_value.extractString();
-                    System.out.println("######USER_EVENT value from event " + value);
+            final int id = dev.subscribe_event("testfowarded3", TangoConst.USER_EVENT, 100, new String[]{},
+                    TangoConst.NOT_STATELESS);
+            int eventsNb = 0;
+            while (eventsNb < 3) {
+                devRoot.command_inout("pushUserEvent");
+                final EventData[] events = dev.get_events();
+                for (final EventData eventData : events) {
+                    if (eventData.name.contains("testfowarded3")) {
+                        eventsNb++;
+                        final String value = eventData.attr_value.extractString();
+                        System.out.println("######USER_EVENT value from event " + value);
+                    }
                 }
             }
-        }
-        dev.unsubscribe_event(id);
+            dev.unsubscribe_event(id);
         } catch (final DevFailed e) {
             DevFailedUtils.printDevFailed(e);
             e.printStackTrace();
@@ -160,7 +159,7 @@ public class ForwardedAttributeWithTangoDB {
     public void changeEventTest() throws DevFailed {
         final DeviceProxy dev = new DeviceProxy(deviceName);
 
-        final int id = dev.subscribe_event("testfowarded", TangoConst.CHANGE_EVENT, 100, new String[] {},
+        final int id = dev.subscribe_event("testfowarded", TangoConst.CHANGE_EVENT, 100, new String[]{},
                 TangoConst.NOT_STATELESS);
         int eventsNb = 0;
         while (eventsNb < 3) {
@@ -180,7 +179,7 @@ public class ForwardedAttributeWithTangoDB {
     public void attConfEventTest() throws DevFailed {
         final DeviceProxy dev = new DeviceProxy(deviceName);
 
-        final int id = dev.subscribe_event("testfowarded", TangoConst.ATT_CONF_EVENT, 100, new String[] {},
+        final int id = dev.subscribe_event("testfowarded", TangoConst.ATT_CONF_EVENT, 100, new String[]{},
                 TangoConst.NOT_STATELESS);
         int eventsNb = 0;
         while (eventsNb < 3) {
@@ -202,12 +201,12 @@ public class ForwardedAttributeWithTangoDB {
     public void periodicEventTest() throws DevFailed {
         final DeviceProxy dev = new DeviceProxy(deviceName);
 
-        final int id = dev.subscribe_event("testfowarded", TangoConst.PERIODIC_EVENT, 100, new String[] {},
+        final int id = dev.subscribe_event("testfowarded", TangoConst.PERIODIC_EVENT, 100, new String[]{},
                 TangoConst.NOT_STATELESS);
         int eventsNb = 0;
         while (eventsNb < 3) {
             final EventData[] events = dev.get_events();
-           // System.out.println("has events " + events.length);
+            // System.out.println("has events " + events.length);
             for (final EventData eventData : events) {
                 if (eventData.name.contains("testfowarded")) {
                     eventsNb++;
@@ -224,7 +223,7 @@ public class ForwardedAttributeWithTangoDB {
     public void dataReady() throws DevFailed {
         final DeviceProxy dev = new DeviceProxy(deviceName);
         final DeviceProxy devRoot = new DeviceProxy(deviceNameRoot);
-        final int id = dev.subscribe_event("testfowarded2", TangoConst.DATA_READY_EVENT, 100, new String[] {},
+        final int id = dev.subscribe_event("testfowarded2", TangoConst.DATA_READY_EVENT, 100, new String[]{},
                 TangoConst.NOT_STATELESS);
         int eventCounter = 0;
         try {

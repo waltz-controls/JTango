@@ -38,40 +38,39 @@ import fr.esrf.Tango.ArchiveEventProp;
 
 
 /**
- *	Class Description: This class is the same class as ArchiveEventProp, 
- *	                   but created for C++ compatibility.
+ * Class Description: This class is the same class as ArchiveEventProp,
+ * but created for C++ compatibility.
  *
- * @author  verdier
- * @version  $Revision: 25296 $
+ * @author verdier
+ * @version $Revision: 25296 $
  */
-public class ArchiveEventInfo implements java.io.Serializable
-{
-	public String rel_change = "";
-	public String abs_change = "";
-	public String period = "";
-	public String[] extensions;
-	//-======================================================================
-	//-======================================================================
-	public ArchiveEventInfo(String rel_change, String abs_change, String period, String[] extensions)
-	{
-		this.rel_change = rel_change;
-		this.abs_change = abs_change;
-		this.period     = period;
-		this.extensions = extensions;
-	}
-	//-======================================================================
-	//-======================================================================
-	public ArchiveEventInfo(ArchiveEventProp ev_prop)
-	{
-		this.rel_change = ev_prop.rel_change;
-		this.abs_change = ev_prop.abs_change;
-		this.period     = ev_prop.period;
-		this.extensions = ev_prop.extensions;
-	}
-	//-======================================================================
-	//-======================================================================
-	public ArchiveEventProp getTangoObj()
-	{
-		return new ArchiveEventProp(rel_change, abs_change, period, extensions);
-	}
+public class ArchiveEventInfo implements java.io.Serializable {
+    public String rel_change = "";
+    public String abs_change = "";
+    public String period = "";
+    public String[] extensions;
+
+    //-======================================================================
+    //-======================================================================
+    public ArchiveEventInfo(String rel_change, String abs_change, String period, String[] extensions) {
+        this.rel_change = rel_change;
+        this.abs_change = abs_change;
+        this.period = period;
+        this.extensions = extensions;
+    }
+
+    //-======================================================================
+    //-======================================================================
+    public ArchiveEventInfo(ArchiveEventProp ev_prop) {
+        this.rel_change = ev_prop.rel_change;
+        this.abs_change = ev_prop.abs_change;
+        this.period = ev_prop.period;
+        this.extensions = ev_prop.extensions;
+    }
+
+    //-======================================================================
+    //-======================================================================
+    public ArchiveEventProp getTangoObj() {
+        return new ArchiveEventProp(rel_change, abs_change, period, extensions);
+    }
 }
