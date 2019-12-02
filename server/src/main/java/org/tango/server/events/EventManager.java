@@ -234,7 +234,7 @@ public final class EventManager {
             final StringBuilder endpoint = new StringBuilder("tcp://").append(ipAddress).append(":*");
 
 
-            int port = socket.bind(endpoint.toString());
+            int port = socket.bindToRandomPort(endpoint.toString());
 
             //replace * with actual port
             endpoint.deleteCharAt(endpoint.length() - 1).append(port);

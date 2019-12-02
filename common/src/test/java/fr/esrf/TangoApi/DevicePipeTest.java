@@ -2,6 +2,7 @@ package fr.esrf.TangoApi;
 
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -85,7 +86,7 @@ public class DevicePipeTest {
 
         float[] result = instance.nextArray(float[].class);
 
-        assertTrue(3 == result.length);
+        Assert.assertEquals(3, result.length);
         assertArrayEquals(new float[]{1.23f, 4.56f, 7.89f}, result, 0.1F);
     }
 }
