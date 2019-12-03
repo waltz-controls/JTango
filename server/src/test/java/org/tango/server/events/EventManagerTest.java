@@ -4,6 +4,7 @@ import fr.esrf.Tango.DevVarLongStringArray;
 import fr.esrf.TangoApi.events.ZmqEventConsumer;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -35,9 +36,10 @@ public class EventManagerTest {
         }
     }
 
-    //@Test requires TANGO_HOST
+    @Test //requires TANGO_HOST
+    @Ignore
     public void pubsub() throws Exception {
-        DevVarLongStringArray connection = instance.subscribe("x/y/z");
+        DevVarLongStringArray connection = instance.subscribe("tango://hzgxenvtest:10000/development/test_server/0");
 
         for(String endpoint : connection.svalue){
             System.out.println(endpoint);

@@ -27,7 +27,9 @@ package org.tango.server.events;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fr.esrf.Tango.*;
+import io.reactivex.Observable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
@@ -82,8 +84,8 @@ public final class EventManager {
     private final ZContext context = new ZContext();
     private final int serverHWM = initializeServerHwm();
     private final int clientHWN = initializeClientHwm();
-    private final Map<String, ZMQ.Socket> heartbeatEndpoints = new HashMap<>();
-    private final Map<String, ZMQ.Socket> eventEndpoints = new HashMap<>();
+    private final Map<String, ZMQ.Socket> heartbeatEndpoints = Maps.newLinkedHashMap();
+    private final Map<String, ZMQ.Socket> eventEndpoints = Maps.newLinkedHashMap();
 
     private volatile boolean isInitialized;
 
@@ -435,8 +437,14 @@ public final class EventManager {
     }
 
     private String[] getEndpoints() {
-        return Iterables.toArray(
-                Iterables.concat(heartbeatEndpoints.keySet(), eventEndpoints.keySet()), String.class);
+        return Observable.zip(
+                    Observable.fromIterable(heartbeatEndpoints.keySet()),
+                    Observable.fromIterable(eventEndpoints.keySet()),
+                    Observable::just
+                )
+                .flatMap(stringObservable -> stringObservable)
+                .toList()
+                .blockingGet().toArray(new String[0]);
     }
 
     /**
