@@ -24,11 +24,10 @@
  */
 package org.tango.server.monitoring;
 
-import org.tango.server.history.DeviceBlackBox;
-
 import fr.esrf.Tango.ClntIdent;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevSource;
+import org.tango.server.history.DeviceBlackBox;
 
 import java.io.Closeable;
 

@@ -43,29 +43,15 @@ import org.tango.server.InvocationContext;
 import org.tango.server.InvocationContext.CallType;
 import org.tango.server.InvocationContext.ContextType;
 import org.tango.server.ServerManager;
-import org.tango.server.annotation.AroundInvoke;
-import org.tango.server.annotation.Attribute;
-import org.tango.server.annotation.ClassProperty;
-import org.tango.server.annotation.Command;
-import org.tango.server.annotation.Delete;
 import org.tango.server.annotation.Device;
-import org.tango.server.annotation.DeviceProperties;
-import org.tango.server.annotation.DeviceProperty;
-import org.tango.server.annotation.Init;
-import org.tango.server.annotation.State;
-import org.tango.server.annotation.Status;
-import org.tango.server.annotation.TransactionType;
+import org.tango.server.annotation.*;
 import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.attribute.AttributePropertiesImpl;
 import org.tango.server.attribute.ForwardedAttribute;
 import org.tango.server.cache.PollingManager;
 import org.tango.server.cache.TangoCacheManager;
 import org.tango.server.command.CommandImpl;
-import org.tango.server.device.AroundInvokeImpl;
-import org.tango.server.device.DeviceLocker;
-import org.tango.server.device.InitImpl;
-import org.tango.server.device.StateImpl;
-import org.tango.server.device.StatusImpl;
+import org.tango.server.device.*;
 import org.tango.server.events.DeviceInterfaceChangedSender;
 import org.tango.server.idl.CleverAnyCommand;
 import org.tango.server.idl.TangoIDLAttributeUtil;
@@ -767,19 +753,19 @@ public class DeviceImpl extends Device_5POA {
      * @throws DevFailed
      */
     @Override
-    public DevInfo info() throws DevFailed {
+    public DevInfo info() {
         MDC.setContextMap(contextMap);
         xlogger.entry();
-        final DevInfo info = new DevInfo();
         try (DeviceMonitoring.Request ignored = deviceMonitoring.startRequest("Operation info")) {
+            final DevInfo info = new DevInfo();
             info.dev_class = className;
             info.doc_url = "Doc URL = http://www.tango-controls.org";
             info.server_host = ServerManager.getInstance().getHostName();
             info.server_id = ServerManager.getInstance().getServerName();
             info.server_version = SERVER_VERSION;
+            xlogger.exit();
+            return info;
         }
-        xlogger.exit();
-        return info;
     }
 
     /**
@@ -792,17 +778,18 @@ public class DeviceImpl extends Device_5POA {
     public DevInfo_3 info_3() throws DevFailed {
         MDC.setContextMap(contextMap);
         xlogger.entry();
-        deviceMonitoring.startRequest("Operation info_3");
-        final DevInfo_3 info3 = new DevInfo_3();
-        final DevInfo info = info();
-        info3.dev_class = info.dev_class;
-        info3.doc_url = info.doc_url;
-        info3.server_host = info.server_host;
-        info3.server_id = info.server_id;
-        info3.server_version = info.server_version;
-        info3.dev_type = deviceType;
-        xlogger.exit();
-        return info3;
+        try (DeviceMonitoring.Request ignored = deviceMonitoring.startRequest("Operation info_3")) {
+            final DevInfo_3 info3 = new DevInfo_3();
+            final DevInfo info = info();
+            info3.dev_class = info.dev_class;
+            info3.doc_url = info.doc_url;
+            info3.server_host = info.server_host;
+            info3.server_id = info.server_id;
+            info3.server_version = info.server_version;
+            info3.dev_type = deviceType;
+            xlogger.exit();
+            return info3;
+        }
     }
 
     /**
@@ -861,13 +848,13 @@ public class DeviceImpl extends Device_5POA {
     public String description() {
         MDC.setContextMap(contextMap);
         xlogger.entry();
-        String desc = "A TANGO device";
         try (DeviceMonitoring.Request ignored = deviceMonitoring.startRequest("Attribute description requested")) {
+            String desc = "A TANGO device";
             if (name.equalsIgnoreCase(ServerManager.getInstance().getAdminDeviceName())) {
                 desc = "A device server device !!";
             }
+            return desc;
         }
-        return desc;
     }
 
     /**
@@ -1131,6 +1118,26 @@ public class DeviceImpl extends Device_5POA {
             throw handleException(e);
         }
         xlogger.exit();
+    }
+
+    private String[] getNames(AttributeValue[] values) {
+        //TODO Java 8
+//        String[] names = Arrays.stream(values).map(attributeValue -> attributeValue.name).toArray(String[]::new);
+        String[] names = new String[values.length];
+        for (int i = 0; i < values.length; ++i) {
+            names[i] = values[i].name;
+        }
+        return names;
+    }
+
+    private String[] getNames(AttributeValue_4[] values) {
+        //TODO Java 8
+//        String[] names = Arrays.stream(values).map(attributeValue -> attributeValue.name).toArray(String[]::new);
+        String[] names = new String[values.length];
+        for (int i = 0; i < values.length; ++i) {
+            names[i] = values[i].name;
+        }
+        return names;
     }
 
     /**
@@ -1419,7 +1426,7 @@ public class DeviceImpl extends Device_5POA {
     /**
      * Execute a command. IDL 4 version
      *
-     * @param command command name
+     * @param commandName command name
      * @param argin       command parameters
      * @param source      the device source (CACHE, DEV or CACHE_DEV)
      * @param clIdent     client id
@@ -1427,13 +1434,13 @@ public class DeviceImpl extends Device_5POA {
      * @throws DevFailed
      */
     @Override
-    public Any command_inout_4(final String command, final Any argin, final DevSource source,
+    public Any command_inout_4(final String commandName, final Any argin, final DevSource source,
                                final ClntIdent clIdent) throws DevFailed {
-        xlogger.entry(command);
-        pre_command_inout(command, clIdent);
-        try (DeviceMonitoring.Request ignored = deviceMonitoring.startRequest("Operation command_inout_4 (cmd = " + command + ")",
+        xlogger.entry(commandName);
+        pre_command_inout(commandName, clIdent);
+        try (DeviceMonitoring.Request ignored = deviceMonitoring.startRequest("Operation command_inout_4 (cmd = " + commandName + ")",
                 source, clIdent)) {
-            Any argout = commandHandler(command, argin, source, clIdent);
+            Any argout = commandHandler(commandName, argin, source, clIdent);
             xlogger.exit();
             return argout;
         } catch (final Exception e) {
@@ -1702,7 +1709,6 @@ public class DeviceImpl extends Device_5POA {
         MDC.setContextMap(contextMap);
         xlogger.entry(Arrays.toString(attributeNames));
         // checkInitialization();
-
         AttributeConfig_2[] result;
         try (DeviceMonitoring.Request ignored = deviceMonitoring.startRequest("get_attribute_config_2 " + Arrays.toString(attributeNames))) {
             // check if we must retrieve all attributes config
