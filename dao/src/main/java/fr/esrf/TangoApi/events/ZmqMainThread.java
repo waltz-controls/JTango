@@ -325,7 +325,7 @@ public class ZmqMainThread extends Thread {
                 littleEndian = (inputs[EndianIdx][0]!=0);
             }
             ZmqCallInfo zmqCallInfo =
-                    ZMQutils.deMarshallZmqCallInfo(inputs[ZmqInfoIdx], littleEndian);
+                    ZmqUtils.deMarshallZmqCallInfo(inputs[ZmqInfoIdx], littleEndian);
             if (zmqCallInfo!=null) {
                 manageEventValue(eventName, ApiUtil.toLongUnsigned(zmqCallInfo.ctr),
                         inputs[ValueIdx], littleEndian, zmqCallInfo.call_is_except);
@@ -385,11 +385,11 @@ public class ZmqMainThread extends Thread {
             //  Manage ZMQ counter (queue has reached HWM ?)
             boolean pushTheEvent =
                     manageEventCounter(callBackStruct, eventName, eventCounter);
-            ZMQutils.zmqEventTrace("ZMQ event from " + eventName);
+            logger.debug("ZMQ event from " + eventName);
 
             //  Check if Value part is a DevFailed
             if (isExcept) {
-                devErrorList = ZMQutils.deMarshallErrorList(recData, littleEndian);
+                devErrorList = ZmqUtils.deMarshallErrorList(recData, littleEndian);
             }
             else {
                 Map<String, EventChannelStruct> channelMap = consumer.getChannelMap();
@@ -400,22 +400,22 @@ public class ZmqMainThread extends Thread {
                         int idl = callBackStruct.device.get_idl_version();
 
                         //  Else check event type
-                        switch (ZMQutils.getEventType(eventName)) {
+                        switch (ZmqUtils.getEventType(eventName)) {
                             case TangoConst.ATT_CONF_EVENT:
                                 attributeConfig =
-                                        ZMQutils.deMarshallAttributeConfig(recData, littleEndian, idl);
+                                        ZmqUtils.deMarshallAttributeConfig(recData, littleEndian, idl);
                                 break;
                             case TangoConst.PIPE_EVENT:
-                                devicePipe = ZMQutils.deMarshallPipe(recData, littleEndian, idl);
+                                devicePipe = ZmqUtils.deMarshallPipe(recData, littleEndian, idl);
                                 break;
                             case TangoConst.DATA_READY_EVENT:
-                                dataReady = ZMQutils.deMarshallAttDataReady(recData, littleEndian);
+                                dataReady = ZmqUtils.deMarshallAttDataReady(recData, littleEndian);
                                 break;
                             case TangoConst.INTERFACE_CHANGE:
-                                deviceInterface = ZMQutils.deMarshallAttInterfaceChange(recData, littleEndian);
+                                deviceInterface = ZmqUtils.deMarshallAttInterfaceChange(recData, littleEndian);
                                 break;
                             default:
-                                attributeValue = ZMQutils.deMarshallAttribute(recData, littleEndian, idl);
+                                attributeValue = ZmqUtils.deMarshallAttribute(recData, littleEndian, idl);
                          }
                     }
                     catch(DevFailed e) {
@@ -547,7 +547,7 @@ public class ZmqMainThread extends Thread {
             //  ToDo
             long    t = System.currentTimeMillis();
             logger.error("{}:\n heartbeat: {} cannot be parsed ! length={}", formatTime(t), name, inputs[NameIdx].length);
-            ZMQutils.dump(inputs[NameIdx]);
+            ZmqUtils.dump(inputs[NameIdx]);
 
             //  Check if endianess or specif
             if (inputs[NameIdx].length==1)  //  Endianess
@@ -584,7 +584,7 @@ public class ZmqMainThread extends Thread {
     //===============================================================
     //===============================================================
     @SuppressWarnings("unused")
-    private boolean isForcedJustified(ZMQutils.ControlStructure controlStructure) {
+    private boolean isForcedJustified(ZmqUtils.ControlStructure controlStructure) {
         EventList events = connectedMap.get(controlStructure.endPoint);
         if (events==null)
             return true;
@@ -611,31 +611,31 @@ public class ZmqMainThread extends Thread {
     //===============================================================
     private void manageControl(byte[] messageBytes) throws DevFailed{
 
-        ZMQutils.ControlStructure
-                controlStructure = ZMQutils.getInstance().decodeControlBuffer(messageBytes);
+        ZmqUtils.ControlStructure
+                controlStructure = ZmqUtils.decodeControlBuffer(messageBytes);
         logger.debug("From Control:\n{}", controlStructure.toString());
         switch (controlStructure.commandCode) {
-            case ZMQutils.ZMQ_END:
+            case ZmqUtils.ZMQ_END:
                 this.interrupt();
                 break;
 
-            case ZMQutils.ZMQ_CONNECT_HEARTBEAT:
+            case ZmqUtils.ZMQ_CONNECT_HEARTBEAT:
                 connectIfNotDone(heartbeatSocket, controlStructure);
                 logger.debug("-------> ZMQ_CONNECT_HEARTBEAT: {}", controlStructure.eventName);
                 heartbeatSocket.subscribe(controlStructure.eventName.getBytes());
                 break;
 
 
-            case ZMQutils.ZMQ_DISCONNECT_HEARTBEAT:
+            case ZmqUtils.ZMQ_DISCONNECT_HEARTBEAT:
                 disconnect(heartbeatSocket, controlStructure.eventName);
                 break;
 
-            case ZMQutils.ZMQ_CONNECT_EVENT:
+            case ZmqUtils.ZMQ_CONNECT_EVENT:
                 connectIfNotDone(eventSocket, controlStructure);
                 eventSocket.subscribe(controlStructure.eventName.getBytes());
                 break;
 
-            case ZMQutils.ZMQ_DISCONNECT_EVENT:
+            case ZmqUtils.ZMQ_DISCONNECT_EVENT:
                 disconnect(eventSocket, controlStructure.eventName);
                 break;
 
@@ -643,7 +643,7 @@ public class ZmqMainThread extends Thread {
     }
     //===============================================================
     //===============================================================
-    private void connectIfNotDone(ZMQ.Socket socket, ZMQutils.ControlStructure controlStructure){
+    private void connectIfNotDone(ZMQ.Socket socket, ZmqUtils.ControlStructure controlStructure){
 
         traceZmqSubscription(controlStructure.eventName, true);
         //  Check if not already connected or forced (re connection)
@@ -685,7 +685,7 @@ public class ZmqMainThread extends Thread {
             if (s==null)
                 eventList.add(controlStructure.eventName);
             ApiUtil.printTrace(
-                    ((controlStructure.commandCode==ZMQutils.ZMQ_CONNECT_EVENT)? "Event" : "Heartbeat") +
+                    ((controlStructure.commandCode== ZmqUtils.ZMQ_CONNECT_EVENT)? "Event" : "Heartbeat") +
                     " already connected to " + controlStructure.endPoint);
         }
     }

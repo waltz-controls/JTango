@@ -103,28 +103,22 @@ public class ZmqEventConsumer {
                 }
             }
             else {
-                //TODO invert and throw exception or send error callback
-                if (EventConsumerUtil.getInstance().isZmqLoadable()) {
-                    try {
-                        //  Try for zmq
-                        eventCallBackStruct.consumer = this;
-                        subscribeIfNotDone(eventCallBackStruct, callbackKey);
-                        return;
-
+                try {
+                    eventCallBackStruct.consumer = this;
+                    subscribeIfNotDone(eventCallBackStruct, callbackKey);
+                }
+                catch (DevFailed e) {
+                    if (e.errors[0].desc.equals(ZmqUtils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
+                        DevFailedUtils.logDevFailed(e, logger);
+                        //  reset if both have failed
+                        eventCallBackStruct.consumer = null;
+                        //	Send error to callback
+                        sendErrorToCallback(eventCallBackStruct, callbackKey, e);
                     }
-                    catch (DevFailed e) {
-                        if (e.errors[0].desc.equals(ZMQutils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
-                            DevFailedUtils.logDevFailed(e, logger);
-                            //  reset if both have failed
-                            eventCallBackStruct.consumer = null;
-                            //	Send error to callback
-                            sendErrorToCallback(eventCallBackStruct, callbackKey, e);
-                        }
-                        else {
-                            //	Send error to callback
-                            eventCallBackStruct.consumer = null;
-                            sendErrorToCallback(eventCallBackStruct, callbackKey, e);
-                        }
+                    else {
+                        //	Send error to callback
+                        eventCallBackStruct.consumer = null;
+                        sendErrorToCallback(eventCallBackStruct, callbackKey, e);
                     }
                 }
             }
@@ -216,7 +210,7 @@ public class ZmqEventConsumer {
             logger.trace("call callEventSubscriptionAndConnect() method done");
         } catch (DevFailed e) {
             //  re throw if not stateless
-            if (!stateless || e.errors[0].desc.equals(ZMQutils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
+            if (!stateless || e.errors[0].desc.equals(ZmqUtils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
                 throw e;
             }
             else {
@@ -285,7 +279,7 @@ public class ZmqEventConsumer {
         };
         DeviceData argIn = new DeviceData();
         argIn.insert(info);
-        String cmdName = ZMQutils.SUBSCRIBE_COMMAND;
+        String cmdName = ZmqUtils.SUBSCRIBE_COMMAND;
         logger.trace("{}.command_inout({}) for {}.{}", device.get_adm_dev().name(), cmdName, device_name, eventType);
         DeviceData argOut =
                 device.get_adm_dev().command_inout(cmdName, argIn);
@@ -325,7 +319,7 @@ public class ZmqEventConsumer {
                 connect_event_channel(connectionStructure);
             } else if (deviceProxy.use_db()) {
                 database = deviceProxy.get_db_obj();
-                ZMQutils.connectEvent(deviceProxy.get_tango_host(), deviceName,
+                ZmqUtils.connectEvent(deviceProxy.get_tango_host(), deviceName,
                         attributeName, deviceData.extractLongStringArray(), eventName,false);
             }
             EventChannelStruct eventChannelStruct = channel_map.get(adminName);
@@ -453,7 +447,7 @@ public class ZmqEventConsumer {
         }
         else {
             logger.debug("{} already connected.", deviceName);
-            ZMQutils.connectEvent(deviceProxy.get_tango_host(), deviceName,
+            ZmqUtils.connectEvent(deviceProxy.get_tango_host(), deviceName,
                         attribute, deviceData.extractLongStringArray(), event_name,false);
         }
     }
@@ -468,10 +462,10 @@ public class ZmqEventConsumer {
         logger.debug("connect_event_channel for {}", cs.channelName);
 
         //  Build the buffer to connect heartbeat and send it
-        ZMQutils.connectHeartbeat(adminDevice.get_tango_host(), adminDevice.name(), lsa, false);
+        ZmqUtils.connectHeartbeat(adminDevice.get_tango_host(), adminDevice.name(), lsa, false);
 
         //  Build the buffer to connect event and send it
-        ZMQutils.connectEvent(cs.tangoHost, cs.deviceName, cs.attributeName,
+        ZmqUtils.connectEvent(cs.tangoHost, cs.deviceName, cs.attributeName,
                 lsa, cs.eventName, false);
         if (cs.reconnect) {
             EventChannelStruct eventChannelStruct = channel_map.get(cs.channelName);
@@ -514,7 +508,7 @@ public class ZmqEventConsumer {
         try {
             logger.debug("====================================================\n" +
                                 "   Try to resubscribe {}", eventCallBackStruct.channel_name);
-            DeviceData argOut = ZMQutils.getEventSubscriptionInfoFromAdmDevice(
+            DeviceData argOut = ZmqUtils.getEventSubscriptionInfoFromAdmDevice(
                         channelStruct.adm_device_proxy,
                         eventCallBackStruct.device.name(),
                         eventCallBackStruct.attr_name, eventCallBackStruct.event_name);
@@ -581,7 +575,7 @@ public class ZmqEventConsumer {
     }
 
     private void unsubscribeTheEvent(EventCallBackStruct callbackStruct) throws DevFailed {
-        ZMQutils.disConnectEvent(callbackStruct.device.get_tango_host(),
+        ZmqUtils.disConnectEvent(callbackStruct.device.get_tango_host(),
                 callbackStruct.device.name(),
                 callbackStruct.attr_name,
                 callbackStruct.device.get_idl_version(),
@@ -596,7 +590,7 @@ public class ZmqEventConsumer {
     private boolean reconnectToEvent(EventChannelStruct channelStruct, EventCallBackStruct callBackStruct) {
         boolean reConnected;
         try {
-            DeviceData argOut = ZMQutils.getEventSubscriptionInfoFromAdmDevice(
+            DeviceData argOut = ZmqUtils.getEventSubscriptionInfoFromAdmDevice(
                         channelStruct.adm_device_proxy,
                         callBackStruct.device.name(),
                         callBackStruct.attr_name,
@@ -604,7 +598,7 @@ public class ZmqEventConsumer {
             DevVarLongStringArray   lsa = checkZmqAddress(argOut, callBackStruct.device).extractLongStringArray();
 
             //  Build the buffer to connect event and send it
-            ZMQutils.connectEvent(callBackStruct.device.get_tango_host(),
+            ZmqUtils.connectEvent(callBackStruct.device.get_tango_host(),
                     callBackStruct.device.name(),
                     callBackStruct.attr_name, lsa,
                     callBackStruct.event_name, true);
@@ -629,14 +623,14 @@ public class ZmqEventConsumer {
             if (eventCallBackStruct.channel_name.equals(name) && (eventCallBackStruct.callback != null)) {
                 try {
                     EventChannelStruct channelStruct = channel_map.get(name);
-                    DeviceData argOut = ZMQutils.getEventSubscriptionInfoFromAdmDevice(
+                    DeviceData argOut = ZmqUtils.getEventSubscriptionInfoFromAdmDevice(
                             channelStruct.adm_device_proxy, eventCallBackStruct.device.name(),
                             eventCallBackStruct.attr_name, eventCallBackStruct.event_name);
                     DevVarLongStringArray lsa = checkZmqAddress(
                             argOut, eventCallBackStruct.device).extractLongStringArray();
 
                     //  Re Connect heartbeat
-                    ZMQutils.connectHeartbeat(channelStruct.adm_device_proxy.get_tango_host(),
+                    ZmqUtils.connectHeartbeat(channelStruct.adm_device_proxy.get_tango_host(),
                                 channelStruct.adm_device_proxy.name(), lsa, true);
                     reConnected = true;
                 } catch (DevFailed e1) {
@@ -712,7 +706,7 @@ public class ZmqEventConsumer {
         };
         DeviceData argIn = new DeviceData();
         argIn.insert(info);
-        String cmdName = ZMQutils.SUBSCRIBE_COMMAND;
+        String cmdName = ZmqUtils.SUBSCRIBE_COMMAND;
         logger.debug("{}.command_inout({}) for {}/{}.{}", device.get_adm_dev().name(), cmdName, device_name, attribute, eventType);
         DeviceData argOut = device.get_adm_dev().command_inout(cmdName, argIn);
         logger.trace("    command_inout done.");
@@ -805,7 +799,7 @@ public class ZmqEventConsumer {
             logger.trace("call callEventSubscriptionAndConnect() method done");
         } catch (DevFailed e) {
             //  re throw if not stateless
-            if (!stateless || e.errors[0].desc.equals(ZMQutils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
+            if (!stateless || e.errors[0].desc.equals(ZmqUtils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
                 throw e;
             }
             else {

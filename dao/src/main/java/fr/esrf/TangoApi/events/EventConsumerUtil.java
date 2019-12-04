@@ -40,75 +40,44 @@ import fr.esrf.TangoApi.CallBack;
 import fr.esrf.TangoApi.DeviceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tango.utils.DevFailedUtils;
 
-//===============================================================
 /**
  * A class to manage NotifdEventConsumer and ZmqEventConsumer instances
  *
  * @author pascal_verdier
  */
-//===============================================================
 public class EventConsumerUtil {
     private final Logger logger = LoggerFactory.getLogger(EventConsumerUtil.class);
-
-    private final boolean zmqAvailable = checkZmqLibrary();
-    private boolean checkZmqLibrary(){
-        String	zmqEnable = System.getenv("ZMQ_DISABLE");
-        if (zmqEnable==null)
-            zmqEnable = System.getProperty("ZMQ_DISABLE");
-
-        if (zmqEnable==null || !zmqEnable.equals("true")) {
-            try {
-                ZMQutils.getInstance();
-                logger.info("========== ZMQ ({}}) event system is available ============",ZMQutils.getZmqVersion());
-            }
-            catch(UnsatisfiedLinkError | NoClassDefFoundError error) {
-                logger.info(error.getMessage(), error);
-                return false;
-            }
-        }
-        else {
-            logger.info("========== ZMQ event system not enabled ============");
-            return false;
-        }
-        return true;
-    }
-
 
     private static final EventConsumerUtil  instance = new EventConsumerUtil(new ZmqEventConsumer());
 
     private final ZmqEventConsumer consumer;
 
-    //===============================================================
     /**
      * Create a singleton if not already done
      * @return an instance on this singleton
      */
-    //===============================================================
     public static EventConsumerUtil getInstance() {
         return instance;
     }
-    //===============================================================
+
     /**
      * Default constructor
      * @param consumer
      */
-    //===============================================================
     private EventConsumerUtil(ZmqEventConsumer consumer) {
         this.consumer = consumer;
         //  Start the KeepAliveThread loop
         new KeepAliveThread(consumer).start();
         //  Start ZMQ main thread
-        new ZmqMainThread(ZMQutils.getContext(), consumer).start();
+        new ZmqMainThread(ZmqUtils.getContext(), consumer).start();
     }
-    //===============================================================
+
     /**
      *
      * @param deviceProxy device to be connected
      * @return consumer if already connected, otherwise return null
      */
-    //===============================================================
     private ZmqEventConsumer isChannelAlreadyConnected(DeviceProxy deviceProxy) {
         try {
             String adminName = deviceProxy.adm_name();
@@ -124,20 +93,7 @@ public class EventConsumerUtil {
             return null;
         }
     }
-    //===============================================================
-    /**
-     * Check if zmq is loadable:
-     *  - JNI library must be in LD_LIBRARY_PATH
-     *  - zmq jar file must be in CLASSPATH
-     *
-     * @return true if ZMQ could be loaded correctly
-     */
-    //===============================================================
-    public boolean isZmqLoadable(){
-        return zmqAvailable;
-   }
 
-    //===============================================================
     /**
      * Subscribe on specified event
      *
@@ -150,7 +106,6 @@ public class EventConsumerUtil {
      * @return  event ID.
      * @throws DevFailed if subscription failed
      */
-    //===============================================================
     public int subscribe_event(DeviceProxy device,
                                String attribute,
                                int event,
@@ -215,8 +170,6 @@ public class EventConsumerUtil {
                     attribute, event, callback, max_size, filters, stateless);
         }
         else {
-            if (!isZmqLoadable()) throw DevFailedUtils.newDevFailed("Zmq is not loadable!");
-            //  If ZMQ jni library can be loaded, try to connect on ZMQ event system
             return this.consumer.subscribe_event(device,
                     attribute, event, callback, max_size, filters, stateless);
         }
