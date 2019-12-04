@@ -36,55 +36,43 @@ package fr.esrf.TangoApi.events;
 
 
 import fr.esrf.TangoDs.TangoConst;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-
-/**
- * @author pascal_verdier
- */
-
-
-
-
-//===============================================================
 /**
  * A class inherited from TimerTask class
+ *
+ * @author pascal_verdier
  */
-//===============================================================
 class KeepAliveThread extends Thread implements TangoConst {
+    private final Logger logger = LoggerFactory.getLogger(KeepAliveThread.class);
 
     private static final long EVENT_RESUBSCRIBE_PERIOD = 600000;
     private static final long EVENT_HEARTBEAT_PERIOD   =  10000;
-    private static boolean stop = false;
-    private static KeepAliveThread  instance = null;
-    //===============================================================
+
     /**
      * Creates a new instance of EventConsumer.KeepAliveThread
      */
-    //===============================================================
-    private KeepAliveThread() {
+    KeepAliveThread() {
         super();
         this.setName("KeepAliveThread");
+        this.setDaemon(true);
     }
 
-    //===============================================================
-    //===============================================================
+    //TOOD replace with scheduled executor
     public void run() {
-
-        while (!stop) {
+        while (!Thread.currentThread().isInterrupted()) {
             long t0 = System.currentTimeMillis();
 
             try {
                 ZmqEventConsumer.subscribeIfNotDone();
                 resubscribe_if_needed();
             }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            catch (Error err) {
-                err.printStackTrace();
+            catch (Exception | Error err) {
+                logger.warn(err.getMessage(), err);
             }
 
             long msToSleep = EVENT_HEARTBEAT_PERIOD - (System.currentTimeMillis() - t0);
@@ -92,49 +80,24 @@ class KeepAliveThread extends Thread implements TangoConst {
                 msToSleep = 5;
             waitNextLoop(msToSleep);
         }
+        logger.info("======== Shutting down ZMQ event system ==========");
     }
-    //===============================================================
-    //===============================================================
+
     private synchronized void waitNextLoop(long ms) {
         try {
             wait(ms);
         } catch (InterruptedException e) {
-            System.err.println(e);
+            Thread.currentThread().interrupt();
         }
     }
-    //===============================================================
-    //===============================================================
-    synchronized void stopThread() {
-        stop = true;
-        if (instance!=null)
-            notify();
-        instance = null;
-    }
-    //===============================================================
-    //===============================================================
-    static KeepAliveThread getInstance() {
-        if (instance==null) {
-            instance = new KeepAliveThread();
-            instance.start();
-        }
-        return instance;
-    }
-    //===============================================================
-    //===============================================================
+
     static boolean heartbeatHasBeenSkipped(EventChannelStruct eventChannelStruct) {
         long now = System.currentTimeMillis();
         //System.out.println(now + "-" + eventChannelStruct.last_heartbeat + "=" +
         //        (now - eventChannelStruct.last_heartbeat));
         return ((now - eventChannelStruct.last_heartbeat) > EVENT_HEARTBEAT_PERIOD);
     }
-    //===============================================================
-    //===============================================================
 
-
-
-
-    //===============================================================
-    //===============================================================
     private void resubscribe_if_needed() {
         Enumeration channel_names = ZmqEventConsumer.getChannelMap().keys();
         long now = System.currentTimeMillis();
@@ -150,11 +113,10 @@ class KeepAliveThread extends Thread implements TangoConst {
 
         }// end while  channel_names.hasMoreElements()
     }
-    //===============================================================
+
     /*
      * Re subscribe event selected by name
      */
-    //===============================================================
     private void reSubscribeByName(EventChannelStruct eventChannelStruct, String name) {
 
         //  Get the map and the callback structure for channel

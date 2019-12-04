@@ -60,7 +60,6 @@ public class ZmqMainThread extends Thread {
     private final ZMQ.Socket heartbeatSocket;
     private final ZMQ.Socket eventSocket;
     private final ZmqPollers pollers;
-    private volatile boolean stop = false;
     //TODO replace with two maps: 1) multimap Endpoint -> List; 2) eventName -> endpoint to use in getConnectedEndpoint
     private ConcurrentMap<String, EventList> connectedMap = new ConcurrentHashMap<>();
 
@@ -90,6 +89,7 @@ public class ZmqMainThread extends Thread {
     ZmqMainThread(ZMQ.Context context) {
 
         this.setName("ZmqMainThread");
+        this.setDaemon(true);
         // Prepare our receivers
         controlSocket   = context.socket(ZMQ.REP);
         heartbeatSocket = context.socket(ZMQ.SUB);
@@ -129,7 +129,7 @@ public class ZmqMainThread extends Thread {
     public void run() {
 
         SourceSocket[] sourceSocketValues = SourceSocket.values();
-        while (!stop) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 //  Poll the sockets inputs
                 pollers.poll();//TODO use return value
@@ -141,7 +141,7 @@ public class ZmqMainThread extends Thread {
                     }
                 }
             } catch (Throwable e) {
-                logger.error("ZmqMainThread polling has failed", e);
+                logger.warn("ZmqMainThread polling has failed", e);
             }
         }
         logger.debug("------------ End of ZmqMainThread ---------------");
@@ -612,7 +612,7 @@ public class ZmqMainThread extends Thread {
         logger.debug("From Control:\n{}", controlStructure.toString());
         switch (controlStructure.commandCode) {
             case ZMQutils.ZMQ_END:
-                stop = true;
+                this.interrupt();
                 break;
 
             case ZMQutils.ZMQ_CONNECT_HEARTBEAT:

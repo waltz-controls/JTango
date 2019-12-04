@@ -62,6 +62,13 @@ import java.util.List;
 public class ZmqEventConsumer implements IEventConsumer {
     private final Logger logger = LoggerFactory.getLogger(ZmqEventConsumer.class);
 
+    static {
+        //  Start the KeepAliveThread loop
+        new KeepAliveThread().start();
+        //  Start ZMQ main thread
+        new ZmqMainThread(ZMQutils.getContext()).start();
+    }
+
     //TODO concurrent access
     private int subscribe_event_id = 0;
     //TODO replace with ConcurrentMap
@@ -75,32 +82,15 @@ public class ZmqEventConsumer implements IEventConsumer {
     //TODO concurrent access
     private static final List<String> possibleTangoHosts = new ArrayList<>();
 
-    //TODO get rid of singleton
-    private static ZmqEventConsumer instance = null;
+    private static final ZmqEventConsumer instance = new ZmqEventConsumer();
 
     /**
      * Creates a new instance of EventConsumer
      *
      * @return an instance of EventConsumer object
-     * @throws DevFailed in case of database connection failed.
      */
     public static ZmqEventConsumer getInstance() {
-        if (instance == null) {
-            instance = new ZmqEventConsumer();
-        }
         return instance;
-    }
-
-    private ZmqEventConsumer(){
-
-        //  Default constructor
-        //  Start the KeepAliveThread loop
-        KeepAliveThread.getInstance();
-        //  Start ZMQ main thread
-        //TODO use Executors
-        ZmqMainThread zmqMainThread = new ZmqMainThread(ZMQutils.getContext());
-        zmqMainThread.start();
-        addShutdownHook();
     }
 
     static Hashtable<String, EventChannelStruct> getChannelMap() {
@@ -196,18 +186,6 @@ public class ZmqEventConsumer implements IEventConsumer {
                 return callback_struct;
         }
         return null;
-    }
-
-    private void addShutdownHook(){
-        //	Create a thread and start it
-        Runtime.getRuntime().addShutdownHook(
-            new Thread() {
-                public void run() {
-                    logger.info("======== Shutting down ZMQ event system ==========");
-                    KeepAliveThread.getInstance().stopThread();
-                }
-            }
-        );
     }
 
     /**
