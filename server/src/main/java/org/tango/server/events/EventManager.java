@@ -303,8 +303,9 @@ public final class EventManager {
             Thread.currentThread().interrupt();
         }
 
+        //TODO ensure this is done in the same thread where sockets were created
             // close all open sockets
-        context.destroy();
+//        context.destroy();
         eventImplMap.clear();
 
         isInitialized = false;
