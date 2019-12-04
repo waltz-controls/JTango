@@ -34,7 +34,6 @@
 
 package fr.esrf.TangoApi.events;
 
-import fr.esrf.TangoApi.ApiUtil;
 import fr.esrf.TangoApi.CallBack;
 import fr.esrf.TangoApi.DeviceProxy;
 
@@ -57,7 +56,7 @@ public class EventCallBackStruct implements java.io.Serializable {
     public String[] filters;
     public boolean filter_ok;
     public boolean use_ev_queue;
-    public EventConsumer    consumer;
+    public ZmqEventConsumer consumer;
     private long zmqCounter = Long.MAX_VALUE;
     private boolean synchronousDone = false;
 

@@ -58,7 +58,6 @@ public class EventData implements java.io.Serializable {
     public long date;
 
     public static final int    ZMQ_EVENT    = 0;
-    public static final int    NOTIFD_EVENT = 1;
     //-=============================================
     /**
      * Creates a new instance of EventData
