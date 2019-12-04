@@ -35,56 +35,46 @@
 package fr.esrf.TangoApi.events;
 
 
-import fr.esrf.TangoDs.TangoConst;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Map;
 
-
-/**
- * @author pascal_verdier
- */
-
-
-
-
-//===============================================================
 /**
  * A class inherited from TimerTask class
+ *
+ * @author pascal_verdier
  */
-//===============================================================
-class KeepAliveThread extends Thread implements TangoConst {
+class KeepAliveThread extends Thread {
+    private final Logger logger = LoggerFactory.getLogger(KeepAliveThread.class);
 
     private static final long EVENT_RESUBSCRIBE_PERIOD = 600000;
     private static final long EVENT_HEARTBEAT_PERIOD   =  10000;
-    private static boolean stop = false;
-    private static KeepAliveThread  instance = null;
-    //===============================================================
+
+
+    private final ZmqEventConsumer consumer;
     /**
      * Creates a new instance of EventConsumer.KeepAliveThread
+     * @param consumer
      */
-    //===============================================================
-    private KeepAliveThread() {
+    KeepAliveThread(ZmqEventConsumer consumer) {
         super();
         this.setName("KeepAliveThread");
+        this.setDaemon(true);
+        this.consumer = consumer;
     }
 
-    //===============================================================
-    //===============================================================
+    //TODO replace with scheduled executor
     public void run() {
-
-        while (!stop) {
+        while (!Thread.currentThread().isInterrupted()) {
             long t0 = System.currentTimeMillis();
 
             try {
-                EventConsumer.subscribeIfNotDone();
+                consumer.subscribeIfNotDone();
                 resubscribe_if_needed();
             }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            catch (Error err) {
-                err.printStackTrace();
+            catch (Exception | Error err) {
+                logger.warn(err.getMessage(), err);
             }
 
             long msToSleep = EVENT_HEARTBEAT_PERIOD - (System.currentTimeMillis() - t0);
@@ -92,57 +82,30 @@ class KeepAliveThread extends Thread implements TangoConst {
                 msToSleep = 5;
             waitNextLoop(msToSleep);
         }
+        logger.info("======== Shutting down ZMQ event system ==========");
     }
-    //===============================================================
-    //===============================================================
+
     private synchronized void waitNextLoop(long ms) {
         try {
             wait(ms);
         } catch (InterruptedException e) {
-            System.err.println(e);
+            Thread.currentThread().interrupt();
         }
     }
-    //===============================================================
-    //===============================================================
-    synchronized void stopThread() {
-        stop = true;
-        if (instance!=null)
-            notify();
-        instance = null;
-    }
-    //===============================================================
-    //===============================================================
-    static KeepAliveThread getInstance() {
-        if (instance==null) {
-            instance = new KeepAliveThread();
-            instance.start();
-        }
-        return instance;
-    }
-    //===============================================================
-    //===============================================================
+
     static boolean heartbeatHasBeenSkipped(EventChannelStruct eventChannelStruct) {
         long now = System.currentTimeMillis();
         //System.out.println(now + "-" + eventChannelStruct.last_heartbeat + "=" +
         //        (now - eventChannelStruct.last_heartbeat));
         return ((now - eventChannelStruct.last_heartbeat) > EVENT_HEARTBEAT_PERIOD);
     }
-    //===============================================================
-    //===============================================================
 
-
-
-
-    //===============================================================
-    //===============================================================
     private void resubscribe_if_needed() {
-        Enumeration channel_names = EventConsumer.getChannelMap().keys();
         long now = System.currentTimeMillis();
 
         // check the list of not yet connected events and try to subscribe
-        while (channel_names.hasMoreElements()) {
-            String name = (String) channel_names.nextElement();
-            EventChannelStruct eventChannelStruct = EventConsumer.getChannelMap().get(name);
+        for (String name : consumer.getChannelMap().keySet()) {
+            EventChannelStruct eventChannelStruct = consumer.getChannelMap().get(name);
             if ((now - eventChannelStruct.last_subscribed) > EVENT_RESUBSCRIBE_PERIOD / 3) {
                 reSubscribeByName(eventChannelStruct, name);
             }
@@ -150,20 +113,17 @@ class KeepAliveThread extends Thread implements TangoConst {
 
         }// end while  channel_names.hasMoreElements()
     }
-    //===============================================================
+
     /*
      * Re subscribe event selected by name
      */
-    //===============================================================
     private void reSubscribeByName(EventChannelStruct eventChannelStruct, String name) {
 
         //  Get the map and the callback structure for channel
-        Hashtable<String, EventCallBackStruct>
-                callBackMap = EventConsumer.getEventCallbackMap();
+        Map<String, EventCallBackStruct>
+                callBackMap = consumer.getEventCallbackMap();
         EventCallBackStruct callbackStruct = null;
-        Enumeration channelNames = callBackMap.keys();
-        while (channelNames.hasMoreElements()) {
-            String  key = (String) channelNames.nextElement();
+        for (String  key : callBackMap.keySet()) {
             EventCallBackStruct eventStruct = callBackMap.get(key);
             if (eventStruct.channel_name.equals(name)) {
                 callbackStruct = eventStruct;

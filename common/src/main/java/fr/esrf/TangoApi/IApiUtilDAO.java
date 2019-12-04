@@ -40,7 +40,6 @@ import org.omg.CORBA.Request;
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
-import fr.esrf.TangoApi.events.IEventConsumer;
 
 public interface IApiUtilDAO {
     // ===================================================================

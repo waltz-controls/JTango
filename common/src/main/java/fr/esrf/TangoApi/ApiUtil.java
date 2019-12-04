@@ -34,14 +34,13 @@
 
 package fr.esrf.TangoApi;
 
-import fr.esrf.TangoDs.Except;
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.Request;
-
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
 import fr.esrf.Tango.factory.TangoFactory;
+import fr.esrf.TangoDs.Except;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.Request;
 
 import java.io.FileOutputStream;
 import java.util.*;
@@ -800,8 +799,10 @@ Str[n] = Property value n (array case)
      *         3.22 for "3.2.2" or 0.0 if zmq not available
      *
      * @return the TangORB version as a String
+     * @deprecated use ZmqUtils.
      */
     //===================================================================
+    @Deprecated
     public static double getZmqVersion() {
         return apiutilDAO.getZmqVersion();
     }
