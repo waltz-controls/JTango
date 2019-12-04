@@ -38,6 +38,7 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.ApiUtil;
 import fr.esrf.TangoApi.CallBack;
 import fr.esrf.TangoApi.DeviceProxy;
+import org.tango.utils.DevFailedUtils;
 
 import java.util.Hashtable;
 
@@ -216,38 +217,18 @@ public class EventConsumerUtil {
                                String[] filters,
                                boolean stateless) throws DevFailed {
         ApiUtil.printTrace("trying to subscribe_event to " + device.name() + "/" + attribute);
-        int id;
         //  If already connected, subscribe directly on same channel
         EventConsumer   consumer = isChannelAlreadyConnected(device);
         if (consumer!=null) {
-            id = consumer.subscribe_event(device,
+            return consumer.subscribe_event(device,
                     attribute, event, callback, max_size, filters, stateless);
         }
-        else
-        if (isZmqLoadable()) {
-            try {
-                //  If ZMQ jni library can be loaded, try to connect on ZMQ event system
-                id = ZmqEventConsumer.getInstance().subscribe_event(device,
-                        attribute, event, callback, max_size, filters, stateless);
-            }
-            catch (DevFailed e) {
-                ApiUtil.printTrace(e.errors[0].desc);
-                if (e.errors[0].desc.equals(ZMQutils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
-                    //  If not a ZMQ server, try on notifd system.
-                    id = subscribeEventWithNotifd(device, attribute,
-                            event, callback, max_size, filters,stateless);
-                }
-                else
-                    throw e;
-            }
-        }
         else {
-            //  If there is no ZMQ jni library loadable, try on notifd system.
-            id = subscribeEventWithNotifd(device, attribute,
-                    event, callback, max_size, filters,stateless);
+            if (!isZmqLoadable()) throw DevFailedUtils.newDevFailed("Zmq is not loadable!");
+            //  If ZMQ jni library can be loaded, try to connect on ZMQ event system
+            return ZmqEventConsumer.getInstance().subscribe_event(device,
+                    attribute, event, callback, max_size, filters, stateless);
         }
-
-        return id;
     }
     //===============================================================
     /**
@@ -279,35 +260,6 @@ public class EventConsumerUtil {
         id = ZmqEventConsumer.getInstance().subscribe_event(
                 device, event, callback, max_size, stateless);
 
-        return id;
-    }
-    //===============================================================
-    /**
-     * Subscribe on specified event using notifd
-     *
-     * @param device    specified device
-     * @param attribute specified attribute
-     * @param event     specified event type
-     * @param callback  callback class
-     * @param max_size  maximum size for event queue
-     * @param filters   filters (not used with zmq)
-     * @param stateless stateless subscription if true
-     * @return  event ID.
-     * @throws DevFailed if subscription failed
-     */
-    //===============================================================
-    private int subscribeEventWithNotifd(DeviceProxy device,
-                                   String attribute,
-                                   int event,
-                                   CallBack callback,
-                                   int max_size,
-                                   String[] filters,
-                                   boolean stateless) throws DevFailed {
-
-        int id;
-        id = NotifdEventConsumer.getInstance().subscribe_event(device,
-                attribute, event, callback, max_size, filters, stateless);
-        ApiUtil.printTrace(device.name() + "/" + attribute + "  connected to Notifd event system");
         return id;
     }
     //===============================================================

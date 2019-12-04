@@ -121,7 +121,7 @@ public class ZmqEventConsumer extends EventConsumer implements IEventConsumer {
                                boolean stateless)
             throws DevFailed {
         //	Set the event name;
-        String event_name = eventNames[event];
+        String event_name = TangoConst.eventNames[event];
         logger.debug("=============> subscribing for {}.{}",  device.name(), event_name);
 
         //	if no callback (null), create EventQueue

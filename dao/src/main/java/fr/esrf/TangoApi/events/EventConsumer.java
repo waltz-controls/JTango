@@ -51,7 +51,7 @@ import java.util.List;
  * @author pascal_verdier
  */
 abstract public class EventConsumer extends StructuredPushConsumerPOA
-        implements TangoConst, IEventConsumer {
+        implements IEventConsumer {
 
     protected static int subscribe_event_id = 0;
     protected static Hashtable<String, EventChannelStruct>   channel_map        = new Hashtable<>();
@@ -232,7 +232,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                                boolean stateless)
             throws DevFailed {
         //	Set the event name;
-        String event_name = eventNames[event];
+        String event_name = TangoConst.eventNames[event];
         ApiUtil.printTrace("=============> subscribing for " + device.name() +
                 ((attribute==null)? "" : "/" + attribute) + "." +event_name);
 
@@ -362,6 +362,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                 }
             }
             else {
+                //TODO invert and throw exception or send error callback
                 if (EventConsumerUtil.isZmqLoadable()) {
                     try {
                         //  Try for zmq
@@ -372,41 +373,18 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                     }
                     catch (DevFailed e) {
                         if (e.errors[0].desc.equals(ZMQutils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
-                            try {
-                                //  Try for notifd
-                                eventCallBackStruct.consumer = NotifdEventConsumer.getInstance();
-                                subscribeIfNotDone(eventCallBackStruct, callbackKey);
-                                return;
-                            }
-                            catch (DevFailed e2) {
-								//TODO use DevFailedUtils#printDevFailed from JTangoCommons
-                               System.err.println(e2.errors[0].desc);
+                            	//TODO use DevFailedUtils#printDevFailed from JTangoCommons
+                               System.err.println(e.errors[0].desc);
                                 //  reset if both have failed
                                 eventCallBackStruct.consumer = null;
                                 //	Send error to callback
-                                sendErrorToCallback(eventCallBackStruct, callbackKey, e2);
-                            }
+                                sendErrorToCallback(eventCallBackStruct, callbackKey, e);
                         }
                         else {
                             //	Send error to callback
                             eventCallBackStruct.consumer = null;
                             sendErrorToCallback(eventCallBackStruct, callbackKey, e);
                         }
-                    }
-                }
-                else
-                {
-                    try {
-                        //  Try for notifd
-                        eventCallBackStruct.consumer = NotifdEventConsumer.getInstance();
-                        subscribeIfNotDone(eventCallBackStruct, callbackKey);
-                        return;
-                    }
-                    catch (DevFailed e) {
-						//TODO use DevFailedUtils#printDevFailed from JTangoCommons
-                        System.err.println(e.errors[0].desc);
-                        //	Send error to callback
-                        sendErrorToCallback(eventCallBackStruct, callbackKey, e);
                     }
                 }
             }
@@ -416,8 +394,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
     //===============================================================
     private static void sendErrorToCallback(EventCallBackStruct cs, String callbackKey, DevFailed e) {
 
-        int source = (cs.consumer instanceof NotifdEventConsumer)?
-                EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
+        int source = EventData.ZMQ_EVENT;
         EventData eventData =
                 new EventData(cs.device, callbackKey,
                         cs.event_name, source,
@@ -511,52 +488,38 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
      */
     //===============================================================
     void pushReceivedException(EventChannelStruct event_channel_struct, EventCallBackStruct callback_struct, DevError error) {
-        try {
-            if (event_channel_struct != null) {
-                if (event_channel_struct.consumer instanceof NotifdEventConsumer) {
-                    if (!callback_struct.filter_ok) {
-                        callback_struct.filter_id = NotifdEventConsumer.getInstance().add_filter_for_channel(
-                                event_channel_struct, callback_struct.filter_constraint);
-                        callback_struct.filter_ok = true;
-                    }
-                }
-            } else
-                return;
+        int eventSource = EventData.ZMQ_EVENT;
+        DevError[] errors = {error};
+        String domain_name = callback_struct.device.name();
+        if (callback_struct.attr_name!=null)
+            domain_name += "/" + callback_struct.attr_name.toLowerCase();
+        EventData event_data =
+                new EventData(event_channel_struct.adm_device_proxy,
+                        domain_name, callback_struct.event_name, callback_struct.event_type,
+                        eventSource, null, null, null, null, null, errors);
 
-            int eventSource = (event_channel_struct.consumer instanceof NotifdEventConsumer)?
-                    EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
-            DevError[] errors = {error};
-            String domain_name = callback_struct.device.name();
-            if (callback_struct.attr_name!=null)
-                domain_name += "/" + callback_struct.attr_name.toLowerCase();
-            EventData event_data =
-                    new EventData(event_channel_struct.adm_device_proxy,
-                            domain_name, callback_struct.event_name, callback_struct.event_type,
-                            eventSource, null, null, null, null, null, errors);
+        CallBack callback = callback_struct.callback;
+        event_data.device = callback_struct.device;
+        event_data.name = callback_struct.device.name();
+        event_data.event = callback_struct.event_name;
 
-            CallBack callback = callback_struct.callback;
-            event_data.device = callback_struct.device;
-            event_data.name = callback_struct.device.name();
-            event_data.event = callback_struct.event_name;
-
-            if (callback_struct.use_ev_queue) {
-                EventQueue ev_queue = callback_struct.device.getEventQueue();
-                ev_queue.insert_event(event_data);
-            } else
-                callback.push_event(event_data);
-
-        } catch (DevFailed e) { /* */ }
+        if (callback_struct.use_ev_queue) {
+            EventQueue ev_queue = callback_struct.device.getEventQueue();
+            ev_queue.insert_event(event_data);
+        } else
+            callback.push_event(event_data);
     }
     //===============================================================
     /*
      * Read attribute and push result as event.
      */
     //===============================================================
+    //TODO not used method?
     void readAttributeAndPush(EventChannelStruct eventChannelStruct, EventCallBackStruct callbackStruct) {
         //	Check if known event name
         boolean found = false;
-        for (int i = 0; !found && i < eventNames.length; i++)
-            found = callbackStruct.event_name.equals(eventNames[i]);
+        for (int i = 0; !found && i < TangoConst.eventNames.length; i++)
+            found = callbackStruct.event_name.equals(TangoConst.eventNames[i]);
         if (!found)
             return;
 
@@ -571,15 +534,15 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
         callbackStruct.device.set_transparency_reconnection(true);
         try {
             callbackStruct.setSynchronousDone(false);
-            if (callbackStruct.event_name.equals(eventNames[ATT_CONF_EVENT])) {
+            if (callbackStruct.event_name.equals(TangoConst.eventNames[TangoConst.ATT_CONF_EVENT])) {
                 info = callbackStruct.device.get_attribute_info_ex(callbackStruct.attr_name);
             }
             else
-            if (callbackStruct.event_name.equals(eventNames[PIPE_EVENT])) {
+            if (callbackStruct.event_name.equals(TangoConst.eventNames[TangoConst.PIPE_EVENT])) {
                 devicePipe = callbackStruct.device.readPipe(callbackStruct.attr_name);
             }
             else
-            if (callbackStruct.event_name.equals(eventNames[INTERFACE_CHANGE])) {
+            if (callbackStruct.event_name.equals(TangoConst.eventNames[TangoConst.INTERFACE_CHANGE])) {
                 deviceInterface = new DeviceInterface(callbackStruct.device);
             }
             else {
@@ -603,7 +566,7 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
                         domain_name,
                         callbackStruct.event_name,
                         callbackStruct.event_type,
-                        getSource(eventChannelStruct.consumer),
+                        EventData.ZMQ_EVENT,
                         deviceAttribute, devicePipe,
                         info, null, deviceInterface, err);
 
@@ -614,16 +577,6 @@ abstract public class EventConsumer extends StructuredPushConsumerPOA
             callbackStruct.callback.push_event(eventData);
         }
     }
-
-
-
-    //===============================================================
-    //===============================================================
-    private int getSource(EventConsumer consumer) {
-        return (consumer instanceof NotifdEventConsumer) ?
-            EventData.NOTIFD_EVENT : EventData.ZMQ_EVENT;
-    }
-
 
 
 
