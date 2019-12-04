@@ -59,7 +59,7 @@ import java.util.List;
 /**
  * @author pascal_verdier
  */
-public class ZmqEventConsumer implements IEventConsumer {
+public class ZmqEventConsumer {
     private final Logger logger = LoggerFactory.getLogger(ZmqEventConsumer.class);
 
     static {
