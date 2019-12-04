@@ -51,9 +51,11 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -62,52 +64,35 @@ import java.util.List;
 public class ZmqEventConsumer {
     private final Logger logger = LoggerFactory.getLogger(ZmqEventConsumer.class);
 
-    static {
-        //  Start the KeepAliveThread loop
-        new KeepAliveThread().start();
-        //  Start ZMQ main thread
-        new ZmqMainThread(ZMQutils.getContext()).start();
-    }
+    private static final ZmqEventConsumer instance = new ZmqEventConsumer();
 
-    //TODO concurrent access
-    private int subscribe_event_id = 0;
-    //TODO replace with ConcurrentMap
-    //TODO not static
-    private static final Hashtable<String, EventChannelStruct>   channel_map        = new Hashtable<>();
-    private static final Hashtable<String, String>               device_channel_map = new Hashtable<>();
-    private static final Hashtable<String, EventCallBackStruct>  event_callback_map = new Hashtable<>();
-    private static final Hashtable<String, EventCallBackStruct>  failed_event_callback_map = new Hashtable<>();
+
+
+    private final AtomicInteger subscribe_event_id = new AtomicInteger();
+
+    private final ConcurrentMap<String, EventChannelStruct>   channel_map        = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, String>               device_channel_map = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, EventCallBackStruct>  event_callback_map = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, EventCallBackStruct>  failed_event_callback_map = new ConcurrentHashMap<>();
 
     //  Alternate tango hosts
     //TODO concurrent access
     private static final List<String> possibleTangoHosts = new ArrayList<>();
 
-    private static final ZmqEventConsumer instance = new ZmqEventConsumer();
 
-    /**
-     * Creates a new instance of EventConsumer
-     *
-     * @return an instance of EventConsumer object
-     */
-    public static ZmqEventConsumer getInstance() {
-        return instance;
-    }
-
-    static Hashtable<String, EventChannelStruct> getChannelMap() {
+    ConcurrentMap<String, EventChannelStruct> getChannelMap() {
         return channel_map;
     }
 
-    static Hashtable<String, EventCallBackStruct>  getEventCallbackMap() {
+    ConcurrentMap<String, EventCallBackStruct>  getEventCallbackMap() {
         return event_callback_map;
     }
 
     /**
      * Try to connect if it failed at subscribe
      */
-    static void subscribeIfNotDone() {
-        Enumeration<String > callbackKeys = failed_event_callback_map.keys();
-        while (callbackKeys.hasMoreElements()) {
-            String callbackKey = callbackKeys.nextElement();
+    void subscribeIfNotDone() {
+        for (String callbackKey : failed_event_callback_map.keySet()) {
             EventCallBackStruct eventCallBackStruct = failed_event_callback_map.get(callbackKey);
             if (eventCallBackStruct.consumer!=null) {
                 try {
@@ -119,22 +104,21 @@ public class ZmqEventConsumer {
             }
             else {
                 //TODO invert and throw exception or send error callback
-                if (EventConsumerUtil.isZmqLoadable()) {
+                if (EventConsumerUtil.getInstance().isZmqLoadable()) {
                     try {
                         //  Try for zmq
-                        eventCallBackStruct.consumer = ZmqEventConsumer.getInstance();
+                        eventCallBackStruct.consumer = this;
                         subscribeIfNotDone(eventCallBackStruct, callbackKey);
                         return;
 
                     }
                     catch (DevFailed e) {
                         if (e.errors[0].desc.equals(ZMQutils.SUBSCRIBE_COMMAND_NOT_FOUND)) {
-                            	//TODO use DevFailedUtils#printDevFailed from JTangoCommons
-                               System.err.println(e.errors[0].desc);
-                                //  reset if both have failed
-                                eventCallBackStruct.consumer = null;
-                                //	Send error to callback
-                                sendErrorToCallback(eventCallBackStruct, callbackKey, e);
+                            DevFailedUtils.logDevFailed(e, logger);
+                            //  reset if both have failed
+                            eventCallBackStruct.consumer = null;
+                            //	Send error to callback
+                            sendErrorToCallback(eventCallBackStruct, callbackKey, e);
                         }
                         else {
                             //	Send error to callback
@@ -147,7 +131,7 @@ public class ZmqEventConsumer {
         }
     }
 
-    private static void sendErrorToCallback(EventCallBackStruct cs, String callbackKey, DevFailed e) {
+    private void sendErrorToCallback(EventCallBackStruct cs, String callbackKey, DevFailed e) {
 
         int source = EventData.ZMQ_EVENT;
         EventData eventData =
@@ -162,7 +146,7 @@ public class ZmqEventConsumer {
             cs.callback.push_event(eventData);
     }
 
-    private static void subscribeIfNotDone(EventCallBackStruct eventCallBackStruct,
+    private void subscribeIfNotDone(EventCallBackStruct eventCallBackStruct,
                                          String callbackKey) throws DevFailed{
 
        eventCallBackStruct.consumer.subscribe_event(
@@ -176,12 +160,9 @@ public class ZmqEventConsumer {
        failed_event_callback_map.remove(callbackKey);
     }
 
-    static EventCallBackStruct getCallBackStruct(Hashtable map, int id) {
-        Enumeration keys = map.keys();
-        while (keys.hasMoreElements()) {
-            String name = (String) keys.nextElement();
-            EventCallBackStruct callback_struct =
-                    (EventCallBackStruct) map.get(name);
+    private EventCallBackStruct getCallBackStruct(Map<String, EventCallBackStruct> map, int id) {
+        for (String name : map.keySet()) {
+            EventCallBackStruct callback_struct = map.get(name);
             if (callback_struct.id == id)
                 return callback_struct;
         }
@@ -240,18 +221,18 @@ public class ZmqEventConsumer {
             }
             else {
                 //	Build Event CallBack Structure and add it to map
-                subscribe_event_id++;
+                int eventId = subscribe_event_id.getAndIncrement();
                 EventCallBackStruct new_event_callback_struct =
                         new EventCallBackStruct(device,
                                 event_name,
                                 "",
                                 callback,
                                 max_size,
-                                subscribe_event_id,
+                                eventId,
                                 event,
                                 false);
                 failed_event_callback_map.put(callback_key, new_event_callback_struct);
-                return subscribe_event_id;
+                return subscribe_event_id.get();
             }
         }
 
@@ -271,8 +252,7 @@ public class ZmqEventConsumer {
         EventCallBackStruct failed_struct = failed_event_callback_map.get(callback_key);
         if (failed_struct == null) {
             //	It is a new one
-            subscribe_event_id++;
-            eventId = subscribe_event_id;
+            eventId = subscribe_event_id.incrementAndGet();
         } else
             eventId = failed_struct.id;
 
@@ -581,9 +561,7 @@ public class ZmqEventConsumer {
                 dev_error = e.errors[0];
             }
 
-            Enumeration callbackStructs = ZmqEventConsumer.getEventCallbackMap().elements();
-            while (callbackStructs.hasMoreElements()) {
-                EventCallBackStruct callbackStruct = (EventCallBackStruct) callbackStructs.nextElement();
+            for (EventCallBackStruct callbackStruct : getEventCallbackMap().values()) {
                 if (callbackStruct.channel_name.equals(name)) {
                     //	Push exception
                     if (dev_error != null)
@@ -647,9 +625,7 @@ public class ZmqEventConsumer {
      */
     private boolean reconnectToChannel(String name) {
         boolean reConnected = false;
-        Enumeration callbackStructs = event_callback_map.elements();
-        while (callbackStructs.hasMoreElements()) {
-            EventCallBackStruct eventCallBackStruct = (EventCallBackStruct) callbackStructs.nextElement();
+        for (EventCallBackStruct eventCallBackStruct : event_callback_map.values()) {
             if (eventCallBackStruct.channel_name.equals(name) && (eventCallBackStruct.callback != null)) {
                 try {
                     EventChannelStruct channelStruct = channel_map.get(name);
@@ -706,20 +682,15 @@ public class ZmqEventConsumer {
             //	In case of (use_db==false)
             //	domain name is only device name
             //	but key is full name (//host:port/a/b/c....)
-            Enumeration keys = channel_map.keys();
-            boolean found = false;
-            while (keys.hasMoreElements() && !found) {
-                String name = (String) keys.nextElement();
+            for (String name : channel_map.keySet()) {
                 EventChannelStruct eventChannelStruct = channel_map.get(name);
                 //  Check with device name for adm device
                 String  admDeviceName = eventChannelStruct.adm_device_proxy.name();
                 if (admDeviceName.equalsIgnoreCase(channelName)) {
                     eventChannelStruct.last_heartbeat = System.currentTimeMillis();
-                    found = true;
+                    break;
                 }
             }
-            if (!found)
-                logger.warn(channelName + " Not found");
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }
@@ -839,7 +810,7 @@ public class ZmqEventConsumer {
             }
             else {
                 //	Build Event CallBack Structure and add it to map
-                subscribe_event_id++;
+                int eventId = subscribe_event_id.incrementAndGet();
                 EventCallBackStruct new_event_callback_struct =
                         new EventCallBackStruct(device,
                                 attribute,
@@ -847,14 +818,14 @@ public class ZmqEventConsumer {
                                 "",
                                 callback,
                                 max_size,
-                                subscribe_event_id,
+                                eventId,
                                 event,
 //                                "",
 //                                -1,
                                 filters,
                                 false);
                 failed_event_callback_map.put(callback_key, new_event_callback_struct);
-                return subscribe_event_id;
+                return eventId;
             }
         }
 
@@ -874,8 +845,7 @@ public class ZmqEventConsumer {
         EventCallBackStruct failed_struct = failed_event_callback_map.get(callback_key);
         if (failed_struct == null) {
             //	It is a new one
-            subscribe_event_id++;
-            evnt_id = subscribe_event_id;
+            evnt_id = subscribe_event_id.incrementAndGet();
         } else
             evnt_id = failed_struct.id;
 
@@ -900,7 +870,7 @@ public class ZmqEventConsumer {
         return evnt_id;
     }
 
-    private void removeCallBackStruct(Hashtable map, EventCallBackStruct cb_struct) {
+    private void removeCallBackStruct(Map<String, ?> map, EventCallBackStruct cb_struct) {
         String callback_key = cb_struct.device.name().toLowerCase() +
                 "/" + cb_struct.attr_name + "." + cb_struct.event_name;
         map.remove(callback_key);
@@ -932,9 +902,7 @@ public class ZmqEventConsumer {
      * Re subscribe event selected by name
      */
      void reSubscribeByName(EventChannelStruct event_channel_struct, String name) {
-        Enumeration callback_structs = event_callback_map.elements();
-        while (callback_structs.hasMoreElements()) {
-            EventCallBackStruct callback_struct = (EventCallBackStruct) callback_structs.nextElement();
+        for (EventCallBackStruct callback_struct : event_callback_map.values()) {
             if (callback_struct.channel_name.equals(name)) {
                 reSubscribe(event_channel_struct, callback_struct);
             }
@@ -1007,7 +975,7 @@ public class ZmqEventConsumer {
         //===========================================================
     }
 
-    public static List<String> getPossibleTangoHosts() {
+    public List<String> getPossibleTangoHosts() {
         return possibleTangoHosts;
     }
 }

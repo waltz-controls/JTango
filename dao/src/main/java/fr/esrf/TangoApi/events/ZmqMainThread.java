@@ -73,6 +73,8 @@ public class ZmqMainThread extends Thread {
     private static final int NbFields   = ValueIdx+1;
 
     private static final long SendHwmSocket = 10000;
+
+    private final ZmqEventConsumer consumer;
     //===============================================================
     //===============================================================
     private static class ZmqPollers extends ZMQ.Poller {
@@ -84,9 +86,11 @@ public class ZmqMainThread extends Thread {
     /**
      * Default constructor
      * @param context ZMQ context instance
+     * @param consumer
      */
     //===============================================================
-    ZmqMainThread(ZMQ.Context context) {
+    ZmqMainThread(ZMQ.Context context, ZmqEventConsumer consumer) {
+        this.consumer = consumer;
 
         this.setName("ZmqMainThread");
         this.setDaemon(true);
@@ -342,8 +346,8 @@ public class ZmqMainThread extends Thread {
     //===============================================================
     //===============================================================
     private EventCallBackStruct getEventCallBackStruct(String eventName) {
-        List<String> possibleTangoHosts = ZmqEventConsumer.getPossibleTangoHosts();
-        Hashtable<String, EventCallBackStruct> callbackMap = ZmqEventConsumer.getEventCallbackMap();
+        List<String> possibleTangoHosts = consumer.getPossibleTangoHosts();
+        Map<String, EventCallBackStruct> callbackMap = consumer.getEventCallbackMap();
         if (callbackMap.containsKey(eventName)) {
             return callbackMap.get(eventName);
         }
@@ -388,7 +392,7 @@ public class ZmqMainThread extends Thread {
                 devErrorList = ZMQutils.deMarshallErrorList(recData, littleEndian);
             }
             else {
-                Hashtable<String, EventChannelStruct> channelMap = ZmqEventConsumer.getChannelMap();
+                Map<String, EventChannelStruct> channelMap = consumer.getChannelMap();
                 EventChannelStruct eventChannelStruct = channelMap.get(callBackStruct.channel_name);
                 if (eventChannelStruct!=null) {
                     try {
@@ -556,7 +560,7 @@ public class ZmqMainThread extends Thread {
         //  Get only device name (without event type.
         int end   = name.lastIndexOf('.');
         name = name.substring(0, end);
-        ZmqEventConsumer.getInstance().push_structured_event_heartbeat(name);
+        consumer.push_structured_event_heartbeat(name);
 
         //  Second one is endianess
         if (inputs[EndianIdx].length==0) {

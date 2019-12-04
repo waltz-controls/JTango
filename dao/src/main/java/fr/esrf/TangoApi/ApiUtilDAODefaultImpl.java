@@ -748,7 +748,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     // ===================================================================
     // ===================================================================
     public double getZmqVersion() {
-        if (EventConsumerUtil.isZmqLoadable()) {
+        if (EventConsumerUtil.getInstance().isZmqLoadable()) {
             return ZMQutils.getZmqVersion();
         }
         else
