@@ -335,15 +335,14 @@ public class ZmqMainThread extends Thread {
                 throw (DevFailed) e;
             }
             logger.error(String.format("Failed to manage event %s", eventName), e);
-            Except.throw_exception("Api_CatchException",
-                    "API catch a " + e.toString() + " exception",
-                    "ZmqMainThread.manageEvent()");
+            throw DevFailedUtils.newDevFailed("Api_CatchException",
+                    "API catch a " + e.toString() + " exception in ZmqMainThread.manageEvent()");
         }
     }
     //===============================================================
     //===============================================================
     private EventCallBackStruct getEventCallBackStruct(String eventName) {
-        List<String> possibleTangoHosts = ZmqEventConsumer.possibleTangoHosts;
+        List<String> possibleTangoHosts = ZmqEventConsumer.getPossibleTangoHosts();
         Hashtable<String, EventCallBackStruct> callbackMap = ZmqEventConsumer.getEventCallbackMap();
         if (callbackMap.containsKey(eventName)) {
             return callbackMap.get(eventName);
@@ -360,18 +359,6 @@ public class ZmqMainThread extends Thread {
             }
         }
 
-        //  Not found
-        /*  Display table content
-		if (eventName.contains("maxtempchange")) {
-			System.err.println("===============================================================");
-			System.err.println(eventName + " NOT FOUND");
-			System.err.println("keys are:");
-        	Enumeration<String> keys = callbackMap.keys();
-        	while (keys.hasMoreElements()) {
-            	System.err.println(keys.nextElement());
-        	}
-		}
-        */
         return null;
     }
     //===============================================================
