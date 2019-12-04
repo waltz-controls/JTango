@@ -78,22 +78,19 @@ public class ZmqEventConsumer implements IEventConsumer {
     //TODO get rid of singleton
     private static ZmqEventConsumer instance = null;
 
-    //===============================================================
     /**
      * Creates a new instance of EventConsumer
      *
      * @return an instance of EventConsumer object
      * @throws DevFailed in case of database connection failed.
      */
-    //===============================================================
     public static ZmqEventConsumer getInstance() {
         if (instance == null) {
             instance = new ZmqEventConsumer();
         }
         return instance;
     }
-    //===============================================================
-    //===============================================================
+
     private ZmqEventConsumer(){
 
         //  Default constructor
@@ -106,14 +103,10 @@ public class ZmqEventConsumer implements IEventConsumer {
         addShutdownHook();
     }
 
-    //===============================================================
-    //===============================================================
     static Hashtable<String, EventChannelStruct> getChannelMap() {
         return channel_map;
     }
 
-    //===============================================================
-    //===============================================================
     static Hashtable<String, EventCallBackStruct>  getEventCallbackMap() {
         return event_callback_map;
     }
@@ -121,7 +114,6 @@ public class ZmqEventConsumer implements IEventConsumer {
     /**
      * Try to connect if it failed at subscribe
      */
-    //===============================================================
     static void subscribeIfNotDone() {
         Enumeration<String > callbackKeys = failed_event_callback_map.keys();
         while (callbackKeys.hasMoreElements()) {
@@ -194,8 +186,6 @@ public class ZmqEventConsumer implements IEventConsumer {
        failed_event_callback_map.remove(callbackKey);
     }
 
-    //===============================================================
-    //===============================================================
     static EventCallBackStruct getCallBackStruct(Hashtable map, int id) {
         Enumeration keys = map.keys();
         while (keys.hasMoreElements()) {
