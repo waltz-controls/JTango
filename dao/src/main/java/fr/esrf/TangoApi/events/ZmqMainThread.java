@@ -343,7 +343,7 @@ public class ZmqMainThread extends Thread {
     //===============================================================
     //===============================================================
     private EventCallBackStruct getEventCallBackStruct(String eventName) {
-        List<String> possibleTangoHosts = EventConsumer.possibleTangoHosts;
+        List<String> possibleTangoHosts = ZmqEventConsumer.possibleTangoHosts;
         Hashtable<String, EventCallBackStruct> callbackMap = ZmqEventConsumer.getEventCallbackMap();
         if (callbackMap.containsKey(eventName)) {
             return callbackMap.get(eventName);
@@ -401,7 +401,7 @@ public class ZmqMainThread extends Thread {
                 devErrorList = ZMQutils.deMarshallErrorList(recData, littleEndian);
             }
             else {
-                Hashtable<String, EventChannelStruct> channelMap = EventConsumer.getChannelMap();
+                Hashtable<String, EventChannelStruct> channelMap = ZmqEventConsumer.getChannelMap();
                 EventChannelStruct eventChannelStruct = channelMap.get(callBackStruct.channel_name);
                 if (eventChannelStruct!=null) {
                     try {

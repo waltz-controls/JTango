@@ -90,10 +90,10 @@ public class EventConsumerUtil {
      * @return consumer if already connected, otherwise return null
      */
     //===============================================================
-    private EventConsumer isChannelAlreadyConnected(DeviceProxy deviceProxy) {
+    private ZmqEventConsumer isChannelAlreadyConnected(DeviceProxy deviceProxy) {
         try {
             String adminName = deviceProxy.adm_name();
-            EventChannelStruct eventChannelStruct = EventConsumer.getChannelMap().get(adminName);
+            EventChannelStruct eventChannelStruct = ZmqEventConsumer.getChannelMap().get(adminName);
             if (eventChannelStruct==null) {
                 return null;
             }
@@ -218,7 +218,7 @@ public class EventConsumerUtil {
                                boolean stateless) throws DevFailed {
         ApiUtil.printTrace("trying to subscribe_event to " + device.name() + "/" + attribute);
         //  If already connected, subscribe directly on same channel
-        EventConsumer   consumer = isChannelAlreadyConnected(device);
+        ZmqEventConsumer consumer = isChannelAlreadyConnected(device);
         if (consumer!=null) {
             return consumer.subscribe_event(device,
                     attribute, event, callback, max_size, filters, stateless);
@@ -251,7 +251,7 @@ public class EventConsumerUtil {
         ApiUtil.printTrace("INTERFACE_CHANGE: trying to subscribe_event to " + device.name());
         int id;
         //  If already connected, subscribe directly on same channel
-        EventConsumer   consumer = isChannelAlreadyConnected(device);
+        ZmqEventConsumer consumer = isChannelAlreadyConnected(device);
         if (consumer!=null) {
             id = consumer.subscribe_event(device, event, callback, max_size, stateless);
         }
@@ -273,11 +273,11 @@ public class EventConsumerUtil {
 
         //  Get the map
         Hashtable<String, EventCallBackStruct>
-                callBackMap = EventConsumer.getEventCallbackMap();
+                callBackMap = ZmqEventConsumer.getEventCallbackMap();
 
         //  Get the callback structure
         EventCallBackStruct callbackStruct =
-                EventConsumer.getCallBackStruct(callBackMap, event_id);
+                ZmqEventConsumer.getCallBackStruct(callBackMap, event_id);
 
         //  Unsubscribe on EventConsumer object
         if (callbackStruct!=null)

@@ -54,11 +54,10 @@ public class EventChannelStruct {
     public boolean          heartbeat_skipped;
     public int	            heartbeat_filter_id;
 	public String           host;
-	public boolean	        notifd_failed = false;
 	public boolean	        use_db = true;
 	public Database	        dbase = null;
 	public int		        has_notifd_closed_the_connection;
-    public EventConsumer    consumer;
+    public ZmqEventConsumer consumer;
     public String           zmqEndpoint;
     private int idlVersion = 0;     //  used by zmq management
     private int tangoRelease = 0;   //  used by zmq management

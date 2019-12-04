@@ -77,7 +77,7 @@ class KeepAliveThread extends Thread implements TangoConst {
             long t0 = System.currentTimeMillis();
 
             try {
-                EventConsumer.subscribeIfNotDone();
+                ZmqEventConsumer.subscribeIfNotDone();
                 resubscribe_if_needed();
             }
             catch (Exception e) {
@@ -136,13 +136,13 @@ class KeepAliveThread extends Thread implements TangoConst {
     //===============================================================
     //===============================================================
     private void resubscribe_if_needed() {
-        Enumeration channel_names = EventConsumer.getChannelMap().keys();
+        Enumeration channel_names = ZmqEventConsumer.getChannelMap().keys();
         long now = System.currentTimeMillis();
 
         // check the list of not yet connected events and try to subscribe
         while (channel_names.hasMoreElements()) {
             String name = (String) channel_names.nextElement();
-            EventChannelStruct eventChannelStruct = EventConsumer.getChannelMap().get(name);
+            EventChannelStruct eventChannelStruct = ZmqEventConsumer.getChannelMap().get(name);
             if ((now - eventChannelStruct.last_subscribed) > EVENT_RESUBSCRIBE_PERIOD / 3) {
                 reSubscribeByName(eventChannelStruct, name);
             }
@@ -159,7 +159,7 @@ class KeepAliveThread extends Thread implements TangoConst {
 
         //  Get the map and the callback structure for channel
         Hashtable<String, EventCallBackStruct>
-                callBackMap = EventConsumer.getEventCallbackMap();
+                callBackMap = ZmqEventConsumer.getEventCallbackMap();
         EventCallBackStruct callbackStruct = null;
         Enumeration channelNames = callBackMap.keys();
         while (channelNames.hasMoreElements()) {
