@@ -24,19 +24,7 @@
  */
 package org.tango.server;
 
-import java.io.File;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import fr.esrf.Tango.DevFailed;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +42,13 @@ import org.tango.server.export.TangoExporter;
 import org.tango.server.monitoring.MonitoringService;
 import org.tango.utils.DevFailedUtils;
 
-import fr.esrf.Tango.DevFailed;
+import java.io.File;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Manage a tango server.
@@ -267,6 +261,13 @@ public final class ServerManager {
         logger.info("TANGO server {} started", serverName);
         // start the ORB
         ORBManager.startDetached();
+
+        ServerManagerUtils.getInstance().dumpPID(pid, execName);
+
+        Runtime.getRuntime().addShutdownHook(
+                new Thread(
+                        () -> ServerManagerUtils.getInstance().deletePIDFile(execName)));
+
         xlogger.exit();
     }
 
