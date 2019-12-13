@@ -2488,4 +2488,9 @@ public class DeviceImpl extends Device_5POA {
                 .filter(attribute -> attribute.getName().equalsIgnoreCase(attrName))
                 .findFirst();
     }
+
+    public Logger getLogger() {
+        MDC.setContextMap(getMdcContextMap());
+        return logger;
+    }
 }

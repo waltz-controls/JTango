@@ -50,7 +50,6 @@ import org.tango.utils.DevFailedUtils;
  * @author ABEILLE
  */
 public class DeviceManager {
-
     private final DeviceImpl device;
     private final String name;
     private final String className;
@@ -357,5 +356,40 @@ public class DeviceManager {
 
     public DeviceImpl getDevice() {
         return device;
+    }
+
+    public void pushStateChangeEvent() {
+        try {
+            pushEvent("State", new AttributeValue(device.getState()), EventType.CHANGE_EVENT);
+        } catch (DevFailed devFailed) {
+            DevFailedUtils.logDevFailed(devFailed, getDevice().getLogger());
+        }
+    }
+
+    public void pushStateChangeEvent(DeviceState state) {
+        try {
+            device.getStateImpl().stateMachine(state);
+            pushEvent("State", new AttributeValue(device.getState()), EventType.CHANGE_EVENT);
+        } catch (DevFailed devFailed) {
+            DevFailedUtils.logDevFailed(devFailed, getDevice().getLogger());
+        }
+    }
+
+    public void pushStatusChangeEvent() {
+        try {
+            pushEvent("Status", new AttributeValue(device.getStatus()), EventType.CHANGE_EVENT);
+        } catch (DevFailed devFailed) {
+            DevFailedUtils.logDevFailed(devFailed, getDevice().getLogger());
+        }
+    }
+
+
+    public void pushStatusChangeEvent(String status) {
+        try {
+            device.getStatusImpl().statusMachine(status);
+            pushEvent("Status", new AttributeValue(device.getStatus()), EventType.CHANGE_EVENT);
+        } catch (DevFailed devFailed) {
+            DevFailedUtils.logDevFailed(devFailed, getDevice().getLogger());
+        }
     }
 }

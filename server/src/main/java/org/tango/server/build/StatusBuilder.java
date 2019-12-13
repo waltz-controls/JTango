@@ -24,10 +24,7 @@
  */
 package org.tango.server.build;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Locale;
-
+import fr.esrf.Tango.DevFailed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
@@ -37,7 +34,9 @@ import org.tango.server.device.StatusImpl;
 import org.tango.server.servant.DeviceImpl;
 import org.tango.utils.DevFailedUtils;
 
-import fr.esrf.Tango.DevFailed;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Locale;
 
 /**
  * Build a {@link Status}
@@ -96,6 +95,10 @@ final class StatusBuilder {
             device.getAttributeImpl(DeviceImpl.STATUS_NAME)
                     .orElseThrow(() -> DevFailedUtils.newDevFailed("status attribute was not found!"))
                     .getConfig().setCheckChangeEvent(annot.checkChangeEvent());
+        } else {
+            device.getAttributeImpl(DeviceImpl.STATUS_NAME)
+                    .orElseThrow(() -> DevFailedUtils.newDevFailed("status attribute was not found!"))
+                    .getConfig().setPushChangeEvent(true);
         }
         xlogger.exit();
     }
