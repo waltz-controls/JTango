@@ -25,7 +25,6 @@
 package org.tango.server.servant;
 
 import fr.esrf.Tango.*;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.omg.CORBA.Any;
@@ -1476,14 +1475,7 @@ public class DeviceImpl extends Device_5POA {
             original = DevFailedUtils.newDevFailed(e);
         }
         DevFailedUtils.logDevFailed(original, logger);
-        try {
-            stateImpl.stateMachine(DeviceState.FAULT);
-            statusImpl.statusMachine(DevFailedUtils.toString(original));
-            return original;
-        } catch (DevFailed devFailed) {
-            ArrayUtils.addAll(devFailed.errors, original.errors);
-            return devFailed;
-        }
+        return original;
     }
 
     /**
