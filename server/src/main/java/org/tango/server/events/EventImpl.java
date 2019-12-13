@@ -272,6 +272,6 @@ final class EventImpl {
      * @return
      */
     private boolean isSendEvent() throws DevFailed {
-        return (eventTrigger.doCheck() && eventTrigger.isSendEvent()) || !eventTrigger.doCheck();
+        return true;
     }
 }
