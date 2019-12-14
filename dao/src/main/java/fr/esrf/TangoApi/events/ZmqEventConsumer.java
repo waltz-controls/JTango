@@ -104,7 +104,7 @@ public class ZmqEventConsumer {
     /**
      * Try to connect if it failed at subscribe
      */
-    void subscribeIfNotDone() {
+    private void subscribeIfNotDone() {
         for (String callbackKey : failed_event_callback_map.keySet()) {
             EventCallBackStruct eventCallBackStruct = failed_event_callback_map.get(callbackKey);
             if (eventCallBackStruct.consumer!=null) {
