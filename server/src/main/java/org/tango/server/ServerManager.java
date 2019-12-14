@@ -87,6 +87,10 @@ public final class ServerManager {
 
     private final Map<String, Class<?>> tangoClasses = new LinkedHashMap<String, Class<?>>();
 
+    public TangoExporter getTangoExporter() {
+        return tangoExporter;
+    }
+
     private TangoExporter tangoExporter;
     private String lastClass;
     private TransactionType transactionType;
@@ -263,10 +267,6 @@ public final class ServerManager {
         ORBManager.startDetached();
 
         ServerManagerUtils.getInstance().dumpPID(pid, execName);
-
-        Runtime.getRuntime().addShutdownHook(
-                new Thread(
-                        () -> ServerManagerUtils.getInstance().deletePIDFile(execName)));
 
         xlogger.exit();
     }
