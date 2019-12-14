@@ -149,6 +149,7 @@ public class ZmqMainThread extends Thread {
             }
         }
         logger.debug("------------ End of ZmqMainThread ---------------");
+        logger.info("------------ Shutting down ZmqMainThread ---------------");
     }
     //===============================================================
     /**

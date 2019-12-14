@@ -35,6 +35,7 @@
 package fr.esrf.TangoApi.events;
 
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import fr.esrf.Tango.DevError;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarLongStringArray;
@@ -53,8 +54,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -62,11 +62,25 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author pascal_verdier
  */
 public class ZmqEventConsumer {
+    private static final long EVENT_RESUBSCRIBE_PERIOD = 600000;
+    private static final long EVENT_HEARTBEAT_PERIOD = 10000;
     private final Logger logger = LoggerFactory.getLogger(ZmqEventConsumer.class);
 
-    private static final ZmqEventConsumer instance = new ZmqEventConsumer();
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
+            new ThreadFactoryBuilder()
+                    .setNameFormat("KeepAlive-%d")
+                    .setDaemon(true)
+                    .build()
+    );
 
+    {
+        scheduledExecutorService.scheduleAtFixedRate(new KeepAliveRunnable(), 10L, 10L, TimeUnit.SECONDS);
+    }
 
+    public ZmqEventConsumer() {
+        //  Start ZMQ main thread
+        new ZmqMainThread(ZmqUtils.getContext(), this).start();
+    }
 
     private final AtomicInteger subscribe_event_id = new AtomicInteger();
 
@@ -77,8 +91,7 @@ public class ZmqEventConsumer {
 
     //  Alternate tango hosts
     //TODO concurrent access
-    private static final List<String> possibleTangoHosts = new ArrayList<>();
-
+    private final List<String> possibleTangoHosts = new ArrayList<>();
 
     ConcurrentMap<String, EventChannelStruct> getChannelMap() {
         return channel_map;
@@ -539,7 +552,7 @@ public class ZmqEventConsumer {
             // 2- The network was down;
             // 3- The server has been restarted on another host.
 
-        if (KeepAliveThread.heartbeatHasBeenSkipped(channelStruct)) {
+        if (((System.currentTimeMillis() - channelStruct.last_heartbeat) > EVENT_HEARTBEAT_PERIOD)) {
             DevError    dev_error = null;
             try{
                 String  admDeviceName = channelStruct.adm_device_proxy.fullName();  //.toLowerCase();
@@ -971,5 +984,61 @@ public class ZmqEventConsumer {
 
     public List<String> getPossibleTangoHosts() {
         return possibleTangoHosts;
+    }
+
+    /**
+     * A class inherited from TimerTask class
+     *
+     * @author pascal_verdier
+     */
+    class KeepAliveRunnable implements Runnable {
+        private final Logger logger = LoggerFactory.getLogger(KeepAliveRunnable.class);
+
+        private final ZmqEventConsumer consumer = ZmqEventConsumer.this;
+
+        public void run() {
+            try {
+                consumer.subscribeIfNotDone();
+                resubscribe_if_needed();
+            } catch (Exception | Error err) {
+                logger.warn(err.getMessage(), err);
+            }
+        }
+
+        private void resubscribe_if_needed() {
+            long now = System.currentTimeMillis();
+
+            // check the list of not yet connected events and try to subscribe
+            for (String name : consumer.getChannelMap().keySet()) {
+                EventChannelStruct eventChannelStruct = consumer.getChannelMap().get(name);
+                if ((now - eventChannelStruct.last_subscribed) > EVENT_RESUBSCRIBE_PERIOD / 3) {
+                    reSubscribeByName(eventChannelStruct, name);
+                }
+                eventChannelStruct.consumer.checkIfHeartbeatSkipped(name, eventChannelStruct);
+
+            }// end while  channel_names.hasMoreElements()
+        }
+
+        /*
+         * Re subscribe event selected by name
+         */
+        private void reSubscribeByName(EventChannelStruct eventChannelStruct, String name) {
+
+            //  Get the map and the callback structure for channel
+            Map<String, EventCallBackStruct>
+                    callBackMap = consumer.getEventCallbackMap();
+            EventCallBackStruct callbackStruct = null;
+            for (String key : callBackMap.keySet()) {
+                EventCallBackStruct eventStruct = callBackMap.get(key);
+                if (eventStruct.channel_name.equals(name)) {
+                    callbackStruct = eventStruct;
+                }
+            }
+
+            //  Get the callback structure
+            if (callbackStruct != null) {
+                callbackStruct.consumer.reSubscribeByName(eventChannelStruct, name);
+            }
+        }
     }
 }

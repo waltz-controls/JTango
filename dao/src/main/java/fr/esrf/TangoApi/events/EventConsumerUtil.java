@@ -67,10 +67,6 @@ public class EventConsumerUtil {
      */
     private EventConsumerUtil(ZmqEventConsumer consumer) {
         this.consumer = consumer;
-        //  Start the KeepAliveThread loop
-        new KeepAliveThread(consumer).start();
-        //  Start ZMQ main thread
-        new ZmqMainThread(ZmqUtils.getContext(), consumer).start();
     }
 
     /**
