@@ -93,12 +93,10 @@ final class StatusBuilder {
             device.addAttributePolling(DeviceImpl.STATUS_NAME, annot.pollingPeriod());
 
             device.getAttributeImpl(DeviceImpl.STATUS_NAME)
-                    .orElseThrow(() -> DevFailedUtils.newDevFailed("status attribute was not found!"))
-                    .getConfig().setCheckChangeEvent(annot.checkChangeEvent());
+                    .ifPresent(attribute -> attribute.getConfig().setCheckChangeEvent(annot.checkChangeEvent()));
         } else {
             device.getAttributeImpl(DeviceImpl.STATUS_NAME)
-                    .orElseThrow(() -> DevFailedUtils.newDevFailed("status attribute was not found!"))
-                    .getConfig().setPushChangeEvent(true);
+                    .ifPresent(attribute -> attribute.getConfig().setPushChangeEvent(true));
         }
         xlogger.exit();
     }

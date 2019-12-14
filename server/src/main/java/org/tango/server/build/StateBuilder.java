@@ -100,12 +100,10 @@ final class StateBuilder {
             device.addAttributePolling(DeviceImpl.STATE_NAME, annot.pollingPeriod());
 
             device.getAttributeImpl(DeviceImpl.STATE_NAME)
-                    .orElseThrow(() -> DevFailedUtils.newDevFailed("state attribute was not found!"))
-                    .getConfig().setCheckChangeEvent(annot.checkChangeEvent());
+                    .ifPresent(attribute -> attribute.getConfig().setCheckChangeEvent(annot.checkChangeEvent()));
         } else {
             device.getAttributeImpl(DeviceImpl.STATE_NAME)
-                    .orElseThrow(() -> DevFailedUtils.newDevFailed("state attribute was not found!"))
-                    .getConfig().setPushChangeEvent(true);
+                    .ifPresent(attribute -> attribute.getConfig().setPushChangeEvent(true));
         }
         xlogger.exit();
     }

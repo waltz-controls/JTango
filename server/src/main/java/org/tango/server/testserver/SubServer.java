@@ -24,17 +24,12 @@
  */
 package org.tango.server.testserver;
 
+import fr.esrf.Tango.DevFailed;
 import org.tango.DeviceState;
 import org.tango.server.ServerManager;
-import org.tango.server.annotation.Command;
-import org.tango.server.annotation.Device;
-import org.tango.server.annotation.DeviceManagement;
-import org.tango.server.annotation.DynamicManagement;
-import org.tango.server.annotation.Init;
+import org.tango.server.annotation.*;
 import org.tango.server.device.DeviceManager;
 import org.tango.server.dynamic.DynamicManager;
-
-import fr.esrf.Tango.DevFailed;
 
 @Device
 public class SubServer extends SuperServer {
@@ -77,6 +72,7 @@ public class SubServer extends SuperServer {
 
     @Init
     @Override
+    @StateMachine(endState = DeviceState.ON)
     public void init() {
         super.init();
     }

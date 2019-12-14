@@ -24,16 +24,15 @@
  */
 package org.tango.server.testserver;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
 import fr.esrf.TangoApi.DeviceProxy;
 import fr.soleil.tango.clientapi.TangoAttribute;
 import fr.soleil.tango.clientapi.TangoCommand;
+import org.junit.Test;
+
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class InitStateTest extends NoDBDeviceManager {
 
@@ -51,7 +50,7 @@ public class InitStateTest extends NoDBDeviceManager {
     public void testInitState() throws DevFailed {
         final TangoCommand tangoCommand = new TangoCommand(deviceName, "Status");
         final Object status = tangoCommand.executeExtract(null);
-        assertThat(status.toString(), equalTo("hello"));
+        assertThat(status.toString(), equalTo("ON"));
     }
 
     @Test

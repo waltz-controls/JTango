@@ -25,15 +25,7 @@
 package org.tango.server.testserver;
 
 import org.tango.DeviceState;
-import org.tango.server.annotation.Attribute;
-import org.tango.server.annotation.Command;
-import org.tango.server.annotation.Device;
-import org.tango.server.annotation.DeviceManagement;
-import org.tango.server.annotation.DeviceProperty;
-import org.tango.server.annotation.DynamicManagement;
-import org.tango.server.annotation.Init;
-import org.tango.server.annotation.State;
-import org.tango.server.annotation.StateMachine;
+import org.tango.server.annotation.*;
 import org.tango.server.device.DeviceManager;
 import org.tango.server.dynamic.DynamicManager;
 
@@ -56,11 +48,10 @@ public class SuperServer {
     private DeviceState state;
 
     @Init
-//    @StateMachine(endState = DeviceState.ON)
+    @StateMachine(endState = DeviceState.ON)
     public void init() {
         System.out.println("Init " + dev.getName());
         System.out.println(dyn.getDynamicAttributes());
-        this.state = DeviceState.ON;
     }
 
     @Command
