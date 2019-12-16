@@ -43,17 +43,19 @@ import fr.esrf.Tango.ErrSeverity;
 import fr.esrf.TangoApi.*;
 import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
+import io.reactivex.Observable;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.utils.DevFailedUtils;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -290,6 +292,7 @@ public class ZmqEventConsumer {
                 eventType,
                 Integer.toString(device.get_idl_version())
         };
+        //TODO extract into a class ZmqConnector
         DeviceData argIn = new DeviceData();
         argIn.insert(info);
         String cmdName = ZmqUtils.SUBSCRIBE_COMMAND;
@@ -358,7 +361,7 @@ public class ZmqEventConsumer {
      *  In this case the address from getHostAddress()
      *  replace the address in device data.
      */
-    private DeviceData checkWithHostAddress(DeviceData deviceData, DeviceProxy deviceProxy) throws DevFailed {
+    private DeviceData checkWithHostAddress(DeviceData deviceData, DeviceProxy deviceProxy) {
 // ToDo
         DevVarLongStringArray lsa = deviceData.extractLongStringArray();
         try {
@@ -380,10 +383,11 @@ public class ZmqEventConsumer {
                  }
             }
         } catch (UnknownHostException e) {
-            Except.throw_exception("UnknownHostException",
-                    e.toString(), "ZmqEventConsumer.checkZmqAddress()");
+            logger.warn("UnknownHostException in ZmqEventConsumer.checkZmqAddress()", e);
+        } catch (DevFailed devFailed) {
+            DevFailedUtils.logDevFailed(devFailed, logger);
         }
-        logger.debug("---> Connect on {}", deviceData.extractLongStringArray().svalue[0]);
+
         return deviceData;
     }
 
@@ -397,46 +401,47 @@ public class ZmqEventConsumer {
     private DeviceData checkZmqAddress(DeviceData deviceData, DeviceProxy deviceProxy) throws DevFailed{
         logger.trace("Inside checkZmqAddress()");
         DevVarLongStringArray lsa = deviceData.extractLongStringArray();
-        for (int i=0 ; i<lsa.svalue.length ; i+=2) {
-            String endpoint = lsa.svalue[i];
-            if (isEndpointAvailable(endpoint)) {
-                lsa.svalue[0] = lsa.svalue[i];
-                lsa.svalue[1] = lsa.svalue[i+1];
-                logger.trace("return {} - {}", lsa.svalue[i], lsa.svalue[i+1]);
-                deviceData = new DeviceData();
-                deviceData.insert(lsa);
-                return deviceData;
-            }
-        }
-        //  Not found check with host address
-        return checkWithHostAddress(deviceData, deviceProxy);
+
+        Pair<String, String> validEndpoints = Optional.ofNullable(Observable.zip(
+                Observable.fromArray(lsa.svalue),
+                Observable.fromArray(lsa.svalue).skip(1),
+                ImmutablePair::of
+        )
+                .filter(pair -> isEndpointAvailable(pair.left))
+                .blockingFirst(null))
+                .orElseGet(() -> {
+                    DeviceData checkedWithHostAddress = checkWithHostAddress(deviceData, deviceProxy);
+                    DevVarLongStringArray yalsa = checkedWithHostAddress.extractLongStringArray();
+                    return ImmutablePair.of(yalsa.svalue[0], yalsa.svalue[1]);
+                });
+
+        logger.debug("---> Heartbeat connect to {}", validEndpoints.getLeft());
+        logger.debug("---> Event connect to {}", validEndpoints.getRight());
+
+        DeviceData overridden = new DeviceData();
+        //TODO refactor to have more robust solution
+        lsa.svalue = new String[]{validEndpoints.getLeft(), validEndpoints.getRight()};
+        overridden.insert(lsa);
+        return overridden;
     }
 
     private boolean isEndpointAvailable(String endpoint) {
         logger.debug("Check endpoint: {}", endpoint);
-        //  Split address and port
-        int start = endpoint.indexOf("//");
-        if (start<0)  {
-            logger.warn("Bad endpoint: {} - no protocol specified ", endpoint);
+        URI uri = null;
+        try {
+            uri = new URI(endpoint);
+        } catch (URISyntaxException e) {
+            logger.debug("Bad endpoint: " + endpoint, e);
             return false;
         }
-        int end = endpoint.indexOf(":", start);
-        if (end<0)  {
-            logger.warn("Bad endpoint: {} - no port specified", endpoint);
-            return false;
-        }
-        String address = endpoint.substring(start+2, end);
-        int    port    = Integer.parseInt(endpoint.substring(end+1));
 
         //  Try to connect
-        InetSocketAddress ip = new InetSocketAddress(address, port);
-        Socket socket = new Socket();
-        try {
+        InetSocketAddress ip = new InetSocketAddress(uri.getHost(), uri.getPort());
+        try (Socket socket = new Socket()) {
             socket.connect(ip, 10);
-            socket.close();
             return true;
         } catch (IOException e) {
-            logger.warn("Failed to connect to " + ip, e);
+            logger.debug("Failed to connect to " + ip, e);
             return false;
         }
     }

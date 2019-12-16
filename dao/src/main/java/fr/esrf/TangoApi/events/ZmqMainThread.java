@@ -141,6 +141,7 @@ public class ZmqMainThread extends Thread {
                 //  read the speaking one
                 for (int i=0 ; i<pollers.getSize() ; i++) {
                     if (pollers.pollin(i)) {
+                        logger.debug("Incoming from poller {}", pollers.getSocket(i).getLastEndpoint());
                         manageInputBuffer(sourceSocketValues[i]);
                     }
                 }

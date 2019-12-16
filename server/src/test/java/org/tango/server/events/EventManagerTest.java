@@ -1,13 +1,10 @@
 package org.tango.server.events;
 
 import fr.esrf.Tango.DevVarLongStringArray;
-import fr.esrf.TangoApi.events.ZmqEventConsumer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Igor Khokhriakov <igor.khokhriakov@hzg.de>
@@ -17,23 +14,13 @@ public class EventManagerTest {
     private EventManager instance;
 
     @Before
-    public void before() throws Exception {
-        instance = new EventManager();
-//        instance.initialize();
+    public void before() {
+        instance = EventManager.getInstance();
     }
 
     @After
     public void after(){
         instance.close();
-    }
-
-    @Test
-    public void simple() throws Exception {
-        Iterable<String> ips = instance.getIp4Addresses();
-
-        for(String ip : ips){
-            System.out.println(ip);
-        }
     }
 
     @Test //requires TANGO_HOST

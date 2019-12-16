@@ -28,6 +28,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import fr.esrf.Tango.*;
 import io.reactivex.Observable;
 import org.slf4j.Logger;
@@ -52,7 +53,6 @@ import java.net.SocketException;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -75,24 +75,22 @@ public final class EventManager {
     private static final EventManager INSTANCE = new EventManager();
 
     private final Map<String, EventImpl> eventImplMap = new HashMap<String, EventImpl>();
-    private final ScheduledExecutorService heartBeatExecutor  = Executors.newScheduledThreadPool(1, new ThreadFactory() {
-        @Override
-        public Thread newThread(final Runnable r) {
-            return new Thread(r, "Event HeartBeat");
-        }
-    });
+    private final ScheduledExecutorService scheduledHeartbeatExecutor = Executors.newSingleThreadScheduledExecutor(
+            new ThreadFactoryBuilder()
+                    .setNameFormat("Event-HeartBeat-%d")
+                    .setDaemon(true)
+                    .build());
     private final ZContext context = new ZContext();
     private final int serverHWM = initializeServerHwm();
     private final int clientHWN = initializeClientHwm();
     private final Map<String, ZMQ.Socket> heartbeatEndpoints = Maps.newLinkedHashMap();
     private final Map<String, ZMQ.Socket> eventEndpoints = Maps.newLinkedHashMap();
 
-    private volatile boolean isInitialized;
-
     private final java.util.function.Function<EventImpl, Void> pushAttributeValueEvent = (eventImpl) -> {
-        for (ZMQ.Socket eventSocket : eventEndpoints.values()) {
+        for (Map.Entry<String, ZMQ.Socket> eventSocket : eventEndpoints.entrySet()) {
             try {
-                eventImpl.pushAttributeValueEvent(eventSocket);
+                logger.debug("sending event to {}", eventSocket.getKey());
+                eventImpl.pushAttributeValueEvent(eventSocket.getValue());
             } catch (DevFailed devFailed) {
                 logger.error("Failed to pushAttributeValueEvent");
                 DevFailedUtils.logDevFailed(devFailed, logger);
@@ -101,8 +99,23 @@ public final class EventManager {
         return null;
     };
 
-    protected EventManager() {
-        isInitialized = false;
+    private EventManager() {
+        List<String> ipAddresses = getIp4Addresses();
+
+        bindEndpoints(createSocket(), ipAddresses, heartbeatEndpoints, SocketType.HEARTBEAT);
+        bindEndpoints(createEventSocket(), ipAddresses, eventEndpoints, SocketType.EVENTS);
+
+        final String adminDeviceName = ServerManager.getInstance().getAdminDeviceName();
+        final String heartbeatName;
+        try {
+            heartbeatName = EventUtilities.buildHeartBeatEventName(adminDeviceName);
+            scheduledHeartbeatExecutor.scheduleAtFixedRate(new HeartbeatRunnable(heartbeatName), 0,
+                    EventConstants.EVENT_HEARTBEAT_PERIOD, TimeUnit.MILLISECONDS);
+        } catch (DevFailed devFailed) {
+            logger.error("Failed to build heartbeat event name, heartbeats won't be send!");
+            DevFailedUtils.logDevFailed(devFailed, logger);
+        }
+
     }
 
     private int initializeServerHwm() {
@@ -160,37 +173,15 @@ public final class EventManager {
         }
     }
 
-    protected void initialize() throws DevFailed {
-        xlogger.entry();
-        Iterable<String> ipAddresses = getIp4Addresses();
-
-        bindEndpoints(createSocket(), ipAddresses, heartbeatEndpoints, SocketType.HEARTBEAT);
-        bindEndpoints(createEventSocket(), ipAddresses, eventEndpoints, SocketType.EVENTS);
-
-        // // TODO : without database?
-        final String adminDeviceName = ServerManager.getInstance().getAdminDeviceName();
-        final String heartbeatName = EventUtilities.buildHeartBeatEventName(adminDeviceName);
-        heartBeatExecutor.scheduleAtFixedRate(new HeartbeatThread(heartbeatName), 0,
-                EventConstants.EVENT_HEARTBEAT_PERIOD, TimeUnit.MILLISECONDS);
-        isInitialized = true;
-        xlogger.exit();
-    }
-
     private void bindEndpoints(ZMQ.Socket socket, Iterable<String> ipAddresses, Map<String, ZMQ.Socket> sockets, SocketType type) {
         xlogger.entry();
 
-        for (String ipAddress : ipAddresses) {
-            final StringBuilder endpoint = new StringBuilder("tcp://").append(ipAddress);
+        final int port = socket.bindToRandomPort("tcp://*");
 
-            int port = socket.bindToRandomPort(endpoint.toString());
-
-            //replace * with actual port
-            endpoint.append(":").append(port);
-            sockets.put(endpoint.toString(), socket);
-
-            logger.debug("bind ZMQ socket {} for {}", endpoint, type);
-        }
-
+        String endpoint = Observable.fromIterable(ipAddresses)
+                .map(s -> "tcp://" + s + ":" + port).blockingFirst();
+        logger.debug("bind ZMQ socket {} for {}", endpoint, type);
+        sockets.put(endpoint, socket);
         xlogger.exit();
     }
 
@@ -210,14 +201,19 @@ public final class EventManager {
         return socket;
     }
 
-    protected Iterable<String> getIp4Addresses() throws DevFailed {
+    private List<String> getIp4Addresses() {
         if (OAI_ADDR != null && !OAI_ADDR.isEmpty()) {
             return Lists.newArrayList(OAI_ADDR);
         } else {
+            Iterable<NetworkInterface> networkInterfaces = null;
             try {
-                Iterable<NetworkInterface> networkInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+                networkInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            } catch (SocketException e) {
+                logger.error("Failed to get NICs due to " + e.getMessage(), e);
+                return Collections.emptyList();
+            }
 
-                java.util.function.Predicate<NetworkInterface> filter = networkInterface -> {
+            java.util.function.Predicate<NetworkInterface> filter = networkInterface -> {
                     try {
                         return !networkInterface.isLoopback() && !networkInterface.isVirtual() && networkInterface.isUp();
                     } catch (SocketException e) {
@@ -231,17 +227,18 @@ public final class EventManager {
                 Iterable<NetworkInterface> filteredNICs = Iterables.filter(networkInterfaces, filter::test);
 
                 List<String> result = Lists.newArrayList();
+            //TODO #17
                 for (NetworkInterface nic : filteredNICs) {
                     result.addAll(
                             Collections2.filter(
-                                    nic.getInterfaceAddresses().stream().map(interfaceAddressToString::apply).collect(Collectors.toList()),
+                                    nic.getInterfaceAddresses()
+                                            .stream()
+                                            .map(interfaceAddressToString::apply)
+                                            .collect(Collectors.toList()),
                                     s -> s.split("\\.").length == 4)
                     );
                 }
                 return result;
-            } catch (SocketException e) {
-                throw DevFailedUtils.newDevFailed(e);
-            }
         }
     }
 
@@ -252,11 +249,8 @@ public final class EventManager {
      * @param fullName specified EventImpl name.
      * @return the specified EventImpl object if found, otherwise returns null.
      */
+    //TODO concurrency
     private EventImpl getEventImpl(final String fullName) {
-        if (!isInitialized) {
-            return null;
-        }
-
         // Check if subscribed
         EventImpl eventImpl = eventImplMap.get(fullName);
 
@@ -266,15 +260,10 @@ public final class EventManager {
             // System.out.println(fullName + "Not Subscribed any more");
             eventImplMap.remove(fullName);
 
-            // if no subscribers, close sockets
-            if (eventImplMap.isEmpty()) {
-                logger.debug("no subscribers on server, closing resources");
-                close();
-            }
-            eventImpl = null;
+            return null;
+        } else {
+            return eventImpl;
         }
-
-        return eventImpl;
     }
 
     public boolean hasSubscriber(final String deviceName) {
@@ -295,9 +284,9 @@ public final class EventManager {
         xlogger.entry();
         logger.debug("closing all event resources");
 
-        heartBeatExecutor.shutdown();
+        scheduledHeartbeatExecutor.shutdown();
         try {
-            heartBeatExecutor.awaitTermination(1, TimeUnit.SECONDS);
+            scheduledHeartbeatExecutor.awaitTermination(1, TimeUnit.SECONDS);
         } catch (final InterruptedException e) {
             logger.error("could not stop event hearbeat");
             Thread.currentThread().interrupt();
@@ -308,7 +297,6 @@ public final class EventManager {
 //        context.destroy();
         eventImplMap.clear();
 
-        isInitialized = false;
         logger.debug("all event resources closed");
         xlogger.exit();
     }
@@ -343,10 +331,6 @@ public final class EventManager {
     public DevVarLongStringArray subscribe(final String deviceName, final PipeImpl pipe) throws DevFailed {
         xlogger.entry();
         // If first time start the ZMQ management
-        if (!isInitialized) {
-            initialize();
-        }
-
         // check if event is already subscribed
         final String fullName = EventUtilities.buildPipeEventName(deviceName, pipe.getName());
         EventImpl eventImpl = eventImplMap.get(fullName);
@@ -374,11 +358,6 @@ public final class EventManager {
     public DevVarLongStringArray subscribe(final String deviceName, final AttributeImpl attribute,
                                            final EventType eventType, final int idlVersion) throws DevFailed {
         xlogger.entry();
-        // If first time start the ZMQ management
-        if (!isInitialized) {
-            initialize();
-        }
-
         // check if event is already subscribed
         final String fullName = EventUtilities.buildEventName(deviceName, attribute.getName(), eventType, idlVersion);
         EventImpl eventImpl = eventImplMap.get(fullName);
@@ -408,11 +387,6 @@ public final class EventManager {
      */
     public DevVarLongStringArray subscribe(final String deviceName) throws DevFailed {
         xlogger.entry();
-        // If first time start the ZMQ management
-        if (!isInitialized) {
-            initialize();
-        }
-
         // check if event is already subscribed
         final String fullName = EventUtilities.buildDeviceEventName(deviceName, EventType.INTERFACE_CHANGE_EVENT);
         EventImpl eventImpl = eventImplMap.get(fullName);
@@ -619,11 +593,11 @@ public final class EventManager {
     /**
      * This class is a thread to send a heartbeat
      */
-    class HeartbeatThread implements Runnable {
+    class HeartbeatRunnable implements Runnable {
 
         private final String heartbeatName;
 
-        HeartbeatThread(final String heartbeatName) {
+        HeartbeatRunnable(final String heartbeatName) {
             this.heartbeatName = heartbeatName;
         }
 
@@ -631,14 +605,14 @@ public final class EventManager {
         public void run() {
             xlogger.entry();
             if (eventImplMap.isEmpty()) return;
-            for (ZMQ.Socket heartbeatSocket : heartbeatEndpoints.values()) {
+            for (Map.Entry<String, ZMQ.Socket> heartbeatSocket : heartbeatEndpoints.entrySet()) {
                 // Fire heartbeat
                 try {
-                        EventUtilities.sendHeartbeat(heartbeatSocket, heartbeatName);
+                    EventUtilities.sendHeartbeat(heartbeatSocket.getValue(), heartbeatName);
                 } catch (final DevFailed e) {
                     DevFailedUtils.logDevFailed(e, logger);
                 }
-                logger.debug("Heartbeat sent for {}", heartbeatName);
+                logger.debug("Heartbeat sent for {} to {}", heartbeatName, heartbeatSocket.getKey());
             }
             xlogger.exit();
         }
