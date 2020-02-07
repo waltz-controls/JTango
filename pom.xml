@@ -13,7 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>1.11</java.version>
     </properties>
 
     <build>
@@ -50,14 +50,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.reactivestreams</groupId>
-            <artifactId>reactive-streams</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
             <groupId>org.tango-controls</groupId>
             <artifactId>JTangoClientLang</artifactId>
-            <version>9.5.17</version>
+            <version>9.5.18-hzg.7</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-hzgde-hzg-wpn-projects</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/hzgde/hzg-wpn-projects</url>
+        </repository>
+    </repositories>
 </project>

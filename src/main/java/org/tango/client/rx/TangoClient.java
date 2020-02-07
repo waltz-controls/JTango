@@ -13,7 +13,7 @@ import org.reactivestreams.Publisher;
 public class TangoClient {
     private TangoClient(){}
 
-    public Publisher<DeviceData> executeCommand(String commandEndpoint){
+    public Publisher<Object> executeCommand(String commandEndpoint){
         ITangoCommand command = null;
         DevFailed failure = null;
         try {

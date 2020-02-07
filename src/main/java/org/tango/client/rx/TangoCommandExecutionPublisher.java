@@ -7,11 +7,16 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 /**
  * @author ingvord
  * @since 06.09.2019
  */
-public class TangoCommandExecutionPublisher implements Publisher<DeviceData> {
+public class TangoCommandExecutionPublisher implements Publisher<Object> {
 
     private final ITangoCommand command;
     private final DevFailed failure;
@@ -21,35 +26,44 @@ public class TangoCommandExecutionPublisher implements Publisher<DeviceData> {
         this.failure = failure;
     }
 
+    public TangoCommandExecutionPublisher(ITangoCommand command) {
+        this(command, null);
+    }
+
 
     @Override
-    public void subscribe(Subscriber<? super DeviceData> subscriber) {
+    public void subscribe(Subscriber<? super Object> subscriber) {
         if(subscriber == null) throw new NullPointerException("Publisher can not be null!");
 
+
+        Future<Object> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                return command.executeExtract();
+            } catch (DevFailed devFailed) {
+                throw new CompletionException(devFailed);
+            }
+        });
 
         subscriber.onSubscribe(new Subscription() {
             @Override
             public void request(long l) {
-                //TODO
+                if(failure != null) {
+                    subscriber.onError(failure);
+                    return;
+                }
+
+                try {
+                    subscriber.onNext(future.get());
+                    subscriber.onComplete();
+                } catch (InterruptedException | ExecutionException devFailed) {
+                    subscriber.onError(devFailed);
+                }
             }
 
             @Override
             public void cancel() {
-                //TODO
+               future.cancel(true);
             }
         });
-
-        if(failure != null) {
-            subscriber.onError(failure);
-            return;
-        }
-
-
-
-        //TODO subscriber.onNext();
-
-        //TODO subscriber.onComplete();
-
-        //TODO subscriber.onError();
     }
 }
