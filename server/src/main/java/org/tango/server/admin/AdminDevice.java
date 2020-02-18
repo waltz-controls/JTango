@@ -40,14 +40,7 @@ import org.tango.orb.ServerRequestInterceptor;
 import org.tango.server.ExceptionMessages;
 import org.tango.server.PolledObjectType;
 import org.tango.server.ServerManager;
-import org.tango.server.annotation.Attribute;
-import org.tango.server.annotation.Command;
-import org.tango.server.annotation.Device;
-import org.tango.server.annotation.DeviceProperty;
-import org.tango.server.annotation.Init;
-import org.tango.server.annotation.StateMachine;
-import org.tango.server.annotation.Status;
-import org.tango.server.annotation.TransactionType;
+import org.tango.server.annotation.*;
 import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.attribute.ForwardedAttribute;
 import org.tango.server.build.DeviceClassBuilder;
@@ -62,15 +55,11 @@ import org.tango.server.pipe.PipeImpl;
 import org.tango.server.properties.ClassPropertyImpl;
 import org.tango.server.properties.DevicePropertyImpl;
 import org.tango.server.servant.DeviceImpl;
+import org.tango.server.transport.TransportManager;
 import org.tango.utils.DevFailedUtils;
 import org.tango.utils.TangoUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -815,6 +804,15 @@ public final class AdminDevice implements TangoMXBean {
             result = EventManager.getInstance().subscribe(deviceName, attribute, eventType, idlversion);
         }
         return result;
+    }
+
+    private final TransportManager transportManager = new TransportManager();
+
+    @Command(name = "UpgradeTransport")
+    public DevVarLongStringArray upgradeTransport() {
+        return transportManager
+                .upgradeTransport()
+                .toDevVarLongStringArray();
     }
 
     /**
