@@ -16,11 +16,15 @@ import java.util.List;
 public class TransportManager {
     private final ZContext context = new ZContext();
 
+    private String port;
 
-    public TransportMeta upgradeTransport() {
+    public ZMQ.Socket upgradeTransport() {
         ZMQ.Socket socket = createZMQSocket();
-        int port = socket.bindToRandomPort("tcp://*");
+        port = String.valueOf(socket.bindToRandomPort("tcp://*"));
+        return socket;
+    }
 
+    public TransportMeta getTransportMeta() {
         List<String> connectionPoints = new NetworkInterfacesExtractor().getIp4Addresses();
 
         TransportMeta result = new TransportMeta();
@@ -32,11 +36,11 @@ public class TransportManager {
         return result;
     }
 
-
     public ZMQ.Socket createZMQSocket() {
         final ZMQ.Socket socket = context.createSocket(ZMQ.REP);
         socket.setLinger(0);
         socket.setReconnectIVL(-1);
         return socket;
     }
+
 }

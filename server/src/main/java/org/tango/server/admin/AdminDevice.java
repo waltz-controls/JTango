@@ -24,6 +24,7 @@
  */
 package org.tango.server.admin;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import fr.esrf.Tango.ClntIdent;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarLongStringArray;
@@ -56,10 +57,14 @@ import org.tango.server.properties.ClassPropertyImpl;
 import org.tango.server.properties.DevicePropertyImpl;
 import org.tango.server.servant.DeviceImpl;
 import org.tango.server.transport.TransportManager;
+import org.tango.server.transport.ZmqTransportListener;
 import org.tango.utils.DevFailedUtils;
 import org.tango.utils.TangoUtil;
+import org.zeromq.ZMQ;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -429,6 +434,13 @@ public final class AdminDevice implements TangoMXBean {
         xlogger.exit();
         return pollDevices.toArray(new String[pollDevices.size()]);
     }
+
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor(
+            new ThreadFactoryBuilder()
+                    .setDaemon(true)
+                    .setNameFormat("ZmqTransportListener-%d")
+                    .build()
+    );
 
     /**
      * @param dvlsa Lg[0]=Upd period. Str[0]=Device name. Str[1]=Object
@@ -808,11 +820,21 @@ public final class AdminDevice implements TangoMXBean {
 
     private final TransportManager transportManager = new TransportManager();
 
+    public DeviceImpl getDeviceImpl(String device) {
+        return classList.stream()
+                .map(deviceClassBuilder -> deviceClassBuilder.getDeviceImpl(device))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException(device));
+    }
+
     @Command(name = "UpgradeTransport")
     public DevVarLongStringArray upgradeTransport() {
-        return transportManager
-                .upgradeTransport()
-                .toDevVarLongStringArray();
+
+        ZMQ.Socket socket = transportManager
+                .upgradeTransport();
+
+        executorService.submit(new ZmqTransportListener(socket, this));
+        return transportManager.getTransportMeta().toDevVarLongStringArray();
     }
 
     /**

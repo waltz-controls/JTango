@@ -43,6 +43,7 @@ import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
 import org.omg.CORBA.Request;
 import org.tango.network.EndpointAvailabilityChecker;
+import org.tango.transport.Message;
 import org.tango.transport.Transport;
 import org.tango.transport.TransportMeta;
 import org.tango.utils.DevFailedUtils;
@@ -801,7 +802,14 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public DeviceAttribute read_attribute(String attname) throws DevFailed {
         if (transport.isConnected()) {
             try {
-                transport.send(String.format("read:%s", attname).getBytes(StandardCharsets.UTF_8));
+                Message message = new Message("read", this.get_name() + "/" + attname, null, null);
+
+                //TODO marshaller
+
+                Message response = Message.fromString(
+                        new String(transport.send(message.toString().getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
+                System.out.println(response.value);
+                return new DeviceAttribute(attname, response.value);
             } catch (IOException e) {
                 throw DevFailedUtils.newDevFailed(e);
             }
@@ -837,7 +845,11 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public void writeAttribute(String name, double value) throws DevFailed {
         if (transport.isConnected()) {
             try {
-                transport.send(String.format("write:%s;type:double;value:%f", name, value).getBytes(StandardCharsets.UTF_8));
+                Message message = new Message("write", this.get_name() + "/" + name, "double", String.valueOf(value));
+
+                //TODO marshaller
+
+                transport.send(message.toString().getBytes(StandardCharsets.UTF_8));
             } catch (IOException e) {
                 throw DevFailedUtils.newDevFailed(e);
             }
