@@ -827,8 +827,8 @@ public final class AdminDevice implements TangoMXBean {
                 .orElseThrow(() -> new NoSuchElementException(device));
     }
 
-    @Command(name = "UpgradeTransport")
-    public DevVarLongStringArray upgradeTransport() {
+    @Command(name = "UpgradeProtocol")
+    public DevVarLongStringArray upgradeProtocol() {
 
         ZMQ.Socket socket = transportManager
                 .upgradeTransport();
