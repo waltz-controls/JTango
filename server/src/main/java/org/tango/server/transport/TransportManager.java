@@ -1,6 +1,7 @@
 package org.tango.server.transport;
 
 import org.tango.server.network.NetworkInterfacesExtractor;
+import org.tango.transport.TransportMeta;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 

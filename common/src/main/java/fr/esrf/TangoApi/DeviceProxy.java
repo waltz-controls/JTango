@@ -42,7 +42,13 @@ import fr.esrf.TangoApi.events.EventQueue;
 import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
 import org.omg.CORBA.Request;
+import org.tango.network.EndpointAvailabilityChecker;
+import org.tango.transport.Transport;
+import org.tango.transport.TransportMeta;
+import org.tango.utils.DevFailedUtils;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,6 +85,8 @@ import java.util.Vector;
 public class DeviceProxy extends Connection implements ApiDefs {
 
     private IDeviceProxyDAO deviceProxyDAO = null;
+
+    private final Transport transport = TangoFactory.getSingleton().newTransport();
 
     static final private boolean check_idl = false;
 
@@ -791,6 +799,13 @@ public class DeviceProxy extends Connection implements ApiDefs {
      */
     // ==========================================================================
     public DeviceAttribute read_attribute(String attname) throws DevFailed {
+        if (transport.isConnected()) {
+            try {
+                transport.send(String.format("read:%s", attname).getBytes(StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                throw DevFailedUtils.newDevFailed(e);
+            }
+        }
         return deviceProxyDAO.read_attribute(this, attname);
     }
 
@@ -816,6 +831,19 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public DeviceAttribute[] read_attribute(String[] attnames) throws DevFailed {
         checkDuplication(attnames, "DeviceProxy.read_attribute()");
         return deviceProxyDAO.read_attribute(this, attnames);
+    }
+
+    //TODO extract and decorate
+    public void writeAttribute(String name, double value) throws DevFailed {
+        if (transport.isConnected()) {
+            try {
+                transport.send(String.format("write:%s;type:double;value:%f", name, value).getBytes(StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                throw DevFailedUtils.newDevFailed(e);
+            }
+        }
+        DeviceAttribute deviceAttribute = new DeviceAttribute(name, value);
+        write_attribute(deviceAttribute);
     }
 
     // ==========================================================================
@@ -1825,6 +1853,26 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.subscribe_event(this, event, max_size, stateless);
     }
 
+    public void upgradeProtocol() throws DevFailed {
+        DeviceData response = this.get_adm_dev().command_inout("UpgradeProtocol");
+
+        DevVarLongStringArray array = response.extractLongStringArray();
+
+        TransportMeta transportMeta = TransportMeta.fromDevVarLongStringArray(array);
+
+        EndpointAvailabilityChecker predicate = new EndpointAvailabilityChecker();
+        String endpoint = transportMeta.getEndPoints().stream()
+                .filter(predicate)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No reachable connection points were found"));
+
+        try {
+            transport.connect(endpoint);
+        } catch (IOException e) {
+            throw DevFailedUtils.newDevFailed(e);
+        }
+    }
+
     // ==========================================================================
     // ==========================================================================
     public void setEventQueue(EventQueue eq) {
@@ -2020,6 +2068,10 @@ public class DeviceProxy extends Connection implements ApiDefs {
      */
     //==========================================================================
     protected void finalize() {
+        try {
+            transport.close();
+        } catch (IOException ignored) {
+        }
         if (proxy_lock_cnt>0) {
             try {
                 unlock();

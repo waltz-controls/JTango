@@ -36,6 +36,7 @@ package fr.esrf.TangoApi.factory;
 
 import fr.esrf.Tango.factory.ITangoFactory;
 import fr.esrf.TangoApi.*;
+import org.tango.transport.ZmqTransport;
 
 public class DefaultTangoFactoryImpl implements ITangoFactory {
 
@@ -135,5 +136,9 @@ public class DefaultTangoFactoryImpl implements ITangoFactory {
 	{
 		return "TANGORB Default";
 	}
+
+    public ZmqTransport newTransport() {
+        return new ZmqTransport();
+    }
 
 }

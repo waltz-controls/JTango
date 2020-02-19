@@ -45,6 +45,7 @@
 package fr.esrf.Tango.factory;
 
 import fr.esrf.TangoApi.*;
+import org.tango.transport.Transport;
 
 public interface ITangoFactory {
 
@@ -70,4 +71,5 @@ public interface ITangoFactory {
 
     public String getFactoryName();
 
+    Transport newTransport();
 }
