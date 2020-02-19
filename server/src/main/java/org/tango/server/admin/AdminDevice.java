@@ -823,6 +823,7 @@ public final class AdminDevice implements TangoMXBean {
     public DeviceImpl getDeviceImpl(String device) {
         return classList.stream()
                 .map(deviceClassBuilder -> deviceClassBuilder.getDeviceImpl(device))
+                .filter(Objects::nonNull)
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException(device));
     }
