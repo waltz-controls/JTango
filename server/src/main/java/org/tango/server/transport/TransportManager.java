@@ -30,8 +30,8 @@ public class TransportManager {
         TransportMeta result = new TransportMeta();
 
         connectionPoints.stream()
-                .map(s -> s + ":" + port)
-                .forEach(result::addConnectionPoint);
+                .map(s -> "tcp://" + s + ":" + port)
+                .forEach(result::addEndpoint);
 
         return result;
     }

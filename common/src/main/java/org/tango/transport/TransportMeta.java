@@ -30,7 +30,7 @@ public class TransportMeta {
         this.endPoints = endPoints;
     }
 
-    public void addConnectionPoint(String connectionPoint) {
+    public void addEndpoint(String connectionPoint) {
         endPoints.add(connectionPoint);
     }
 
