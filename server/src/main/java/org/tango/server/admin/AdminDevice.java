@@ -820,6 +820,13 @@ public final class AdminDevice implements TangoMXBean {
 
     private final TransportManager transportManager = new TransportManager();
 
+    {
+        ZMQ.Socket socket = transportManager
+                .bindZmqTransport();
+
+        executorService.execute(new ZmqTransportListener(socket, this));
+    }
+
     public DeviceImpl getDeviceImpl(String device) {
         return classList.stream()
                 .map(deviceClassBuilder -> deviceClassBuilder.getDeviceImpl(device))
@@ -831,10 +838,7 @@ public final class AdminDevice implements TangoMXBean {
     @Command(name = "UpgradeProtocol")
     public DevVarLongStringArray upgradeProtocol() {
 
-        ZMQ.Socket socket = transportManager
-                .upgradeTransport();
 
-        executorService.submit(new ZmqTransportListener(socket, this));
         return transportManager.getTransportMeta().toDevVarLongStringArray();
     }
 

@@ -6,6 +6,7 @@ import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class maintains ZMQ REQ/REP required data
@@ -16,11 +17,15 @@ import java.util.List;
 public class TransportManager {
     private final ZContext context = new ZContext();
 
+    private ZMQ.Socket socket;
     private String port;
 
-    public ZMQ.Socket upgradeTransport() {
-        ZMQ.Socket socket = createZMQSocket();
-        port = String.valueOf(socket.bindToRandomPort("tcp://*"));
+    public ZMQ.Socket bindZmqTransport() {
+        this.socket = Optional.ofNullable(socket).orElseGet(() -> {
+            ZMQ.Socket socket = createZMQSocket();
+            port = String.valueOf(socket.bindToRandomPort("tcp://*"));
+            return socket;
+        });
         return socket;
     }
 
@@ -38,8 +43,6 @@ public class TransportManager {
 
     public ZMQ.Socket createZMQSocket() {
         final ZMQ.Socket socket = context.createSocket(ZMQ.REP);
-        socket.setLinger(0);
-        socket.setReconnectIVL(-1);
         return socket;
     }
 
