@@ -45,15 +45,11 @@ import org.omg.CORBA.Request;
 import org.tango.network.EndpointAvailabilityChecker;
 import org.tango.transport.Message;
 import org.tango.transport.Transport;
-import org.tango.transport.TransportMeta;
 import org.tango.utils.DevFailedUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Class Description: This class manage device connection for Tango objects. It
@@ -1867,12 +1863,10 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public void upgradeProtocol() throws DevFailed {
         DeviceData response = this.get_adm_dev().command_inout("UpgradeProtocol");
 
-        DevVarLongStringArray array = response.extractLongStringArray();
-
-        TransportMeta transportMeta = TransportMeta.fromDevVarLongStringArray(array);
+        String[] array = response.extractStringArray();
 
         EndpointAvailabilityChecker predicate = new EndpointAvailabilityChecker();
-        String endpoint = transportMeta.getEndPoints().stream()
+        String endpoint = Arrays.stream(array)
                 .filter(predicate)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No reachable connection points were found"));

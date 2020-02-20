@@ -40,4 +40,8 @@ public class TransportMeta {
 
         return result;
     }
+
+    public String[] toStringArray() {
+        return endPoints.toArray(new String[0]);
+    }
 }

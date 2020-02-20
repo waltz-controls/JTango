@@ -836,10 +836,8 @@ public final class AdminDevice implements TangoMXBean {
     }
 
     @Command(name = "UpgradeProtocol")
-    public DevVarLongStringArray upgradeProtocol() {
-
-
-        return transportManager.getTransportMeta().toDevVarLongStringArray();
+    public String[] upgradeProtocol() {
+        return transportManager.getTransportMeta().toStringArray();
     }
 
     /**
