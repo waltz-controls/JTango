@@ -805,7 +805,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
                 Message message = new Message("read", this.get_name() + "/" + attname, null, null);
 
                 //TODO marshaller
-
                 Message response = Message.fromString(
                         new String(transport.send(message.toString().getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
                 System.out.println(response.value);

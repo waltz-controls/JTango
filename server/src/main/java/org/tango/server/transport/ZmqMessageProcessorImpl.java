@@ -36,6 +36,4 @@ public class ZmqMessageProcessorImpl implements ZmqMessageProcessor {
                 return new Message.Error("Unsupported message action - " + message.action);
         }
     }
-
-
 }

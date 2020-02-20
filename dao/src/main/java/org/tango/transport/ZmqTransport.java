@@ -13,12 +13,12 @@ public class ZmqTransport implements Transport {
     private ZMQ.Socket socket;
 
     @Override
-    public synchronized boolean isConnected() {
+    public boolean isConnected() {
         return socket != null;
     }
 
     @Override
-    public synchronized void connect(String endpoint) {
+    public void connect(String endpoint) {
         ZMQ.Socket socket = zcontext.createSocket(ZMQ.REQ);
 
         socket.connect(endpoint);
@@ -27,20 +27,20 @@ public class ZmqTransport implements Transport {
     }
 
     @Override
-    public synchronized void disconnect(String endpoint) {
+    public void disconnect(String endpoint) {
         zcontext.getSockets()
                 .forEach(socket -> socket.disconnect(endpoint));
     }
 
     @Override
-    public synchronized byte[] send(byte[] data) {
+    public byte[] send(byte[] data) {
         socket.send(data);
 
         return socket.recv();
     }
 
     @Override
-    public synchronized void close() {
+    public void close() {
         zcontext.close();
     }
 }
