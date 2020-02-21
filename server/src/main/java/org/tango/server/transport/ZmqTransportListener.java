@@ -83,7 +83,7 @@ public class ZmqTransportListener implements TransportListener, Runnable {
 
     private ZMQ.Socket createZMQSocket(int type) {
         ZMQ.Socket socket = ctx.createSocket(type);
-        socket.setLinger(0);
+//        socket.setLinger(0);
         return socket;
     }
 }

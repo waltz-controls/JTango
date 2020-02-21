@@ -792,6 +792,22 @@ public class DeviceProxy extends Connection implements ApiDefs {
 
     // ==========================================================================
 
+    public double readAttributeDouble(String name) throws DevFailed {
+        if (transport.isConnected()) {
+            try {
+                TangoMessage<Double> message = new TangoMessage<>("read", this.get_name(), name, TangoConst.Tango_DEV_DOUBLE, 0D);
+
+                message = marshaller.unmarshal(transport.send(marshaller.marshal(message)));
+
+                return message.value;
+            } catch (IOException e) {
+                throw DevFailedUtils.newDevFailed(e);
+            }
+        } else {
+            return read_attribute(name).extractDouble();
+        }
+    }
+
     /**
      * Read the attribute value for the specified device.
      *
@@ -800,17 +816,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
      */
     // ==========================================================================
     public DeviceAttribute read_attribute(String attname) throws DevFailed {
-        if (transport.isConnected()) {
-            try {
-                TangoMessage message = new TangoMessage("read", this.get_name(), attname, -1, null);
-
-                message = marshaller.unmarshal(transport.send(marshaller.marshal(message)));
-
-                return new DeviceAttribute(attname, String.valueOf(message.value));//TODO respect dataType
-            } catch (IOException e) {
-                throw DevFailedUtils.newDevFailed(e);
-            }
-        }
         return deviceProxyDAO.read_attribute(this, attname);
     }
 
@@ -842,9 +847,9 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public void writeAttribute(String name, double value) throws DevFailed {
         if (transport.isConnected()) {
             try {
-                TangoMessage message = new TangoMessage("write", this.get_name(), name, TangoConst.Tango_DEV_DOUBLE, value);
+                TangoMessage<Double> message = new TangoMessage<>("write", this.get_name(), name, TangoConst.Tango_DEV_DOUBLE, value);
 
-                marshaller.unmarshal(transport.send(marshaller.marshal(message)));
+                transport.send(marshaller.marshal(message));
             } catch (IOException e) {
                 throw DevFailedUtils.newDevFailed(e);
             }

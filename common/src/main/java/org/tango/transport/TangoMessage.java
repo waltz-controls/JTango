@@ -6,14 +6,14 @@ import fr.esrf.TangoDs.TangoConst;
  * @author Igor Khokhriakov <igor.khokhriakov@hzg.de>
  * @since 19.02.2020
  */
-public class TangoMessage {
+public class TangoMessage<T> {
     public String action;
     public String device;
     public String target;
     public int dataType;
-    public Object value;
+    public T value;
 
-    public TangoMessage(String action, String device, String target, int dataType, Object value) {
+    public TangoMessage(String action, String device, String target, int dataType, T value) {
         this.action = action;
         this.device = device;
         this.target = target;

@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 import static java.net.http.HttpClient.Version.HTTP_2;
@@ -45,8 +46,11 @@ public class HttpTransport implements Transport {
                 .POST(HttpRequest.BodyPublishers.ofByteArray(data))
                 .build();
 
-        client.sendAsync(req, HttpResponse.BodyHandlers.ofString());
-        return new byte[0];
+        try {
+            return client.send(req, HttpResponse.BodyHandlers.ofString()).body().getBytes(StandardCharsets.UTF_8);
+        } catch (InterruptedException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
