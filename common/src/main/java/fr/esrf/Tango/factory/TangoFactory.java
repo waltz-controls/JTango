@@ -205,7 +205,7 @@ public class TangoFactory {
         this.isDefaultFactory = isDefaultFactory;
     }
 
-    public Transport newTransport() {
-        return tangoFactory.newTransport();
+    public Transport newTransport(String targetProtocol) {
+        return tangoFactory.newTransport(targetProtocol);
     }
 }

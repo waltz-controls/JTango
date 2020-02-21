@@ -1,12 +1,10 @@
 package org.tango.server.transport;
 
-import org.tango.server.network.NetworkInterfacesExtractor;
-import org.tango.transport.TransportMeta;
-import org.zeromq.ZContext;
-import org.zeromq.ZMQ;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * This class maintains ZMQ REQ/REP required data
@@ -15,35 +13,25 @@ import java.util.Optional;
  * @since 18.02.2020
  */
 public class TransportManager {
-    private final ZContext context = new ZContext();
+    private final Map<String, TransportListener> transports = Maps.newHashMap();
 
-    private ZMQ.Socket socket;
-    private String port;
-
-    public ZMQ.Socket bindZmqTransport() {
-        this.socket = Optional.ofNullable(socket).orElseGet(() -> {
-            ZMQ.Socket socket = createZMQSocket();
-            port = String.valueOf(socket.bindToRandomPort("tcp://*"));
-            return socket;
-        });
-        return socket;
+    public void registerTransport(TransportListener transportListener) {
+        transports.put(transportListener.getName(), transportListener);
     }
 
-    public TransportMeta getTransportMeta() {
-        List<String> connectionPoints = new NetworkInterfacesExtractor().getIp4Addresses();
-
-        TransportMeta result = new TransportMeta();
-
-        connectionPoints.stream()
-                .map(s -> "tcp://" + s + ":" + port)
-                .forEach(result::addEndpoint);
-
-        return result;
+    public List<String> getEndpoints(String transport) {
+        return transports.get(transport).endpoints();
     }
 
-    public ZMQ.Socket createZMQSocket() {
-        final ZMQ.Socket socket = context.createSocket(ZMQ.REP);
-        return socket;
+    public List<String> getTransports() {
+        return Lists.newArrayList(transports.keySet());
     }
 
+    public void bind() {
+        transports.values().forEach(TransportListener::bind);
+    }
+
+    public void listen() {
+        transports.values().forEach(TransportListener::listen);
+    }
 }

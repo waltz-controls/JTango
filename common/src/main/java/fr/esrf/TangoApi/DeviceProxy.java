@@ -42,13 +42,14 @@ import fr.esrf.TangoApi.events.EventQueue;
 import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
 import org.omg.CORBA.Request;
-import org.tango.network.EndpointAvailabilityChecker;
-import org.tango.transport.Message;
+import org.tango.network.NetworkUtils;
+import org.tango.transport.DefaultTransport;
+import org.tango.transport.StringTangoMessage;
+import org.tango.transport.TangoMessage;
 import org.tango.transport.Transport;
 import org.tango.utils.DevFailedUtils;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -83,7 +84,7 @@ public class DeviceProxy extends Connection implements ApiDefs {
 
     private IDeviceProxyDAO deviceProxyDAO = null;
 
-    private final Transport transport = TangoFactory.getSingleton().newTransport();
+    private final StringTangoMessage marshaller = new StringTangoMessage();
 
     static final private boolean check_idl = false;
 
@@ -787,7 +788,10 @@ public class DeviceProxy extends Connection implements ApiDefs {
         deviceProxyDAO.set_attribute_info(this, attr);
     }
 
+    private Transport transport = new DefaultTransport();
+
     // ==========================================================================
+
     /**
      * Read the attribute value for the specified device.
      *
@@ -798,13 +802,11 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public DeviceAttribute read_attribute(String attname) throws DevFailed {
         if (transport.isConnected()) {
             try {
-                Message message = new Message("read", this.get_name() + "/" + attname, null, null);
+                TangoMessage message = new TangoMessage("read", this.get_name(), attname, -1, null);
 
-                //TODO marshaller
-                Message response = Message.fromString(
-                        new String(transport.send(message.toString().getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
-                System.out.println(response.value);
-                return new DeviceAttribute(attname, response.value);
+                message = marshaller.unmarshal(transport.send(marshaller.marshal(message)));
+
+                return new DeviceAttribute(attname, String.valueOf(message.value));//TODO respect dataType
             } catch (IOException e) {
                 throw DevFailedUtils.newDevFailed(e);
             }
@@ -840,11 +842,9 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public void writeAttribute(String name, double value) throws DevFailed {
         if (transport.isConnected()) {
             try {
-                Message message = new Message("write", this.get_name() + "/" + name, "double", String.valueOf(value));
+                TangoMessage message = new TangoMessage("write", this.get_name(), name, TangoConst.Tango_DEV_DOUBLE, value);
 
-                //TODO marshaller
-
-                transport.send(message.toString().getBytes(StandardCharsets.UTF_8));
+                marshaller.unmarshal(transport.send(marshaller.marshal(message)));
             } catch (IOException e) {
                 throw DevFailedUtils.newDevFailed(e);
             }
@@ -1860,18 +1860,20 @@ public class DeviceProxy extends Connection implements ApiDefs {
         return deviceProxyDAO.subscribe_event(this, event, max_size, stateless);
     }
 
-    public void upgradeProtocol() throws DevFailed {
-        DeviceData response = this.get_adm_dev().command_inout("UpgradeProtocol");
+    public void upgradeProtocol(String targetProtocol) throws DevFailed {
+        DeviceData argin = new DeviceData();
+        argin.insert(targetProtocol);
+
+        DeviceData response = this.get_adm_dev().command_inout("UpgradeProtocol", argin);
 
         String[] array = response.extractStringArray();
 
-        EndpointAvailabilityChecker predicate = new EndpointAvailabilityChecker();
-        String endpoint = Arrays.stream(array)
-                .filter(predicate)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No reachable connection points were found"));
-
         try {
+            String endpoint = Arrays.stream(array)
+                    .filter(NetworkUtils.getInstance()::checkEndpoint)
+                    .findFirst()
+                    .orElseThrow(() -> new IOException("No reachable connection points were found"));
+            transport = TangoFactory.getSingleton().newTransport(targetProtocol);
             transport.connect(endpoint);
         } catch (IOException e) {
             throw DevFailedUtils.newDevFailed(e);

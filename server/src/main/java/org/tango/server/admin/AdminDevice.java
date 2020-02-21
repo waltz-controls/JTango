@@ -24,7 +24,6 @@
  */
 package org.tango.server.admin;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import fr.esrf.Tango.ClntIdent;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevVarLongStringArray;
@@ -56,15 +55,13 @@ import org.tango.server.pipe.PipeImpl;
 import org.tango.server.properties.ClassPropertyImpl;
 import org.tango.server.properties.DevicePropertyImpl;
 import org.tango.server.servant.DeviceImpl;
+import org.tango.server.transport.HttpTransportListener;
 import org.tango.server.transport.TransportManager;
 import org.tango.server.transport.ZmqTransportListener;
 import org.tango.utils.DevFailedUtils;
 import org.tango.utils.TangoUtil;
-import org.zeromq.ZMQ;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -435,12 +432,6 @@ public final class AdminDevice implements TangoMXBean {
         return pollDevices.toArray(new String[pollDevices.size()]);
     }
 
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor(
-            new ThreadFactoryBuilder()
-                    .setDaemon(true)
-                    .setNameFormat("ZmqTransportListener-%d")
-                    .build()
-    );
 
     /**
      * @param dvlsa Lg[0]=Upd period. Str[0]=Device name. Str[1]=Object
@@ -821,10 +812,16 @@ public final class AdminDevice implements TangoMXBean {
     private final TransportManager transportManager = new TransportManager();
 
     {
-        ZMQ.Socket socket = transportManager
-                .bindZmqTransport();
+        transportManager.registerTransport(new ZmqTransportListener(this));
+        transportManager.registerTransport(new HttpTransportListener(this));
 
-        executorService.execute(new ZmqTransportListener(socket, this));
+        transportManager.bind();
+        transportManager.listen();
+    }
+
+    @Attribute
+    public String[] getSupportedTransports() {
+        return transportManager.getTransports().toArray(new String[0]);
     }
 
     public DeviceImpl getDeviceImpl(String device) {
@@ -836,8 +833,8 @@ public final class AdminDevice implements TangoMXBean {
     }
 
     @Command(name = "UpgradeProtocol")
-    public String[] upgradeProtocol() {
-        return transportManager.getTransportMeta().toStringArray();
+    public String[] upgradeProtocol(String transport) {
+        return transportManager.getEndpoints(transport).toArray(new String[0]);
     }
 
     /**

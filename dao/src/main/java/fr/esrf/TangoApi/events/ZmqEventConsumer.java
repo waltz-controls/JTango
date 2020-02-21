@@ -48,7 +48,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tango.network.EndpointAvailabilityChecker;
+import org.tango.network.NetworkUtils;
 import org.tango.utils.DevFailedUtils;
 
 import java.net.UnknownHostException;
@@ -379,7 +379,7 @@ public class ZmqEventConsumer {
                      logger.debug("{} ---> {}", wrongAdd, lsa.svalue[0]);
                      deviceData = new DeviceData();
                      deviceData.insert(lsa);
-                     new EndpointAvailabilityChecker().test(lsa.svalue[0]);
+                     NetworkUtils.getInstance().checkEndpoint(lsa.svalue[0]);
                  }
             }
         } catch (UnknownHostException e) {
@@ -402,13 +402,12 @@ public class ZmqEventConsumer {
         logger.trace("Inside checkZmqAddress()");
         DevVarLongStringArray lsa = deviceData.extractLongStringArray();
 
-        EndpointAvailabilityChecker predicate = new EndpointAvailabilityChecker();
         Pair<String, String> validEndpoints = Optional.ofNullable(Observable.zip(
                 Observable.fromArray(lsa.svalue),
                 Observable.fromArray(lsa.svalue).skip(1),
                 ImmutablePair::of
         )
-                .filter(pair -> predicate.test(pair.left))
+                .filter(pair -> NetworkUtils.getInstance().checkEndpoint(pair.left))
                 .blockingFirst(null))
                 .orElseGet(() -> {
                     DeviceData checkedWithHostAddress = checkWithHostAddress(deviceData, deviceProxy);

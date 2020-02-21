@@ -33,11 +33,11 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.tango.client.database.DatabaseFactory;
+import org.tango.network.NetworkUtils;
 import org.tango.server.ServerManager;
 import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.attribute.ForwardedAttribute;
 import org.tango.server.idl.TangoIDLUtil;
-import org.tango.server.network.NetworkInterfacesExtractor;
 import org.tango.server.pipe.PipeImpl;
 import org.tango.server.pipe.PipeValue;
 import org.tango.server.servant.DeviceImpl;
@@ -94,8 +94,7 @@ public final class EventManager {
     };
 
     private EventManager() {
-        NetworkInterfacesExtractor networkInterfacesExtractor = new NetworkInterfacesExtractor();
-        List<String> ipAddresses = networkInterfacesExtractor.getIp4Addresses();
+        List<String> ipAddresses = NetworkUtils.getInstance().getIp4Addresses();
 
         bindEndpoints(createSocket(), ipAddresses, heartbeatEndpoints, SocketType.HEARTBEAT);
         bindEndpoints(createEventSocket(), ipAddresses, eventEndpoints, SocketType.EVENTS);

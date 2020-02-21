@@ -71,5 +71,5 @@ public interface ITangoFactory {
 
     public String getFactoryName();
 
-    Transport newTransport();
+    Transport newTransport(String targetProtocol);
 }
