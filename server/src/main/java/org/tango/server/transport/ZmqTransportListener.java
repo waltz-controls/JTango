@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.network.NetworkUtils;
 import org.tango.server.admin.AdminDevice;
-import org.tango.transport.StringTangoMessage;
+import org.tango.transport.GsonTangoMessage;
 import org.tango.transport.TangoMessage;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @since 19.02.2020
  */
 public class ZmqTransportListener implements TransportListener, Runnable {
-    private final StringTangoMessage marshaller = new StringTangoMessage();
+    private final GsonTangoMessage marshaller = new GsonTangoMessage();
     private final TangoMessageProcessor tangoMessageProcessor = new NaiveTangoMessageProcessor();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor(
             new ThreadFactoryBuilder()

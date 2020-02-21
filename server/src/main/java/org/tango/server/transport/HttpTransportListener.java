@@ -8,7 +8,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import org.tango.network.NetworkUtils;
 import org.tango.server.admin.AdminDevice;
-import org.tango.transport.StringTangoMessage;
+import org.tango.transport.GsonTangoMessage;
 import org.tango.transport.TangoMessage;
 
 import java.nio.ByteBuffer;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @since 20.02.2020
  */
 public class HttpTransportListener implements TransportListener {
-    private final StringTangoMessage marshaller = new StringTangoMessage();
+    private final GsonTangoMessage marshaller = new GsonTangoMessage();
     private final TangoMessageProcessor tangoMessageProcessor = new NaiveTangoMessageProcessor();
     private final AdminDevice adminDevice;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor(

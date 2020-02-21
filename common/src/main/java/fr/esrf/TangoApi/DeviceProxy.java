@@ -44,7 +44,7 @@ import fr.esrf.TangoDs.TangoConst;
 import org.omg.CORBA.Request;
 import org.tango.network.NetworkUtils;
 import org.tango.transport.DefaultTransport;
-import org.tango.transport.StringTangoMessage;
+import org.tango.transport.GsonTangoMessage;
 import org.tango.transport.TangoMessage;
 import org.tango.transport.Transport;
 import org.tango.utils.DevFailedUtils;
@@ -84,7 +84,7 @@ public class DeviceProxy extends Connection implements ApiDefs {
 
     private IDeviceProxyDAO deviceProxyDAO = null;
 
-    private final StringTangoMessage marshaller = new StringTangoMessage();
+    private final GsonTangoMessage marshaller = new GsonTangoMessage();
 
     static final private boolean check_idl = false;
 
