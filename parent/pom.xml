@@ -144,11 +144,6 @@
             </dependency>
             <dependency>
                 <groupId>org.tango-controls</groupId>
-                <artifactId>TangORB-javacommon</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.tango-controls</groupId>
                 <artifactId>JTangoServer</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -170,7 +165,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>20.0</version>
+                <version>23.0</version>
             </dependency>
             <dependency>
                 <groupId>io.reactivex.rxjava2</groupId>
