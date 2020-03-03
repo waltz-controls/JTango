@@ -15,7 +15,7 @@ public class EventManagerTest {
 
     @Before
     public void before() {
-        instance = EventManager.getInstance();
+        instance = ZmqEventManager.getInstance();
     }
 
     @After

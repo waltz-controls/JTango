@@ -24,17 +24,6 @@
  */
 package org.tango.server.attribute;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.server.ExceptionMessages;
-import org.tango.server.StateMachineBehavior;
-import org.tango.server.dynamic.attribute.TangoConverter;
-import org.tango.server.events.EventManager;
-import org.tango.server.events.EventType;
-import org.tango.server.servant.DeviceImpl;
-import org.tango.utils.DevFailedUtils;
-import org.tango.utils.TangoUtil;
-
 import fr.esrf.Tango.AttributeValue_5;
 import fr.esrf.Tango.DevAttrHistory_5;
 import fr.esrf.Tango.DevFailed;
@@ -44,6 +33,16 @@ import fr.esrf.TangoApi.CallBack;
 import fr.esrf.TangoApi.Connection;
 import fr.esrf.TangoApi.events.EventData;
 import fr.soleil.tango.clientapi.TangoAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.server.ExceptionMessages;
+import org.tango.server.StateMachineBehavior;
+import org.tango.server.dynamic.attribute.TangoConverter;
+import org.tango.server.events.EventType;
+import org.tango.server.events.ZmqEventManager;
+import org.tango.server.servant.DeviceImpl;
+import org.tango.utils.DevFailedUtils;
+import org.tango.utils.TangoUtil;
 
 /**
  * Attribute that is a proxy to another attribute. Works only for IDL5 device and client
@@ -184,7 +183,7 @@ public class ForwardedAttribute implements IAttributeBehavior {
             public void push_event(final EventData evt) {
                 try {
                     if (evt.errors != null && evt.errors.length > 0) {
-                        EventManager.getInstance().pushAttributeErrorEvent(deviceName, attributeName,
+                        ZmqEventManager.getInstance().pushAttributeErrorEvent(deviceName, attributeName,
                                 new DevFailed(evt.errors));
                     } else {
                         final EventType evtT = EventType.getEvent(evt.event_type);
@@ -193,13 +192,13 @@ public class ForwardedAttribute implements IAttributeBehavior {
                             case PERIODIC_EVENT:
                             case CHANGE_EVENT:
                             case USER_EVENT:
-                                EventManager.getInstance().pushAttributeValueIDL5Event(deviceName, attributeName, evt.attr_value.getAttributeValueObject_5(), evtT);
+                                ZmqEventManager.getInstance().pushAttributeValueIDL5Event(deviceName, attributeName, evt.attr_value.getAttributeValueObject_5(), evtT);
                                 break;
                             case ATT_CONF_EVENT:
-                                EventManager.getInstance().pushAttributeConfigIDL5Event(deviceName, attributeName,evt.attr_config.get_attribute_config_obj_5());
+                                ZmqEventManager.getInstance().pushAttributeConfigIDL5Event(deviceName, attributeName, evt.attr_config.get_attribute_config_obj_5());
                                 break;
                             case DATA_READY_EVENT:
-                                EventManager.getInstance().pushAttributeDataReadyEvent(deviceName, attributeName,
+                                ZmqEventManager.getInstance().pushAttributeDataReadyEvent(deviceName, attributeName,
                                         evt.data_ready.ctr);
                                 break;
                             case INTERFACE_CHANGE_EVENT: // INTERFACE_CHANGE_EVENT is not possible in attribute

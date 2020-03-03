@@ -34,7 +34,7 @@ import org.tango.server.attribute.AttributeValue;
 import org.tango.server.command.CommandImpl;
 import org.tango.server.device.AroundInvokeImpl;
 import org.tango.server.device.DeviceLocker;
-import org.tango.server.events.EventManager;
+import org.tango.server.events.ZmqEventManager;
 
 public final class StateStatusCacheEntryFactory implements CacheEntryFactory {
     private static final double NANO_TO_MILLI = 1000000.0;
@@ -76,11 +76,11 @@ public final class StateStatusCacheEntryFactory implements CacheEntryFactory {
                 attribute.addToHistory();
                 result = attribute.getReadValue();
                 command.addToHistory(((AttributeValue) result).getValue());
-                EventManager.getInstance().pushAttributeValueEvent(deviceName, attribute.getName());
+                ZmqEventManager.getInstance().pushAttributeValueEvent(deviceName, attribute.getName());
             } catch (final DevFailed e) {
                 command.addErrorToHistory(e);
                 attribute.addErrorToHistory(e);
-                EventManager.getInstance().pushAttributeErrorEvent(deviceName, attribute.getName(), e);
+                ZmqEventManager.getInstance().pushAttributeErrorEvent(deviceName, attribute.getName(), e);
                 throw e;
             } finally {
                 attribute.unlock();

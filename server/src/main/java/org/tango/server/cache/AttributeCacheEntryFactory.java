@@ -34,7 +34,7 @@ import org.tango.server.InvocationContext.ContextType;
 import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.device.AroundInvokeImpl;
 import org.tango.server.device.DeviceLocker;
-import org.tango.server.events.EventManager;
+import org.tango.server.events.ZmqEventManager;
 
 import java.util.Locale;
 
@@ -93,10 +93,10 @@ public final class AttributeCacheEntryFactory implements CacheEntryFactory {
                             / NANO_TO_MILLI);
                     attribute.addToHistory();
                     result = attribute.getReadValue();
-                    EventManager.getInstance().pushAttributeValueEvent(deviceName, attribute.getName());
+                    ZmqEventManager.getInstance().pushAttributeValueEvent(deviceName, attribute.getName());
                 } catch (final DevFailed e) {
                     attribute.addErrorToHistory(e);
-                    EventManager.getInstance().pushAttributeErrorEvent(deviceName, attribute.getName(), e);
+                    ZmqEventManager.getInstance().pushAttributeErrorEvent(deviceName, attribute.getName(), e);
                     throw e;
                 } finally {
                     attribute.unlock();

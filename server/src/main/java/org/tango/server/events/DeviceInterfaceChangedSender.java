@@ -32,11 +32,7 @@ import org.tango.server.Constants;
 import org.tango.server.ServerManager;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.*;
 
 public class DeviceInterfaceChangedSender {
     private final Logger logger = LoggerFactory.getLogger(DeviceInterfaceChangedSender.class);
@@ -61,7 +57,7 @@ public class DeviceInterfaceChangedSender {
                     + ServerManager.getInstance().getServerName())) {
                 logger.debug("send event for interface changed of {}", deviceName);
                 try {
-                    EventManager.getInstance().pushInterfaceChangedEvent(deviceName, deviceInterface);
+                    ZmqEventManager.getInstance().pushInterfaceChangedEvent(deviceName, deviceInterface);
                 } catch (final DevFailed e) {
                     logger.error(DevFailedUtils.toString(e));
                     logger.error("impossible to send event", e);
@@ -72,7 +68,7 @@ public class DeviceInterfaceChangedSender {
             // queue event
             logger.debug("request for interface changed of {} queued", deviceName);
             task.add(deviceInterface);
-            if (future == null && EventManager.getInstance().hasSubscriber(deviceName)) {
+            if (future == null && ZmqEventManager.getInstance().hasSubscriber(deviceName)) {
                 future = executor.submit(task);
             }
         }
@@ -106,10 +102,10 @@ public class DeviceInterfaceChangedSender {
         @Override
         public void run() {
             boolean stop = false;
-            while (!stop && EventManager.getInstance().hasSubscriber(deviceName)) {
+            while (!stop && ZmqEventManager.getInstance().hasSubscriber(deviceName)) {
                 try {
                     final DevIntrChange devInterface = interfaces.take();
-                    EventManager.getInstance().pushInterfaceChangedEvent(deviceName, devInterface);
+                    ZmqEventManager.getInstance().pushInterfaceChangedEvent(deviceName, devInterface);
                     Thread.sleep(50);
                 } catch (final InterruptedException e) {
                     Thread.currentThread().interrupt();

@@ -40,21 +40,14 @@ import org.tango.orb.ServerRequestInterceptor;
 import org.tango.server.ExceptionMessages;
 import org.tango.server.PolledObjectType;
 import org.tango.server.ServerManager;
-import org.tango.server.annotation.Attribute;
-import org.tango.server.annotation.Command;
-import org.tango.server.annotation.Device;
-import org.tango.server.annotation.DeviceProperty;
-import org.tango.server.annotation.Init;
-import org.tango.server.annotation.StateMachine;
-import org.tango.server.annotation.Status;
-import org.tango.server.annotation.TransactionType;
+import org.tango.server.annotation.*;
 import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.attribute.ForwardedAttribute;
 import org.tango.server.build.DeviceClassBuilder;
 import org.tango.server.cache.TangoCacheManager;
 import org.tango.server.command.CommandImpl;
-import org.tango.server.events.EventManager;
 import org.tango.server.events.EventType;
+import org.tango.server.events.ZmqEventManager;
 import org.tango.server.export.IExporter;
 import org.tango.server.monitoring.TangoMXBean;
 import org.tango.server.monitoring.TangoStats;
@@ -65,12 +58,7 @@ import org.tango.server.servant.DeviceImpl;
 import org.tango.utils.DevFailedUtils;
 import org.tango.utils.TangoUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -622,7 +610,7 @@ public final class AdminDevice implements TangoMXBean {
         // A simple way to be used in debug
         if (argin.length == 1) {
             if (argin[0].equals("info")) {
-                return EventManager.getInstance().getInfo();
+                return ZmqEventManager.getInstance().getInfo();
             } else {
                 throw DevFailedUtils.newDevFailed(ExceptionMessages.WRONG_NR_ARGS,
                         "Command ZmqEventSubscriptionChange expect 4 input arguments");
@@ -639,13 +627,13 @@ public final class AdminDevice implements TangoMXBean {
         // argin[2] - "subscribe" not used.
         final String eventTypeAndIDL = argin[3].toLowerCase(Locale.ENGLISH);
         // check idl version is contained in event name like "idl5_archive"
-        final Pattern p = Pattern.compile(EventManager.IDL_REGEX);
+        final Pattern p = Pattern.compile(ZmqEventManager.IDL_REGEX);
         final Matcher m = p.matcher(eventTypeAndIDL);
         DevVarLongStringArray returned;
         if (m.matches()) {
             returned = subcribeIDLInEventString(eventTypeAndIDL, deviceName, attributeName);
         } else {
-            int idlversion = EventManager.MINIMUM_IDL_VERSION;
+            int idlversion = ZmqEventManager.MINIMUM_IDL_VERSION;
             if (argin.length == 5) {
                 idlversion = Integer.parseInt(argin[4]);
             }
@@ -692,8 +680,8 @@ public final class AdminDevice implements TangoMXBean {
                                                            final String objName) throws DevFailed {
         // event name like "idl5_archive" or "archive"
         String event = eventTypeAndIDL;
-        int idlversion = EventManager.MINIMUM_IDL_VERSION;
-        if (eventTypeAndIDL.contains(EventManager.IDL_LATEST)) {
+        int idlversion = ZmqEventManager.MINIMUM_IDL_VERSION;
+        if (eventTypeAndIDL.contains(ZmqEventManager.IDL_LATEST)) {
             idlversion = DeviceImpl.SERVER_VERSION;
             event = eventTypeAndIDL.substring(eventTypeAndIDL.indexOf("_") + 1, eventTypeAndIDL.length());
         }
@@ -732,7 +720,7 @@ public final class AdminDevice implements TangoMXBean {
                                     attribute = attributeImpl;
                                 } else if (attributeImpl.isPolled()) {
                                     // Check if event criteria are set. Otherwise a DevFailed is thrown
-                                    EventManager.checkEventCriteria(attributeImpl, eventType);
+                                    ZmqEventManager.checkEventCriteria(attributeImpl, eventType);
                                     // Found. Store objects
                                     device = deviceImpl;
                                     attribute = attributeImpl;
@@ -808,11 +796,11 @@ public final class AdminDevice implements TangoMXBean {
         // - Lg[5] = ZMQ release
         if (eventType.equals(EventType.INTERFACE_CHANGE_EVENT)) {
             // event for INTERFACE_CHANGE_EVENT does not have an attribute
-            result = EventManager.getInstance().subscribe(deviceName);
+            result = ZmqEventManager.getInstance().subscribe(deviceName);
         } else if (eventType.equals(EventType.PIPE_EVENT)) {
-            result = EventManager.getInstance().subscribe(deviceName, pipe);
+            result = ZmqEventManager.getInstance().subscribe(deviceName, pipe);
         } else {
-            result = EventManager.getInstance().subscribe(deviceName, attribute, eventType, idlversion);
+            result = ZmqEventManager.getInstance().subscribe(deviceName, attribute, eventType, idlversion);
         }
         return result;
     }

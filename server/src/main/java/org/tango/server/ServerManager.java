@@ -37,7 +37,7 @@ import org.tango.orb.ORBManager;
 import org.tango.server.annotation.Device;
 import org.tango.server.annotation.TransactionType;
 import org.tango.server.cache.TangoCacheManager;
-import org.tango.server.events.EventManager;
+import org.tango.server.events.ZmqEventManager;
 import org.tango.server.export.TangoExporter;
 import org.tango.server.monitoring.MonitoringService;
 import org.tango.utils.DevFailedUtils;
@@ -285,7 +285,7 @@ public final class ServerManager {
                     tangoExporter.unexportAll();
                 }
                 TangoCacheManager.shutdown();
-                EventManager.getInstance().close();
+                ZmqEventManager.getInstance().close();
                 if (monitoring != null) {
                     monitoring.stop();
                 }

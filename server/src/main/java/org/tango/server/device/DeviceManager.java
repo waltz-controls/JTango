@@ -35,8 +35,8 @@ import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.attribute.AttributePropertiesImpl;
 import org.tango.server.attribute.AttributeValue;
 import org.tango.server.command.CommandImpl;
-import org.tango.server.events.EventManager;
 import org.tango.server.events.EventType;
+import org.tango.server.events.ZmqEventManager;
 import org.tango.server.pipe.PipeImpl;
 import org.tango.server.pipe.PipeValue;
 import org.tango.server.servant.AttributeGetterSetter;
@@ -242,9 +242,9 @@ public class DeviceManager {
                 try {
                     attribute.updateValue();
                     // push the event
-                    EventManager.getInstance().pushAttributeValueEvent(name, attributeName, eventType);
+                    ZmqEventManager.getInstance().pushAttributeValueEvent(name, attributeName, eventType);
                 } catch (final DevFailed e) {
-                    EventManager.getInstance().pushAttributeErrorEvent(name, attributeName, e);
+                    ZmqEventManager.getInstance().pushAttributeErrorEvent(name, attributeName, e);
                 } finally {
                     attribute.unlock();
                 }
@@ -279,9 +279,9 @@ public class DeviceManager {
                     }
                     attribute.updateValue(value);
                     // push the event
-                    EventManager.getInstance().pushAttributeValueEvent(name, attributeName, eventType);
+                    ZmqEventManager.getInstance().pushAttributeValueEvent(name, attributeName, eventType);
                 } catch (final DevFailed e) {
-                    EventManager.getInstance().pushAttributeErrorEvent(name, attributeName, e);
+                    ZmqEventManager.getInstance().pushAttributeErrorEvent(name, attributeName, e);
                 } finally {
                     attribute.unlock();
                 }
@@ -299,7 +299,7 @@ public class DeviceManager {
      * @throws DevFailed
      */
     public void pushDataReadyEvent(final String attributeName, final int counter) throws DevFailed {
-        EventManager.getInstance().pushAttributeDataReadyEvent(name, attributeName, counter);
+        ZmqEventManager.getInstance().pushAttributeDataReadyEvent(name, attributeName, counter);
     }
 
     /**
@@ -315,9 +315,9 @@ public class DeviceManager {
         try {
             pipe.updateValue(blob);
             // push the event
-            EventManager.getInstance().pushPipeEvent(name, pipeName, blob);
+            ZmqEventManager.getInstance().pushPipeEvent(name, pipeName, blob);
         } catch (final DevFailed e) {
-            EventManager.getInstance().pushPipeEvent(name, pipeName, e);
+            ZmqEventManager.getInstance().pushPipeEvent(name, pipeName, e);
         }
     }
 
@@ -343,7 +343,7 @@ public class DeviceManager {
     }
 
     public boolean hasEventSubsriber() {
-        return EventManager.getInstance().hasSubscriber(name);
+        return ZmqEventManager.getInstance().hasSubscriber(name);
     }
 
     @Override
