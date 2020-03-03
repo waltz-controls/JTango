@@ -612,9 +612,9 @@ public final class AdminDevice implements TangoMXBean {
     @Command(name = "ZmqEventSubscriptionChange", inTypeDesc = "Events consumer wants to subscribe to", outTypeDesc = "Str[0] = Heartbeat pub endpoint - Str[1] = Event pub endpoint - Lg[0] = Tango lib release - Lg[1] = Device IDL release")
     public DevVarLongStringArray zmqEventSubscriptionChange(final String[] argin) throws DevFailed {
         xlogger.entry();
-        if (argin.length != 4) {
+        if (argin.length < 4) {
             throw DevFailedUtils.newDevFailed(ExceptionMessages.WRONG_NR_ARGS,
-                    "Command ZmqEventSubscriptionChange expect 4 input arguments");
+                    "Command ZmqEventSubscriptionChange expect 5 input arguments");
         }
         final String deviceName = argin[0].toLowerCase(Locale.ENGLISH);
         final String attributeName = argin[1].toLowerCase(Locale.ENGLISH);

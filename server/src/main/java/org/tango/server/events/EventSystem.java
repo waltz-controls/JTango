@@ -5,11 +5,13 @@ import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.pipe.PipeImpl;
 import org.tango.server.pipe.PipeValue;
 
+import java.io.Closeable;
+
 /**
  * @author Igor Khokhriakov <igor.khokhriakov@hzg.de>
  * @since 03.03.2020
  */
-public interface EventSystem extends AutoCloseable {
+public interface EventSystem extends Closeable {
     boolean hasSubscriber(String deviceName);
 
     DevVarLongStringArray getInfo();

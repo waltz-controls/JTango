@@ -43,6 +43,7 @@ import org.tango.server.monitoring.MonitoringService;
 import org.tango.utils.DevFailedUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.InetAddress;
@@ -290,6 +291,8 @@ public final class ServerManager {
                     monitoring.stop();
                 }
             }
+        } catch (IOException e) {
+            throw DevFailedUtils.newDevFailed(e);
         } finally {
             ORBManager.shutdown();
             logger.info("everything has been shutdown normally");

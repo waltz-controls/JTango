@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
+
 /**
  * @author Igor Khokhriakov <igor.khokhriakov@hzg.de>
  * @since 10/25/18
@@ -19,7 +21,7 @@ public class EventManagerTest {
     }
 
     @After
-    public void after(){
+    public void after() throws IOException {
         instance.close();
     }
 
