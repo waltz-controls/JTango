@@ -57,6 +57,7 @@ import java.util.concurrent.TimeUnit;
  * Set of ZMQ low level utilities
  *
  * @author verdier
+ * @author ingvord 
  */
 public final class ZmqEventManager implements EventManager {
     public static final int MINIMUM_IDL_VERSION = 4;
