@@ -11,7 +11,7 @@ import org.junit.Test;
  * @since 10/25/18
  */
 public class EventManagerTest {
-    private EventManager instance;
+    private EventSystem instance;
 
     @Before
     public void before() {

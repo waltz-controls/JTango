@@ -9,10 +9,8 @@ import org.tango.server.pipe.PipeValue;
  * @author Igor Khokhriakov <igor.khokhriakov@hzg.de>
  * @since 03.03.2020
  */
-public interface EventManager {
+public interface EventSystem extends AutoCloseable {
     boolean hasSubscriber(String deviceName);
-
-    void close();
 
     DevVarLongStringArray getInfo();
 

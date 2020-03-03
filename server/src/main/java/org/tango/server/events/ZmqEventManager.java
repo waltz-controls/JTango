@@ -59,11 +59,11 @@ import java.util.concurrent.TimeUnit;
  * @author verdier
  * @author ingvord 
  */
-public final class ZmqEventManager implements EventManager {
+public final class ZmqEventManager implements EventSystem {
     public static final int MINIMUM_IDL_VERSION = 4;
     public static final String IDL_REGEX = "idl[0-9]_[a-z]*";
     public static final String IDL_LATEST = "idl" + DeviceImpl.SERVER_VERSION + "_";
-    private static final EventManager INSTANCE = new ZmqEventManager();
+    private static final EventSystem INSTANCE = new ZmqEventManager();
     private final Logger logger = LoggerFactory.getLogger(ZmqEventManager.class);
     private final XLogger xlogger = XLoggerFactory.getXLogger(ZmqEventManager.class);
     private final Map<String, EventImpl> eventImplMap = new HashMap<String, EventImpl>();
@@ -110,7 +110,7 @@ public final class ZmqEventManager implements EventManager {
 
     }
 
-    public static EventManager getInstance() {
+    public static EventSystem getInstance() {
         return INSTANCE;
     }
 
