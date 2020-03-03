@@ -600,6 +600,11 @@ public final class AdminDevice implements TangoMXBean {
         return names.toArray(new String[names.size()]);
     }
 
+    @Command(name = "ZmqEventSystemInfo")
+    public DevVarLongStringArray zmqEventSystemInfo() {
+        return ZmqEventManager.getInstance().getInfo();
+    }
+
     /**
      * @param argin
      * @throws DevFailed
@@ -607,18 +612,7 @@ public final class AdminDevice implements TangoMXBean {
     @Command(name = "ZmqEventSubscriptionChange", inTypeDesc = "Events consumer wants to subscribe to", outTypeDesc = "Str[0] = Heartbeat pub endpoint - Str[1] = Event pub endpoint - Lg[0] = Tango lib release - Lg[1] = Device IDL release")
     public DevVarLongStringArray zmqEventSubscriptionChange(final String[] argin) throws DevFailed {
         xlogger.entry();
-        // A simple way to be used in debug
-        if (argin.length == 1) {
-            if (argin[0].equals("info")) {
-                return ZmqEventManager.getInstance().getInfo();
-            } else {
-                throw DevFailedUtils.newDevFailed(ExceptionMessages.WRONG_NR_ARGS,
-                        "Command ZmqEventSubscriptionChange expect 4 input arguments");
-            }
-        }
-
-        // Normal usage: Subscribe to the specified event
-        if (argin.length < 4) {
+        if (argin.length != 4) {
             throw DevFailedUtils.newDevFailed(ExceptionMessages.WRONG_NR_ARGS,
                     "Command ZmqEventSubscriptionChange expect 4 input arguments");
         }
