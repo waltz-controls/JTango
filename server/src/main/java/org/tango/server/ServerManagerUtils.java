@@ -1,6 +1,7 @@
 package org.tango.server;
 
 import fr.esrf.Tango.DevFailed;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.server.export.TangoExporter;
@@ -42,7 +43,7 @@ public class ServerManagerUtils {
 
         try {
             Files.write(path, pid.getBytes(Charset.defaultCharset()));
-            path.toFile().deleteOnExit();
+            FileUtils.forceDeleteOnExit(path.toFile());
         } catch (IOException e) {
             logger.warn("Failed to create pid file {} due to {}", path.toAbsolutePath().toString(), e.toString());
         }
