@@ -50,8 +50,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>de.hzg.wpi.tango.client.api</groupId>
+            <artifactId>ezTangoAPI</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.tango-controls</groupId>
-            <artifactId>JTangoClientLang</artifactId>
+            <artifactId>TangORB</artifactId>
             <version>9.5.18-hzg.7</version>
         </dependency>
     </dependencies>
