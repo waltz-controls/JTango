@@ -57,7 +57,6 @@ class EventUtilities {
     private static final XLogger XLOGGER = XLoggerFactory.getXLogger(EventUtilities.class);
     private static final Logger LOGGER = LoggerFactory.getLogger(EventUtilities.class);
     private static double zmqVersion = -1.0;
-    private static String tangoHost = null;
 
     static String buildEventName(final String deviceName, final String attributeName, final EventType eventType,
                                  final int idlVersion) throws DevFailed {
@@ -96,15 +95,11 @@ class EventUtilities {
     }
 
     private static String buildEventNameBeginning(final String deviceName, final String attributeName) throws DevFailed {
-        if (tangoHost == null) {
-            tangoHost = DatabaseFactory.getDatabase().getPossibleTangoHosts()[0];
-        }
-
         // String deviceName2 = deviceName;
         // if (!DatabaseFactory.isUseDb()) {
         // deviceName2 = deviceName + "#dbase=no";
         // }
-        String fullName = TANGO + tangoHost + TangoUtil.DEVICE_SEPARATOR + deviceName.toLowerCase(Locale.ENGLISH);
+        String fullName = TANGO + "localhost:10000" + TangoUtil.DEVICE_SEPARATOR + deviceName.toLowerCase(Locale.ENGLISH);
         if (attributeName != null) {
             fullName += TangoUtil.DEVICE_SEPARATOR + attributeName.toLowerCase(Locale.ENGLISH);
         }

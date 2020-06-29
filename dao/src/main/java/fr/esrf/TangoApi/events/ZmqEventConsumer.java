@@ -335,8 +335,8 @@ public class ZmqEventConsumer {
                 connect_event_channel(connectionStructure);
             } else if (deviceProxy.use_db()) {
                 database = deviceProxy.get_db_obj();
-                ZmqUtils.connectEvent(deviceProxy.get_tango_host(), deviceName,
-                        attributeName, deviceData.extractLongStringArray(), eventName,false);
+                ZmqUtils.connectEvent(deviceName,
+                        attributeName, deviceData.extractLongStringArray(), eventName);
             }
             EventChannelStruct eventChannelStruct = channel_map.get(adminName);
             eventChannelStruct.adm_device_proxy =  new DeviceProxy(adminName);
@@ -465,8 +465,8 @@ public class ZmqEventConsumer {
         }
         else {
             logger.debug("{} already connected.", deviceName);
-            ZmqUtils.connectEvent(deviceProxy.get_tango_host(), deviceName,
-                        attribute, deviceData.extractLongStringArray(), event_name,false);
+            ZmqUtils.connectEvent(deviceName,
+                        attribute, deviceData.extractLongStringArray(), event_name);
         }
     }
 
@@ -480,11 +480,11 @@ public class ZmqEventConsumer {
         logger.debug("connect_event_channel for {}", cs.channelName);
 
         //  Build the buffer to connect heartbeat and send it
-        ZmqUtils.connectHeartbeat(adminDevice.get_tango_host(), adminDevice.name(), lsa, false);
+        ZmqUtils.connectHeartbeat(adminDevice.name(), lsa);
 
         //  Build the buffer to connect event and send it
-        ZmqUtils.connectEvent(cs.tangoHost, cs.deviceName, cs.attributeName,
-                lsa, cs.eventName, false);
+        ZmqUtils.connectEvent(cs.deviceName, cs.attributeName,
+                lsa, cs.eventName);
         if (cs.reconnect) {
             EventChannelStruct eventChannelStruct = channel_map.get(cs.channelName);
            // eventChannelStruct.eventChannel = eventChannel;
@@ -616,10 +616,10 @@ public class ZmqEventConsumer {
             DevVarLongStringArray   lsa = checkZmqAddress(argOut, callBackStruct.device).extractLongStringArray();
 
             //  Build the buffer to connect event and send it
-            ZmqUtils.connectEvent(callBackStruct.device.get_tango_host(),
+            ZmqUtils.connectEvent(
                     callBackStruct.device.name(),
                     callBackStruct.attr_name, lsa,
-                    callBackStruct.event_name, true);
+                    callBackStruct.event_name);
             reConnected = true;
         }
         catch (DevFailed e) {
@@ -648,8 +648,8 @@ public class ZmqEventConsumer {
                             argOut, eventCallBackStruct.device).extractLongStringArray();
 
                     //  Re Connect heartbeat
-                    ZmqUtils.connectHeartbeat(channelStruct.adm_device_proxy.get_tango_host(),
-                                channelStruct.adm_device_proxy.name(), lsa, true);
+                    ZmqUtils.connectHeartbeat(
+                            channelStruct.adm_device_proxy.name(), lsa);
                     reConnected = true;
                 } catch (DevFailed e1) {
                     //Except.print_exception(e1);

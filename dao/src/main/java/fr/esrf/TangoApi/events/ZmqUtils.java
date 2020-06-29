@@ -74,6 +74,7 @@ public class ZmqUtils {
             "ZMQ_DELAY_EVENT",
             "ZMQ_RELEASE_EVENT",
     };
+    public static final String TANGO_HOST = "localhost:10000";
 
     private static ZMQ.Context     context = ZMQ.context(1);
 
@@ -365,29 +366,18 @@ public class ZmqUtils {
 	//===============================================================
     /**
      * Request to control to connect event
-     * @param tgHost        specified device tango_host
      * @param deviceName    specified device
      * @param attributeName specified attribute
      * @param lsa           the subscription parameters
      * @param eventName     specified event
-     * @param forceConnect   Force reconnection if true
      * @throws DevFailed    in case of internal communication problem.
      */
 	//===============================================================
-    static void connectEvent(String tgHost, String deviceName, String attributeName,
-                   DevVarLongStringArray lsa, String eventName,  boolean forceConnect) throws DevFailed {
-        String[]    tangoHosts = ApiUtil.get_db_obj(tgHost).getPossibleTangoHosts();
-        if (tangoHosts!=null) {
-            int n = 0;
-            for (String tangoHost : tangoHosts) {
-                boolean reallyForce = (n++ == 0) && forceConnect; //  Force only first one
-                byte[] buffer = ZmqUtils.getBufferToConnectEvent(tangoHost,
-                    deviceName, attributeName, lsa, eventName, reallyForce);
-                sendToZmqControlSocket(buffer);
-            }
-        }
-        else
-            Except.throw_exception("Api_NoTangoHost", "No TANGO_HOST defined");
+    static void connectEvent(String deviceName, String attributeName,
+                             DevVarLongStringArray lsa, String eventName) throws DevFailed {
+            byte[] buffer = ZmqUtils.getBufferToConnectEvent(TANGO_HOST,
+                deviceName, attributeName, lsa, eventName, true);
+            sendToZmqControlSocket(buffer);
     }
 	//===============================================================
     /**
@@ -428,25 +418,15 @@ public class ZmqUtils {
 	//===============================================================
     /**
      * Request to control to connect heartbeat
-     * @param tgHost    specified admin device tango_host
      * @param adminDeviceName    specified admin device
      * @param lsa   the subscription parameters
-     * @param forceConnect   Force reconnection if true
      * @throws DevFailed    in case of internal communication problem.
      */
 	//===============================================================
-    static void connectHeartbeat(String tgHost, String adminDeviceName, DevVarLongStringArray lsa, boolean forceConnect) throws DevFailed{
-        String[]    tangoHosts = ApiUtil.get_db_obj(tgHost).getPossibleTangoHosts();
-        if (tangoHosts!=null) {
-            int n = 0;
-            for (String tangoHost : tangoHosts) {
-                boolean reallyForce = (n++ == 0) && forceConnect; //  Force only first one
-                //  Build the buffer to connect heartbeat and send it
-                byte[]  buffer = getBufferToConnectHeartbeat(tangoHost,
-                        adminDeviceName, lsa, reallyForce);
-                sendToZmqControlSocket(buffer);
-            }
-        }
+    static void connectHeartbeat(String adminDeviceName, DevVarLongStringArray lsa) throws DevFailed{
+        byte[]  buffer = getBufferToConnectHeartbeat(TANGO_HOST,
+                adminDeviceName, lsa, true);
+        sendToZmqControlSocket(buffer);
     }
 	//===============================================================
     /**
