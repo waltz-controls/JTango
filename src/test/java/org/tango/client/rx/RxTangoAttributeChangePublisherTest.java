@@ -1,5 +1,11 @@
 package org.tango.client.rx;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjava3.subscribers.TestSubscriber;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,6 +15,8 @@ import org.reactivestreams.Subscription;
 import org.tango.client.ez.proxy.EventData;
 import org.tango.client.ez.proxy.TangoProxies;
 import org.tango.client.ez.proxy.TangoProxy;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author ingvord
@@ -21,39 +29,86 @@ class RxTangoAttributeChangePublisherTest {
 
     @BeforeAll
     public void beforeAll() throws Exception {
-        this.proxy = TangoProxies.newDeviceProxyWrapper("tango://localhost:10000/sys/tg_test/1");
+        this.proxy = TangoProxies.newDeviceProxyWrapper("tango://localhost:10000/development/test_server/0");
     }
 
-    @Test
-    void subscribe() throws Exception {
-        TestSubscriber<EventData> subscriber = TestSubscriber.create(new Subscriber<EventData>() {
+    private TestSubscriber<EventData> createSubscriber(){
+        return TestSubscriber.create(new Subscriber<EventData>() {
             @Override
             public void onSubscribe(Subscription s) {
-
+                System.out.println("Subscribed in " + Integer.toHexString(hashCode()));
             }
 
             @Override
             public void onNext(EventData eventData) {
-                System.out.println(eventData.getValue() + "@" + eventData.getTime());
+                System.out.println("["+Integer.toHexString(hashCode())+"]" + eventData.getValue() + "@" + eventData.getTime());
             }
 
             @Override
             public void onError(Throwable t) {
-
+                t.printStackTrace();
+                System.err.println(t.getMessage());
             }
 
             @Override
             public void onComplete() {
-
+                System.out.println("Completed");
             }
         });
+    }
 
-        new RxTangoAttributeChangePublisher(proxy, "double_scalar")
-                .subscribe(subscriber);
+    @Test
+    void subscribe() throws Exception {
 
 
-        subscriber.assertNoErrors();
+        new RxTangoAttributeChangePublisher(proxy, "State")
+                .subscribe(createSubscriber());
 
-        Thread.sleep(3000);
+        new RxTangoAttributeChangePublisher(proxy, "State")
+                .subscribe(createSubscriber());
+
+
+        Thread.sleep(30000);
+    }
+
+    @Test
+    void testThrottleLatest() throws Exception {
+        Disposable d = Observable.fromPublisher(
+            new RxTangoAttributeChangePublisher<EventData<?>>(proxy, "State"))
+                .throttleLatest(100, TimeUnit.MILLISECONDS)
+                .subscribe((eventData) -> {
+                    System.out.println("["+Integer.toHexString(hashCode())+"]" + eventData.getValue() + "@" + eventData.getTime());
+                });
+
+        Thread.sleep(10000);
+        d.dispose();
+    }
+
+    @Test
+    void testReplay() throws Exception {
+
+        Observable<EventData<?>> observable = Observable.fromPublisher(new RxTangoAttributeChangePublisher<EventData<?>>(proxy, "State"))
+                .replay(1)
+                .autoConnect();
+
+
+        System.out.println(System.currentTimeMillis());
+        Disposable d1 = observable.subscribe((eventData) -> {
+            System.out.println("[1]" + eventData.getValue() + "@" + eventData.getTime());
+        });
+
+
+        Thread.sleep(10000);
+
+        System.out.println(System.currentTimeMillis());
+        Disposable d2 = observable.subscribe((eventData) -> {
+            System.out.println("====>");
+            System.out.println(System.currentTimeMillis());
+            System.out.println("[2]" + eventData.getValue() + "@" + eventData.getTime());
+        });
+
+        Thread.sleep(10000);
+        d1.dispose();
+        d2.dispose();
     }
 }
