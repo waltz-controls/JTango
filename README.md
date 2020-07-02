@@ -30,7 +30,7 @@ Client should be able to combine multiple event streams, filter them, map etc
 
 ### Usage
 
-Add GitHub maven repo to your `pom.xml`
+Add GitHub and Bintray maven repos to your `pom.xml`
 
 ```xml
     <repositories>
@@ -41,6 +41,14 @@ Add GitHub maven repo to your `pom.xml`
             <id>github</id>
             <url>https://maven.pkg.github.com/Ingvord/RxJTango</url>
         </repository>        
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-release</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/hzgde/hzg-wpn-projects</url>
+        </repository>
     </repositories>
 ```
 
