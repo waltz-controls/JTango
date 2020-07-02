@@ -8,6 +8,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjava3.subscribers.TestSubscriber;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.reactivestreams.Subscriber;
@@ -58,6 +59,7 @@ class RxTangoAttributeChangePublisherTest {
     }
 
     @Test
+    @Disabled
     void subscribe() throws Exception {
 
 
@@ -72,6 +74,7 @@ class RxTangoAttributeChangePublisherTest {
     }
 
     @Test
+    @Disabled
     void testThrottleLatest() throws Exception {
         Disposable d = Observable.fromPublisher(
                 new RxTangoAttributeChangePublisher<EventData<?>>(proxy, "State"))
@@ -95,6 +98,7 @@ class RxTangoAttributeChangePublisherTest {
     }
 
     @Test
+    @Disabled
     void testReplay() throws Exception {
 
         Observable<EventData<?>> observable = Observable.fromPublisher(new RxTangoAttributeChangePublisher<EventData<?>>(proxy, "State"))
