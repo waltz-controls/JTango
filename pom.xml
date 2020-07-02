@@ -3,7 +3,7 @@
 
     <groupId>org.tango-controls</groupId>
     <artifactId>RxJTango</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>RxJTango</name>
@@ -44,7 +44,7 @@
         <connection>scm:git:git@github.com:Ingvord/RxJTango</connection>
         <developerConnection>scm:git:git@github.com:Ingvord/RxJTango</developerConnection>
         <url>https://github.com/Ingvord/RxJTango</url>
-        <tag>RxJTango-0.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
