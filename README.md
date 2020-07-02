@@ -1,4 +1,4 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/Ingvord/RxJTango)
+![GitHub latest version](https://img.shields.io/github/v/release/Ingvord/RxJTango?include_prereleases)
 
 # RxJTango
 Reactive Streams for Tango Events
