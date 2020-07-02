@@ -25,3 +25,29 @@ The above example builds a sequence of actions terminated by the `subscribe` met
 Another "straightforward" application of the streams is Tango events.
 
 Client should be able to combine multiple event streams, filter them, map etc
+
+### Usage
+
+Add GitHub maven repo to your `pom.xml`
+
+```xml
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/Ingvord/RxJTango</url>
+        </repository>        
+    </repositories>
+```
+
+Add dependency:
+
+```xml
+<dependency>
+  <groupId>org.tango-controls.RxJTango</groupId>
+  <artifactId>rxjtango</artifactId>
+  <version>0.1</version>
+</dependency>
+```
