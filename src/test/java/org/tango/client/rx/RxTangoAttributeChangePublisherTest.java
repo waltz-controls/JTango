@@ -29,7 +29,7 @@ class RxTangoAttributeChangePublisherTest {
 
     @BeforeAll
     public void beforeAll() throws Exception {
-        this.proxy = TangoProxies.newDeviceProxyWrapper("tango://localhost:10000/development/test_server/0");
+        this.proxy = TangoProxies.newDeviceProxyWrapper("tango://hzgxenvtest:10000/development/test_server/0");
     }
 
     private TestSubscriber<EventData> createSubscriber(){
@@ -74,14 +74,24 @@ class RxTangoAttributeChangePublisherTest {
     @Test
     void testThrottleLatest() throws Exception {
         Disposable d = Observable.fromPublisher(
-            new RxTangoAttributeChangePublisher<EventData<?>>(proxy, "State"))
-                .throttleLatest(100, TimeUnit.MILLISECONDS)
+                new RxTangoAttributeChangePublisher<EventData<?>>(proxy, "State"))
+                .take(100)
                 .subscribe((eventData) -> {
-                    System.out.println("["+Integer.toHexString(hashCode())+"]" + eventData.getValue() + "@" + eventData.getTime());
+                    System.out.println("[TAKE100]" + eventData.getValue() + "@" + eventData.getTime());
+                });
+
+        Thread.sleep(1000);
+
+        Disposable d2 = Observable.fromPublisher(
+            new RxTangoAttributeChangePublisher<EventData<?>>(proxy, "State"))
+                .throttleLatest(1000, TimeUnit.MILLISECONDS)
+                .subscribe((eventData) -> {
+                    System.out.println("[THROTTLE1000]" + eventData.getValue() + "@" + eventData.getTime());
                 });
 
         Thread.sleep(10000);
         d.dispose();
+        d2.dispose();
     }
 
     @Test
@@ -91,7 +101,7 @@ class RxTangoAttributeChangePublisherTest {
                 .replay(1)
                 .autoConnect();
 
-
+        System.out.print("[1] Subscribes @");
         System.out.println(System.currentTimeMillis());
         Disposable d1 = observable.subscribe((eventData) -> {
             System.out.println("[1]" + eventData.getValue() + "@" + eventData.getTime());
@@ -100,14 +110,16 @@ class RxTangoAttributeChangePublisherTest {
 
         Thread.sleep(10000);
 
+        System.out.print("[2] Subscribes @");
         System.out.println(System.currentTimeMillis());
         Disposable d2 = observable.subscribe((eventData) -> {
             System.out.println("====>");
             System.out.println(System.currentTimeMillis());
             System.out.println("[2]" + eventData.getValue() + "@" + eventData.getTime());
+            System.out.println("<====");
         });
 
-        Thread.sleep(10000);
+        Thread.sleep(3000);
         d1.dispose();
         d2.dispose();
     }
