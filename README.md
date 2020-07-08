@@ -56,8 +56,8 @@ Add dependency:
 
 ```xml
 <dependency>
-  <groupId>org.tango-controls.RxJTango</groupId>
-  <artifactId>rxjtango</artifactId>
+  <groupId>org.tango-controls</groupId>
+  <artifactId>RxJTango</artifactId>
   <version>0.1</version>
 </dependency>
 ```
