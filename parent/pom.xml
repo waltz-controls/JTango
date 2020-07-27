@@ -4,7 +4,7 @@
 
     <groupId>org.tango-controls</groupId>
     <artifactId>JTangoParent</artifactId>
-    <version>9.5.19-hzg.8-SNAPSHOT</version>
+    <version>9.6.1-hzg.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
