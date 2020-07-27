@@ -209,7 +209,7 @@ public class ZmqEventConsumer {
         }
 
         String deviceName = device.fullName();
-        String callback_key = deviceName.toLowerCase();
+        String callback_key = getCallbackKey(device.name());
 
         //  Not added for Interface change event (Special case)
         /*
@@ -788,7 +788,7 @@ public class ZmqEventConsumer {
         }
 
         String deviceName = device.fullName();
-        String callback_key = deviceName.toLowerCase();
+        String callback_key = getCallbackKey(device.name());
         try {
             //  Check idl version
             if (device.get_idl_version()>=5) {
@@ -880,6 +880,10 @@ public class ZmqEventConsumer {
         event_callback_map.put(callback_key, new_event_callback_struct);
 
         return evnt_id;
+    }
+
+    private String getCallbackKey(String deviceName) {
+        return "tango://localhost:10000/" + deviceName.toLowerCase();
     }
 
     private void removeCallBackStruct(Map<String, ?> map, EventCallBackStruct cb_struct) {

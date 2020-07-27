@@ -89,8 +89,7 @@ class EventUtilities {
 
     static String buildDeviceEventName(final String deviceName, final EventType eventType) throws DevFailed {
         String fullName = buildEventNameBeginning(deviceName, null);
-        //TODO test this !!!
-        fullName += DOT /*+ EventManager.IDL_LATEST*/ + eventType.getString();
+        fullName += DOT + EventManager.IDL_LATEST + eventType.getString();
         return fullName.toLowerCase(Locale.ENGLISH);
     }
 
