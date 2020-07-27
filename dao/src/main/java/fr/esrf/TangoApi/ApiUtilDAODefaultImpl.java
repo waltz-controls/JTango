@@ -34,6 +34,9 @@
 
 package fr.esrf.TangoApi;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
@@ -44,8 +47,10 @@ import org.jacorb.orb.Delegate;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Request;
 import org.omg.CORBA.SystemException;
+import org.tango.utils.DevFailedUtils;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Class Description: This class manage a static vector of Database object. <Br>
@@ -62,8 +67,21 @@ import java.util.*;
  */
 
 public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
-    static private ArrayList<Database> db_list = null;
-    static private Database defaultDatabase = null;
+    private final CacheLoader<String, Database> loader = new CacheLoader<>() {
+        @Override
+        public Database load(String key) throws DevFailed {
+            final int i = key.indexOf(":");
+            if (i <= 0) {
+                Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
+                        "Cannot parse port number", "ApiUtil.get_db_obj()");
+            }
+            return new Database(key.substring(0, i), key.substring(i + 1));
+        }
+    };
+
+    final private ThreadLocal<LoadingCache<String, Database>> localDatabase = ThreadLocal.withInitial(() ->
+            CacheBuilder.newBuilder()
+                    .build(loader));
 
     static private Hashtable<Integer, AsyncCallObject> async_request_table =
             new Hashtable<Integer, AsyncCallObject>();
@@ -72,6 +90,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     static private boolean in_server_code = false;
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
      *
@@ -80,12 +99,15 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_db_obj(final String tango_host) throws DevFailed {
-        final int i = tango_host.indexOf(":");
-        if (i <= 0) {
-            Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
-                "Cannot parse port number", "ApiUtil.get_db_obj()");
+        //TODO race condition
+        if (ApiUtil.getOrb() == null) {
+            create_orb();
         }
-        return get_db_obj(tango_host.substring(0, i), tango_host.substring(i + 1));
+        try {
+            return localDatabase.get().get(tango_host);
+        } catch (ExecutionException e) {
+            throw DevFailedUtils.newDevFailed(e);
+        }
     }
 
     // ===================================================================
@@ -94,11 +116,11 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_default_db_obj() throws DevFailed {
-        if (defaultDatabase == null) {
-            return get_db_obj();
-        } else {
-            return defaultDatabase;
+        //TODO race condition
+        if (ApiUtil.getOrb() == null) {
+            create_orb();
         }
+        return get_db_obj(System.getProperty("TANGO_HOST", System.getenv("TANGO_HOST")));
     }
     // ===================================================================
     /**
@@ -106,31 +128,17 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public boolean default_db_obj_exists() throws DevFailed {
-        return  (defaultDatabase != null);
+        return get_db_obj(System.getProperty("TANGO_HOST", System.getenv("TANGO_HOST"))) != null;//TODO in fact either not null or exception
     }
 
     // ===================================================================
+
     /**
      * Return the database object created with TANGO_HOST environment variable .
      */
     // ===================================================================
-    public synchronized Database get_db_obj() throws DevFailed {
-        if (ApiUtil.getOrb() == null) {
-            create_orb();
-        }
-
-        // If first time, create vector
-        // ---------------------------------------------------------------
-        if (db_list == null) {
-            db_list = new ArrayList<Database>();
-        }
-        // If first time, create Database object
-        // -----------------------------------------------------------
-        if (defaultDatabase == null) {
-            defaultDatabase = new Database();
-            db_list.add(defaultDatabase);
-        }
-        return db_list.get(0);
+    public Database get_db_obj() throws DevFailed {
+        return get_default_db_obj();
     }
 
     // ===================================================================
@@ -142,35 +150,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_db_obj(final String host, final String port) throws DevFailed {
-        if (ApiUtil.getOrb() == null) {
-            create_orb();
-        }
-
-        // If first time, create vector
-        if (db_list == null) {
-            db_list = new ArrayList<Database>();
-        }
-
-        // Build tango_host string
-        final String tango_host = host + ":" + port;
-
-        // Search if database object already created for this host and port
-        if (defaultDatabase != null) {
-            if (defaultDatabase.get_tango_host().equals(tango_host)) {
-                return defaultDatabase;
-            }
-        }
-
-        for (final Database dbase : db_list) {
-            if (dbase.get_tango_host().equals(tango_host)) {
-                return dbase;
-            }
-        }
-
-        // Else, create a new database object
-        final Database dbase = new Database(host, port);
-        db_list.add(dbase);
-        return dbase;
+        return get_db_obj(host + ":" + port);
     }
 
     // ===================================================================
@@ -183,13 +163,9 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database change_db_obj(final String host, final String port) throws DevFailed {
-        // Get requested database object
-        final Database dbase = get_db_obj(host, port);
-        // And set it at first vector element as default Dbase
-        db_list.remove(dbase);
-        db_list.add(0, dbase);
-        defaultDatabase = dbase;
-        return dbase;
+        Database database = new Database(host, port);
+        localDatabase.get().put(host + ":" + port, database);
+        return database;
     }
 
     // ===================================================================
@@ -204,7 +180,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database set_db_obj(final String host, final String port) throws DevFailed {
-	return change_db_obj(host, port);
+        return change_db_obj(host, port);
     }
 
     // ===================================================================
@@ -216,12 +192,12 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database set_db_obj(final String tango_host) throws DevFailed {
-	final int i = tango_host.indexOf(":");
-	if (i <= 0) {
-	    Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
-		    "Cannot parse port number", "ApiUtil.set_db_obj()");
-	}
-	return change_db_obj(tango_host.substring(0, i), tango_host.substring(i + 1));
+        final int i = tango_host.indexOf(":");
+        if (i <= 0) {
+            Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
+                    "Cannot parse port number", "ApiUtil.set_db_obj()");
+        }
+        return change_db_obj(tango_host.substring(0, i), tango_host.substring(i + 1));
     }
 
     // ===================================================================
