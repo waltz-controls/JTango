@@ -24,15 +24,14 @@
  */
 package org.tango.server.events;
 
+import fr.esrf.Tango.DevFailed;
+import fr.esrf.Tango.EventProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.tango.server.Chronometer;
 import org.tango.server.attribute.AttributeImpl;
-
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.EventProperties;
 
 /**
  * manage trigger for {@link EventType#PERIODIC_EVENT}
@@ -105,6 +104,11 @@ public class PeriodicEventTrigger implements IEventTrigger {
     @Override
     public boolean doCheck() {
         return true;
+    }
+
+    @Override
+    public boolean isPushedFromDeviceCode() {
+        return false;
     }
 
 }

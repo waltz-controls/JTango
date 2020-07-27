@@ -24,15 +24,14 @@
  */
 package org.tango.server.events;
 
+import fr.esrf.Tango.AttrQuality;
+import fr.esrf.Tango.DevFailed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.attribute.AttributeValue;
-
-import fr.esrf.Tango.AttrQuality;
-import fr.esrf.Tango.DevFailed;
 
 /**
  * manage trigger for {@link EventType#CHANGE_EVENT}
@@ -92,6 +91,11 @@ public class QualityEventTrigger implements IEventTrigger {
     @Override
     public boolean doCheck() {
         return true;
+    }
+
+    @Override
+    public boolean isPushedFromDeviceCode() {
+        return false;
     }
 
 }

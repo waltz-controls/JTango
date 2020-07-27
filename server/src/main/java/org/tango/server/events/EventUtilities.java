@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
-import org.tango.client.database.DatabaseFactory;
 import org.tango.server.attribute.AttributeImpl;
 import org.tango.server.idl.TangoIDLAttributeUtil;
 import org.tango.utils.TangoUtil;
@@ -49,7 +48,7 @@ import java.util.StringTokenizer;
 class EventUtilities {
     // Always in big endian (Jacorb ?)
     private static final byte[] LITTLE_ENDIAN = {0};
-    private static final String HEARTBEAT = ".heartbeat";
+    public static final String HEARTBEAT = ".heartbeat";
     private static final String TANGO = "tango://";
     private static final String IDL_VERSION = "idlversion_";
     private static final String DOT = ".";
@@ -90,7 +89,8 @@ class EventUtilities {
 
     static String buildDeviceEventName(final String deviceName, final EventType eventType) throws DevFailed {
         String fullName = buildEventNameBeginning(deviceName, null);
-        fullName += DOT + eventType.getString();
+        //TODO test this !!!
+        fullName += DOT /*+ EventManager.IDL_LATEST*/ + eventType.getString();
         return fullName.toLowerCase(Locale.ENGLISH);
     }
 

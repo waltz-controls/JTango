@@ -24,33 +24,13 @@
  */
 package org.tango.server.testserver;
 
-import fr.esrf.Tango.AttrQuality;
-import fr.esrf.Tango.DevEncoded;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
-import fr.esrf.Tango.DevVarDoubleStringArray;
-import fr.esrf.Tango.DevVarLongStringArray;
+import fr.esrf.Tango.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.DeviceState;
 import org.tango.server.ServerManager;
-import org.tango.server.annotation.AroundInvoke;
-import org.tango.server.annotation.Attribute;
-import org.tango.server.annotation.AttributeProperties;
-import org.tango.server.annotation.ClassProperty;
-import org.tango.server.annotation.Command;
-import org.tango.server.annotation.Delete;
 import org.tango.server.annotation.Device;
-import org.tango.server.annotation.DeviceManagement;
-import org.tango.server.annotation.DeviceProperties;
-import org.tango.server.annotation.DeviceProperty;
-import org.tango.server.annotation.DynamicManagement;
-import org.tango.server.annotation.Init;
-import org.tango.server.annotation.Schedule;
-import org.tango.server.annotation.State;
-import org.tango.server.annotation.StateMachine;
-import org.tango.server.annotation.Status;
-import org.tango.server.annotation.TransactionType;
+import org.tango.server.annotation.*;
 import org.tango.server.attribute.AttributeValue;
 import org.tango.server.device.DeviceManager;
 import org.tango.server.dynamic.DynamicManager;
@@ -783,10 +763,26 @@ public final class JTangoTest {
     public void testState() {
     }
 
+    @Attribute(isPolled = true, pollingPeriod = 0)
+    public short getFillHistory() {
+        return 0;
+    }
+
+    @Command
+    public void fillHistory() throws DevFailed {
+        AttributeValue[] values = new AttributeValue[3];
+        // FIXME client API does not support null values in history even with errors
+        //DevFailed[] errors = new DevFailed[3];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = new AttributeValue();
+            values[i].setValue((short) i);
+            //  errors[i] = DevFailedUtils.newDevFailed("test");
+        }
+        deviceManager.fillAttributeHistory("fillHistory", values, values, null);
+    }
+
     /**
-     *
-     * @param myProp
-     *            String []
+     * @param myProp String []
      */
     public void setMyProp(final String myProp) {
         this.myProp = myProp;

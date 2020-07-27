@@ -36,12 +36,11 @@ package fr.esrf.TangoApi;
 
 import fr.esrf.Tango.*;
 import fr.esrf.TangoApi.events.EventConsumerUtil;
-import org.omg.CORBA.*;
-
 import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.NamedDevFailed;
 import fr.esrf.TangoDs.NamedDevFailedList;
 import fr.esrf.TangoDs.TangoConst;
+import org.omg.CORBA.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -221,11 +220,13 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 
         if (deviceProxy.url.protocol == TANGO) {
             String status = "Unknown";
+            int timeoutReconnection = get_timeout_millis(deviceProxy);
             final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
             boolean done = false;
             for (int i = 0; i < retries && !done; i++) {
             try {
-                //noinspection PointlessBooleanExpression
+                if (i > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 if (src == ApiDefs.FROM_ATTR) {
                     status = deviceProxy.device.status();
                 } else {
@@ -268,16 +269,18 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 
         if (deviceProxy.url.protocol == TANGO) {
             DevState state = DevState.UNKNOWN;
+            int timeoutReconnection = get_timeout_millis(deviceProxy);
             final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
             boolean done = false;
             for (int i = 0; i < retries && !done; i++) {
                 try {
-                    //noinspection PointlessBooleanExpression
+                    if (i > 0)
+                        deviceProxy.set_timeout_millis(timeoutReconnection);
                     if (src == ApiDefs.FROM_ATTR) {
                         state = deviceProxy.device.state();
                     } else {
-                    final DeviceData argout = deviceProxy.command_inout("State");
-                    state = argout.extractDevState();
+                        final DeviceData argout = deviceProxy.command_inout("State");
+                        state = argout.extractDevState();
                     }
                     done = true;
                 } catch (final Exception e) {
@@ -732,9 +735,12 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
     public String[] get_attribute_list(final DeviceProxy deviceProxy) throws DevFailed {
         build_connection(deviceProxy);
 
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int oneTry=1 ; oneTry<=retries ; oneTry++) {
             try {
+                if (oneTry > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 if (deviceProxy.url.protocol == TANGO) {
                     // Read All attribute config
                     final String[] wildcard = new String[1];
@@ -742,7 +748,7 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                     if (deviceProxy.device_3 != null) {
                         wildcard[0] = TangoConst.Tango_AllAttr_3;
                     } else {
-                       wildcard[0] = TangoConst.Tango_AllAttr;
+                        wildcard[0] = TangoConst.Tango_AllAttr;
                     }
                     final AttributeInfo[] ac = get_attribute_info(deviceProxy, wildcard);
                     final String[] result = new String[ac.length];
@@ -961,19 +967,22 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 
         build_connection(deviceProxy);
 
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int oneTry=1 ; oneTry<=retries ; oneTry++) {
             try {
+                if (oneTry > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 AttributeInfo[] result;
                 AttributeConfig[] ac = new AttributeConfig[0];
                 AttributeConfig_2[] ac_2 = null;
                 if (deviceProxy.url.protocol == TANGO) {
-                // Check IDL version
-                if (deviceProxy.device_2 != null) {
-                    ac_2 = deviceProxy.device_2.get_attribute_config_2(attributeNames);
-                } else {
-                    ac = deviceProxy.device.get_attribute_config(attributeNames);
-                }
+                    // Check IDL version
+                    if (deviceProxy.device_2 != null) {
+                        ac_2 = deviceProxy.device_2.get_attribute_config_2(attributeNames);
+                    } else {
+                        ac = deviceProxy.device.get_attribute_config(attributeNames);
+                    }
                 } else {
                 ac = deviceProxy.taco_device.get_attribute_config(attributeNames);
                 }
@@ -1018,15 +1027,18 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 
         build_connection(deviceProxy);
         // try 2 times for reconnection if requested
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         AttributeInfoEx[] result = null;
         boolean done = false;
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int i=0 ; i<retries && !done ; i++) {
             try {
+                if (i > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 AttributeConfig_5[] attributeConfigList_5 = null;
                 AttributeConfig_3[] attributeConfigList_3 = null;
                 AttributeConfig_2[] attributeConfigList_2 = null;
-                AttributeConfig[]   attributeConfigList = null;
+                AttributeConfig[] attributeConfigList = null;
                 if (deviceProxy.url.protocol == TANGO) {
                     // Check IDL version
                     if (deviceProxy.device_5 != null) {
@@ -1373,84 +1385,83 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
     // ==========================================================================
     public DeviceAttribute[] read_attribute(final DeviceProxy deviceProxy, final String[] attributeNames)
 	    throws DevFailed {
-	DeviceAttribute[] attr;
+        DeviceAttribute[] attr;
 
-	build_connection(deviceProxy);
+        build_connection(deviceProxy);
 
-	// Read attributes on device server
-	AttributeValue[] attributeValues = new AttributeValue[0];
-	AttributeValue_3[] attributeValues_3 = new AttributeValue_3[0];
-	AttributeValue_4[] attributeValues_4 = new AttributeValue_4[0];
-	AttributeValue_5[] attributeValues_5 = new AttributeValue_5[0];
-	if (deviceProxy.url.protocol == TANGO) {
-	    // try 2 times for reconnection if requested
-	    boolean done = false;
-	    final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
-	    for (int i = 0; i < retries && !done; i++) {
-            try {
-                if (deviceProxy.device_5 != null) {
-                    attributeValues_5 = deviceProxy.device_5.read_attributes_5(
-                            attributeNames, deviceProxy.dev_src,
-                            DevLockManager.getInstance().getClntIdent());
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
+        // Read attributes on device server
+        AttributeValue[] attributeValues = new AttributeValue[0];
+        AttributeValue_3[] attributeValues_3 = new AttributeValue_3[0];
+        AttributeValue_4[] attributeValues_4 = new AttributeValue_4[0];
+        AttributeValue_5[] attributeValues_5 = new AttributeValue_5[0];
+        if (deviceProxy.url.protocol == TANGO) {
+            // try 2 times for reconnection if requested
+            boolean done = false;
+            final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
+            for (int i = 0; i < retries && !done; i++) {
+                try {
+                    if (i > 0)
+                        deviceProxy.set_timeout_millis(timeoutReconnection);
+                    if (deviceProxy.device_5 != null) {
+                        attributeValues_5 = deviceProxy.device_5.read_attributes_5(
+                                attributeNames, deviceProxy.dev_src,
+                                DevLockManager.getInstance().getClntIdent());
+                    } else if (deviceProxy.device_4 != null) {
+                        attributeValues_4 = deviceProxy.device_4.read_attributes_4(
+                                attributeNames, deviceProxy.dev_src,
+                                DevLockManager.getInstance().getClntIdent());
+                    } else if (deviceProxy.device_3 != null) {
+                        attributeValues_3 = deviceProxy.device_3.read_attributes_3(
+                                attributeNames, deviceProxy.dev_src);
+                    } else if (deviceProxy.device_2 != null) {
+                        attributeValues = deviceProxy.device_2.read_attributes_2(
+                                attributeNames, deviceProxy.dev_src);
+                    } else {
+                        attributeValues = deviceProxy.device.read_attributes(attributeNames);
+                    }
+                    done = true;
+                } catch (final DevFailed e) {
+                    // Except.print_exception(e);
+                    final StringBuilder sb = new StringBuilder(attributeNames[0]);
+                    for (int j = 1; j < attributeNames.length; j++) {
+                        sb.append(", ").append(attributeNames[j]);
+                    }
+                    Except.throw_connection_failed(e, "TangoApi_CANNOT_READ_ATTRIBUTE",
+                            "Cannot read attribute(s):   " + sb.toString(),
+                            deviceProxy.getFull_class_name() + ".read_attribute()");
+                } catch (final Exception e) {
+                    manageExceptionReconnection(deviceProxy,
+                            retries, i, e, this.getClass() + ".read_attribute");
                 }
-                else if (deviceProxy.device_4 != null) {
-                    attributeValues_4 = deviceProxy.device_4.read_attributes_4(
-                            attributeNames, deviceProxy.dev_src,
-                            DevLockManager.getInstance().getClntIdent());
-                }
-                else if (deviceProxy.device_3 != null) {
-                    attributeValues_3 = deviceProxy.device_3.read_attributes_3(
-                            attributeNames, deviceProxy.dev_src);
-                }
-                else if (deviceProxy.device_2 != null) {
-                    attributeValues = deviceProxy.device_2.read_attributes_2(
-                            attributeNames, deviceProxy.dev_src);
-                }
-                else {
-                    attributeValues = deviceProxy.device.read_attributes(attributeNames);
-                }
-                done = true;
-            } catch (final DevFailed e) {
-                // Except.print_exception(e);
-                final StringBuilder sb = new StringBuilder(attributeNames[0]);
-                for (int j = 1; j < attributeNames.length; j++) {
-                    sb.append(", ").append(attributeNames[j]);
-                }
-                Except.throw_connection_failed(e, "TangoApi_CANNOT_READ_ATTRIBUTE",
-                    "Cannot read attribute(s):   " + sb.toString(),
-                        deviceProxy.getFull_class_name() + ".read_attribute()");
-            } catch (final Exception e) {
-                manageExceptionReconnection(deviceProxy,
-                        retries, i, e, this.getClass() + ".read_attribute");
             }
-	    }
-	    // Build a Device Attribute Object
-	    // Depends on Device_impl version
-	    if (deviceProxy.device_5 != null) {
-            attr = new DeviceAttribute[attributeValues_5.length];
-            for (int i = 0; i < attributeValues_5.length; i++) {
-                attr[i] = new DeviceAttribute(attributeValues_5[i]);
+            // Build a Device Attribute Object
+            // Depends on Device_impl version
+            if (deviceProxy.device_5 != null) {
+                attr = new DeviceAttribute[attributeValues_5.length];
+                for (int i = 0; i < attributeValues_5.length; i++) {
+                    attr[i] = new DeviceAttribute(attributeValues_5[i]);
+                }
+            } else if (deviceProxy.device_4 != null) {
+                attr = new DeviceAttribute[attributeValues_4.length];
+                for (int i = 0; i < attributeValues_4.length; i++) {
+                    attr[i] = new DeviceAttribute(attributeValues_4[i]);
+                }
+            } else if (deviceProxy.device_3 != null) {
+                attr = new DeviceAttribute[attributeValues_3.length];
+                for (int i = 0; i < attributeValues_3.length; i++) {
+                    attr[i] = new DeviceAttribute(attributeValues_3[i]);
+                }
+            } else {
+                attr = new DeviceAttribute[attributeValues.length];
+                for (int i = 0; i < attributeValues.length; i++) {
+                    attr[i] = new DeviceAttribute(attributeValues[i]);
+                }
             }
-	    } else if (deviceProxy.device_4 != null) {
-            attr = new DeviceAttribute[attributeValues_4.length];
-            for (int i = 0; i < attributeValues_4.length; i++) {
-                attr[i] = new DeviceAttribute(attributeValues_4[i]);
-            }
-	    } else if (deviceProxy.device_3 != null) {
-            attr = new DeviceAttribute[attributeValues_3.length];
-            for (int i = 0; i < attributeValues_3.length; i++) {
-                attr[i] = new DeviceAttribute(attributeValues_3[i]);
-            }
-	    } else {
-            attr = new DeviceAttribute[attributeValues.length];
-            for (int i = 0; i < attributeValues.length; i++) {
-                attr[i] = new DeviceAttribute(attributeValues[i]);
-            }
-	    }
-	} else {
-	    attr = deviceProxy.taco_device.read_attribute(attributeNames);
-	}
-	return attr;
+        } else {
+            attr = deviceProxy.taco_device.read_attribute(attributeNames);
+        }
+        return attr;
     }
 
     // ==========================================================================
@@ -1512,21 +1523,22 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                 attributeValues[i] = deviceAttributes[i].getAttributeValueObject_2();
 	    	}
 		}
-		boolean done = false;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
+        boolean done = false;
 		final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
 		for (int i = 0; i < retries && !done; i++) {
 	    	// write attributes on device server
 	    	try {
-				if (deviceProxy.device_5 != null) {
-		    		deviceProxy.device_5.write_attributes_4(
+                if (i > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
+                if (deviceProxy.device_5 != null) {
+                    deviceProxy.device_5.write_attributes_4(
                             attributeValues_4, DevLockManager.getInstance().getClntIdent());
-				} else
-                if (deviceProxy.device_4 != null) {
-		    		deviceProxy.device_4.write_attributes_4(
+                } else if (deviceProxy.device_4 != null) {
+                    deviceProxy.device_4.write_attributes_4(
                             attributeValues_4, DevLockManager.getInstance().getClntIdent());
-				} else
-                if (deviceProxy.device_3 != null) {
-		    		deviceProxy.device_3.write_attributes_3(attributeValues);
+                } else if (deviceProxy.device_3 != null) {
+                    deviceProxy.device_3.write_attributes_3(attributeValues);
 				} else {
 		    		deviceProxy.device.write_attributes(attributeValues);
 				}
@@ -1594,21 +1606,23 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 		    	"DeviceProxy.write_read_attribute()");
 		}
 
-		boolean done = false;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
+        boolean done = false;
 		final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
 		for (int i = 0; i < retries && !done; i++) {
 	    	// write attributes on device server
 	    	try {
+                if (i > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 if (deviceProxy.device_5 != null) {
                     outAttrValues_5 = deviceProxy.device_5.write_read_attributes_5(
                             attributeValues_4, readNames,
                             DevLockManager.getInstance().getClntIdent());
-                } else
-                if (deviceProxy.device_4 != null) {
+                } else if (deviceProxy.device_4 != null) {
                     outAttrValues_4 = deviceProxy.device_4.write_read_attributes_4(
                             attributeValues_4, DevLockManager.getInstance().getClntIdent());
-			}
-			done = true;
+                }
+                done = true;
 	    	} catch (final DevFailed e) {
                 // Except.print_exception(e);
                 throw e;
@@ -2128,15 +2142,18 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
         // Else tango call
         boolean done = false;
         // try 2 times for reconnection if requested
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int i = 0; i < retries && !done; i++) {
             try {
+                if (i > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 if (forget) {
                     request.send_oneway();
                 } else {
                     request.send_deferred();
                     // store request reference to read reply later
-                    final String[] names = new String[] { cmdname };
+                    final String[] names = new String[]{cmdname};
                     id = ApiUtil.put_async_request(
                             new AsyncCallObject(request, deviceProxy, CMD, names));
                 }
@@ -2777,19 +2794,22 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 		int id = 0;
 		boolean done = false;
 		// try 2 times for reconnection if requested
-		final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
+        final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
 		for (int i=0 ; i<retries && !done ; i++) {
 	    	try {
+                if (i > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 if (forget) {
                     request.send_oneway();
                 } else {
                     request.send_deferred();
                     // store request reference to read reply later
                     id = ApiUtil.put_async_request(new AsyncCallObject(request, deviceProxy, ATT_W,
-                        attributeNames));
+                            attributeNames));
                 }
                 done = true;
-	    	} catch (final Exception e) {
+            } catch (final Exception e) {
                 manageExceptionReconnection(deviceProxy,
                         retries, i, e, this.getClass() + ".write_attribute_asynch");
 	    	}
@@ -3199,7 +3219,7 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 
     // ===================================================================
     /*
-     * ToDo Pipe related methods
+     * Pipe related methods
      */
     // ===================================================================
 
@@ -3217,10 +3237,13 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                     "Pipe not supported in IDL " + deviceProxy.idl_version);
         ArrayList<PipeInfo> infoList = new ArrayList<PipeInfo>();
         boolean done = false;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int tr=0; tr<retries && !done ; tr++) {
             try {
-                PipeConfig[]    configurations =
+                if (tr > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
+                PipeConfig[] configurations =
                         deviceProxy.device_5.get_pipe_config_5(new String[]{"All pipes"});
                 for (PipeConfig configuration : configurations) {
                     infoList.add(new PipeInfo(configuration));
@@ -3256,13 +3279,16 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                     "Pipe not supported in IDL " + deviceProxy.idl_version);
         ArrayList<PipeInfo> infoList = new ArrayList<PipeInfo>();
         boolean done = false;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int tr=0 ; tr<retries && !done ; tr++) {
             try {
-                String[]    array = new String[pipeNames.size()];
-                for (int i=0 ; i<pipeNames.size() ; i++)
+                if (tr > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
+                String[] array = new String[pipeNames.size()];
+                for (int i = 0; i < pipeNames.size(); i++)
                     array[i] = pipeNames.get(i);
-                PipeConfig[]    configurations = deviceProxy.device_5.get_pipe_config_5(array);
+                PipeConfig[] configurations = deviceProxy.device_5.get_pipe_config_5(array);
                 for (PipeConfig configuration : configurations) {
                     infoList.add(new PipeInfo(configuration));
                 }
@@ -3292,11 +3318,14 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
             Except.throw_exception("TangoApi_NOT_SUPPORTED",
                     "Pipe not supported in IDL " + deviceProxy.idl_version);
         boolean done = false;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int tr=0 ; tr<retries && !done ; tr++) {
             try {
-                PipeConfig[]  configList = new PipeConfig[pipeInfoList.size()];
-                for (int i=0 ; i<pipeInfoList.size() ; i++) {
+                if (tr > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
+                PipeConfig[] configList = new PipeConfig[pipeInfoList.size()];
+                for (int i = 0; i < pipeInfoList.size(); i++) {
                     configList[i] = pipeInfoList.get(i).getPipeConfig();
                 }
                 deviceProxy.device_5.set_pipe_config_5(
@@ -3328,9 +3357,12 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
             Except.throw_exception("TangoApi_NOT_SUPPORTED",
                     "Pipe not supported in IDL " + deviceProxy.idl_version);
         boolean done = false;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int tr=0 ; tr<retries && !done ; tr++) {
             try {
+                if (tr > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 DevPipeData pipeData = deviceProxy.device_5.read_pipe_5(
                         pipeName, DevLockManager.getInstance().getClntIdent());
                 done = true;
@@ -3360,9 +3392,12 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
             Except.throw_exception("TangoApi_NOT_SUPPORTED",
                     "Pipe not supported in IDL " + deviceProxy.idl_version);
         boolean done = false;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int tr=0 ; tr<retries && !done ; tr++) {
             try {
+                if (tr > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 DevPipeData devPipeData = devicePipe.getDevPipeDataObject();
                 deviceProxy.device_5.write_pipe_5(
                         devPipeData, DevLockManager.getInstance().getClntIdent());
@@ -3386,9 +3421,12 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
             Except.throw_exception("TangoApi_NOT_SUPPORTED",
                     "Pipe not supported in IDL " + deviceProxy.idl_version);
         boolean done = false;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
         final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
         for (int tr = 0 ; tr<retries && !done ; tr++) {
             try {
+                if (tr > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
                 DevPipeData writePipeData = devicePipe.getDevPipeDataObject();
                 DevPipeData readPipeData = deviceProxy.device_5.write_read_pipe_5(
                         writePipeData, DevLockManager.getInstance().getClntIdent());

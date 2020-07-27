@@ -125,6 +125,17 @@ public class DeviceManager {
     }
 
     /**
+     * Remove all attributes' properties
+     *
+     * @throws DevFailed
+     */
+    public void clearAttributeProperties() throws DevFailed {
+        for (AttributeImpl attr : device.getAttributeList()) {
+            attr.removeProperties();
+        }
+    }
+
+    /**
      * Check if an attribute or an command is polled
      *
      * @param polledObject The name of the polled object (attribute or command)
@@ -162,20 +173,14 @@ public class DeviceManager {
      * @throws DevFailed
      */
     public void startPolling(final String polledObject, final int pollingPeriod) throws DevFailed {
-        try {
-            final AttributeImpl attr = AttributeGetterSetter.getAttribute(polledObject, device.getAttributeList());
-            attr.configurePolling(pollingPeriod);
-            device.startPolling(attr);
-        } catch (final DevFailed e) {
-            if (polledObject.equalsIgnoreCase(DeviceImpl.STATE_NAME)
-                    || polledObject.equalsIgnoreCase(DeviceImpl.STATUS_NAME)) {
-                final CommandImpl cmd = device.getCommand(polledObject);
-                cmd.configurePolling(pollingPeriod);
-                device.startPolling(cmd);
-            } else {
-                throw e;
-            }
+        final AttributeImpl attr = AttributeGetterSetter.getAttribute(polledObject, device.getAttributeList());
+        attr.configurePolling(pollingPeriod);
+        if (polledObject.equalsIgnoreCase(DeviceImpl.STATE_NAME)
+                || polledObject.equalsIgnoreCase(DeviceImpl.STATUS_NAME)) {
+            final CommandImpl cmd = device.getCommand(polledObject);
+            cmd.configurePolling(pollingPeriod);
         }
+        device.startPolling(attr);
     }
 
     /**
@@ -220,6 +225,19 @@ public class DeviceManager {
      */
     public void triggerPolling(final String polledObject) throws DevFailed {
         device.triggerPolling(polledObject);
+    }
+
+    /**
+     * Set all value of an attribute's history
+     *
+     * @param attributeName attribute name
+     * @param readValues    read value, can be null for Write only attribute
+     * @param writeValues   write value, can be null for Read only attribute
+     * @throws DevFailed
+     */
+    public void fillAttributeHistory(String attributeName, AttributeValue[] readValues, AttributeValue[] writeValues, DevFailed[] errors) throws DevFailed {
+        final AttributeImpl attr = AttributeGetterSetter.getAttribute(attributeName, device.getAttributeList());
+        attr.fillHistory(readValues, writeValues, errors);
     }
 
     /**
@@ -273,7 +291,7 @@ public class DeviceManager {
                 attribute.lock();
                 try {
                     // convert to the State type use on API side
-                    if (value.getValue() instanceof  DeviceState) {
+                    if (value.getValue() instanceof DeviceState) {
                         DeviceState state = (DeviceState) value.getValue();
                         value.setValue(state.getDevState());
                     }

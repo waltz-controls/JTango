@@ -35,13 +35,12 @@
 package fr.esrf.TangoApi;
 
 import fr.esrf.Tango.*;
+import fr.esrf.TangoDs.Except;
+import fr.esrf.TangoDs.TangoConst;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Policy;
 import org.omg.CORBA.SystemException;
-
-import fr.esrf.TangoDs.Except;
-import fr.esrf.TangoDs.TangoConst;
 
 /**
  * Class Description: This class manage device connection for Tango objects. It
@@ -878,27 +877,30 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 				ping(connection);
 
 				System.out.println(connection.devname + "." + command
-					+ "  -> TangoApi_READ_ONLY_MODE");
-            	throwNotAuthorizedException(connection.devname + ".command_inout(" + command + ")",
-                    	"Connection.command_inout()");
-	    	}
+						+ "  -> TangoApi_READ_ONLY_MODE");
+				throwNotAuthorizedException(connection.devname + ".command_inout(" + command + ")",
+						"Connection.command_inout()");
+			}
 		}
 		// Else tango call
 		boolean done = false;
+		int timeoutReconnection = get_timeout_millis(connection);
 		// try 2 times for reconnection if requested
 		final int retries = connection.transparent_reconnection ? 2 : 1;
-		for (int i=0 ; i<retries && !done ; i++) {
-	    	try {
+		for (int i = 0; i < retries && !done; i++) {
+			try {
+				if (i > 0)
+					connection.set_timeout_millis(timeoutReconnection);
 				if (connection.device_5 != null) {
-		    		received = connection.device_5.command_inout_4(command, argin.extractAny(),
-			    		connection.dev_src, DevLockManager.getInstance().getClntIdent());
-                } else if (connection.device_4 != null) {
-		    		received = connection.device_4.command_inout_4(command, argin.extractAny(),
-			    		connection.dev_src, DevLockManager.getInstance().getClntIdent());
-                } else if (connection.device_2 != null) {
-                    received = connection.device_2.command_inout_2(command, argin.extractAny(),
-                        connection.dev_src);
-                } else {
+					received = connection.device_5.command_inout_4(command, argin.extractAny(),
+							connection.dev_src, DevLockManager.getInstance().getClntIdent());
+				} else if (connection.device_4 != null) {
+					received = connection.device_4.command_inout_4(command, argin.extractAny(),
+							connection.dev_src, DevLockManager.getInstance().getClntIdent());
+				} else if (connection.device_2 != null) {
+					received = connection.device_2.command_inout_2(command, argin.extractAny(),
+							connection.dev_src);
+				} else {
                     received = connection.device.command_inout(command, argin.extractAny());
                 }
                 done = true;
@@ -928,7 +930,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 		}
 		return new DeviceData(received);
     }
-
     // ===========================================================
     /**
      * Send a command to a device server.
@@ -1089,19 +1090,22 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 
 		build_connection(connection);
 
-        final int retries = connection.transparent_reconnection ? 2 : 1;
-        for (int oneTry=1 ; oneTry<=retries ; oneTry++) {
-            try {
-                CommandInfo[] result;
-                if (connection.url.protocol == TACO) {
-                    result = connection.taco_device.commandListQuery();
-                } else {
-                    // Check IDL revision
-                    if (connection.device_2 != null) {
-                        final DevCmdInfo_2[] tmp = connection.device_2.command_list_query_2();
-                        result = new CommandInfo[tmp.length];
-                        for (int i = 0; i < tmp.length; i++) {
-                            result[i] = new CommandInfo(tmp[i]);
+		int timeoutReconnection = get_timeout_millis(connection);
+		final int retries = connection.transparent_reconnection ? 2 : 1;
+		for (int oneTry = 1; oneTry <= retries; oneTry++) {
+			try {
+				if (oneTry > 0)
+					connection.set_timeout_millis(timeoutReconnection);
+				CommandInfo[] result;
+				if (connection.url.protocol == TACO) {
+					result = connection.taco_device.commandListQuery();
+				} else {
+					// Check IDL revision
+					if (connection.device_2 != null) {
+						final DevCmdInfo_2[] tmp = connection.device_2.command_list_query_2();
+						result = new CommandInfo[tmp.length];
+						for (int i = 0; i < tmp.length; i++) {
+							result[i] = new CommandInfo(tmp[i]);
                         }
                     } else {
                         final DevCmdInfo[] tmp = connection.device.command_list_query();

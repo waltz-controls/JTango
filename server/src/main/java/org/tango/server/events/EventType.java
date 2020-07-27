@@ -28,11 +28,7 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoDs.TangoConst;
 import org.tango.utils.DevFailedUtils;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public enum EventType {
     /**
@@ -94,7 +90,6 @@ public enum EventType {
         EVENT_ATTR_VALUE_TYPE_LIST.add(CHANGE_EVENT);
         EVENT_ATTR_VALUE_TYPE_LIST.add(PERIODIC_EVENT);
         EVENT_ATTR_VALUE_TYPE_LIST.add(ARCHIVE_EVENT);
-        EVENT_ATTR_VALUE_TYPE_LIST.add(USER_EVENT);
     }
 
     private int value;
@@ -138,10 +133,11 @@ public enum EventType {
     }
 
     /**
-     * Get event types used only for attribute value events
+     * Get event types used only for attribute value events from polling
+     *
      * @return
      */
-    public static List<EventType> getEventAttrValueTypeList() {
+    public static List<EventType> getEventTypeListForAttrPolling() {
         return EVENT_ATTR_VALUE_TYPE_LIST;
     }
 
