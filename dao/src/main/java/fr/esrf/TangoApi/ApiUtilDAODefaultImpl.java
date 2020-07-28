@@ -44,9 +44,7 @@ import fr.esrf.TangoApi.events.ZmqUtils;
 import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
 import org.jacorb.orb.Delegate;
-import org.omg.CORBA.ORB;
 import org.omg.CORBA.Request;
-import org.omg.CORBA.SystemException;
 import org.tango.utils.DevFailedUtils;
 
 import java.util.*;
@@ -63,7 +61,7 @@ import java.util.concurrent.ExecutionException;
  * </i>
  *
  * @author verdier
- * @version $Revision: 30265 $
+ * @author ingvord
  */
 
 public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
@@ -79,9 +77,11 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
         }
     };
 
-    final private ThreadLocal<LoadingCache<String, Database>> localDatabase = ThreadLocal.withInitial(() ->
+    final private ThreadLocal<LoadingCache<String, Database>> localDatabasesCache = ThreadLocal.withInitial(() ->
             CacheBuilder.newBuilder()
                     .build(loader));
+
+    private final ThreadLocal<Database> localDatabase = new ThreadLocal<>();
 
     static private Hashtable<Integer, AsyncCallObject> async_request_table =
             new Hashtable<Integer, AsyncCallObject>();
@@ -99,36 +99,32 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_db_obj(final String tango_host) throws DevFailed {
-        //TODO race condition
-        if (ApiUtil.getOrb() == null) {
-            create_orb();
-        }
         try {
-            return localDatabase.get().get(tango_host);
+            return localDatabasesCache.get().get(tango_host);
         } catch (ExecutionException e) {
             throw DevFailedUtils.newDevFailed(e);
         }
     }
 
     // ===================================================================
+
     /**
      * Return the database object created with TANGO_HOST environment variable .
      */
     // ===================================================================
-    public Database get_default_db_obj() throws DevFailed {
-        //TODO race condition
-        if (ApiUtil.getOrb() == null) {
-            create_orb();
-        }
-        return get_db_obj(System.getProperty("TANGO_HOST", System.getenv("TANGO_HOST")));
+    public Database get_default_db_obj() {
+        return Optional
+                .ofNullable(localDatabase.get())
+                .orElseThrow(() -> new IllegalStateException("database is not set! Use set_db_obj method"));
     }
     // ===================================================================
+
     /**
      * Return tru if the database object has been created.
      */
     // ===================================================================
-    public boolean default_db_obj_exists() throws DevFailed {
-        return get_db_obj(System.getProperty("TANGO_HOST", System.getenv("TANGO_HOST"))) != null;//TODO in fact either not null or exception
+    public boolean default_db_obj_exists() {
+        return Optional.ofNullable(localDatabase.get()).isPresent();
     }
 
     // ===================================================================
@@ -137,7 +133,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      * Return the database object created with TANGO_HOST environment variable .
      */
     // ===================================================================
-    public Database get_db_obj() throws DevFailed {
+    public Database get_db_obj() {
         return get_default_db_obj();
     }
 
@@ -154,6 +150,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port, and set
      * this database object for all following uses..
@@ -162,13 +159,12 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      * @param port port for database connection.
      */
     // ===================================================================
-    public Database change_db_obj(final String host, final String port) throws DevFailed {
-        Database database = new Database(host, port);
-        localDatabase.get().put(host + ":" + port, database);
+    public Database change_db_obj(final String host, final String port) {
+        Database database = localDatabasesCache.get().getUnchecked(host + ":" + port);
+        localDatabase.set(database);
         return database;
     }
 
-    // ===================================================================
     /**
      * Return the database object created for specified host and port, and set
      * this database object for all following uses..
@@ -200,142 +196,6 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
         return change_db_obj(tango_host.substring(0, i), tango_host.substring(i + 1));
     }
 
-    // ===================================================================
-    // ===================================================================
-
-    // ===================================================================
-    /**
-     * Create the orb object
-     * @throws DevFailed if ORB creation failed
-     */
-    // ===================================================================
-    private static synchronized void create_orb() throws DevFailed {
-        try {
-            // Modified properties fo ORB usage.
-            // ---------------------------------------
-            final Properties props = System.getProperties();
-            props.put("org.omg.CORBA.ORBClass", "org.jacorb.orb.ORB");
-            props.put("org.omg.CORBA.ORBSingletonClass", "org.jacorb.orb.ORBSingleton");
-
-            // Set retry properties
-            props.put("jacorb.retries", "0");
-            props.put("jacorb.retry_interval", "100");
-
-            // Initial timeout for establishing a connection.
-            props.put("jacorb.connection.client.connect_timeout", "300");
-
-            // Set the Largest transfer.
-            final String str = checkORBgiopMaxMsgSize();
-            props.put("jacorb.maxManagedBufSize", str);
-			
-			//	Check for max threads
-			final String nbThreads = System.getProperty("max_receptor_threads");
-			if (nbThreads!=null)
-				props.put("jacorb.connection.client.max_receptor_threads", nbThreads);
-
-            // Set jacorb verbosity at minimum value
-            props.put("jacorb.config.log.verbosity", "0");
-            props.put("jacorb.disableClientOrbPolicies", "off");
-
-            //  Add code set to jacorb.properties
-            props.put("jacorb.codeset", "true");
-
-            //  Add directory to get jacorb.properties
-            props.put("jacorb.config.dir", "fr/esrf/TangoApi/etc");
-			System.setProperties(props);
-
-            // Initialize ORB
-            // -----------------------------
-            final String[] argv = null;
-            ApiUtil.setOrb(ORB.init(argv, null));
-
-            // Get an instance of DevLockManager to initialize.
-            DevLockManager.getInstance();
-        } catch (final SystemException ex) {
-            // System.out.println("Excption catched in ApiUtil.create_orb");
-            ApiUtil.setOrb(null);
-            ex.printStackTrace();
-            Except.throw_connection_failed(ex.toString(), "Initializing ORB failed !",
-                "ApiUtil.create_orb()");
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // ===================================================================
-    /**
-     * Check if the checkORBgiopMaxMsgSize has been set. This environment
-     * variable should be set in Mega bytes.
-     * @return  the property string  to be set.
-     */
-    // ===================================================================
-    private static String checkORBgiopMaxMsgSize() {
-        /*
-         * JacORB definition (see jacorb.properties file):
-         *
-         * This is NOT the maximum buffer size that can be used, but just the
-         * largest size of buffers that will be kept and managed. This value
-         * will be added to an internal constant of 5, so the real value in
-         * bytes is 2**(5+maxManagedBufSize-1). You only need to increase this
-         * value if you are dealing with LOTS of LARGE data structures. You may
-         * decrease it to make the buffer manager release large buffers
-         * immediately rather than keeping them for later reuse.
-         */
-        String str = "20"; // Set to 16 Mbytes
-
-        // Check if environment ask for bigger size.
-        String tmp = ApiUtil.getORBgiopMaxMsgSize();
-        if (tmp != null) {
-            if ((tmp = checkBufferSize(tmp)) != null) {
-                str = tmp;
-            }
-        }
-        return str;
-    }
-
-    // ===================================================================
-    // ===================================================================
-    private static String checkBufferSize(final String str) {
-        // try to get value
-        int nb_mega;
-        try {
-            nb_mega = Integer.parseInt(str);
-        } catch (final NumberFormatException e) {
-            return null;
-        }
-
-        // Compute the real size and the power of 2
-        final long size = (long) nb_mega * 1024 * 1024;
-        long l = size;
-        int cnt;
-        for (cnt = 0; l > 0; cnt++) {
-            l >>= 1;
-        }
-        cnt--;
-
-        // Check if number ob Mb is not power of 2
-        if (Math.pow(2, cnt) < size) {
-            cnt++;
-        }
-        System.out.println(nb_mega + " Mbytes  (2^" + cnt + ")");
-
-        final int jacorb_size = cnt - 4;
-        return Integer.toString(jacorb_size);
-    }
-
-    // ===================================================================
-    /**
-     * Return the orb object
-     */
-    // ===================================================================
-    public ORB get_orb() throws DevFailed {
-	if (ApiUtil.getOrb() == null) {
-	    create_orb();
-	}
-	return ApiUtil.getOrb();
-    }
-
-    // ===================================================================
     /**
      * Return the orb object
      */

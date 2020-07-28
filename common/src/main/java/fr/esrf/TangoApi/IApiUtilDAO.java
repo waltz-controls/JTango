@@ -34,12 +34,10 @@
 
 package fr.esrf.TangoApi;
 
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.Request;
-
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
+import org.omg.CORBA.Request;
 
 public interface IApiUtilDAO {
     // ===================================================================
@@ -75,7 +73,7 @@ public interface IApiUtilDAO {
     // ===================================================================
     /**
      * Return the database object created for specified host and port.
-     * 
+     *
      * @param host host where database is running.
      * @param port port for database connection.
      */
@@ -115,12 +113,6 @@ public interface IApiUtilDAO {
 
     // ===================================================================
     // ===================================================================
-
-    /**
-     * Return the orb object
-     */
-    // ===================================================================
-    public ORB get_orb() throws DevFailed;
 
     // ===================================================================
     /**

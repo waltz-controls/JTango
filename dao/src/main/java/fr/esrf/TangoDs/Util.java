@@ -236,10 +236,6 @@ public class Util {
 	    System.err.println("Can't intialise CORBA ORB !!!");
 	    System.err.println("Failed when trying to get root POA reference");
 	    System.exit(-1);
-	} catch (final DevFailed ex) {
-	    System.err.println("Can't intialise CORBA ORB !!!");
-	    System.err.println("Failed when trying to get root POA reference");
-	    System.exit(-1);
 	}
 
 	//

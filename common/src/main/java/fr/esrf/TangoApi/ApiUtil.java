@@ -41,9 +41,14 @@ import fr.esrf.Tango.factory.TangoFactory;
 import fr.esrf.TangoDs.Except;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Request;
+import org.omg.CORBA.SystemException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.utils.DevFailedUtils;
 
 import java.io.FileOutputStream;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class Description: This class manage a static vector of Database object. <Br>
@@ -56,26 +61,156 @@ import java.util.*;
  * </i>
  * 
  * @author verdier
- * @version $Revision: 30280 $
+ * @author ingvord
  */
 
 public class ApiUtil {
-    public static String revNumber =
-            "9.1.3  -  Mon Apr 25 13:04:57 CEST 2016";
-    
-    private static IApiUtilDAO apiutilDAO = TangoFactory.getSingleton().getApiUtilDAO();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiUtil.class);
+
+    private static final IApiUtilDAO API_UTIL_DAO = TangoFactory.getSingleton().getApiUtilDAO();
     private static int  hwmValue = 0;
 
-
+    // ===================================================================
     /**
      * ORB object reference for connection.
      */
-    static protected ORB orb = null;
+    private static final AtomicReference<ORB> LOCAL_ORB = new AtomicReference<>();
+
+
+    // ===================================================================
+
+    static {
+        try {
+            LOCAL_ORB.set(create_orb());
+        } catch (DevFailed devFailed) {
+            DevFailedUtils.logDevFailed(devFailed, LOGGER);
+            throw new RuntimeException(devFailed);
+        }
+    }
+
+    /**
+     * Create the orb object
+     * @throws DevFailed if ORB creation failed
+     */
+    // ===================================================================
+    private static ORB create_orb() throws DevFailed {
+        try {
+            // Modified properties fo ORB usage.
+            // ---------------------------------------
+            final Properties props = System.getProperties();
+            props.put("org.omg.CORBA.ORBClass", "org.jacorb.orb.ORB");
+            props.put("org.omg.CORBA.ORBSingletonClass", "org.jacorb.orb.ORBSingleton");
+
+            // Set retry properties
+            props.put("jacorb.retries", "0");
+            props.put("jacorb.retry_interval", "100");
+
+            // Initial timeout for establishing a connection.
+            props.put("jacorb.connection.client.connect_timeout", "300");
+
+            // Set the Largest transfer.
+            final String str = checkORBgiopMaxMsgSize();
+            props.put("jacorb.maxManagedBufSize", str);
+
+            //	Check for max threads
+            final String nbThreads = System.getProperty("max_receptor_threads");
+            if (nbThreads!=null)
+                props.put("jacorb.connection.client.max_receptor_threads", nbThreads);
+
+            // Set jacorb verbosity at minimum value
+            props.put("jacorb.config.log.verbosity", "0");
+            props.put("jacorb.disableClientOrbPolicies", "off");
+
+            //  Add code set to jacorb.properties
+            props.put("jacorb.codeset", "true");
+
+            //  Add directory to get jacorb.properties
+            props.put("jacorb.config.dir", "fr/esrf/TangoApi/etc");
+            System.setProperties(props);
+
+            // Initialize ORB
+            // -----------------------------
+            final String[] argv = null;
+            ORB orb = ORB.init(argv, null);
+
+            // Get an instance of DevLockManager to initialize.
+            DevLockManager.getInstance();
+            return orb;
+        } catch (final SystemException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new ConnectionFailed(DevFailedUtils.newDevFailed(ex.toString(), "Initializing ORB failed !").errors);
+        }
+    }
+
+    /**
+     * Check if the checkORBgiopMaxMsgSize has been set. This environment
+     * variable should be set in Mega bytes.
+     * @return  the property string  to be set.
+     */
+    // ===================================================================
+    private static String checkORBgiopMaxMsgSize() {
+        /*
+         * JacORB definition (see jacorb.properties file):
+         *
+         * This is NOT the maximum buffer size that can be used, but just the
+         * largest size of buffers that will be kept and managed. This value
+         * will be added to an internal constant of 5, so the real value in
+         * bytes is 2**(5+maxManagedBufSize-1). You only need to increase this
+         * value if you are dealing with LOTS of LARGE data structures. You may
+         * decrease it to make the buffer manager release large buffers
+         * immediately rather than keeping them for later reuse.
+         */
+        String str = "20"; // Set to 16 Mbytes
+
+        // Check if environment ask for bigger size.
+        String tmp = ApiUtil.getORBgiopMaxMsgSize();
+        if (tmp != null) {
+            if ((tmp = checkBufferSize(tmp)) != null) {
+                str = tmp;
+            }
+        }
+        return str;
+    }
 
     // ===================================================================
     // ===================================================================
-    public IApiUtilDAO getApiUtilDAO() {
-        return apiutilDAO;
+    private static String checkBufferSize(final String str) {
+        // try to get value
+        int nb_mega;
+        try {
+            nb_mega = Integer.parseInt(str);
+        } catch (final NumberFormatException e) {
+            return null;
+        }
+
+        // Compute the real size and the power of 2
+        final long size = (long) nb_mega * 1024 * 1024;
+        long l = size;
+        int cnt;
+        for (cnt = 0; l > 0; cnt++) {
+            l >>= 1;
+        }
+        cnt--;
+
+        // Check if number ob Mb is not power of 2
+        if (Math.pow(2, cnt) < size) {
+            cnt++;
+        }
+        System.out.println(nb_mega + " Mbytes  (2^" + cnt + ")");
+
+        final int jacorb_size = cnt - 4;
+        return Integer.toString(jacorb_size);
+    }
+
+    /**
+     * Return the database object created for specified host and port.
+     *
+     * @param tango_host
+     *            host and port (hostname:portnumber) where database is running.
+     */
+    // ===================================================================
+    public static Database get_db_obj(final String tango_host) throws DevFailed {
+	    return API_UTIL_DAO.get_db_obj(tango_host);
     }
     // ===================================================================
     // ===================================================================
@@ -92,89 +227,94 @@ public class ApiUtil {
     }
 
     // ===================================================================
-    /**
-     * Return the database object created for specified host and port.
-     * 
-     * @param tango_host
-     *            host and port (hostname:portnumber) where database is running.
-     */
-    // ===================================================================
-    public static Database get_db_obj(final String tango_host) throws DevFailed {
-	    return apiutilDAO.get_db_obj(tango_host);
-    }
 
-    // ===================================================================
     /**
      * Return the database object created with TANGO_HOST environment variable .
      */
     // ===================================================================
     public static Database get_default_db_obj() throws DevFailed {
-	    return apiutilDAO.get_default_db_obj();
+	    return API_UTIL_DAO.get_default_db_obj();
     }
+
     // ===================================================================
+
     /**
      * Return tru if the database object has been created.
      */
     // ===================================================================
     public static boolean default_db_obj_exists() throws DevFailed {
-	    return apiutilDAO.default_db_obj_exists();
+	    return API_UTIL_DAO.default_db_obj_exists();
     }
-
     // ===================================================================
+
     /**
      * Return the database object created with TANGO_HOST environment variable .
      */
     // ===================================================================
     public static synchronized Database get_db_obj() throws DevFailed {
-	    return apiutilDAO.get_db_obj();
+	    return API_UTIL_DAO.get_db_obj();
     }
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
-     * 
+     *
      * @param host host where database is running.
      * @param port port for database connection.
      */
     // ===================================================================
     public static Database get_db_obj(final String host, final String port) throws DevFailed {
-	    return apiutilDAO.get_db_obj(host, port);
+	    return API_UTIL_DAO.get_db_obj(host, port);
     }
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port, and set
      * this database object for all following uses..
-     * 
+     *
      * @param host host where database is running.
      * @param port port for database connection.
      */
     // ===================================================================
     public static Database change_db_obj(final String host, final String port) throws DevFailed {
-	    return apiutilDAO.change_db_obj(host, port);
+	    return API_UTIL_DAO.change_db_obj(host, port);
     }
+
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port, and set
      * this database object for all following uses..
-     * 
+     *
      * @param host host where database is running.
      * @param port port for database connection.
      */
     // ===================================================================
     public static Database set_db_obj(final String host, final String port) throws DevFailed {
-	    return apiutilDAO.set_db_obj(host, port);
+	    return API_UTIL_DAO.set_db_obj(host, port);
     }
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
-     * 
+     *
      * @param tango_host
      *            host and port (hostname:portnumber) where database is running.
      */
     // ===================================================================
     public static Database set_db_obj(final String tango_host) throws DevFailed {
-	    return apiutilDAO.set_db_obj(tango_host);
+	    return API_UTIL_DAO.set_db_obj(tango_host);
+    }
+    // ===================================================================
+
+    /**
+     * Return the orb object
+     */
+    // ===================================================================
+    public static ORB get_orb() {
+	    return LOCAL_ORB.get();
     }
     // ===================================================================
     // ===================================================================
@@ -183,12 +323,13 @@ public class ApiUtil {
 
 
     // ===================================================================
+
     /**
      * Return the orb object
      */
     // ===================================================================
-    public static ORB get_orb() throws DevFailed {
-	return apiutilDAO.get_orb();
+    public static void set_in_server(final boolean val) {
+    	API_UTIL_DAO.set_in_server(val);
     }
     // ===================================================================
     /**
@@ -215,26 +356,28 @@ public class ApiUtil {
 		return HostInfo.getName();
 	}
     // ===================================================================
-    /**
-     * Return the orb object
-     */
-    // ===================================================================
-    public static void set_in_server(final boolean val) {
-    	apiutilDAO.set_in_server(val);
-    }
 
-    // ===================================================================
     /**
      * Return true if in server code or false if in client code.
      */
     // ===================================================================
     public static boolean in_server() {
-	    return apiutilDAO.in_server();
+	    return API_UTIL_DAO.in_server();
     }
 
-    public static int getReconnectionDelay() {
-	    return apiutilDAO.getReconnectionDelay();
+    // ===================================================================
 
+    public static int getReconnectionDelay() {
+	    return API_UTIL_DAO.getReconnectionDelay();
+
+    }
+
+    /**
+     * Add request in hash table and return id
+     */
+    // ==========================================================================
+    public static int put_async_request(final AsyncCallObject aco) {
+	    return API_UTIL_DAO.put_async_request(aco);
     }
 
     // ==========================================================================
@@ -243,85 +386,95 @@ public class ApiUtil {
      */
     // ==========================================================================
     // ==========================================================================
-    /**
-     * Add request in hash table and return id
-     */
-    // ==========================================================================
-    public static int put_async_request(final AsyncCallObject aco) {
-	    return apiutilDAO.put_async_request(aco);
-    }
 
-    // ==========================================================================
     /**
      * Return the request in hash table for the id
-     * 
+     *
      * @throws DevFailed
      */
     // ==========================================================================
     public static Request get_async_request(final int id) throws DevFailed {
-    	return apiutilDAO.get_async_request(id);
+    	return API_UTIL_DAO.get_async_request(id);
     }
 
     // ==========================================================================
+
     /**
      * Return the Asynch Object in hash table for the id
      */
     // ==========================================================================
     public static AsyncCallObject get_async_object(final int id) {
-    	return apiutilDAO.get_async_object(id);
+    	return API_UTIL_DAO.get_async_object(id);
     }
 
     // ==========================================================================
+
     /**
      * Remove asynchronous call request and id from hashtable.
      */
     // ==========================================================================
     public static void remove_async_request(final int id) {
-    	apiutilDAO.remove_async_request(id);
+    	API_UTIL_DAO.remove_async_request(id);
     }
 
     // ==========================================================================
+
     /**
      * Set the reply_model in AsyncCallObject for the id key.
      */
     // ==========================================================================
     public static void set_async_reply_model(final int id, final int reply_model) {
-    	apiutilDAO.set_async_reply_model(id, reply_model);
+    	API_UTIL_DAO.set_async_reply_model(id, reply_model);
     }
 
     // ==========================================================================
+
     /**
      * Set the Callback object in AsyncCallObject for the id key.
      */
     // ==========================================================================
     public static void set_async_reply_cb(final int id, final CallBack cb) {
-	    apiutilDAO.set_async_reply_cb(id, cb);
+	    API_UTIL_DAO.set_async_reply_cb(id, cb);
     }
 
     // ==========================================================================
+
     /**
      * return the still pending asynchronous call for a reply model.
-     * 
+     *
      * @param dev DeviceProxy object.
      * @param reply_model ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
      */
     // ==========================================================================
     public static int pending_asynch_call(final DeviceProxy dev, final int reply_model) {
-	    return apiutilDAO.pending_asynch_call(dev, reply_model);
+	    return API_UTIL_DAO.pending_asynch_call(dev, reply_model);
     }
 
     // ==========================================================================
+
     /**
      * return the still pending asynchronous call for a reply model.
-     * 
+     *
      * @param reply_model ApiDefs.ALL_ASYNCH, POLLING or CALLBACK.
      */
     // ==========================================================================
     public static int pending_asynch_call(final int reply_model) {
-    	return apiutilDAO.pending_asynch_call(reply_model);
+    	return API_UTIL_DAO.pending_asynch_call(reply_model);
     }
 
     // ==========================================================================
+
+    /**
+     * Set the callback sub model used (ApiDefs.PUSH_CALLBACK or
+     * ApiDefs.PULL_CALLBACK).
+     */
+    // ==========================================================================
+    public static int get_asynch_cb_sub_model() {
+	    return API_UTIL_DAO.get_asynch_cb_sub_model();
+    }
+
+    // ==========================================================================
+
     /**
      * Return the callback sub model used.
      * 
@@ -329,57 +482,59 @@ public class ApiUtil {
      */
     // ==========================================================================
     public static void set_asynch_cb_sub_model(final int model) {
-	    apiutilDAO.set_asynch_cb_sub_model(model);
+	    API_UTIL_DAO.set_asynch_cb_sub_model(model);
     }
 
     // ==========================================================================
-    /**
-     * Set the callback sub model used (ApiDefs.PUSH_CALLBACK or
-     * ApiDefs.PULL_CALLBACK).
-     */
-    // ==========================================================================
-    public static int get_asynch_cb_sub_model() {
-	    return apiutilDAO.get_asynch_cb_sub_model();
-    }
 
-    // ==========================================================================
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
      */
     // ==========================================================================
     public static void get_asynch_replies() {
-	    apiutilDAO.get_asynch_replies();
+	    API_UTIL_DAO.get_asynch_replies();
     }
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
      */
     // ==========================================================================
     public static void get_asynch_replies(final int timeout) {
-	    apiutilDAO.get_asynch_replies(timeout);
+	    API_UTIL_DAO.get_asynch_replies(timeout);
     }
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
      */
     // ==========================================================================
     public static void get_asynch_replies(final DeviceProxy dev) {
-	    apiutilDAO.get_asynch_replies(dev);
+	    API_UTIL_DAO.get_asynch_replies(dev);
     }
 
     // ==========================================================================
+
     /**
      * Fire callback methods for all (any device) asynchronous requests(cmd and
      * attr) with already arrived replies.
      */
     // ==========================================================================
     public static void get_asynch_replies(final DeviceProxy dev, final int timeout) {
-	    apiutilDAO.get_asynch_replies(dev, timeout);
+	    API_UTIL_DAO.get_asynch_replies(dev, timeout);
+    }
+
+    // ==========================================================================
+
+    // ==========================================================================
+    // ==========================================================================
+    public static String stateName(final DevState state) {
+	    return API_UTIL_DAO.stateName(state);
     }
 
     // ==========================================================================
@@ -587,50 +742,58 @@ Str[n] = Property value n (array case)
 
     // ==========================================================================
     // ==========================================================================
-    public static String stateName(final DevState state) {
-	    return apiutilDAO.stateName(state);
-    }
-
-    // ==========================================================================
-    // ==========================================================================
     public static String stateName(final short state_val) {
-	    return apiutilDAO.stateName(state_val);
+	    return API_UTIL_DAO.stateName(state_val);
     }
 
     // ==========================================================================
     // ==========================================================================
     public static String qualityName(final AttrQuality att_q) {
-	    return apiutilDAO.qualityName(att_q);
+	    return API_UTIL_DAO.qualityName(att_q);
     }
 
     // ==========================================================================
     // ==========================================================================
     public static String qualityName(final short att_q_val) {
-	    return apiutilDAO.qualityName(att_q_val);
+	    return API_UTIL_DAO.qualityName(att_q_val);
     }
 
-    // ===================================================================
     /**
      * Parse Tango host (check multi Tango_host)
      */
     // ===================================================================
     public static String[] parseTangoHost(final String tgh) throws DevFailed {
-	    return apiutilDAO.parseTangoHost(tgh);
+	    return API_UTIL_DAO.parseTangoHost(tgh);
     }
 
-    // ===================================================================
     // ===================================================================
 
     // ===================================================================
     // ===================================================================
     public static ORB getOrb() {
-    	return orb;
+    	return get_orb();
     }
 
     // ===================================================================
     // ===================================================================
+
+    // ===================================================================
+    // ===================================================================
     public static void setOrb(final ORB orb) {
-	    ApiUtil.orb = orb;
+	    ApiUtil.LOCAL_ORB.set(orb);
+    }
+
+    /**
+     * Return the zmq version as a double like
+     *         3.22 for "3.2.2" or 0.0 if zmq not available
+     *
+     * @return the TangORB version as a String
+     * @deprecated use ZmqUtils.
+     */
+    //===================================================================
+    @Deprecated
+    public static double getZmqVersion() {
+        return API_UTIL_DAO.getZmqVersion();
     }
 
     // ===================================================================
@@ -751,60 +914,11 @@ Str[n] = Property value n (array case)
             System.err.println(e);
         }
     }
-    //===================================================================
-    /**
-     * Return the TangORB version as an integer like
-     *      803  for "Release 8.0.3"
-     *
-     * @return the TangORB version.
-     */
-    //===================================================================
-    public static int getVersionAsInteger() {
-        StringTokenizer stk = new StringTokenizer(revNumber);
-        String release = null;
-        for (int i=0 ; stk.hasMoreTokens() ; i++) {
-            String s = stk.nextToken();
-            if (i==1) {
-                release = s;
-                break;
-            }
-        }
-        stk = new StringTokenizer(release, ".");
-        release = "";
-        while (stk.hasMoreTokens()) {
-            release += stk.nextToken();
-        }
-        int version = 0;
-        try {
-            version = Integer.parseInt(release);
-        } catch (NumberFormatException e) {
-            //
-        }
-        return version;
-    }
-    //===================================================================
-    /**
-     * Return the TangORB version as a String like
-     *      "Release 8.0.3  -  Thu Oct 11 15:39:36 CEST 2012"
-     *
-     * @return the TangORB version as a String
-     */
-    //===================================================================
-    public static String getVersionAsString() {
-         return revNumber;
-    }
-    //===================================================================
-    /**
-     * Return the zmq version as a double like
-     *         3.22 for "3.2.2" or 0.0 if zmq not available
-     *
-     * @return the TangORB version as a String
-     * @deprecated use ZmqUtils.
-     */
-    //===================================================================
-    @Deprecated
-    public static double getZmqVersion() {
-        return apiutilDAO.getZmqVersion();
+
+    // ===================================================================
+    // ===================================================================
+    public IApiUtilDAO getApiUtilDAO() {
+        return API_UTIL_DAO;
     }
     //===================================================================
     /**

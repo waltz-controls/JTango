@@ -34,32 +34,11 @@
 
 package fr.esrf.TangoApi;
 
-import org.omg.CORBA.TCKind;
-import org.omg.CORBA.TypeCode;
-
-import fr.esrf.Tango.AttrQuality;
-import fr.esrf.Tango.AttributeDim;
-import fr.esrf.Tango.AttributeValue;
-import fr.esrf.Tango.AttributeValue_3;
-import fr.esrf.Tango.DevError;
-import fr.esrf.Tango.DevFailed;
-import fr.esrf.Tango.DevState;
-import fr.esrf.Tango.DevStateHelper;
-import fr.esrf.Tango.DevVarBooleanArrayHelper;
-import fr.esrf.Tango.DevVarCharArrayHelper;
-import fr.esrf.Tango.DevVarDoubleArrayHelper;
-import fr.esrf.Tango.DevVarFloatArrayHelper;
-import fr.esrf.Tango.DevVarLong64ArrayHelper;
-import fr.esrf.Tango.DevVarLongArrayHelper;
-import fr.esrf.Tango.DevVarShortArrayHelper;
-import fr.esrf.Tango.DevVarStateArrayHelper;
-import fr.esrf.Tango.DevVarStringArrayHelper;
-import fr.esrf.Tango.DevVarULong64ArrayHelper;
-import fr.esrf.Tango.DevVarULongArrayHelper;
-import fr.esrf.Tango.DevVarUShortArrayHelper;
-import fr.esrf.Tango.TimeVal;
+import fr.esrf.Tango.*;
 import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
+import org.omg.CORBA.TCKind;
+import org.omg.CORBA.TypeCode;
 
 /**
  * Class Description: This class manage data object for Tango device attribute
@@ -98,26 +77,23 @@ public class DeviceAttribute_3DAODefaultImpl implements IDeviceAttribute_3DAO {
      */
     // ===========================================
     private void buildAttributeValueObject(final String name) {
-	attrval.name = name;
-	attrval.quality = AttrQuality.ATTR_VALID;
-	attrval.time = new TimeVal();
-	attrval.r_dim = new AttributeDim();
-	attrval.w_dim = new AttributeDim();
-	attrval.r_dim.dim_x = 1;
-	attrval.r_dim.dim_y = 0;
-	attrval.w_dim.dim_x = 0;
-	attrval.w_dim.dim_y = 0;
-	try {
-	    attrval.value = ApiUtil.get_orb().create_any();
-	} catch (final DevFailed e) {
-	}
+		attrval.name = name;
+		attrval.quality = AttrQuality.ATTR_VALID;
+		attrval.time = new TimeVal();
+		attrval.r_dim = new AttributeDim();
+		attrval.w_dim = new AttributeDim();
+		attrval.r_dim.dim_x = 1;
+		attrval.r_dim.dim_y = 0;
+		attrval.w_dim.dim_x = 0;
+		attrval.w_dim.dim_y = 0;
+		attrval.value = ApiUtil.get_orb().create_any();
 
-	final long now = System.currentTimeMillis();
-	attrval.time.tv_sec = (int) (now / 1000);
-	attrval.time.tv_usec = (int) (now - attrval.time.tv_sec * 1000) * 1000;
-	attrval.time.tv_nsec = 0;
-	attrval.err_list = null;
-    }
+		final long now = System.currentTimeMillis();
+		attrval.time.tv_sec = (int) (now / 1000);
+		attrval.time.tv_usec = (int) (now - attrval.time.tv_sec * 1000) * 1000;
+		attrval.time.tv_nsec = 0;
+		attrval.err_list = null;
+	}
 
     public DeviceAttribute_3DAODefaultImpl() {
     }

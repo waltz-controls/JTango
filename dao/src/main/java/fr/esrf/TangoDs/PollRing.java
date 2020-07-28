@@ -384,12 +384,9 @@ public class PollRing extends Vector implements TangoConst
 			when = t;
 			when.tv_sec += Tango_DELTA_T;
 			cmd_result = null;
-			try {
-				cmd_result = fr.esrf.TangoApi.ApiUtil.get_orb().create_any();
-			}
-			catch(DevFailed e) {}
+			cmd_result = fr.esrf.TangoApi.ApiUtil.get_orb().create_any();
 			attr_value = new AttributeValue(
-						cmd_result, AttrQuality.ATTR_INVALID, when, "", 0, 0);
+					cmd_result, AttrQuality.ATTR_INVALID, when, "", 0, 0);
 			except = ex;
 		}
 		//==========================================================================
