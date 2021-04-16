@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.tango-controls</groupId>
+        <groupId>de.hereon.tango</groupId>
         <artifactId>JTangoParent</artifactId>
-        <version>9.6.1-hzg.3-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 

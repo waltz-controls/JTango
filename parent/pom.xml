@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.tango-controls</groupId>
+    <groupId>de.hereon.tango</groupId>
     <artifactId>JTangoParent</artifactId>
-    <version>9.6.1-hzg.3-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -123,7 +123,7 @@
                 <version>1.0.6.Final</version>
             </dependency>
             <dependency>
-                <groupId>org.tango-controls</groupId>
+                <groupId>de.hereon.tango</groupId>
                 <artifactId>JTangoCommons</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -133,17 +133,17 @@
                 <version>5</version>
             </dependency>
             <dependency>
-                <groupId>org.tango-controls</groupId>
+                <groupId>de.hereon.tango</groupId>
                 <artifactId>JTangoClientLang</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.tango-controls</groupId>
+                <groupId>de.hereon.tango</groupId>
                 <artifactId>TangORB</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.tango-controls</groupId>
+                <groupId>de.hereon.tango</groupId>
                 <artifactId>JTangoServer</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -199,8 +199,9 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-tango-controls</id>
-            <url>https://api.bintray.com/maven/hzgde/hzg-wpn-projects/${project.artifactId}/;publish=1</url>
+            <id>github-hzg</id>
+            <name>GitHub Maven Packages</name>
+            <url>https://maven.pkg.github.com/hzg-wpi/JTango</url>
         </repository>
     </distributionManagement>
 
@@ -209,9 +210,8 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>bintray-hzgde-hzg-wpn-projects</id>
-            <name>bintray</name>
-            <url>https://dl.bintray.com/hzgde/hzg-wpn-projects</url>
+            <id>github-hzg</id>
+            <url>https://maven.pkg.github.com/hzg-wpi/JTango</url>
         </repository>
     </repositories>
 
