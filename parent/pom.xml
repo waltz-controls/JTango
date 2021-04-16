@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.hereon.tango</groupId>
-    <artifactId>JTangoParent</artifactId>
+    <artifactId>parent</artifactId>
     <version>1.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
@@ -123,8 +123,8 @@
                 <version>1.0.6.Final</version>
             </dependency>
             <dependency>
-                <groupId>de.hereon.tango</groupId>
-                <artifactId>JTangoCommons</artifactId>
+                <groupId>de.hereon.tango.lang</groupId>
+                <artifactId>commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -133,18 +133,18 @@
                 <version>5</version>
             </dependency>
             <dependency>
-                <groupId>de.hereon.tango</groupId>
-                <artifactId>JTangoClientLang</artifactId>
+                <groupId>de.hereon.tango.lang</groupId>
+                <artifactId>client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.hereon.tango.orb</groupId>
+                <artifactId>tangorb</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>de.hereon.tango</groupId>
-                <artifactId>TangORB</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.hereon.tango</groupId>
-                <artifactId>JTangoServer</artifactId>
+                <artifactId>server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -3,11 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.hereon.tango</groupId>
-        <artifactId>JTangoParent</artifactId>
+        <artifactId>parent</artifactId>
         <version>1.0.1-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
-    <artifactId>JTangoClientLang</artifactId>
+    <groupId>de.hereon.tango.lang</groupId>
+    <artifactId>client</artifactId>
     <name>JTango Client Lang</name>
     <description>Tango client utilities</description>
     <url>https://github.com/tango-controls/JTango</url>
@@ -74,8 +75,8 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.hereon.tango</groupId>
-            <artifactId>TangORB</artifactId>
+            <groupId>de.hereon.tango.orb</groupId>
+            <artifactId>tangorb</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mozilla</groupId>

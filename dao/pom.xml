@@ -4,12 +4,13 @@
 
     <parent>
         <groupId>de.hereon.tango</groupId>
-        <artifactId>JTangoParent</artifactId>
+        <artifactId>parent</artifactId>
         <version>1.0.1-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>TangORB</artifactId>
+    <groupId>de.hereon.tango.orb</groupId>
+    <artifactId>tangorb</artifactId>
 
     <name>Java DAO</name>
     <description>Java API for Tango</description>
@@ -101,8 +102,8 @@
         </dependency>
 
         <dependency>
-            <groupId>de.hereon.tango</groupId>
-            <artifactId>JTangoCommons</artifactId>
+            <groupId>de.hereon.tango.lang</groupId>
+            <artifactId>commons</artifactId>
         </dependency>
 
         <dependency>

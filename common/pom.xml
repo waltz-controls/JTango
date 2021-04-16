@@ -4,12 +4,12 @@
 
     <parent>
         <groupId>de.hereon.tango</groupId>
-        <artifactId>JTangoParent</artifactId>
+        <artifactId>parent</artifactId>
         <version>1.0.1-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
-
-    <artifactId>JTangoCommons</artifactId>
+    <groupId>de.hereon.tango.lang</groupId>
+    <artifactId>commons</artifactId>
 
     <name>Java common</name>
     <description>Common classes for tango java API</description>

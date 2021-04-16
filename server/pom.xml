@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.hereon.tango</groupId>
-        <artifactId>JTangoParent</artifactId>
+        <artifactId>parent</artifactId>
         <version>1.0.1-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
-    <artifactId>JTangoServer</artifactId>
+    <artifactId>server</artifactId>
 
     <name>JTango Server</name>
     <description>Library for Tango Server (ie. Tango Device) in Java</description>
@@ -100,12 +100,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>de.hereon.tango</groupId>
-            <artifactId>TangORB</artifactId>
+            <groupId>de.hereon.tango.orb</groupId>
+            <artifactId>tangorb</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.hereon.tango</groupId>
-            <artifactId>JTangoClientLang</artifactId>
+            <groupId>de.hereon.tango.lang</groupId>
+            <artifactId>client</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
