@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.hereon.tango</groupId>
         <artifactId>JTangoParent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
@@ -19,7 +19,7 @@
         <connection>scm:git:git@github.com:HZG-WPI/JTango.git</connection>
         <developerConnection>scm:git:git@github.com:HZG-WPI/JTango.git</developerConnection>
         <url>https://github.com/HZG-WPI/JTango</url>
-        <tag>HEAD</tag>
+        <tag>JTango-1.0.0</tag>
     </scm>
 
     <issueManagement>
