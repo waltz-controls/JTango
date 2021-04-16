@@ -52,7 +52,7 @@ public class TangoUtilsTest {
         assertEquals("Test reason", result.reason);
         assertEquals("failed due testing", result.desc);
         assertSame(ErrSeverity.ERR, result.severity);
-        assertTrue(result.origin.startsWith("[org.tango.client.ez.util.TangoUtilsTest.testCreateDevError_StringReason"));
+        assertTrue(result.origin.startsWith("[app//org.tango.client.ez.util.TangoUtilsTest.testCreateDevError_StringReason"));
     }
 
     @Test
