@@ -72,16 +72,17 @@ public class DeviceProxyFactory {
     public static DeviceProxy get(String deviceName) throws DevFailed {
         //	Get full device name (with tango host) to manage multi tango_host
         String fullDeviceName;
+        TangoUrl tangoUrl = new TangoUrl(deviceName);
         if (deviceName.startsWith("tango:"))
             fullDeviceName = deviceName;
         else
-            fullDeviceName = new TangoUrl(deviceName).toString().toLowerCase();
+            throw new IllegalArgumentException(String.format("Device name %s does not starts with tango://", deviceName));
 
         String tangoHost;
         if (deviceName.contains("dbase=no"))
             tangoHost = "";
         else
-            tangoHost = ApiUtil.get_default_db_obj().getUrl().getTangoHost();
+            tangoHost = tangoUrl.getTangoHost();
         return get(fullDeviceName, tangoHost);
     }
     //===================================================================

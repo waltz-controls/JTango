@@ -141,38 +141,7 @@ public class TangoUrl implements ApiDefs, java.io.Serializable {
         //	Check if tango host and port OK
         //	Else retreive from environment
         if (protocol==TANGO && (host == null || host.isEmpty())) {
-            //  Check if database already connected
-            Database db = null;
-            //  If default database already create, get it
-            if (ApiUtil.default_db_obj_exists()) {
-                db = ApiUtil.get_default_db_obj();
-            }
-            else {
-                //  if tango_host is unknown --> get it from environment
-                setFromEnv();
-                if (host!=null && !host.isEmpty())
-                    db = ApiUtil.get_db_obj(host, strPort);
-                else
-                    db = ApiUtil.get_db_obj();
-            }
-
-            if (db != null)
-                envRead = true;
-
-            //  TANGO_HOST must be read from environment
-            if (!envRead) {
-                setFromEnv();
-                if (protocol == TANGO && port < 0)
-                    Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
-                            "Cannot parse port number",
-                            "TangoUrl.TangoUrl()");
-            } else {
-                //	Get the DB used host and port
-                host = db.url.host;
-                port = db.url.port;
-                strPort = Integer.toString(port);
-                fromEnv = true;
-            }
+            throw new IllegalArgumentException(String.format("URL %s does not contain host info", url.toString()));
         }
 
         //	Check id device name is OK

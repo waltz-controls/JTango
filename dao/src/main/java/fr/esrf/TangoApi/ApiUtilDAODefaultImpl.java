@@ -99,11 +99,8 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_db_obj(final String tango_host) throws DevFailed {
-        try {
-            return localDatabasesCache.get().get(tango_host);
-        } catch (ExecutionException e) {
-            throw DevFailedUtils.newDevFailed(e);
-        }
+        String[] parsed = parseTangoHost(tango_host);
+        return get_db_obj(parsed[0], parsed[1]);
     }
 
     // ===================================================================
@@ -113,9 +110,11 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_default_db_obj() {
-        return Optional
-                .ofNullable(localDatabase.get())
-                .orElseThrow(() -> new IllegalStateException("database is not set! Use set_db_obj method"));
+        try {
+            return get_db_obj(System.getProperty("TANGO_HOST", "localhost:10000"));
+        } catch (DevFailed devFailed) {
+            throw new RuntimeException("Can not get default database due to " + devFailed.getMessage());
+        }
     }
     // ===================================================================
 
@@ -124,7 +123,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public boolean default_db_obj_exists() {
-        return Optional.ofNullable(localDatabase.get()).isPresent();
+        return false;
     }
 
     // ===================================================================
@@ -146,7 +145,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_db_obj(final String host, final String port) throws DevFailed {
-        return get_db_obj(host + ":" + port);
+        return change_db_obj(host, port);
     }
 
     // ===================================================================
@@ -160,9 +159,13 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database change_db_obj(final String host, final String port) {
-        Database database = localDatabasesCache.get().getUnchecked(host + ":" + port);
-        localDatabase.set(database);
-        return database;
+        try {
+            Database database = new Database(host, port, true);
+            localDatabase.set(database);
+            return database;
+        } catch (DevFailed devFailed) {
+            throw new RuntimeException(String.format("Failed to connect to Tango db %s:%s",host,port));
+        }
     }
 
     /**
