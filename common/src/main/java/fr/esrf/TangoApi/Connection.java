@@ -119,6 +119,8 @@ public class Connection implements ApiDefs {
 	 */
 	protected boolean transparent_reconnection = true;
 
+	protected final int reconnectionDelay = 1000;
+
 	/**
 	 *	Previous reconnection failed excpetionm.
 	 */

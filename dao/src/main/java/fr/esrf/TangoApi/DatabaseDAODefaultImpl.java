@@ -132,10 +132,6 @@ public class DatabaseDAODefaultImpl extends ConnectionDAODefaultImpl implements 
         if (database.check_access && !database.isAccess_checked()) {
             database.access = checkAccessControl(database, database.devname, database.url);
             database.setAccess_checked(true);
-            //	Initialize value.
-            ApiUtil.getReconnectionDelay();
-            //System.out.println(this + "." + database.deviceName + " -> " +
-            //		((database.access==TangoConst.ACCESS_READ)? "Read" : "Write"));
         }
     }
 

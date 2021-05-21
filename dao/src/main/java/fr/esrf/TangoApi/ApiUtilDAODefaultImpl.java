@@ -216,31 +216,6 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
 	return in_server_code;
     }
 
-    // ===================================================================
-    /**
-     * Return reconnection delay for controle system.
-     */
-    // ===================================================================
-    private static int reconnection_delay = -1;
-
-    public int getReconnectionDelay() {
-        if (reconnection_delay < 0) {
-            try {
-                final DbDatum data = get_db_obj().get_property(TangoConst.CONTROL_SYSTEM,
-                    "ReconnectionDelay");
-                if (!data.is_empty()) {
-                    reconnection_delay = data.extractLong();
-                }
-            } catch (final DevFailed e) {
-                /* do nothing */
-            }
-            if (reconnection_delay < 0) {
-                reconnection_delay = 1000;
-            }
-        }
-        return reconnection_delay;
-    }
-
     // ==========================================================================
     // ==========================================================================
     public static String getUser()

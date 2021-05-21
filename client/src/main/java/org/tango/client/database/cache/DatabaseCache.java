@@ -33,7 +33,7 @@ public final class DatabaseCache implements ICachableDatabase {
     public DatabaseCache(final Connection database, final NoCacheDatabase dbDevice) throws DevFailed {
         this.dbDevice = dbDevice;
         // check version of stored procedure
-        final AttributeProxy attr = new AttributeProxy(database.get_device().name() + "/StoredProcedureRelease");
+        final AttributeProxy attr = new AttributeProxy("tango://" + database.get_tango_host() + "/" + database.get_device().name() + "/StoredProcedureRelease");
         version = attr.read().extractString();
         logger.debug("current database cache version {}", version);
         if (Pattern.matches(RELEASE_1_X, version)) {

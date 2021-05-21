@@ -281,7 +281,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 
                             // Do not reconnect if to soon
                             if (connection.isPrev_failed()
-                                && delay < ApiUtil.getReconnectionDelay()) {
+                                && delay < connection.reconnectionDelay) {
                                 try_reconnection = false;
                                 throw connection.getPrev_failed();
                             }

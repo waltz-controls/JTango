@@ -365,13 +365,6 @@ public class ApiUtil {
 	    return API_UTIL_DAO.in_server();
     }
 
-    // ===================================================================
-
-    public static int getReconnectionDelay() {
-	    return API_UTIL_DAO.getReconnectionDelay();
-
-    }
-
     /**
      * Add request in hash table and return id
      */
