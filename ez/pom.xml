@@ -2,10 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.hereon.tango.client.api</groupId>
+    <parent>
+        <groupId>de.hereon.tango</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+        <relativePath>../parent/pom.xml</relativePath>
+    </parent>
     <artifactId>ez</artifactId>
-    <version>3.0.2-SNAPSHOT</version>
-    <packaging>jar</packaging>
     <description>Library that facades standard Tango Java Client API</description>
 
     <properties>
@@ -14,20 +17,6 @@
         <github.organization>hzg-wpi</github.organization>
         <github.repo>ez-tango-api</github.repo>
     </properties>
-
-    <scm>
-        <connection>scm:git:git@github.com:${github.organization}/${github.repo}.git</connection>
-        <developerConnection>scm:git:git@github.com:${github.organization}/${github.repo}.git</developerConnection>
-        <url>https://github.com/${github.organization}/${github.repo}</url>
-        <tag>${version}</tag>
-    </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>github-hzg</id>
-            <url>https://maven.pkg.github.com/hzg-wpi/ez-tango-api</url>
-        </repository>
-    </distributionManagement>
 
     <developers>
         <developer>
@@ -65,8 +54,6 @@
         <dependency>
             <groupId>de.hereon.tango.orb</groupId>
             <artifactId>tangorb</artifactId>
-            <version>1.0.1</version>
-            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -77,7 +64,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -17,6 +17,7 @@
         <module>dao</module>
         <module>client</module>
         <module>server</module>
+        <module>ez</module>
     </modules>
 
     <name>JTango</name>

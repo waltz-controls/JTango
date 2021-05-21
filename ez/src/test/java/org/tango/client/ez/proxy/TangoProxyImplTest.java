@@ -52,7 +52,7 @@ public class TangoProxyImplTest {
 //
 //        String result = device.executeCommand(new int[]{1,2,3});
 
-        TangoProxy proxy = TangoProxies.newDeviceProxyWrapper(new DeviceProxy("development/custom/0", "hzgxenvtest", "10000"));
+        TangoProxy proxy = TangoProxies.newDeviceProxyWrapper(new DeviceProxy("tango://hzgxenvtest:10000development/custom/0"));
 
         String result = proxy.readAttribute("enumAttribute");
 
