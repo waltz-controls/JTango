@@ -460,7 +460,7 @@ class DevLockManager {
 
         // ==========================================================
         LockedDeviceAmin(final String name, final LockedDevice ld) throws DevFailed {
-            device = DeviceProxyFactory.get(name);
+            device = new DeviceProxy(name);
             this.name = name;
             devices = new Vector<LockedDevice>();
             devices.add(ld);
@@ -519,7 +519,7 @@ class DevLockManager {
                 final DeviceData argin = new DeviceData();
                 argin.insert(lsa);
 
-                final DeviceProxy dev = DeviceProxyFactory.get(name);
+                final DeviceProxy dev = new DeviceProxy(name);
                 dev.import_admin_device("CleanUp");
                 dev.getAdm_dev().command_inout("UnlockDevice", argin);
                 System.out.println("all devices unlocked.");

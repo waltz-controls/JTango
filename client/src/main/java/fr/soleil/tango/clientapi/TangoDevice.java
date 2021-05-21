@@ -6,7 +6,6 @@ import java.util.Map;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
 import fr.esrf.TangoApi.DeviceProxy;
-import fr.soleil.tango.clientapi.factory.ProxyFactory;
 
 public final class TangoDevice {
     private final Map<String, TangoAttribute> attributes = new HashMap<String, TangoAttribute>();
@@ -15,7 +14,7 @@ public final class TangoDevice {
     private final String deviceName;
 
     public TangoDevice(final String deviceName) throws DevFailed {
-	this(ProxyFactory.getInstance().createDeviceProxy(deviceName));
+	this(new DeviceProxy(deviceName));
     }
 
     public TangoDevice(final DeviceProxy deviceProxy) {

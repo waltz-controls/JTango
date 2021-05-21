@@ -160,12 +160,8 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
          */
         // Get connection on administration device
         if (deviceProxy.getAdm_dev() == null) {
-            if (DeviceProxyFactory.exists(info.name)) {
-                deviceProxy.setAdm_dev(DeviceProxyFactory.get(info.name));
-            } else {
             // If not exists, create it with info
-                deviceProxy.setAdm_dev(new DeviceProxy(info));
-            }
+            deviceProxy.setAdm_dev(new DeviceProxy(info));
         }
     }
 
@@ -182,8 +178,7 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 
         // Get connection on administration device
         if (deviceProxy.getAdm_dev() == null) {
-            deviceProxy.setAdm_dev(DeviceProxyFactory.get(
-                    adm_name(deviceProxy), deviceProxy.getUrl().getTangoHost()));
+            deviceProxy.setAdm_dev(new DeviceProxy(adm_name(deviceProxy)));
         }
     }
 

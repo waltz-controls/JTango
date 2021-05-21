@@ -90,8 +90,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
         }
 
         //	And crate DeviceProxy Object
-        dev = DeviceProxyFactory.get(devname);
-        //dev = new DeviceProxy(devname);
+        dev = new DeviceProxy(devname);
     }
 
     //==========================================================================

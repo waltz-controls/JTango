@@ -22,7 +22,6 @@ import fr.esrf.TangoApi.DeviceAttribute;
 import fr.esrf.TangoApi.DeviceProxy;
 import fr.esrf.TangoDs.NamedDevFailed;
 import fr.esrf.TangoDs.NamedDevFailedList;
-import fr.soleil.tango.clientapi.factory.ProxyFactory;
 
 /**
  * Tentative to manage group of Attributes.
@@ -98,7 +97,7 @@ public final class AttributeGroup {
                     Locale.ENGLISH);
             userAttributesNames[i] = fullAttribute;
             try {
-                final DeviceProxy device = ProxyFactory.getInstance().createDeviceProxy(deviceName);
+                final DeviceProxy device = new DeviceProxy(deviceName);
                 devices[i++] = device;
                 if (!devicesMap.containsKey(deviceName)) {
                     devicesMap.put(deviceName, device);

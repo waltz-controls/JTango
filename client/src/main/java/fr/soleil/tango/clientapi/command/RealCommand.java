@@ -13,7 +13,6 @@ import fr.esrf.TangoApi.DeviceProxy;
 import fr.esrf.TangoDs.TangoConst;
 import fr.soleil.tango.clientapi.InsertExtractUtils;
 import fr.soleil.tango.clientapi.Properties;
-import fr.soleil.tango.clientapi.factory.ProxyFactory;
 import fr.soleil.tango.clientapi.util.TypeConversionUtil;
 import fr.soleil.tango.errorstrategy.RetriableTask;
 import fr.soleil.tango.errorstrategy.Task;
@@ -73,7 +72,7 @@ public final class RealCommand implements ITangoCommand {
         final Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws DevFailed {
-                devProxy = ProxyFactory.getInstance().createDeviceProxy(deviceName);
+                devProxy = new DeviceProxy(deviceName);
                 arginType = devProxy.command_query(commandName).in_type;
                 argoutType = devProxy.command_query(commandName).out_type;
                 return null;

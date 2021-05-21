@@ -41,6 +41,7 @@ import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Policy;
 import org.omg.CORBA.SystemException;
+import org.tango.utils.DevFailedUtils;
 
 /**
  * Class Description: This class manage device connection for Tango objects. It
@@ -1222,7 +1223,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
             name = connection.device.adm_name();
         } catch (final Exception e) {
             ApiUtilDAODefaultImpl.removePendingRepliesOfDevice(connection);
-            throw_dev_failed(connection, e, "adm_name", false);
+            throw DevFailedUtils.newDevFailed(e);
         }
 
         if (name !=null &&  !name.startsWith("tango://") && !name.startsWith("//"))
@@ -1276,10 +1277,9 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
      *            command name to be put inside reason and origin fields.
      */
     // ==========================================================================
-    public void checkIfTango(final Connection connection, final String cmdname) throws DevFailed {
+    public void checkIfTango(final Connection connection, final String cmdname) {
 	if (is_taco(connection)) {
-	    Except.throw_non_supported_exception("TangoApi_NOT_TACO_CMD", cmdname
-		    + " is NOT a TACO command.", cmdname + "()");
+	    throw new IllegalArgumentException("TangoApi IS NOT TACO");
 		}
     }
 

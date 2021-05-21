@@ -106,17 +106,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     protected EventQueue event_queue;
 
     private DbEventImportInfo evt_import_info = null;
-    // ===================================================================
-    /**
-     * Default DeviceProxy constructor. It will do nothing
-     */
-    // ===================================================================
-    public DeviceProxy() throws DevFailed {
-        super();
-        deviceProxyDAO = TangoFactory.getSingleton().getDeviceProxyDAO();
-        deviceProxyDAO.init(this);
-        DeviceProxyFactory.add(this);
-    }
 
     // ===================================================================
     /**
@@ -129,8 +118,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         super(info);
         deviceProxyDAO = TangoFactory.getSingleton().getDeviceProxyDAO();
         deviceProxyDAO.init(this, info.name);
-        //System.out.println("=========== " + devname + " created ============");
-        DeviceProxyFactory.add(this);
     }
 
     // ===================================================================
@@ -143,9 +130,7 @@ public class DeviceProxy extends Connection implements ApiDefs {
     public DeviceProxy(String devname) throws DevFailed {
         super(devname);
         deviceProxyDAO = TangoFactory.getSingleton().getDeviceProxyDAO();
-        deviceProxyDAO.init(this, devname);
-        //System.out.println("=========== " + devname + " created ============");
-        DeviceProxyFactory.add(this);
+        deviceProxyDAO.init(this, this.url.host, this.url.strPort);
     }
 
     // ===================================================================
@@ -160,38 +145,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
         super(devname, check_access);
         deviceProxyDAO = TangoFactory.getSingleton().getDeviceProxyDAO();
         deviceProxyDAO.init(this, devname, check_access);
-        DeviceProxyFactory.add(this);
-    }
-
-    // ===================================================================
-    /**
-     * TangoDevice constructor. It will import the device.
-     *
-     * @param devname name of the device to be imported.
-     * @param ior     ior string used to import device
-     */
-    // ===================================================================
-    public DeviceProxy(String devname, String ior) throws DevFailed {
-        super(devname, ior);
-        deviceProxyDAO = TangoFactory.getSingleton().getDeviceProxyDAO();
-        deviceProxyDAO.init(this, devname, ior);
-        DeviceProxyFactory.add(this);
-    }
-
-    // ===================================================================
-    /**
-     * TangoDevice constructor. It will import the device.
-     *
-     * @param devname name of the device to be imported.
-     * @param host    host where database is running.
-     * @param port    port for database connection.
-     */
-    // ===================================================================
-    public DeviceProxy(String devname, String host, String port) throws DevFailed {
-        super(devname, host, port);
-        deviceProxyDAO = TangoFactory.getSingleton().getDeviceProxyDAO();
-        deviceProxyDAO.init(this, devname, host, host);
-        DeviceProxyFactory.add(this);
     }
 
     public boolean use_db() {

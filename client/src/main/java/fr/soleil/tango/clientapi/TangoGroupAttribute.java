@@ -11,7 +11,6 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.AttributeInfoEx;
 import fr.esrf.TangoApi.DeviceAttribute;
 import fr.esrf.TangoApi.Group.AttributeGroup;
-import fr.soleil.tango.clientapi.factory.ProxyFactory;
 
 public final class TangoGroupAttribute {
 
@@ -27,7 +26,7 @@ public final class TangoGroupAttribute {
      */
     public TangoGroupAttribute(final String... attributeNames) throws DevFailed {
         attributeNamesGroup = attributeNames;
-        group = ProxyFactory.getInstance().createAttributeGroup(true, attributeNames);
+        group = new AttributeGroup(attributeNames);
         deviceAttributes = group.read();
     }
 
@@ -52,7 +51,7 @@ public final class TangoGroupAttribute {
     public TangoGroupAttribute(final boolean throwExceptions, final boolean readValue, final String... attributeNames)
             throws DevFailed {
         attributeNamesGroup = attributeNames;
-        group = ProxyFactory.getInstance().createAttributeGroup(throwExceptions, attributeNames);
+        group = new AttributeGroup(throwExceptions, attributeNames);
         if (readValue) {
             initDeviceAttributes();
         }

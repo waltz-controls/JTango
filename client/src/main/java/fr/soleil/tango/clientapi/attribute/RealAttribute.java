@@ -18,7 +18,6 @@ import fr.esrf.TangoApi.DeviceAttribute;
 import fr.esrf.TangoDs.TangoConst;
 import fr.soleil.tango.clientapi.InsertExtractUtils;
 import fr.soleil.tango.clientapi.Properties;
-import fr.soleil.tango.clientapi.factory.ProxyFactory;
 import fr.soleil.tango.errorstrategy.RetriableTask;
 import fr.soleil.tango.errorstrategy.Task;
 
@@ -43,7 +42,7 @@ public final class RealAttribute implements ITangoAttribute {
         final Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws DevFailed {
-                attributeProxy = ProxyFactory.getInstance().createAttributeProxy(attributeName);
+                attributeProxy = new AttributeProxy(attributeName);
                 deviceAttribute = attributeProxy.read();
                 final AttributeInfo info = attributeProxy.get_info();
                 dataType = info.data_type;
