@@ -1085,44 +1085,7 @@ public interface IDeviceProxyDAO extends IConnectionDAO{
 
 
 
-	//==========================================================================
-	/**
-	 * 	TACO commands
-	 */
-	//==========================================================================
-	//==========================================================================
-	/**
-	 *	Returns  TACO device information.
-	 *
-	 *	@return  TACO device information as String array.
-	 *	<li> Device name.
-	 *	<li> Class name
-	 *	<li> Device type
-	 *	<li> Device server name
-	 *	<li> Host name
-	 */
-	//==========================================================================
-	public abstract String[] dev_inform(DeviceProxy deviceProxy) throws DevFailed;
-
-	//==========================================================================
-	/**
-	 *	Execute the dev_rpc_protocol TACO command to change RPC protocol mode.
-	 *	@param	mode RPC protocol mode to be seted 
-	 *		(TangoApi.TacoDevice.<b>D_TCP</b> or TangoApi.TacoDevice.<b>D_UDP</b>).
-	 */
-	//==========================================================================
-	public abstract void set_rpc_protocol(DeviceProxy deviceProxy, int mode) throws DevFailed;
-
-	//==========================================================================
-	/**
-	 *	@return	mode RPC protocol mode  used
-	 *		(TangoApi.TacoDevice.<b>D_TCP</b> or TangoApi.TacoDevice.<b>D_UDP</b>).
-	 */
-	//==========================================================================
-	public abstract int get_rpc_protocol(DeviceProxy deviceProxy) throws DevFailed;
-
-
-    // ===================================================================
+	// ===================================================================
     /*
      * Pipe related methods
      */

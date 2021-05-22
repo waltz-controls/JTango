@@ -262,33 +262,27 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 
         build_connection(deviceProxy);
 
-        if (deviceProxy.url.protocol == TANGO) {
-            DevState state = DevState.UNKNOWN;
-            int timeoutReconnection = get_timeout_millis(deviceProxy);
-            final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
-            boolean done = false;
-            for (int i = 0; i < retries && !done; i++) {
-                try {
-                    if (i > 0)
-                        deviceProxy.set_timeout_millis(timeoutReconnection);
-                    if (src == ApiDefs.FROM_ATTR) {
-                        state = deviceProxy.device.state();
-                    } else {
-                        final DeviceData argout = deviceProxy.command_inout("State");
-                        state = argout.extractDevState();
-                    }
-                    done = true;
-                } catch (final Exception e) {
-                    manageExceptionReconnection(deviceProxy,
-                            retries, i, e, this.getClass() + ".state");
+        DevState state = DevState.UNKNOWN;
+        int timeoutReconnection = get_timeout_millis(deviceProxy);
+        final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
+        boolean done = false;
+        for (int i = 0; i < retries && !done; i++) {
+            try {
+                if (i > 0)
+                    deviceProxy.set_timeout_millis(timeoutReconnection);
+                if (src == ApiDefs.FROM_ATTR) {
+                    state = deviceProxy.device.state();
+                } else {
+                    final DeviceData argout = deviceProxy.command_inout("State");
+                    state = argout.extractDevState();
                 }
+                done = true;
+            } catch (final Exception e) {
+                manageExceptionReconnection(deviceProxy,
+                        retries, i, e, this.getClass() + ".state");
             }
-            return state;
-        } else {
-            final DeviceData argout = command_inout(deviceProxy, "DevState");
-            final short state = argout.extractShort();
-            return T2Ttypes.tangoState(state);
         }
+        return state;
     }
 
     // ===========================================================
@@ -305,7 +299,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
         build_connection(deviceProxy);
 
         CommandInfo info = null;
-        if (deviceProxy.url.protocol == TANGO) {
             // try 2 times for reconnection if requested
             final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
             for (int i=0 ; i<retries ; i++) {
@@ -323,10 +316,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                     + ".command_query");
             }
             }
-        } else {
-            // TACO device
-            info = deviceProxy.taco_device.commandQuery(commandName);
-        }
         return info;
     }
 
@@ -448,11 +437,7 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                 deviceProxy.url.strPort));
         }
         // checkIfTango("import_device");
-        if (deviceProxy.url.protocol == TANGO) {
             return deviceProxy.getDb_dev().import_device();
-        } else {
-            return new DbDevImportInfo(dev_inform(deviceProxy));
-        }
     }
 
     // ==========================================================================
@@ -556,7 +541,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
     // ==========================================================================
     public DbDatum[] get_property(final DeviceProxy deviceProxy,
                                   final String[] propertyNames) throws DevFailed {
-		if (deviceProxy.url.protocol == TANGO) {
 	    	checkIfUseDb(deviceProxy, "get_property()");
 
 	    	if (deviceProxy.getDb_dev() == null) {
@@ -564,12 +548,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 				deviceProxy.url.strPort));
 	    	}
 	    	return deviceProxy.getDb_dev().get_property(propertyNames);
-		} else {
-			if (deviceProxy.taco_device == null && deviceProxy.devname != null) {
-	    		build_connection(deviceProxy);
-			}
-	    	return deviceProxy.taco_device.get_property(propertyNames);
-		}
     }
 
     // ==========================================================================
@@ -582,7 +560,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
     // ==========================================================================
     public DbDatum get_property(final DeviceProxy deviceProxy,
                                 final String propertyName)  throws DevFailed {
-        if (deviceProxy.url.protocol == TANGO) {
             checkIfUseDb(deviceProxy, "get_property()");
 
             if (deviceProxy.getDb_dev() == null) {
@@ -590,10 +567,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                 deviceProxy.url.strPort));
             }
             return deviceProxy.getDb_dev().get_property(propertyName);
-        } else {
-            final String[] propnames = { propertyName };
-            return deviceProxy.taco_device.get_property(propnames)[0];
-        }
     }
 
     // ==========================================================================
@@ -736,7 +709,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
             try {
                 if (oneTry > 0)
                     deviceProxy.set_timeout_millis(timeoutReconnection);
-                if (deviceProxy.url.protocol == TANGO) {
                     // Read All attribute config
                     final String[] wildcard = new String[1];
 
@@ -751,9 +723,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                         result[i] = ac[i].name;
                     }
                     return result;
-                } else {
-                    return deviceProxy.taco_device.get_attribute_list();
-                }
             }
             catch (DevFailed e) {
                 if (oneTry>=retries)
@@ -971,16 +940,12 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                 AttributeInfo[] result;
                 AttributeConfig[] ac = new AttributeConfig[0];
                 AttributeConfig_2[] ac_2 = null;
-                if (deviceProxy.url.protocol == TANGO) {
                     // Check IDL version
                     if (deviceProxy.device_2 != null) {
                         ac_2 = deviceProxy.device_2.get_attribute_config_2(attributeNames);
                     } else {
                         ac = deviceProxy.device.get_attribute_config(attributeNames);
                     }
-                } else {
-                ac = deviceProxy.taco_device.get_attribute_config(attributeNames);
-                }
 
                 // Convert AttributeConfig(_2) object to AttributeInfo object
                 final int size = ac_2 != null ? ac_2.length : ac.length;
@@ -1034,7 +999,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                 AttributeConfig_3[] attributeConfigList_3 = null;
                 AttributeConfig_2[] attributeConfigList_2 = null;
                 AttributeConfig[] attributeConfigList = null;
-                if (deviceProxy.url.protocol == TANGO) {
                     // Check IDL version
                     if (deviceProxy.device_5 != null) {
                         attributeConfigList_5 =
@@ -1053,10 +1017,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                             "Not supported by the IDL version used by device",
                                 deviceProxy.getFull_class_name() + ".get_attribute_info_ex()");
                     }
-                }
-                else {
-                    attributeConfigList = deviceProxy.taco_device.get_attribute_config(attributeNames);
-                }
 
                 // Convert AttributeConfig(_3) object to AttributeInfo object
                 int size;
@@ -1390,7 +1350,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
         AttributeValue_3[] attributeValues_3 = new AttributeValue_3[0];
         AttributeValue_4[] attributeValues_4 = new AttributeValue_4[0];
         AttributeValue_5[] attributeValues_5 = new AttributeValue_5[0];
-        if (deviceProxy.url.protocol == TANGO) {
             // try 2 times for reconnection if requested
             boolean done = false;
             final int retries = deviceProxy.transparent_reconnection ? 2 : 1;
@@ -1453,9 +1412,7 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
                     attr[i] = new DeviceAttribute(attributeValues[i]);
                 }
             }
-        } else {
-            attr = deviceProxy.taco_device.read_attribute(attributeNames);
-        }
+
         return attr;
     }
 
@@ -3158,58 +3115,6 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
 
     // ==========================================================================
     // ==========================================================================
-
-    // ==========================================================================
-    /**
-     * TACO commands
-     */
-    // ==========================================================================
-    // ==========================================================================
-    /**
-     * Returns TACO device information.
-     * 
-     * @return TACO device information as String array. <li>Device name. <li>
-     *         Class name <li>Device type <li>Device server name <li>Host name
-     */
-    // ==========================================================================
-    public String[] dev_inform(final DeviceProxy deviceProxy) throws DevFailed {
-        checkIfTaco(deviceProxy, "dev_inform");
-        if (deviceProxy.taco_device == null && deviceProxy.devname != null) {
-            build_connection(deviceProxy);
-        }
-        return deviceProxy.taco_device.dev_inform();
-    }
-
-    // ==========================================================================
-    /**
-     * Execute the dev_rpc_protocol TACO command to change RPC protocol mode.
-     * 
-     * @param mode RPC protocol mode to be seted
-     *            (TangoApi.TacoDevice.<b>D_TCP</b> or
-     *            TangoApi.TacoDevice.<b>D_UDP</b>).
-     */
-    // ==========================================================================
-    public void set_rpc_protocol(final DeviceProxy deviceProxy, final int mode) throws DevFailed {
-        checkIfTaco(deviceProxy, "dev_rpc_protocol");
-
-        build_connection(deviceProxy);
-
-        deviceProxy.taco_device.set_rpc_protocol(mode);
-    }
-
-    // ==========================================================================
-    /**
-     * @return mode RPC protocol mode used (TangoApi.TacoDevice.<b>D_TCP</b> or
-     *         TangoApi.TacoDevice.<b>D_UDP</b>).
-     */
-    // ==========================================================================
-    public int get_rpc_protocol(final DeviceProxy deviceProxy) throws DevFailed {
-        checkIfTaco(deviceProxy, "get_rpc_protocol");
-
-        build_connection(deviceProxy);
-
-        return deviceProxy.taco_device.get_rpc_protocol();
-    }
 
 
     // ===================================================================

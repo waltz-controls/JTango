@@ -54,8 +54,6 @@ public interface ITangoFactory {
 
     public IDatabaseDAO getDatabaseDAO();
 
-    public abstract ITacoTangoDeviceDAO getTacoTangoDeviceDAO();
-
     public IDeviceAttributeDAO getDeviceAttributeDAO();
 
     public IDeviceAttribute_3DAO getDeviceAttribute_3DAO();

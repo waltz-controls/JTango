@@ -238,10 +238,7 @@ public class TangoUrl implements ApiDefs, java.io.Serializable {
     //===================================================================
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        if (protocol == TANGO)
             sb.append("tango://").append(host).append(":").append(strPort);
-        else
-            sb.append("taco");
         sb.append("/").append(devname);
         if (!use_db)
             sb.append(NO_DATABASE);

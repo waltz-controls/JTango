@@ -164,10 +164,6 @@ public class TangoFactory {
         return tangoFactory.getDeviceProxyDAO();
     }
 
-    public ITacoTangoDeviceDAO getTacoTangoDeviceDAO() {
-        return tangoFactory.getTacoTangoDeviceDAO();
-    }
-
     public IDatabaseDAO getDatabaseDAO() {
         return tangoFactory.getDatabaseDAO();
     }

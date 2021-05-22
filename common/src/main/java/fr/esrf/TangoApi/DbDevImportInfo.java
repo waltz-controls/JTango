@@ -80,12 +80,6 @@ public class DbDevImportInfo implements java.io.Serializable {
      * Host name where server is running
      */
     public String classname = "unknown";
-    /**
-     * is a TACO device (rpc and not ior)
-     */
-    public boolean is_taco = false;
-
-    public String taco_info;
 
     //===============================================
 
@@ -143,41 +137,13 @@ public class DbDevImportInfo implements java.io.Serializable {
         //	Class has been added later
         if (info.svalue.length > 5)
             classname = info.svalue[5];
-        is_taco = (ior.startsWith("rpc:"));
     }
     //===============================================
-
-    /**
-     * Complete constructor.
-     *
-     * @param taco_info info from taco database
-     */
-    //===============================================
-    public DbDevImportInfo(String[] taco_info) {
-        is_taco = true;
-        if (taco_info.length < 6) {
-            //	Not full -> is an error
-            this.taco_info = "";
-            for (String info : taco_info)
-                this.taco_info += info + "\n";
-        } else {
-            this.taco_info =
-                    "Device:        " + taco_info[0] + "\n" +
-                    "type_id:       " + "taco:" + taco_info[2] + "\n" +
-                    "host:          " + taco_info[4] + "\n" +
-                    "Class:         " + taco_info[1] + "\n" +
-                    "Server:        " + taco_info[3] + "\n" +
-                    "NETHOST:       " + taco_info[5];
-        }
-    }
 
     //===============================================
     //===============================================
     public String toString() {
         String result;
-        if (is_taco) {
-            result = taco_info;
-        } else
             try {
                 //	Return info in ior
                 IORdump id = new IORdump(name, ior);

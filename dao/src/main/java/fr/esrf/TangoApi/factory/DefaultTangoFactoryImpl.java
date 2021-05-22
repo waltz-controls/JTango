@@ -60,14 +60,6 @@ public class DefaultTangoFactoryImpl implements ITangoFactory {
 	}
 
 	/* (non-Javadoc)
-		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getTacoTangoDeviceDAO()
-		 */
-	public ITacoTangoDeviceDAO getTacoTangoDeviceDAO()
-	{
-		return new TacoTangoDeviceDAODefaultImpl();
-	}
-
-	/* (non-Javadoc)
 		 * @see fr.esrf.TangoApi.factory.ITangoFactory#getDatabaseDAO()
 		 */
 	public IDatabaseDAO getDatabaseDAO()

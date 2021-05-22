@@ -136,8 +136,7 @@ public final class TangoUtil {
         // ( xxx ) = capturing group. Group content is "xxx" once the matcher is finished
 
         final String nameR = "[\\w\\-\\.]+";// ie [a-zA-Z_0-9-.]
-        // String protocolR = "(?:(?:tango|taco)://)";
-        final String protocolR = "(?:(?:(?:tango|taco):)?//)";// not interested in protocol
+        final String protocolR = "(?:(?:(?:tango):)?//)";// not interested in protocol
         final String hostPortR = "(?:" + nameR + ":\\d+/)";// not interested in host and port
         final String prefixR = "(" + protocolR + "?" + hostPortR + "?)";// interested in prefix
         final String deviceAliasR = "(" + nameR + ")";

@@ -47,8 +47,6 @@ import java.io.IOException;
 public class IORdump {
 	private IIORDumpDAO iordumpDAO = null;
 
-	public boolean is_taco = false;
-
 	// ===============================================================
 	// ===============================================================
 	public IORdump(String devname, String iorString) throws DevFailed {

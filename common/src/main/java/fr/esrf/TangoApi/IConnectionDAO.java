@@ -301,22 +301,6 @@ public interface IConnectionDAO {
 
 	//==========================================================================
 	/**
-	 *	return true if device is a taco device
-	 */
-	//==========================================================================
-	public abstract boolean is_taco(Connection connection);
-	
-	//==========================================================================
-	/**
-	 *	if not a TACO command then throw a DevFailed Exception.
-	 *
-	 *	@param cmdname	command name to be put inside reason and origin fields.
-	 */
-	//==========================================================================
-	public abstract void checkIfTaco(Connection connection, String cmdname) throws DevFailed;	
-	
-	//==========================================================================
-	/**
 	 *	if not a TACO command then throw a DevFailed Exception.
 	 *
 	 *	@param cmdname	command name to be put inside reason and origin fields.

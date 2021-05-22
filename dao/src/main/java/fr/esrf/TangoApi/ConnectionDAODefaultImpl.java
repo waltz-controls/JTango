@@ -272,8 +272,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
                 else {
 		    		try {
                         // url.trace();
-                        // Check if Tango or taco device
-                        if (connection.url.protocol == TANGO) {
                             if (connection instanceof DeviceProxy) {
                                 //  Set admin device to null to force reconnection.
                                 ((DeviceProxy) connection).setAdm_dev(null);
@@ -297,14 +295,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
                                 dev_import_without_dbase(connection);
                             }
                             connection.setPrev_failed(null);
-                        }
-                        else
-                        if (connection.url.protocol == TACO) {
-                            if (connection.taco_device == null) {
-                                connection.taco_device =
-                                    new TacoTangoDevice(connection.devname, connection.url.host);
-                            }
-                        }
 		    		}
                     catch (final DevFailed e) {
 						if (try_reconnection) {
@@ -508,10 +498,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 	    	result = info.ior;
 		}
 
-		// check if TACO
-		if (info.is_taco) {
-	    	connection.url.protocol = TACO;
-		} else {
 	    	// Manage Access control
 	    	try {
 				initCtrlAccess(connection);
@@ -519,7 +505,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 			catch(DevFailed e) {
 				System.err.println(e.errors[0].desc);
 			}
-		}
 		return result;
     }
 
@@ -722,13 +707,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 
 		build_connection(connection);
 
-		// Check if TACO device
-		if (connection.url.protocol == TACO) {
-	    	connection.taco_device.set_rpc_timeout(millis);
-	    	return;
-		}
-
-		// Else TANGO device
 		set_obj_timeout(connection, millis);
     }
 
@@ -756,13 +734,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 
 		build_connection(connection);
 
-		// Check if TACO device
-		if (connection.url.protocol == TACO) {
-	    	return connection.taco_device.get_rpc_timeout();
-		} else {
-	    	// Else TANGO device
-	    	return connection.getDev_timeout();
-		}
+	   	return connection.getDev_timeout();
     }
 
     // ===========================================================
@@ -851,10 +823,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 		
 		build_connection(connection);
 
-		// Check if taco device
-		if (connection.url.protocol == TACO) {
-	    	return connection.taco_device.command_inout(command, argin);
-		}
 		//System.out.println(connection.devname + ".command_inout("+command + ") -----------> " +
 		//		((connection.access==TangoConst.ACCESS_READ)? "Read" : "Write"));
 
@@ -1098,9 +1066,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 				if (oneTry > 0)
 					connection.set_timeout_millis(timeoutReconnection);
 				CommandInfo[] result;
-				if (connection.url.protocol == TACO) {
-					result = connection.taco_device.commandListQuery();
-				} else {
 					// Check IDL revision
 					if (connection.device_2 != null) {
 						final DevCmdInfo_2[] tmp = connection.device_2.command_list_query_2();
@@ -1115,7 +1080,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
                             result[i] = new CommandInfo(tmp[i]);
                         }
                     }
-                }
                 return result;
             } catch (final DevFailed e) {
                 if (oneTry>=retries) {
@@ -1156,15 +1120,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
      */
     // ==========================================================================
     public DevSource get_source(final Connection connection) throws DevFailed {
-		if (is_taco(connection)) {
-	    	if (connection.taco_device == null) {
-			connection.taco_device = new TacoTangoDevice(connection.devname,
-				connection.url.host);
-	    	}
-	    	return connection.taco_device.get_source();
-		} else {
-	    	return connection.dev_src;
-		}
+		return connection.dev_src;
     }
 
     // ==========================================================================
@@ -1176,15 +1132,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
      */
     // ==========================================================================
     public void set_source(final Connection connection, final DevSource new_src) throws DevFailed {
-		if (is_taco(connection)) {
-	    	if (connection.taco_device == null) {
-			connection.taco_device = new TacoTangoDevice(connection.devname,
-				connection.url.host);
-	    	}
-	    	connection.taco_device.set_source(new_src);
-		} else {
-	    	connection.dev_src = new_src;
-		}
+    	connection.dev_src = new_src;
     }
 
     // ==========================================================================
@@ -1247,30 +1195,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 
     // ==========================================================================
     /**
-     * return true if device is a taco device
-     */
-    // ==========================================================================
-    public boolean is_taco(final Connection connection) {
-		return connection.url.protocol == TACO;
-    }
-
-    // ==========================================================================
-    /**
-     * if not a TACO command then throw a DevFailed Exception.
-     * 
-     * @param cmdname
-     *            command name to be put inside reason and origin fields.
-     */
-    // ==========================================================================
-    public void checkIfTaco(final Connection connection, final String cmdname) throws DevFailed {
-	if (!is_taco(connection)) {
-	    Except.throw_non_supported_exception("TangoApi_NOT_TANGO_CMD", cmdname
-		    + " is NOT a TANGO command.", cmdname + "()");
-		}
-    }
-
-    // ==========================================================================
-    /**
      * if not a TACO command then throw a DevFailed Exception.
      * 
      * @param cmdname
@@ -1278,9 +1202,6 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
      */
     // ==========================================================================
     public void checkIfTango(final Connection connection, final String cmdname) {
-	if (is_taco(connection)) {
-	    throw new IllegalArgumentException("TangoApi IS NOT TACO");
-		}
     }
 
     // ==========================================================================

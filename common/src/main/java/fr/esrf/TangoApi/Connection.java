@@ -75,10 +75,6 @@ public class Connection implements ApiDefs {
 	 */
 	protected Device_5	device_5 = null;
 	/**
-	 *	TACO Device object used for TANGO interface.
-	 */
-	protected TacoTangoDevice	taco_device = null;
-	/**
 	 *	Device IDL object used for efective connection.
 	 */
 	private org.omg.CORBA.Object obj = null;
@@ -547,25 +543,6 @@ public class Connection implements ApiDefs {
         return host+port;
 	}
 
-	// ==========================================================================
-	/**
-	 * return true if device is a taco device
-	 */
-	// ==========================================================================
-	public boolean is_taco() {
-		return iConnection.is_taco(this);
-	}
-
-	// ==========================================================================
-	/**
-	 * if not a TACO command then throw a DevFailed Exception.
-	 * 
-	 * @param cmdname command name to be put inside reason and origin fields.
-	 */
-	// ==========================================================================
-	public void checkIfTaco(String cmdname) throws DevFailed {
-		iConnection.checkIfTaco(this, cmdname);
-	}
 
 	// ==========================================================================
 	/**

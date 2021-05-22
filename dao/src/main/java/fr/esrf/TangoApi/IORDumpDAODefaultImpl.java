@@ -134,8 +134,6 @@ public class IORDumpDAODefaultImpl implements IIORDumpDAO
             StringBuilder   sb = new StringBuilder();
 			sb.append("Device:          ").append(deviceName).append("\n");
 			sb.append("type_id:         ").append(get_type_id()).append("\n");
-            if (!iORdump.is_taco)
-                sb.append("iiop_version:    ").append(get_iiop_version()).append("\n");
 
             sb.append("host:            ").append(get_host()).append("\n");
             List<String> alternates = getAlternateAddresses();
@@ -144,9 +142,6 @@ public class IORDumpDAODefaultImpl implements IIORDumpDAO
                     sb.append("alternate addr.: ").append(add).append("\n");
             }
 
-            if (!iORdump.is_taco)
-                sb.append("port:            ").append(get_port());
-            else
                 sb.append("prg number:      ").append(get_prg_number());
 			return sb.toString();
 		}
@@ -167,17 +162,6 @@ public class IORDumpDAODefaultImpl implements IIORDumpDAO
 
 		//	Check if ior string start with "rpc:" --> TACO protocole
 		//	ior = rpc:hostname:prgnumber
-		if (iorString.startsWith("rpc:"))
-		{	
-			iORdump.is_taco = true;
-			type_id = "Taco";
-			host    = iorString.substring("rpc:".length(), 
-						iorString.indexOf(":", "rpc:".length()+1));
-			String	s = iorString.substring(iorString.indexOf(":", "rpc:".length()+1)+1);
-			prg_number = Integer.parseInt(s);
-			return;
-		}
-		else
 		if (!iorString.startsWith("IOR:"))
 			return;
 	

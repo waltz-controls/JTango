@@ -1445,48 +1445,6 @@ public class DeviceProxy extends Connection implements ApiDefs {
     }
 
 
-    // ==========================================================================
-    /**
-     * TACO commands
-     */
-    // ==========================================================================
-    // ==========================================================================
-    /**
-     * Returns TACO device information.
-     *
-     * @return TACO device information as String array.
-     *         <li> Device name.
-     *         <li> Class name
-     *         <li> Device type
-     *         <li> Device server name
-     *         <li> Host name
-     */
-    // ==========================================================================
-    public String[] dev_inform() throws DevFailed {
-        return deviceProxyDAO.dev_inform(this);
-    }
-
-    // ==========================================================================
-    /**
-     * Execute the dev_rpc_protocol TACO command to change RPC protocol mode.
-     *
-     * @param mode RPC protocol mode to be seted (TangoApi.TacoDevice.<b>D_TCP</b>
-     *             or TangoApi.TacoDevice.<b>D_UDP</b>).
-     */
-    // ==========================================================================
-    public void set_rpc_protocol(int mode) throws DevFailed {
-        deviceProxyDAO.set_rpc_protocol(this, mode);
-    }
-
-    // ==========================================================================
-    /**
-     * @return mode RPC protocol mode used (TangoApi.TacoDevice.<b>D_TCP</b>
-     *         or TangoApi.TacoDevice.<b>D_UDP</b>).
-     */
-    // ==========================================================================
-    public int get_rpc_protocol() throws DevFailed {
-        return deviceProxyDAO.get_rpc_protocol(this);
-    }
     // ===================================================================
     /**
      * Query database to get a list of device using the specified device as
