@@ -34,9 +34,6 @@
 
 package fr.esrf.TangoApi;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
@@ -45,10 +42,11 @@ import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
 import org.jacorb.orb.Delegate;
 import org.omg.CORBA.Request;
-import org.tango.utils.DevFailedUtils;
 
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class Description: This class manage a static vector of Database object. <Br>
@@ -65,23 +63,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
-    private final CacheLoader<String, Database> loader = new CacheLoader<>() {
-        @Override
-        public Database load(String key) throws DevFailed {
-            final int i = key.indexOf(":");
-            if (i <= 0) {
-                Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
-                        "Cannot parse port number", "ApiUtil.get_db_obj()");
-            }
-            return new Database(key.substring(0, i), key.substring(i + 1));
-        }
-    };
-
-    final private ThreadLocal<LoadingCache<String, Database>> localDatabasesCache = ThreadLocal.withInitial(() ->
-            CacheBuilder.newBuilder()
-                    .build(loader));
-
-    private final ThreadLocal<Database> localDatabase = new ThreadLocal<>();
+    private final AtomicReference<Database> localDatabase = new AtomicReference<>();
 
     static private Hashtable<Integer, AsyncCallObject> async_request_table =
             new Hashtable<Integer, AsyncCallObject>();
@@ -99,7 +81,7 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_db_obj(final String tango_host) throws DevFailed {
-        String[] parsed = parseTangoHost(tango_host);
+        String[] parsed = tango_host.split(":");
         return get_db_obj(parsed[0], parsed[1]);
     }
 
@@ -145,7 +127,10 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      */
     // ===================================================================
     public Database get_db_obj(final String host, final String port) throws DevFailed {
-        return change_db_obj(host, port);
+        Database database = localDatabase.get();
+        return Optional.ofNullable(database).orElseGet(() -> {
+            return change_db_obj(host, port);
+        });
     }
 
     // ===================================================================
@@ -190,11 +175,10 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
      *            host and port (hostname:portnumber) where database is running.
      */
     // ===================================================================
-    public Database set_db_obj(final String tango_host) throws DevFailed {
+    public Database set_db_obj(final String tango_host) {
         final int i = tango_host.indexOf(":");
         if (i <= 0) {
-            Except.throw_connection_failed("TangoApi_TANGO_HOST_NOT_SET",
-                    "Cannot parse port number", "ApiUtil.set_db_obj()");
+            throw new IllegalArgumentException(String.format("Invalid tango_host: %s", tango_host));
         }
         return change_db_obj(tango_host.substring(0, i), tango_host.substring(i + 1));
     }
