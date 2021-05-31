@@ -1,13 +1,5 @@
 package fr.soleil.tango.clientapi.attribute;
 
-import java.lang.reflect.Array;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.utils.DevFailedUtils;
-import org.tango.utils.TangoUtil;
-
 import fr.esrf.Tango.AttrDataFormat;
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.AttrWriteType;
@@ -15,36 +7,51 @@ import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoApi.AttributeInfo;
 import fr.esrf.TangoApi.AttributeProxy;
 import fr.esrf.TangoApi.DeviceAttribute;
+import fr.esrf.TangoApi.DeviceProxy;
 import fr.esrf.TangoDs.TangoConst;
 import fr.soleil.tango.clientapi.InsertExtractUtils;
 import fr.soleil.tango.clientapi.Properties;
 import fr.soleil.tango.errorstrategy.RetriableTask;
 import fr.soleil.tango.errorstrategy.Task;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.utils.DevFailedUtils;
+
+import java.lang.reflect.Array;
 
 public final class RealAttribute implements ITangoAttribute {
 
     private static final String TANGO_WRONG_DATA_ERROR = "TANGO_WRONG_DATA_ERROR";
     private final Logger logger = LoggerFactory.getLogger(RealAttribute.class);
-    private AttributeProxy attributeProxy;
+    private final String fullAttributeName;
 
     private DeviceAttribute deviceAttribute = null;
     private int dataType;
     private AttrDataFormat dataFormat;
     private AttrWriteType writeType;
+    private final String deviceName;
     private final String attributeName;
+    private DeviceProxy proxy;
     private final int delay;
     private final int retries;
 
-    public RealAttribute(final String attributeName) throws DevFailed {
-        this.attributeName = attributeName;
+    public RealAttribute(final String fullAttributeName) throws DevFailed {
+        //	Extract device name
+        this.deviceName =
+                fullAttributeName.substring(0, fullAttributeName.lastIndexOf("/", fullAttributeName.length() - 1));
+
+        this.fullAttributeName = fullAttributeName;
+        this.attributeName =
+                fullAttributeName.substring(fullAttributeName.lastIndexOf("/", fullAttributeName.length() - 1) + 1);
         delay = Properties.getDelay();
         retries = Properties.getRetries();
         final Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws DevFailed {
-                attributeProxy = new AttributeProxy(attributeName);
-                deviceAttribute = attributeProxy.read();
-                final AttributeInfo info = attributeProxy.get_info();
+                proxy = new DeviceProxy(deviceName);
+                deviceAttribute = proxy.read_attribute(attributeName);
+                final AttributeInfo info = proxy.get_attribute_info(attributeName);
                 dataType = info.data_type;
                 dataFormat = info.data_format;
                 writeType = info.writable;
@@ -76,9 +83,9 @@ public final class RealAttribute implements ITangoAttribute {
         final Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws DevFailed {
-                logger.debug("writing on {}", attributeName);
-                attributeProxy.write(deviceAttribute);
-                logger.debug("writing {} DONE", attributeName);
+                logger.debug("writing on {}", fullAttributeName);
+                proxy.write_attribute(deviceAttribute);
+                logger.debug("writing {} DONE", fullAttributeName);
                 return null;
             }
         };
@@ -91,8 +98,8 @@ public final class RealAttribute implements ITangoAttribute {
         final Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws DevFailed {
-                deviceAttribute = attributeProxy.read();
-                final AttributeInfo info = attributeProxy.get_info();
+                deviceAttribute = proxy.read_attribute(attributeName);
+                final AttributeInfo info = proxy.get_attribute_info(attributeName);
                 dataType = info.data_type;
                 dataFormat = info.data_format;
                 writeType = info.writable;
@@ -252,7 +259,7 @@ public final class RealAttribute implements ITangoAttribute {
 
     @Override
     public AttributeProxy getAttributeProxy() {
-        return attributeProxy;
+        return new AttributeProxy(fullAttributeName, proxy);
     }
 
     @Override
@@ -292,7 +299,7 @@ public final class RealAttribute implements ITangoAttribute {
 
     @Override
     public String getDeviceName() throws DevFailed {
-        return TangoUtil.getfullDeviceNameForAttribute(attributeName);
+        return fullAttributeName;
     }
 
     @Override
@@ -306,14 +313,14 @@ public final class RealAttribute implements ITangoAttribute {
     }
 
     @Override
-    public String getAttributeName() {
-        return attributeName;
+    public String getFullAttributeName() {
+        return fullAttributeName;
     }
 
     @Override
     public String toString() {
         final ToStringBuilder str = new ToStringBuilder(this);
-        str.append("name", getAttributeName());
+        str.append("name", getFullAttributeName());
         final String typeString = TangoConst.Tango_CmdArgTypeName[getDataType()];
         final String formatString = TangoConst.Tango_AttrDataFormatName[getDataFormat().value()];
         str.append("type", typeString);
@@ -329,7 +336,7 @@ public final class RealAttribute implements ITangoAttribute {
 
     @Override
     public void setTimeout(final int timeout) throws DevFailed {
-        attributeProxy.set_timeout_millis(timeout);
+        proxy.set_timeout_millis(timeout);
     }
 
 }

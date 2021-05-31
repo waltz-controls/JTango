@@ -9,7 +9,7 @@ import fr.esrf.TangoApi.DeviceAttribute;
 
 public interface ITangoAttribute {
 
-    String getAttributeName();
+    String getFullAttributeName();
 
     Object extract() throws DevFailed;
 

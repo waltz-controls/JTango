@@ -1,10 +1,5 @@
 package fr.soleil.tango.clientapi;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tango.utils.DevFailedUtils;
-
 import fr.esrf.Tango.AttrDataFormat;
 import fr.esrf.Tango.AttrQuality;
 import fr.esrf.Tango.AttrWriteType;
@@ -15,6 +10,10 @@ import fr.esrf.TangoDs.TangoConst;
 import fr.soleil.tango.clientapi.attribute.ITangoAttribute;
 import fr.soleil.tango.clientapi.attribute.MockAttribute;
 import fr.soleil.tango.clientapi.attribute.RealAttribute;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tango.utils.DevFailedUtils;
 
 /**
  * Manage access to a tango attribute.
@@ -433,13 +432,13 @@ public final class TangoAttribute {
     }
 
     public String getName() {
-        return attributeImpl.getAttributeName();
+        return attributeImpl.getFullAttributeName();
     }
 
     @Override
     public String toString() {
         final ToStringBuilder str = new ToStringBuilder(this);
-        str.append("name", attributeImpl.getAttributeName());
+        str.append("name", attributeImpl.getFullAttributeName());
         String typeString = "UNKOWN";
         try {
             typeString = TangoConst.Tango_CmdArgTypeName[attributeImpl.getDataType()];

@@ -1,8 +1,8 @@
 package org.tango.client.database.cache;
 
 import fr.esrf.Tango.DevFailed;
-import fr.esrf.TangoApi.AttributeProxy;
 import fr.esrf.TangoApi.Connection;
+import fr.esrf.TangoApi.DeviceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.client.database.DeviceExportInfo;
@@ -33,8 +33,8 @@ public final class DatabaseCache implements ICachableDatabase {
     public DatabaseCache(final Connection database, final NoCacheDatabase dbDevice) throws DevFailed {
         this.dbDevice = dbDevice;
         // check version of stored procedure
-        final AttributeProxy attr = new AttributeProxy("tango://" + database.get_tango_host() + "/" + database.get_device().name() + "/StoredProcedureRelease");
-        version = attr.read().extractString();
+        DeviceProxy proxy = new DeviceProxy("tango://" + database.get_tango_host() + "/" + database.get_device().name());
+        version = proxy.read_attribute("StoredProcedureRelease").extractString();
         logger.debug("current database cache version {}", version);
         if (Pattern.matches(RELEASE_1_X, version)) {
             isCacheAvailable = true;

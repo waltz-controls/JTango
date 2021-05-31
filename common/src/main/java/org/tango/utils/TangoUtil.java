@@ -265,7 +265,7 @@ public final class TangoUtil {
         } else {
             final String[] fields = attributeName.split(DEVICE_SEPARATOR);
             if (fields.length == 1) {
-                result = getfullDeviceNameForAttribute(ApiUtil.get_db_obj().get_attribute_from_alias(fields[0]));
+                throw new UnsupportedOperationException(String.format("Can not resolve attribute alias %s", attributeName));
             } else if (fields.length == 2) {
                 result = ApiUtil.get_db_obj().get_device_from_alias(fields[0]);
             } else if (fields.length == 4) {

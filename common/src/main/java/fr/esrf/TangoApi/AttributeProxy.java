@@ -36,7 +36,6 @@ package fr.esrf.TangoApi;
 
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.Tango.DevState;
-import fr.esrf.TangoDs.Except;
 
 import java.util.Collections;
 
@@ -46,51 +45,47 @@ import java.util.Collections;
  *
  * @author verdier
  * @version $Revision: 26328 $
+ * @deprecated use {@link DeviceProxy} directly instead
  */
+@Deprecated
 @SuppressWarnings("UnusedDeclaration")
 public class AttributeProxy implements ApiDefs, java.io.Serializable {
-    private String full_deviceName = null;
-    private String deviceName = null;
-    private DeviceProxy dev;
-    private int idl_version = -1;
+    private final String deviceName;
+    private final String fullAttributeName;
+    private final String attributeName;
+    private final DeviceProxy dev;
+    private final int idl_version;
 
     //===================================================================
+
     /**
      * AttributeProxy constructor. It will import the device.
      *
-     * @param    deviceName    name of the attribute or its alias.
-     * @throws DevFailed in case of database access failed
+     * @param    fullAttributeName    name of the attribute or its alias.
+     * @param deviceProxy
      */
     //===================================================================
-    public AttributeProxy(String deviceName) throws DevFailed {
-        //	Check if alias or att name
-        if (deviceName.indexOf('/') < 0) {
-            //	Get the attribute name for specified alias
-            String alias = deviceName;
-            deviceName = ApiUtil.get_db_obj().get_attribute_from_alias(alias);
-        }
-
+    public AttributeProxy(String fullAttributeName, DeviceProxy deviceProxy) {
         //	Extract device name
-        String devname =
-                deviceName.substring(0, deviceName.lastIndexOf("/", deviceName.length() - 1));
+        this.deviceName =
+                fullAttributeName.substring(0, fullAttributeName.lastIndexOf("/", fullAttributeName.length() - 1));
 
         //	Store full attribute name
-        full_deviceName = deviceName;
+        this.fullAttributeName = fullAttributeName;
 
         //	Store Tango attribute name
-        this.deviceName =
-                deviceName.substring(deviceName.lastIndexOf("/", deviceName.length() - 1) + 1);
-
-        String noDB = "#dbase=no";
-        if (this.deviceName.endsWith(noDB)) {
-            //  Put it at end of device name
-            int pos = this.deviceName.indexOf(noDB);
-            devname += noDB;
-            this.deviceName = this.deviceName.substring(0, pos);
-        }
+        this.attributeName =
+                fullAttributeName.substring(fullAttributeName.lastIndexOf("/", fullAttributeName.length() - 1) + 1);
 
         //	And crate DeviceProxy Object
-        dev = new DeviceProxy(devname);
+        dev = deviceProxy;
+        int idl_version;
+        try {
+            idl_version = dev.get_idl_version();
+        } catch (DevFailed devFailed) {
+            idl_version = -1;
+        }
+        this.idl_version = idl_version;
     }
 
     //==========================================================================
@@ -103,7 +98,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     public String get_alias() throws DevFailed {
 
         //	Then query database for an alias for deviceName.
-        return ApiUtil.get_db_obj().get_alias_from_attribute(deviceName);
+        return dev.get_db_obj().get_alias_from_attribute(attributeName);
     }
 
     //==========================================================================
@@ -121,8 +116,6 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     //==========================================================================
     //==========================================================================
     public int get_idl_version() throws DevFailed {
-        if (idl_version < 0)
-            idl_version = dev.get_idl_version();
         return idl_version;
     }
     //==========================================================================
@@ -131,7 +124,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public String fullName() {
-        return full_deviceName;
+        return fullAttributeName;
     }
     //==========================================================================
     /**
@@ -139,7 +132,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public String name() {
-        return deviceName;
+        return attributeName;
     }
     //==========================================================================
     /**
@@ -175,7 +168,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     //==========================================================================
     public DbAttribute get_property()
             throws DevFailed {
-        return dev.get_attribute_property(deviceName);
+        return dev.get_attribute_property(attributeName);
     }
     //==========================================================================
     /**
@@ -187,7 +180,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     //==========================================================================
     public void put_property(DbDatum property)
             throws DevFailed {
-        DbAttribute db_att = new DbAttribute(deviceName);
+        DbAttribute db_att = new DbAttribute(attributeName);
         db_att.add(property);
         dev.put_attribute_property(db_att);
     }
@@ -202,7 +195,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     //==========================================================================
     public void put_property(DbDatum[] properties)
             throws DevFailed {
-        DbAttribute db_att = new DbAttribute(deviceName);
+        DbAttribute db_att = new DbAttribute(attributeName);
         Collections.addAll(db_att, properties);
         dev.put_attribute_property(db_att);
     }
@@ -216,7 +209,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     //==========================================================================
     public void delete_property(String propname)
             throws DevFailed {
-        dev.delete_attribute_property(deviceName, propname);
+        dev.delete_attribute_property(attributeName, propname);
     }
     //==========================================================================
     /**
@@ -227,7 +220,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
     //==========================================================================
     public void delete_property(String[] propnames)
             throws DevFailed {
-        dev.delete_attribute_property(deviceName, propnames);
+        dev.delete_attribute_property(attributeName, propnames);
     }
     //==========================================================================
     /**
@@ -237,7 +230,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public AttributeInfo get_info() throws DevFailed {
-        return dev.get_attribute_info(deviceName);
+        return dev.get_attribute_info(attributeName);
     }
     //==========================================================================
     /**
@@ -247,7 +240,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public AttributeInfoEx get_info_ex() throws DevFailed {
-        return dev.get_attribute_info_ex(deviceName);
+        return dev.get_attribute_info_ex(attributeName);
     }
     //==========================================================================
     /**
@@ -277,7 +270,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public DeviceAttribute read() throws DevFailed {
-        return dev.read_attribute(deviceName);
+        return dev.read_attribute(attributeName);
     }
     //==========================================================================
     /**
@@ -318,7 +311,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public DeviceDataHistory[] history(int nb) throws DevFailed {
-        return dev.attribute_history(deviceName, nb);
+        return dev.attribute_history(attributeName, nb);
     }
     //==========================================================================
     /**
@@ -326,7 +319,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public DeviceDataHistory[] history() throws DevFailed {
-        return dev.attribute_history(deviceName);
+        return dev.attribute_history(attributeName);
     }
     //==========================================================================
     /**
@@ -337,7 +330,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public void poll(int period) throws DevFailed {
-        dev.poll_attribute(deviceName, period);
+        dev.poll_attribute(attributeName, period);
     }
     //==========================================================================
     /**
@@ -345,7 +338,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public int get_polling_period() throws DevFailed {
-        return dev.get_attribute_polling_period(deviceName);
+        return dev.get_attribute_polling_period(attributeName);
     }
     //==========================================================================
     /**
@@ -353,7 +346,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public void stop_poll() throws DevFailed {
-        dev.stop_poll_attribute(deviceName);
+        dev.stop_poll_attribute(attributeName);
     }
     //==========================================================================
     /**
@@ -361,7 +354,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public int read_asynch() throws DevFailed {
-        return dev.read_attribute_asynch(deviceName);
+        return dev.read_attribute_asynch(attributeName);
     }
     //==========================================================================
     /**
@@ -371,7 +364,7 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public void read_asynch(CallBack cb) throws DevFailed {
-        dev.read_attribute_asynch(deviceName, cb);
+        dev.read_attribute_asynch(attributeName, cb);
     }
     //==========================================================================
     /**
@@ -457,35 +450,8 @@ public class AttributeProxy implements ApiDefs, java.io.Serializable {
      */
     //==========================================================================
     public int subscribe_event(int event, CallBack callback, String[] filters) throws DevFailed {
-        return dev.subscribe_event(deviceName, event, callback, filters);
+        return dev.subscribe_event(attributeName, event, callback, filters);
     }
     //==========================================================================
     //==========================================================================
-
-
-    //==========================================================================
-    /**
-     * Just a main method to check API methods.
-     */
-    //==========================================================================
-    public static void main(String args[]) {
-        String deviceName = "tango/admin/corvus/hoststate";
-        try {
-            AttributeProxy att = new AttributeProxy(deviceName);
-            att.ping();
-            System.out.println(att.name() + " is alive");
-            DbAttribute db_att = att.get_property();
-            for (int i = 0; i < db_att.size(); i++) {
-                DbDatum datum = db_att.datum(i);
-                System.out.println(datum.name + " : " + datum.extractString());
-            }
-
-            DeviceAttribute da = att.read();
-            System.out.println(att.name() + " : " + da.extractShort());
-            System.out.println(att.name() + " state  : " + ApiUtil.stateName(att.state()));
-            System.out.println(att.name() + " status : " + att.status());
-        } catch (DevFailed e) {
-            Except.print_exception(e);
-        }
-    }
 }
