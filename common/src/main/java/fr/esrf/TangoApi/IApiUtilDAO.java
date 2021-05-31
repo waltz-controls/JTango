@@ -268,13 +268,6 @@ public interface IApiUtilDAO {
     public String qualityName(short att_q_val);
 
     // ===================================================================
-    /**
-     * Parse Tango host (check multi Tango_host)
-     */
-    // ===================================================================
-    public String[] parseTangoHost(String tgh) throws DevFailed;
-
-    // ===================================================================
     // ===================================================================
     public double getZmqVersion();
     // ===================================================================

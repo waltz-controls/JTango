@@ -168,11 +168,11 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
     }
 
     // ===================================================================
+
     /**
      * Return the database object created for specified host and port.
      *
-     * @param tango_host
-     *            host and port (hostname:portnumber) where database is running.
+     * @param tango_host host and port (hostname:portnumber) where database is running.
      */
     // ===================================================================
     public Database set_db_obj(final String tango_host) {
@@ -496,52 +496,6 @@ public class ApiUtilDAODefaultImpl implements IApiUtilDAO {
 	    return TangoConst.Tango_QualityName[att_q_val];
     }
 
-    // ===================================================================
-    /**
-     * Parse Tango host (check multi Tango_host)
-     */
-    // ===================================================================
-    public String[] parseTangoHost(final String tgh) throws DevFailed {
-        String host = null;
-        String strport = null;
-        try {
-            // Check if there is more than one Tango Host
-            StringTokenizer stk;
-            if (tgh.indexOf(",") > 0) {
-            stk = new StringTokenizer(tgh, ",");
-            } else {
-            stk = new StringTokenizer(tgh);
-            }
-
-            final ArrayList<String> arrayList = new ArrayList<String>();
-            while (stk.hasMoreTokens()) {
-            // Get each Tango_host
-            final String th = stk.nextToken();
-            final StringTokenizer stk2 = new StringTokenizer(th, ":");
-            arrayList.add(stk2.nextToken()); // Host Name
-            arrayList.add(stk2.nextToken()); // Port Number
-            }
-
-            // Get the default one (first)
-            host    = arrayList.get(0);
-            strport = arrayList.get(1);
-            Integer.parseInt(strport);
-
-            // Put second one if exists in a singleton map object
-            final String def_tango_host = host + ":" + strport;
-            final DbRedundancy dbr = DbRedundancy.get_instance();
-            if (arrayList.size() > 3) {
-            final String redun = arrayList.get(2) + ":"
-                        + arrayList.get(3);
-            dbr.put(def_tango_host, redun);
-            }
-        } catch (final Exception e) {
-            Except.throw_exception("TangoApi_TANGO_HOST_NOT_SET", e.toString()
-                + " occurs when parsing " + "\"TANGO_HOST\" property " + tgh,
-                "TangoApi.ApiUtil.parseTangoHost()");
-        }
-        return new String[] { host, strport };
-    }
     // ===================================================================
     // ===================================================================
     public double getZmqVersion() {
