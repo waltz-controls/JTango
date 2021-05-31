@@ -410,7 +410,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
     public String get_ior(final Connection connection) throws DevFailed {
 		Database db;
 		if (connection.url.host == null) {
-	    	db = ApiUtil.get_db_obj();
+			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
 	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
 		}
@@ -425,8 +425,8 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
         if (connection.url.use_db) {
             Database db;
             if (connection.url.host == null) {
-                db = ApiUtil.get_db_obj();
-            } else {
+				throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
+			} else {
                 db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
             }
             final DbDevImportInfo info = db.import_device(connection.devname);
@@ -442,7 +442,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
     public String get_server_name(final Connection connection) throws DevFailed {
 		Database db;
 		if (connection.url.host == null) {
-	    	db = ApiUtil.get_db_obj();
+			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
 	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
 		}
@@ -455,7 +455,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
     public String get_class_name(final Connection connection) throws DevFailed {
 		Database db;
 		if (connection.url.host == null) {
-	    	db = ApiUtil.get_db_obj();
+			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
 	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
 		}
@@ -488,7 +488,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
     private String get_exported_ior(final Connection connection) throws DevFailed {
 		Database db;
 		if (connection.url.host == null) {
-	    	db = ApiUtil.get_db_obj();
+			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
 	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
 		}
@@ -516,7 +516,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
     public void dev_import(final Connection connection) throws DevFailed {
 		Database db;
 		if (connection.url.host == null) {
-	    	db = ApiUtil.get_db_obj();
+			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
 	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
 		}
