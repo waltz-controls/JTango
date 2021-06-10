@@ -18,6 +18,7 @@
         <module>client</module>
         <module>server</module>
         <module>ez</module>
+        <module>rx</module>
     </modules>
 
     <name>JTango</name>

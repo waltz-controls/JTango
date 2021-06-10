@@ -1,9 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.tango-controls</groupId>
-    <artifactId>RxJTango</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <parent>
+        <groupId>de.hereon.tango</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.6-SNAPSHOT</version>
+        <relativePath>../parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>rx</artifactId>
     <packaging>jar</packaging>
 
     <name>RxJTango</name>
@@ -40,21 +46,6 @@
         </plugins>
     </build>
 
-    <scm>
-        <connection>scm:git:git@github.com:Ingvord/RxJTango</connection>
-        <developerConnection>scm:git:git@github.com:Ingvord/RxJTango</developerConnection>
-        <url>https://github.com/Ingvord/RxJTango</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Ingvord Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Ingvord/RxJTango</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -75,14 +66,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.hzg.wpi.tango.client.api</groupId>
-            <artifactId>ezTangoAPI</artifactId>
-            <version>3.0.0</version>
+            <groupId>de.hereon.tango</groupId>
+            <artifactId>ez</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.tango-controls</groupId>
-            <artifactId>TangORB</artifactId>
-            <version>9.5.18-hzg.7</version>
+            <groupId>de.hereon.tango.orb</groupId>
+            <artifactId>tangorb</artifactId>
         </dependency>
     </dependencies>
 
