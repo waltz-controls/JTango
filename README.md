@@ -13,7 +13,7 @@ TANGO kernel Java implementation improved and patched
             <enabled>false</enabled>
         </snapshots>
         <id>github-hzg</id>
-        <url>https://maven.pkg.github.com/hzg-wpi/*</url>
+        <url>https://maven.pkg.github.com/hereon-wpi/*</url>
     </repository>
 </repositories>
 ```

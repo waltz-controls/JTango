@@ -14,7 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <github.organization>hzg-wpi</github.organization>
+        <github.organization>hereon-wpi</github.organization>
         <github.repo>ez-tango-api</github.repo>
     </properties>
 
@@ -264,7 +264,7 @@
     <repositories>
         <repository>
             <id>github-hzg</id>
-            <url>https://maven.pkg.github.com/hzg-wpi/JTango</url>
+            <url>https://maven.pkg.github.com/hereon-wpi/JTango</url>
         </repository>
     </repositories>
 </project>

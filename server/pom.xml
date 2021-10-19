@@ -13,12 +13,12 @@
     <description>Library for Tango Server (ie. Tango Device) in Java</description>
     <inceptionYear>2012</inceptionYear>
 
-    <url>https://github.com/HZG-WPI/JTango</url>
+    <url>https://github.com/hereon-wpi/JTango</url>
 
     <scm>
-        <connection>scm:git:git@github.com:HZG-WPI/JTango.git</connection>
-        <developerConnection>scm:git:git@github.com:HZG-WPI/JTango.git</developerConnection>
-        <url>https://github.com/HZG-WPI/JTango</url>
+        <connection>scm:git:git@github.com:hereon-wpi/JTango.git</connection>
+        <developerConnection>scm:git:git@github.com:hereon-wpi/JTango.git</developerConnection>
+        <url>https://github.com/hereon-wpi/JTango</url>
         <tag>HEAD</tag>
     </scm>
 

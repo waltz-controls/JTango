@@ -16,9 +16,9 @@
     <url>https://github.com/tango-controls/JTango</url>
 
     <scm>
-        <connection>scm:git:git@github.com:HZG-WPI/JTango.git</connection>
-        <developerConnection>scm:git:git@github.com:HZG-WPI/JTango.git</developerConnection>
-        <url>https://github.com/HZG-WPI/JTango</url>
+        <connection>scm:git:git@github.com:hereon-wpi/JTango.git</connection>
+        <developerConnection>scm:git:git@github.com:hereon-wpi/JTango.git</developerConnection>
+        <url>https://github.com/hereon-wpi/JTango</url>
         <tag>HEAD</tag>
     </scm>
 

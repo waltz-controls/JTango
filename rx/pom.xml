@@ -87,9 +87,8 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>bintray-hzgde-hzg-wpn-projects</id>
-            <name>bintray</name>
-            <url>https://dl.bintray.com/hzgde/hzg-wpn-projects</url>
+            <id>github-hzg</id>
+            <url>https://maven.pkg.github.com/hereon-wpi/JTango</url>
         </repository>
     </repositories>
 </project>

@@ -13,9 +13,9 @@
     <url>https://github.com/tango-controls/JTango</url>
 
     <scm>
-        <connection>scm:git:git@github.com:HZG-WPI/JTango.git</connection>
-        <developerConnection>scm:git:git@github.com:HZG-WPI/JTango.git</developerConnection>
-        <url>https://github.com/HZG-WPI/JTango</url>
+        <connection>scm:git:git@github.com:hereon-wpi/JTango.git</connection>
+        <developerConnection>scm:git:git@github.com:hereon-wpi/JTango.git</developerConnection>
+        <url>https://github.com/hereon-wpi/JTango</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -206,7 +206,7 @@
         <repository>
             <id>github-hzg</id>
             <name>GitHub Maven Packages</name>
-            <url>https://maven.pkg.github.com/hzg-wpi/JTango</url>
+            <url>https://maven.pkg.github.com/hereon-wpi/JTango</url>
         </repository>
     </distributionManagement>
 
@@ -216,7 +216,7 @@
                 <enabled>false</enabled>
             </snapshots>
             <id>github-hzg</id>
-            <url>https://maven.pkg.github.com/hzg-wpi/JTango</url>
+            <url>https://maven.pkg.github.com/hereon-wpi/JTango</url>
         </repository>
     </repositories>
 
