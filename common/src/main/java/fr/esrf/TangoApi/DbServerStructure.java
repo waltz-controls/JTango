@@ -36,6 +36,8 @@ package fr.esrf.TangoApi;
 
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoDs.Except;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.tango.utils.DevFailedUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,19 +57,6 @@ public class DbServerStructure {
     private String tgHost = null;
     private String tgPort = null;
     private ArrayList<TangoClass>  classes = new ArrayList<TangoClass>();
-	//===============================================================
-    /**
-     * Constructor for DbServerStructure.
-     * It will read the server structure from database.
-     *
-     * @param serverName the specified server (ServerName/InstanceName)
-     * @throws DevFailed  in case of read database fails.
-     */
-	//===============================================================
-	public DbServerStructure(String serverName) throws DevFailed {
-        this.serverName = serverName;
-        buildStructure();
-    }
 	//===============================================================
     /**
      * Constructor for DbServerStructure.
@@ -111,7 +100,7 @@ public class DbServerStructure {
     private void buildStructure() throws DevFailed {
         DbServer    server;
         if (tgHost ==null || tgPort ==null)
-            server = new DbServer(serverName);
+            throw DevFailedUtils.newDevFailed(new IllegalStateException("tgHost ==null || tgPort ==null"));
         else {
             server = new DbServer(serverName, tgHost, tgPort);
         }
@@ -156,7 +145,8 @@ public class DbServerStructure {
      */
 	//===============================================================
     public void putInDatabase(String tangoHost) throws  DevFailed {
-        Database    database = ApiUtil.get_db_obj(tangoHost);
+        String[] tangoHostSplit = tangoHost.split(":");
+        Database    database = new Database(tangoHostSplit[0], tangoHostSplit[1]);
         createTheServer(database);
         putProperties(database);
     }
@@ -244,9 +234,8 @@ public class DbServerStructure {
      */
 	//===============================================================
     public void remove() throws DevFailed {
-        Database    database =
-                (tgHost ==null)? ApiUtil.get_db_obj() : ApiUtil.get_db_obj(tgHost, tgPort);
-        remove(database.get_tango_host());
+        if(tgHost ==null) throw DevFailedUtils.newDevFailed(new IllegalStateException("tgHost ==null"));
+        remove(tgHost);
     }
 	//===============================================================
     /**
@@ -262,7 +251,8 @@ public class DbServerStructure {
 		//	to remove the DServer as last one.
         //  If a failure append during this method,
         //	the server will be able to reloaded.
-        Database    database = ApiUtil.get_db_obj(tangoHost);
+        String[] tangoHostSplit = tangoHost.split(":");
+        Database    database = new Database(tangoHostSplit[0], tangoHostSplit[1]);
         for (int i=classes.size()-1 ; i>=0 ; i--) {
             for (TangoDevice device : classes.get(i)) {
                 database.delete_device(device.name);
@@ -310,8 +300,8 @@ public class DbServerStructure {
         //===========================================================
         private TangoClass(String name) throws DevFailed {
             this.name = name;
-            Database    database =
-                    (tgHost ==null)? ApiUtil.get_db_obj() : ApiUtil.get_db_obj(tgHost, tgPort);
+            if(tgHost ==null) throw DevFailedUtils.newDevFailed(new IllegalStateException("tgHost ==null"));
+            Database    database =new Database(tgHost, tgPort);
 
             //  Read properties
             String[]    propertyNames = database.get_class_property_list(name, "*");
@@ -362,9 +352,7 @@ public class DbServerStructure {
             }
 
             //  Build devices
-            String[]    deviceNames = (tgHost ==null) ?
-                    new DbServer(serverName).get_device_name(name)
-                :   new DbServer(serverName, tgHost, tgPort).get_device_name(name);
+            String[]    deviceNames = new DbServer(serverName, tgHost, tgPort).get_device_name(name);
             for (String deviceName : deviceNames)
                 add(new TangoDevice(deviceName));
         }
@@ -525,8 +513,8 @@ public class DbServerStructure {
                 }
             }
             //  get attribute list from Db
-            Database    database =
-                    (tgHost ==null)? ApiUtil.get_db_obj() : ApiUtil.get_db_obj(tgHost, tgPort);
+            if(tgHost ==null) throw DevFailedUtils.newDevFailed(new IllegalStateException("tgHost ==null"));
+            Database    database = new Database(tgHost, tgPort);
             String[] attributeNames  = database.get_device_attribute_list(name);
             for (String attributeName : attributeNames) {
                 //  Read attribute properties

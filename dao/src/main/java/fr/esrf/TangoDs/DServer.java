@@ -159,9 +159,6 @@ public class DServer extends DeviceImpl {
                     final MyComp comp = new MyComp();
                     Collections.sort(cl_ref.get_command_list(), comp);
 
-                    // Build class attributes
-                    cl_ref.attribute_factory(cl_ref.get_class_attr().get_attr_list());
-                    cl_ref.get_class_attr().init_class_attribute(cl_ref.get_name(), 0);
 
                     // Set class name in command instances and analyse user
                     // methods (only for

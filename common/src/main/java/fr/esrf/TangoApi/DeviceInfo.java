@@ -91,27 +91,4 @@ public class DeviceInfo extends DbDevImportInfo implements java.io.Serializable 
         result += "\nlast_unexported: " + last_unexported;
         return result;
     }
-
-    //===============================================================
-    //===============================================================
-    public static void main(String[] args) {
-        if (args.length == 0) {
-            System.out.println("Device name ?");
-            System.exit(0);
-        }
-        try {
-            String devname = args[0];
-            Database db = ApiUtil.get_db_obj();
-            DeviceInfo info = db.get_device_info(devname);
-            System.out.println(info);
-        } catch (DevFailed e) {
-            if (args.length < 2 || args[1].equals("-no_exception") == false)
-                fr.esrf.TangoDs.Except.print_exception(e);
-            System.exit(1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        System.exit(0);
-    }
 }

@@ -412,7 +412,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 		if (connection.url.host == null) {
 			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
-	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
+	    	db = new Database(connection.url.host, connection.url.strPort);
 		}
 
 		final DbDevImportInfo info = db.import_device(connection.devname);
@@ -427,7 +427,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
             if (connection.url.host == null) {
 				throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 			} else {
-                db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
+                db = new Database(connection.url.host, connection.url.strPort);
             }
             final DbDevImportInfo info = db.import_device(connection.devname);
             return info.hostname;
@@ -444,7 +444,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 		if (connection.url.host == null) {
 			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
-	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
+	    	db = new Database(connection.url.host, connection.url.strPort);
 		}
 		final DbDevImportInfo info = db.import_device(connection.devname);
 		return info.server;
@@ -457,7 +457,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 		if (connection.url.host == null) {
 			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
-	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
+	    	db = new Database(connection.url.host, connection.url.strPort);
 		}
 		if (connection.classname == null) {
 	    	final DbDevImportInfo info = db.import_device(connection.devname);
@@ -471,7 +471,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
     private void initCtrlAccess(final Connection connection) throws DevFailed {
 		if (connection.url.use_db && connection.check_access && !connection.check_access_done) {
 
-	    	connection.access = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort)
+	    	connection.access = new Database(connection.url.host, connection.url.strPort)
 		    	.checkAccessControl(connection.devname, connection.url);
 
 	    	//System.out.println(connection.devname + " -> " +
@@ -490,7 +490,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 		if (connection.url.host == null) {
 			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
-	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
+	    	db = new Database(connection.url.host, connection.url.strPort);
 		}
 		final DbDevImportInfo info = db.import_device(connection.devname);
 		String result = null;
@@ -518,7 +518,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 		if (connection.url.host == null) {
 			throw new NullPointerException(String.format("connection.url.host is null. url=%s", connection.url.toString()));
 		} else {
-	    	db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
+	    	db = new Database(connection.url.host, connection.url.strPort);
 		}
 		// Check if device must be imported directly from IOR
         String  local_ior = null;
@@ -830,7 +830,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
 		// Manage Access control
 		//
 		if (connection.access == TangoConst.ACCESS_READ) {
-	    	final Database db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
+	    	final Database db = new Database(connection.url.host, connection.url.strPort);
 	    	if (!db.isCommandAllowed(connection.get_class_name(), command)) {
 				// Check if not allowed or PB with access device
 				if (db.access_devfailed != null) {
@@ -1237,7 +1237,7 @@ public class ConnectionDAODefaultImpl implements ApiDefs, IConnectionDAO {
     // ==========================================================================
     // ==========================================================================
     public boolean isAllowedCommand(final Connection connection, final String cmd) throws DevFailed {
-	final Database db = ApiUtil.get_db_obj(connection.url.host, connection.url.strPort);
+	final Database db = new Database(connection.url.host, connection.url.strPort);
 	    return db.isCommandAllowed(connection.get_class_name(), cmd);
     }
 

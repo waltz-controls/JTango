@@ -50,7 +50,7 @@ public class PipeTestWithTangoDB {
 
     @BeforeClass
     public static void start() throws DevFailed {
-        Database tangoDb = ApiUtil.get_db_obj();
+        Database tangoDb = new Database("localhost", "10000");
         tangoDb.add_device(deviceName, PipeServer.class.getSimpleName(), PipeServer.SERVER_NAME + "/"+PipeServer.INSTANCE_NAME);
       //  System.setProperty("TANGO_HOST", "tango9-db1.ica.synchrotron-soleil.fr:20001");
         PipeServer.start();

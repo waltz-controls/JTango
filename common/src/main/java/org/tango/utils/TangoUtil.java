@@ -188,16 +188,19 @@ public final class TangoUtil {
                     entity = entityGroup;
                 }
             } else {
+                TangoHost tangoHost = getTangoHost();
+                Database db = new Database(tangoHost.host, tangoHost.port);
+
                 if (matcher.group(ATTRIBUTE_ALIAS_INDEX) != null) {
                     final String attributeAliasGroup = matcher.group(ATTRIBUTE_ALIAS_INDEX);
-                    final String fullAttributeName = ApiUtil.get_db_obj().get_attribute_from_alias(attributeAliasGroup);
+                    final String fullAttributeName = db.get_attribute_from_alias(attributeAliasGroup);
                     final int lastIndexOf = fullAttributeName.lastIndexOf(DEVICE_SEPARATOR);
                     device = prefixGroup + fullAttributeName.substring(0, lastIndexOf);// TODO exception ?
                     entity = fullAttributeName.substring(lastIndexOf + 1);
                 } else if (matcher.group(DEVICE_ALIAS_INDEX) != null) {
                     final String deviceAliasGroup = matcher.group(DEVICE_ALIAS_INDEX);
                     final String entityGroup = matcher.group(ENTITY_INDEX);
-                    final String fullDeviceName = ApiUtil.get_db_obj().get_device_from_alias(deviceAliasGroup);
+                    final String fullDeviceName = db.get_device_from_alias(deviceAliasGroup);
                     device = prefixGroup + fullDeviceName;
                     entity = entityGroup;
                 } else {
@@ -216,39 +219,6 @@ public final class TangoUtil {
         return result;
     }
 
-    /**
-     * Splits a collection of entity names and group attributes by device.
-     *
-     * @param entityNames a list of entity names to split
-     * @return a map containing a list of attributes for each device.
-     */
-    public static Map<String, Collection<String>> splitDeviceEntities(final Collection<String> entityNames) {
-        final Map<String, Collection<String>> result = new HashMap<String, Collection<String>>();
-
-        String device;
-        String entity;
-        for (final String entityName : entityNames) {
-            try {
-                final Entry<String, String> deviceEntity = splitDeviceEntity(entityName);
-                if (deviceEntity != null) {
-                    device = deviceEntity.getKey();
-                    entity = deviceEntity.getValue();
-                    if (device != null && entity != null) {
-                        Collection<String> attributes = result.get(device);
-                        if (attributes == null) {
-                            attributes = new HashSet<String>();
-                            result.put(device, attributes);
-                        }
-                        attributes.add(entity);
-                    }
-                }
-            } catch (final DevFailed e) {
-                // nop
-            }
-        }
-
-        return result;
-    }
 
     /**
      * Get the full device name for an attribute
@@ -263,11 +233,13 @@ public final class TangoUtil {
         if (attributeName.contains(DBASE_NO)) {
             result = attributeName.substring(0, attributeName.lastIndexOf(DEVICE_SEPARATOR));
         } else {
+            TangoHost tangoHost = getTangoHost();
+            Database db = new Database(tangoHost.host, tangoHost.port);
             final String[] fields = attributeName.split(DEVICE_SEPARATOR);
             if (fields.length == 1) {
                 throw new UnsupportedOperationException(String.format("Can not resolve attribute alias %s", attributeName));
             } else if (fields.length == 2) {
-                result = ApiUtil.get_db_obj().get_device_from_alias(fields[0]);
+                result = db.get_device_from_alias(fields[0]);
             } else if (fields.length == 4) {
                 result = fields[0] + DEVICE_SEPARATOR + fields[1] + DEVICE_SEPARATOR + fields[2];
             } else {
@@ -290,8 +262,9 @@ public final class TangoUtil {
         if (attributeName.contains(DBASE_NO)) {
             result = attributeName;
         } else {
+            TangoHost tangoHost = getTangoHost();
+            Database db = new Database(tangoHost.host, tangoHost.port);
             final String[] fields = attributeName.split(DEVICE_SEPARATOR);
-            final Database db = ApiUtil.get_db_obj();
             if (fields.length == 1) {
                 result = db.get_attribute_from_alias(fields[0]);
             } else if (fields.length == 2) {
@@ -330,7 +303,8 @@ public final class TangoUtil {
         if (deviceName.contains(DBASE_NO) || fields.length != 1) {
             return deviceName;
         } else {
-            final Database db = ApiUtil.get_db_obj();
+            TangoHost tangoHost = getTangoHost();
+            Database db = new Database(tangoHost.host, tangoHost.port);
             return db.get_device_from_alias(fields[0]);
         }
     }
@@ -352,7 +326,8 @@ public final class TangoUtil {
             devices[0] = getfullNameForDevice(deviceNamePattern);
         } else {
             // ask the db the list of device matching pattern p
-            final Database db = ApiUtil.get_db_obj();
+            TangoHost tangoHost = getTangoHost();
+            Database db = new Database(tangoHost.host, tangoHost.port);
             devices = db.get_device_exported(deviceNamePattern);
         }
         return devices;
@@ -362,7 +337,7 @@ public final class TangoUtil {
      * Get the list of device names which matches the pattern p
      *
      * @param deviceNamePattern The pattern. The wild char is *
-     * @param boolean           to get the exported device
+     * @param exported           to get the exported device
      * @return A list of device names
      * @throws DevFailed
      */
@@ -379,7 +354,8 @@ public final class TangoUtil {
                 devices[0] = getfullNameForDevice(deviceNamePattern);
             } else {
                 // ask the db the list of device matching pattern p
-                final Database db = ApiUtil.get_db_obj();
+                TangoHost tangoHost = getTangoHost();
+                Database db = new Database(tangoHost.host, tangoHost.port);
                 devices = db.get_device_list(deviceNamePattern);
             }
         }
@@ -405,4 +381,21 @@ public final class TangoUtil {
         }
     }
 
+    private static TangoHost getTangoHost(){
+        String tangoHost = System.getProperty("TANGO_HOST");
+        if(tangoHost == null) throw new IllegalStateException("env.TANGO_HOST is not defined");
+        String[] tangoHostSplit = tangoHost.split(":");
+        return new TangoHost(tangoHostSplit[0], tangoHostSplit[1]);
+    }
+
+
+    private static class TangoHost {
+        String host;
+        String port;
+
+        public TangoHost(String host, String port) {
+            this.host = host;
+            this.port = port;
+        }
+    }
 }

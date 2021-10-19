@@ -144,52 +144,29 @@ public class DbDevImportInfo implements java.io.Serializable {
     //===============================================
     public String toString() {
         String result;
-            try {
-                //	Return info in ior
-                IORdump id = new IORdump(name, ior);
-                result = id.toString();
-                result += "\nServer:          " + server;
-                if (classname != null && !classname.equals("unknown"))
-                    result += "\nClass:           " + classname;
-                if (pid != 0)
-                    result += "\nServer PID:      " + pid;
-                result += "\nExported:        " + exported;
-
-            } catch (DevFailed e) {
-                //	return full exception string
-                StringBuilder sb = new StringBuilder(e.toString() + ":\n");
-                for (int i = 0; i < e.errors.length; i++) {
-                    sb.append(e.errors[i].reason).append(" from ");
-                    sb.append(e.errors[i].origin).append("\n");
-                    sb.append(e.errors[i].desc).append("\n");
-                    if (i < e.errors.length - 1)
-                        sb.append("-------------------------------------------------------------\n");
-                }
-                result = sb.toString();
-            }
-        return result;
-    }
-
-    //===============================================================
-//===============================================================
-    public static void main(String[] args) {
-        //noinspection ProhibitedExceptionCaught
         try {
-            String devname = args[0];
-            Database db = ApiUtil.get_db_obj();
-            DbDevImportInfo info = db.import_device(devname);
-            System.out.println(info);
+            //	Return info in ior
+            IORdump id = new IORdump(name, ior);
+            result = id.toString();
+            result += "\nServer:          " + server;
+            if (classname != null && !classname.equals("unknown"))
+                result += "\nClass:           " + classname;
+            if (pid != 0)
+                result += "\nServer PID:      " + pid;
+            result += "\nExported:        " + exported;
+
         } catch (DevFailed e) {
-            if (args.length < 2 || !args[1].equals("-no_exception"))
-                fr.esrf.TangoDs.Except.print_exception(e);
-            System.exit(1);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Device name ?");
-            System.exit(0);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
+            //	return full exception string
+            StringBuilder sb = new StringBuilder(e.toString() + ":\n");
+            for (int i = 0; i < e.errors.length; i++) {
+                sb.append(e.errors[i].reason).append(" from ");
+                sb.append(e.errors[i].origin).append("\n");
+                sb.append(e.errors[i].desc).append("\n");
+                if (i < e.errors.length - 1)
+                    sb.append("-------------------------------------------------------------\n");
+            }
+            result = sb.toString();
         }
-        System.exit(0);
+        return result;
     }
 }

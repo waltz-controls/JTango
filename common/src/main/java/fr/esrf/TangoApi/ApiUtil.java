@@ -202,18 +202,6 @@ public class ApiUtil {
         return Integer.toString(jacorb_size);
     }
 
-    /**
-     * Return the database object created for specified host and port.
-     *
-     * @param tango_host
-     *            host and port (hostname:portnumber) where database is running.
-     */
-    // ===================================================================
-    public static Database get_db_obj(final String tango_host) throws DevFailed {
-	    return API_UTIL_DAO.get_db_obj(tango_host);
-    }
-    // ===================================================================
-    // ===================================================================
     public void setApiUtilDAO(final IApiUtilDAO databaseDAO) {
     }
     // ===================================================================
@@ -225,89 +213,6 @@ public class ApiUtil {
     public static boolean useDefaultFactory() {
 	    return TangoFactory.getSingleton().isDefaultFactory();
     }
-
-    // ===================================================================
-
-    /**
-     * Return the database object created with TANGO_HOST environment variable .
-     */
-    // ===================================================================
-    public static Database get_default_db_obj() throws DevFailed {
-	    return API_UTIL_DAO.get_default_db_obj();
-    }
-
-    // ===================================================================
-
-    /**
-     * Return tru if the database object has been created.
-     */
-    // ===================================================================
-    public static boolean default_db_obj_exists() throws DevFailed {
-	    return API_UTIL_DAO.default_db_obj_exists();
-    }
-    // ===================================================================
-
-    /**
-     * Return the database object created with TANGO_HOST environment variable .
-     */
-    // ===================================================================
-    public static synchronized Database get_db_obj() throws DevFailed {
-	    return API_UTIL_DAO.get_db_obj();
-    }
-
-    // ===================================================================
-
-    /**
-     * Return the database object created for specified host and port.
-     *
-     * @param host host where database is running.
-     * @param port port for database connection.
-     */
-    // ===================================================================
-    public static Database get_db_obj(final String host, final String port) throws DevFailed {
-	    return API_UTIL_DAO.get_db_obj(host, port);
-    }
-
-    // ===================================================================
-
-    /**
-     * Return the database object created for specified host and port, and set
-     * this database object for all following uses..
-     *
-     * @param host host where database is running.
-     * @param port port for database connection.
-     */
-    // ===================================================================
-    public static Database change_db_obj(final String host, final String port) throws DevFailed {
-	    return API_UTIL_DAO.change_db_obj(host, port);
-    }
-
-    // ===================================================================
-
-    /**
-     * Return the database object created for specified host and port, and set
-     * this database object for all following uses..
-     *
-     * @param host host where database is running.
-     * @param port port for database connection.
-     */
-    // ===================================================================
-    public static Database set_db_obj(final String host, final String port) throws DevFailed {
-	    return API_UTIL_DAO.set_db_obj(host, port);
-    }
-    // ===================================================================
-
-    /**
-     * Return the database object created for specified host and port.
-     *
-     * @param tango_host
-     *            host and port (hostname:portnumber) where database is running.
-     */
-    // ===================================================================
-    public static Database set_db_obj(final String tango_host) throws DevFailed {
-	    return API_UTIL_DAO.set_db_obj(tango_host);
-    }
-    // ===================================================================
 
     /**
      * Return the orb object

@@ -37,6 +37,7 @@ package fr.esrf.TangoApi;
 import fr.esrf.Tango.DevFailed;
 import fr.esrf.TangoDs.Except;
 import fr.esrf.TangoDs.TangoConst;
+import org.tango.utils.DevFailedUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,10 +77,12 @@ public class DbDevice implements java.io.Serializable {
     public DbDevice(String deviceName) throws DevFailed {
         //	Check if database is  used.
         TangoUrl url = new TangoUrl(deviceName);
-        if (!url.use_db) Except.throw_non_db_exception("Api_NonDatabaseDevice",         "Device " + deviceName + " do not use database",         "DbDevice.DbDevice()");
+        if (!url.use_db) {
+            throw DevFailedUtils.newDevFailed("Api_NonDatabaseDevice","Device " + deviceName + " do not use database");
+        }
 
         //	Access the database
-        database = ApiUtil.get_db_obj();
+        database = new Database(url.host, url.strPort);
         this.deviceName = deviceName;
     }
     //===================================================================
@@ -96,8 +99,10 @@ public class DbDevice implements java.io.Serializable {
     public DbDevice(String deviceName, String host, String port) throws DevFailed {
         //	Access the database
         //------------------------
-        if (host==null || port==null) database = ApiUtil.get_db_obj();
-        else database = ApiUtil.get_db_obj(host, port);
+        if (host==null || port==null) {
+            throw DevFailedUtils.newDevFailed("Api_NonDatabaseDevice","Device do not use database? host or port == null");
+        }
+        else database = new Database(host, port);
         this.deviceName = deviceName;
     }
     //==========================================================================

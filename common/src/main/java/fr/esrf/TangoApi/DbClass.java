@@ -55,26 +55,12 @@ public class DbClass implements java.io.Serializable {
     /**
      * Database object used for TANGO database access.
      */
-    private Database database;
+    private final Database database;
 
     /**
      * Device name used to access database if device not exported.
      */
-    private String className;
-
-    //===================================================================
-    /**
-     * DbClass constructor.
-     * It will make a connection to the TANGO database.
-     *
-     * @param    className        Name of the class oject.
-     */
-    //===================================================================
-    public DbClass(String className) throws DevFailed {
-        //	Access the database and get device server info
-        database = ApiUtil.get_db_obj();
-        this.className = className;
-    }
+    private final String className;
 
     //===================================================================
     /**
@@ -88,7 +74,7 @@ public class DbClass implements java.io.Serializable {
     //===================================================================
     public DbClass(String className, String host, String port) throws DevFailed {
         //	Access the database and get device server info
-        database = ApiUtil.get_db_obj(host, port);
+        database = new Database(host, port);
         this.className = className;
     }
 

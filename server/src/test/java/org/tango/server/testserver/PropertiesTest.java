@@ -47,14 +47,16 @@ public class PropertiesTest {
     public static void createDeviceInTangoDB() throws DevFailed {
         System.out.println("Tango host = " + System.getProperty("TANGO_HOST"));
         assumeThat(System.getProperty("TANGO_HOST"), notNullValue());
-        Database tangoDb = ApiUtil.get_db_obj();
+        String[] tangoHostSplit = System.getProperty("TANGO_HOST").split(":");
+        Database tangoDb = new Database(tangoHostSplit[0], tangoHostSplit[1]);
         tangoDb.add_device(deviceName, JTangoTest.class.getCanonicalName(), JTangoTest.SERVER_NAME + "/" + JTangoTest.INSTANCE_NAME);
     }
 
     @Test
     public void testProperty() throws DevFailed {
         try {
-            final Database db = ApiUtil.get_db_obj();
+            String[] tangoHostSplit = System.getProperty("TANGO_HOST").split(":");
+            Database db = new Database(tangoHostSplit[0], tangoHostSplit[1]);
             final DbDatum[] dbDatum = new DbDatum[1];
 
             final Double d = new Double(Math.random());
@@ -85,7 +87,8 @@ public class PropertiesTest {
 
     @Test
     public void testClassProperty() throws DevFailed {
-        final Database db = ApiUtil.get_db_obj();
+        String[] tangoHostSplit = System.getProperty("TANGO_HOST").split(":");
+        Database db = new Database(tangoHostSplit[0], tangoHostSplit[1]);
         final DbDatum[] dbDatum = new DbDatum[1];
 
         final Double dd = new Double(Math.random());

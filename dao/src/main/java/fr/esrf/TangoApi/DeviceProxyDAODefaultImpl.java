@@ -143,7 +143,7 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
     // ==========================================================================
     public Database get_db_obj(final DeviceProxy deviceProxy) throws DevFailed {
         checkIfUseDb(deviceProxy, "get_db_obj()");
-        return ApiUtil.get_db_obj(deviceProxy.url.host, deviceProxy.url.strPort);
+        return new Database(deviceProxy.url.host, deviceProxy.url.strPort);
     }
 
     // ===================================================================
@@ -2051,7 +2051,7 @@ public class DeviceProxyDAODefaultImpl extends ConnectionDAODefaultImpl implemen
         // Manage Access control
         // ----------------------------------
         if (deviceProxy.access == TangoConst.ACCESS_READ) {
-            final Database db = ApiUtil.get_db_obj(deviceProxy.url.host, deviceProxy.url.strPort);
+            final Database db = new Database(deviceProxy.url.host, deviceProxy.url.strPort);
             if (!db.isCommandAllowed(deviceProxy.get_class_name(), cmdname)) {
             // Check if not allowed or PB with access device
             if (db.access_devfailed != null) {

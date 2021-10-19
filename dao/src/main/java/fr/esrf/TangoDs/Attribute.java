@@ -959,13 +959,6 @@ public class Attribute implements TangoConst
 		if (conf.max_alarm.equals(Tango_AlrmValueNotSpec) != true)
 			db_attr.add("max_alarm", new String[] {conf.max_alarm});
 
-		// Update db only if needed
-		if (db_attr.size()>0)
-		{		
-			Util.out4.println(db_attr.size() + " properties to update in db");
-			ApiUtil.get_db_obj().put_device_attribute_property(dev_name, db_attr);
-		}
-						
 		Util.out4.println("Leaving upd_database method");
 	}
 

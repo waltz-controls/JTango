@@ -64,21 +64,6 @@ public class DbServer implements java.io.Serializable
 	 *	It will make a connection to the TANGO database.
 	 *
 	 *	@param	servname		Name of the class oject.
-	 */
-	//===================================================================
-	public DbServer(String servname) throws DevFailed
-	{
-		//	Access the database
-		//----------------------------
-		dbase = ApiUtil.get_db_obj();
-		this.servname = servname;
-	}
-	//===================================================================
-	/**
-	 *	DbServer constructor.
-	 *	It will make a connection to the TANGO database.
-	 *
-	 *	@param	servname		Name of the class oject.
 	 *	@param	host	host where database is running.
 	 *	@param	port	port for database connection.
 	 */
@@ -87,7 +72,7 @@ public class DbServer implements java.io.Serializable
 	{
 		//	Access the database 
 		//--------------------------
-		dbase = ApiUtil.get_db_obj(host, port);
+		dbase = new Database(host, port);
 		this.servname = servname;
 	}
 

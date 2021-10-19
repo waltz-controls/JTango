@@ -44,6 +44,7 @@ import org.jacorb.orb.CDRInputStream;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -327,7 +328,8 @@ public class ZmqUtils {
 	//===============================================================
     static void  disConnectEvent(String tgHost, String deviceName,
                                  String attributeName, int idl, String eventName) throws DevFailed{
-        String[]    tangoHosts = ApiUtil.get_db_obj(tgHost).getPossibleTangoHosts();
+        String[] tangoHostSplit = tgHost.split(":");
+        String[]    tangoHosts = new Database(tangoHostSplit[0], tangoHostSplit[1]).getPossibleTangoHosts();
         if (tangoHosts!=null) {
             for (String tangoHost : tangoHosts) {
                 byte[]  buffer = getBufferToDisConnectEvent(

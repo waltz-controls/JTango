@@ -557,7 +557,6 @@ public class Util {
 	if (argv[0].charAt(0) == '-') {
 	    if (argv[0].equals("-?")) {
 		print_usage();
-		printInstanceNames();
 		System.exit(0);
 	    } else {
 		print_usage();
@@ -740,28 +739,7 @@ public class Util {
     //
     // -----------------------------------------------------------------------------
 
-    // +----------------------------------------------------------------------------
-    //
-    // method : printInstanceNames
-    //
-    // description : Print server instances found in database
-    //
-    // in : - serv_name : The server name
-    //
-    // +----------------------------------------------------------------------------
-    private void printInstanceNames() {
-        try {
-            System.out.println("Instance name defined in database for server PowerSupply :");
-            final String[] instnames = ApiUtil.get_db_obj().get_instance_name_list(ds_exec_name);
-            for (final String instname : instnames) {
-                System.out.println("\t" + instname);
-            }
-        } catch (final DevFailed e) {
-            Except.print_exception(e);
-        }
-    }
-
-    // +-------------------------------------------------------------------------
+   // +-------------------------------------------------------------------------
     //
     // method : return_empty_any
     // 
@@ -842,49 +820,8 @@ public class Util {
      */
 
     public synchronized void connect_db() {
-
-	//
-	// Try to connect to the database
-	//
-
-	if (_daemon == true) {
-	    boolean connected = false;
-	    while (connected == false) {
-		try {
-		    db = ApiUtil.get_db_obj();
-		    if (db == null) {
-			Util.out4.println("Can't contact db server, will try later");
-			try {
-			    wait(_sleep_between_connect * 1000);
-			} catch (final InterruptedException ex) {
-			}
-		    } else {
-			connected = true;
-		    }
-		} catch (final Exception e) {
-		    Util.out4.println("Can't contact db server, will try later");
-		    try {
-			wait(_sleep_between_connect * 1000);
-		    } catch (final InterruptedException ex) {
-		    }
-		}
-	    }
-	} else {
-	    try {
-		db = ApiUtil.get_db_obj();
-		if (db == null) {
-		    System.err.println("Can't build connection to TANGO database server, exiting");
-		    System.err.println("DB server host = " + db_host);
-		    System.exit(-1);
-		}
-
-	    } catch (final Exception ex) {
-		System.err.println("Can't build connection to TANGO database server, exiting");
-		System.err.println("DB server host = " + db_host);
-		System.exit(-1);
-	    }
-	}
-	Util.out4.println("Connected to database");
+		//Everything is fine
+		//TODO remove later on
     }
 
     private synchronized void server_already_running() {
@@ -982,24 +919,6 @@ public class Util {
 	} catch (final SystemException e) {
 	}
 	Util.out4.println("Leaving Tango::server_already_running method");
-    }
-
-    /**
-     * Initialise all the device server pattern(s) embedded in a device server
-     * process.
-     *
-     * @exception DevFailed
-     *                If the device pattern initialistaion failed Click <a
-     *                href="../../tango_basic/idl_html/Tango.html#DevFailed"
-     *                >here</a> to read <b>DevFailed</b> exception specification
-     */
-
-    public void server_init() throws DevFailed {
-	// Initialise main class
-	DServerClass.init();
-
-	// Configure polling from the polling properties
-	polling_configure();
     }
 
     /**

@@ -82,7 +82,8 @@ public class EventTest {
             assertThat(System.getProperty("TANGO_HOST"), notNullValue());
             System.setProperty("org.tango.server.checkalarms", "false");
 
-            Database tangoDb = ApiUtil.get_db_obj();
+            String[] tangoHostSplit = System.getProperty("TANGO_HOST").split(":");
+            Database tangoDb = new Database(tangoHostSplit[0], tangoHostSplit[1]);
             DeviceData deviceData = tangoDb.command_inout("DbGetCSDbServerList");
             System.out.println("Tango hosts for database are " + Arrays.toString(deviceData.extractStringArray()));
             String serverName = EventServer.SERVER_NAME + "/" + EventServer.INSTANCE_NAME;

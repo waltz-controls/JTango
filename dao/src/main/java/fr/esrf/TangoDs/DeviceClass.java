@@ -71,11 +71,6 @@ public abstract class DeviceClass {
      * The associated DbClass object
      */
     protected DbClass db_class;
-    /**
-     * The class attributes object
-     */
-    protected MultiClassAttribute class_attr;
-
     // +----------------------------------------------------------------------------
     //
     // method : DeviceClass(String s)
@@ -85,52 +80,9 @@ public abstract class DeviceClass {
     //
     // -----------------------------------------------------------------------------
 
-    /**
-     * Construct a newly allocated DeviceClass object.
-     *
-     * @param s The Tango device class name
-     */
-    protected DeviceClass(final String s) throws DevFailed {
-        name = s;
-
-        //
-        // Create the associated DbClass object
-        //
-
-        if (Util._UseDb) {
-            db_class = new DbClass(name);
-        }
-
-        //
-        // Create the vector object(s)
-        //
-
-        command_list = new Vector();
-        device_list = new Vector();
-
-        //
-        // initialise command_list with State and Status
-        //
-
-        //
-        // Retrieve basic class resource
-        //
-
-        get_class_system_resource();
-
-        //
-        // Create the multi class attribute object
-        //
-
-        class_attr = new MultiClassAttribute();
-        initClass();
-
-    }
-
     public void initClass() {
         device_list.clear();
         command_list.clear();
-        class_attr.get_attr_list().clear();
         command_list.addElement(new StatusCmd("Status", Tango_DEV_VOID, Tango_DEV_STRING,
                 "Device status"));
         command_list.addElement(new StateCmd("State", Tango_DEV_VOID, Tango_DEV_STATE,
@@ -515,16 +467,6 @@ public abstract class DeviceClass {
 
     public String get_doc_url() {
         return doc_url;
-    }
-
-    /**
-     * Get a handle to the object with all the attributes defined at class level
-     *
-     * @return A reference to the MultiClassAttribute object
-     */
-
-    public MultiClassAttribute get_class_attr() {
-        return class_attr;
     }
 
     /**

@@ -65,43 +65,6 @@ public class DServerClass extends DeviceClass
 //
 //-----------------------------------------------------------------------------
 
-    //TODO singleton is anti-pattern
-    DServerClass(String name) throws DevFailed {
-        super(name);
-
-//
-// Add class command(s) to the command_list
-//
-
-        command_factory();
-
-//
-// Sort commands
-//
-
-        MyComp comp = new MyComp();
-        Collections.sort(command_list, comp);
-
-//
-// Create device name from device server name
-//
-
-        StringBuffer dev_name = new StringBuffer(Tango_DSDeviceDomain);
-        dev_name.append('/');
-        dev_name.append(Util.instance().get_ds_exec_name());
-        dev_name.append('/');
-        dev_name.append(Util.instance().get_ds_inst_name());
-
-        String[] dev_list = new String[1];
-        dev_list[0] = new String(dev_name);
-
-//
-// Create the device server device
-//
-
-        device_factory(dev_list);
-    }
-
 //+----------------------------------------------------------------------------
 //
 // method : 		Init()
@@ -150,29 +113,6 @@ public class DServerClass extends DeviceClass
 //
 //-----------------------------------------------------------------------------
 
-/**
- * Create and get the singleton object reference.
- *
- * This method returns a reference to the object of the DServerClass class.
- * If the class singleton object has not been created, it will be
- * instanciated
- *
- * @return The DServerClass object reference
- * @exception DevFailed If it is not possible to construct the object. It is a
- * propagation of the xecption thrown by the <i>device_factory</i> method.
- * Click <a href="../../tango_basic/idl_html/Tango.html#DevFailed">here</a> to read
- * <b>DevFailed</b> exception specification
- */
-	public static DServerClass init() throws DevFailed
-	{
-		if (_instance == null)
-		{
-			_instance = new DServerClass("DServer");
-		}
-		return _instance;
-	}
-	
-	
 //+----------------------------------------------------------------------------
 //
 // method : 		command_factory

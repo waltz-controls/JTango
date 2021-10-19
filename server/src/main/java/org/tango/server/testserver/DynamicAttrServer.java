@@ -29,11 +29,6 @@ public class DynamicAttrServer {
         ServerManager.getInstance().start(new String[]{"1"}, DynamicAttrServer.class);
     }
 
-    private static void declareServerInTangoDB() throws DevFailed {
-        Database tangoDb = ApiUtil.get_db_obj();
-        tangoDb.add_device("tango9/java/dynamic-attr.1", "DynamicAttrServer", "DynamicAttrServer/1");
-    }
-
     public void setDynamicManager(DynamicManager dynamicManager) {
         this.dynamicManager = dynamicManager;
     }
