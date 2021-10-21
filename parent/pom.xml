@@ -4,7 +4,7 @@
 
     <groupId>de.hereon.tango</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -16,7 +16,7 @@
         <connection>scm:git:git@github.com:hereon-wpi/JTango.git</connection>
         <developerConnection>scm:git:git@github.com:hereon-wpi/JTango.git</developerConnection>
         <url>https://github.com/hereon-wpi/JTango</url>
-        <tag>JTango-1.0.6</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
