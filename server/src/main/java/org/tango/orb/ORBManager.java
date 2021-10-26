@@ -24,6 +24,7 @@
  */
 package org.tango.orb;
 
+import com.google.common.collect.Lists;
 import fr.esrf.Tango.*;
 import org.omg.CORBA.*;
 import org.omg.CORBA.ORBPackage.InvalidName;
@@ -132,9 +133,10 @@ public final class ORBManager {
             if (!useDb) {
                 // If the database is not used, create a POA with the
                 // USER_ID policy
-                final org.omg.CORBA.Policy[] policies = new org.omg.CORBA.Policy[2];
-                policies[0] = poa.create_id_assignment_policy(IdAssignmentPolicyValue.USER_ID);
-                policies[1] = poa.create_lifespan_policy(LifespanPolicyValue.PERSISTENT);
+                final org.omg.CORBA.Policy[] policies = Lists.newArrayList(
+                    poa.create_id_assignment_policy(IdAssignmentPolicyValue.USER_ID),
+                    poa.create_lifespan_policy(LifespanPolicyValue.PERSISTENT),
+                    poa.create_id_uniqueness_policy(IdUniquenessPolicyValue.MULTIPLE_ID)).toArray(new org.omg.CORBA.Policy[]{});
                 final org.omg.PortableServer.POAManager manager = poa.the_POAManager();
                 poa = poa.create_POA(NODB_POA, manager, policies);
             }
