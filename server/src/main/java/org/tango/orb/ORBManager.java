@@ -133,10 +133,10 @@ public final class ORBManager {
             if (!useDb) {
                 // If the database is not used, create a POA with the
                 // USER_ID policy
-                final org.omg.CORBA.Policy[] policies = Lists.newArrayList(
+                final org.omg.CORBA.Policy[] policies = new Policy[]{
                     poa.create_id_assignment_policy(IdAssignmentPolicyValue.USER_ID),
                     poa.create_lifespan_policy(LifespanPolicyValue.PERSISTENT),
-                    poa.create_id_uniqueness_policy(IdUniquenessPolicyValue.MULTIPLE_ID)).toArray(new org.omg.CORBA.Policy[]{});
+                    poa.create_id_uniqueness_policy(IdUniquenessPolicyValue.MULTIPLE_ID)};
                 final org.omg.PortableServer.POAManager manager = poa.the_POAManager();
                 poa = poa.create_POA(NODB_POA, manager, policies);
             }
