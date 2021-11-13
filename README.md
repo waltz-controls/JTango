@@ -1,4 +1,4 @@
-# JTango fork by HZG
+# JTango fork by IK Company
 
 TANGO kernel Java implementation improved and patched
 
