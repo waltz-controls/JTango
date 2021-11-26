@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.waltz.tango</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.8</version>
+        <version>1.0.9-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
     <artifactId>server</artifactId>
@@ -19,7 +19,7 @@
         <connection>scm:git:git@github.com:waltz-controls/JTango.git</connection>
         <developerConnection>scm:git:git@github.com:waltz-controls/JTango.git</developerConnection>
         <url>https://github.com/waltz-controls/JTango</url>
-        <tag>JTango-1.0.8</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
