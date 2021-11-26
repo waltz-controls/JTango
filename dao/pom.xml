@@ -102,7 +102,7 @@
         </dependency>
 
         <dependency>
-            <groupId>de.hereon.tango.lang</groupId>
+            <groupId>org.waltz.tango.lang</groupId>
             <artifactId>commons</artifactId>
         </dependency>
 
