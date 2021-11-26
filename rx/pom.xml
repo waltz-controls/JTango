@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>de.hereon.tango</groupId>
+        <groupId>org.waltz.tango</groupId>
         <artifactId>parent</artifactId>
         <version>1.0.8-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>RxJTango</name>
-    <url>https://github.com/ingvord/RxJTango</url>
+    <url>https://github.com/waltz-controls/JTango</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,11 +65,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.hereon.tango</groupId>
+            <groupId>org.waltz.tango</groupId>
             <artifactId>ez</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.hereon.tango.orb</groupId>
+            <groupId>org.waltz.tango.orb</groupId>
             <artifactId>tangorb</artifactId>
         </dependency>
     </dependencies>
@@ -79,15 +79,8 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/Ingvord/RxJTango</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>github-hzg</id>
-            <url>https://maven.pkg.github.com/hereon-wpi/JTango</url>
+            <id>github-waltz</id>
+            <url>https://maven.pkg.github.com/waltz-controls/JTango</url>
         </repository>
     </repositories>
 </project>

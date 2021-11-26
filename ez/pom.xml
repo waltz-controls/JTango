@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>de.hereon.tango</groupId>
+        <groupId>org.waltz.tango</groupId>
         <artifactId>parent</artifactId>
         <version>1.0.8-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
@@ -14,7 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <github.organization>hereon-wpi</github.organization>
+        <github.organization>waltz-controls</github.organization>
         <github.repo>ez-tango-api</github.repo>
     </properties>
 
@@ -52,7 +52,7 @@
             <version>1.2</version>
         </dependency>
         <dependency>
-            <groupId>de.hereon.tango.orb</groupId>
+            <groupId>org.waltz.tango.orb</groupId>
             <artifactId>tangorb</artifactId>
             <exclusions>
                 <exclusion>
@@ -263,8 +263,8 @@
 
     <repositories>
         <repository>
-            <id>github-hzg</id>
-            <url>https://maven.pkg.github.com/hereon-wpi/JTango</url>
+            <id>github-waltz</id>
+            <url>https://maven.pkg.github.com/waltz-controls/JTango</url>
         </repository>
     </repositories>
 </project>

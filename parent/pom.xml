@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.hereon.tango</groupId>
+    <groupId>org.waltz.tango</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.8-SNAPSHOT</version>
 
@@ -10,18 +10,18 @@
 
     <name>JTangoParent</name>
     <description>The JTango Parent POM provides common settings for all JTango components.</description>
-    <url>https://github.com/tango-controls/JTango</url>
+    <url>https://github.com/waltz-controls/JTango</url>
 
     <scm>
-        <connection>scm:git:git@github.com:hereon-wpi/JTango.git</connection>
-        <developerConnection>scm:git:git@github.com:hereon-wpi/JTango.git</developerConnection>
-        <url>https://github.com/hereon-wpi/JTango</url>
+        <connection>scm:git:git@github.com:waltz-controls/JTango.git</connection>
+        <developerConnection>scm:git:git@github.com:waltz-controls/JTango.git</developerConnection>
+        <url>https://github.com/waltz-controls/JTango</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/tango-controls/JTango/issues</url>
+        <url>https://github.com/waltz-controls/JTango/issues</url>
     </issueManagement>
 
     <licenses>
@@ -123,7 +123,7 @@
                 <version>1.0.6.Final</version>
             </dependency>
             <dependency>
-                <groupId>de.hereon.tango.lang</groupId>
+                <groupId>org.waltz.tango.lang</groupId>
                 <artifactId>commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -133,22 +133,22 @@
                 <version>5</version>
             </dependency>
             <dependency>
-                <groupId>de.hereon.tango.lang</groupId>
+                <groupId>org.waltz.tango.lang</groupId>
                 <artifactId>client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.hereon.tango.orb</groupId>
+                <groupId>org.waltz.tango.orb</groupId>
                 <artifactId>tangorb</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.hereon.tango</groupId>
+                <groupId>org.waltz.tango</groupId>
                 <artifactId>server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.hereon.tango</groupId>
+                <groupId>org.waltz.tango</groupId>
                 <artifactId>ez</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -204,9 +204,9 @@
 
     <distributionManagement>
         <repository>
-            <id>github-hzg</id>
+            <id>github-waltz</id>
             <name>GitHub Maven Packages</name>
-            <url>https://maven.pkg.github.com/hereon-wpi/JTango</url>
+            <url>https://maven.pkg.github.com/waltz-controls/JTango</url>
         </repository>
     </distributionManagement>
 
@@ -215,8 +215,8 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>github-hzg</id>
-            <url>https://maven.pkg.github.com/hereon-wpi/JTango</url>
+            <id>github-waltz</id>
+            <url>https://maven.pkg.github.com/waltz-controls/JTango</url>
         </repository>
     </repositories>
 

@@ -12,8 +12,8 @@ TANGO kernel Java implementation improved and patched
         <snapshots>
             <enabled>false</enabled>
         </snapshots>
-        <id>github-hzg</id>
-        <url>https://maven.pkg.github.com/hereon-wpi/*</url>
+        <id>github-waltz</id>
+        <url>https://maven.pkg.github.com/waltz-controls/*</url>
     </repository>
 </repositories>
 ```
@@ -22,7 +22,7 @@ TANGO kernel Java implementation improved and patched
 
 ```xml
  <server>
-    <id>github-hzg</id>
+    <id>github-waltz</id>
     <username>GITHUB_USER</username>
     <password>GITHUB_TOKEN</password>
 </server>
@@ -32,7 +32,7 @@ TANGO kernel Java implementation improved and patched
 
 ```xml
 <dependency>
-    <groupId>de.hereon.tango</groupId>
+    <groupId>org.waltz.tango</groupId>
     <artifactId>server</artifactId>
     <version>1.0.1</version>
 </dependency>
